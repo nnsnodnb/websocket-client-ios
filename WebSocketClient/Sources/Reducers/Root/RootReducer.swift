@@ -11,18 +11,21 @@ import Foundation
 struct RootReducer: ReducerProtocol {
     // MARK: - State
     enum State: Equatable {
-        case `default` // FIXME: とりあえずなので後で直す
+        case input(InputReducer.State)
     }
 
     // MARK: - Action
     enum Action: Equatable {
-        case `default` // FIXME: とりあえずなので後で直す
+        case input(InputReducer.Action)
     }
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             // TODO: とりあえずなので後で直す
             return .none
+        }
+        .ifCaseLet(/State.input, action: /Action.input) {
+            InputReducer()
         }
     }
 }

@@ -16,7 +16,7 @@ struct WebSocketClientApp: App {
         WindowGroup {
             RootPage(
                 store: Store(
-                    initialState: .default,
+                    initialState: RootReducer.State.input(.init()),
                     reducer: RootReducer()
                 )
             )
