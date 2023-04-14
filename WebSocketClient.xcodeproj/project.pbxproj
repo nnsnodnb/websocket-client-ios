@@ -12,6 +12,7 @@
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
 		CFFF582A29E98D3C0037AA85 /* WebSocketClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF582929E98D3C0037AA85 /* WebSocketClientTests.swift */; };
+		CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CFFF584A29E990A30037AA85 /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		CFFF582529E98D3C0037AA85 /* WebSocketClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebSocketClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFF582929E98D3C0037AA85 /* WebSocketClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientTests.swift; sourceTree = "<group>"; };
 		CFFF584729E98F020037AA85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CFFF584A29E990A30037AA85 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 			children = (
 				CFFF581C29E98D3C0037AA85 /* Assets.xcassets */,
 				CFFF581E29E98D3C0037AA85 /* Preview Content */,
+				CFFF584A29E990A30037AA85 /* Settings.bundle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -197,6 +200,9 @@
 				Base,
 			);
 			mainGroup = CFFF580C29E98D3B0037AA85;
+			packageReferences = (
+				CFFF584929E990880037AA85 /* XCRemoteSwiftPackageReference "LicensePlist" */,
+			);
 			productRefGroup = CFFF581629E98D3B0037AA85 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -213,6 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */,
+				CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */,
 				CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -506,6 +513,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CFFF584929E990880037AA85 /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mono0926/LicensePlist.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.24.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = CFFF580D29E98D3B0037AA85 /* Project object */;
 }

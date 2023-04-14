@@ -1,0 +1,5 @@
+options:
+  outputPath: WebSocketClient/Resources/Settings.bundle
+  suppressOpeningDirectory: false
+  xcodeprojPath: *.xcodeproj
+  prefix: moe.nnsnodnb.WebSocketClient

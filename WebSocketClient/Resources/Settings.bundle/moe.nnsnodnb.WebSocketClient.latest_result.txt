@@ -1,0 +1,21 @@
+name: APIKit, nameSpecified: APIKit, owner: ishkawa, version: 5.4.0, source: https://github.com/ishkawa/APIKit
+
+name: HeliumLogger, nameSpecified: HeliumLogger, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/HeliumLogger
+
+name: LicensePlist, nameSpecified: LicensePlist, owner: mono0926, version: 3.24.9, source: https://github.com/mono0926/LicensePlist
+
+name: LoggerAPI, nameSpecified: LoggerAPI, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/LoggerAPI
+
+name: swift-argument-parser, nameSpecified: swift-argument-parser, owner: apple, version: 1.2.2, source: https://github.com/apple/swift-argument-parser
+
+name: swift-html-entities, nameSpecified: HTMLEntities, owner: Kitura, version: 4.0.1, source: https://github.com/Kitura/swift-html-entities
+
+name: swift-log, nameSpecified: swift-log, owner: apple, version: 1.5.2, source: https://github.com/apple/swift-log
+
+name: XcodeEdit, nameSpecified: XcodeEdit, owner: tomlokhorst, version: 2.9.0, source: https://github.com/tomlokhorst/XcodeEdit
+
+name: YamlSwift, nameSpecified: Yaml, owner: behrang, version: 3.4.4, source: https://github.com/behrang/YamlSwift
+
+add-version-numbers: false
+
+LicensePlist Version: 3.24.9
