@@ -89,10 +89,8 @@
 		CFFF581729E98D3B0037AA85 /* WebSocketClient */ = {
 			isa = PBXGroup;
 			children = (
-				CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */,
-				CFFF581A29E98D3B0037AA85 /* ContentView.swift */,
-				CFFF581C29E98D3C0037AA85 /* Assets.xcassets */,
-				CFFF581E29E98D3C0037AA85 /* Preview Content */,
+				CFFF584529E98E610037AA85 /* Sources */,
+				CFFF584429E98E3A0037AA85 /* Resources */,
 			);
 			path = WebSocketClient;
 			sourceTree = "<group>";
@@ -111,6 +109,32 @@
 				CFFF582929E98D3C0037AA85 /* WebSocketClientTests.swift */,
 			);
 			path = WebSocketClientTests;
+			sourceTree = "<group>";
+		};
+		CFFF584429E98E3A0037AA85 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF581C29E98D3C0037AA85 /* Assets.xcassets */,
+				CFFF581E29E98D3C0037AA85 /* Preview Content */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		CFFF584529E98E610037AA85 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */,
+				CFFF584629E98E680037AA85 /* Pages */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		CFFF584629E98E680037AA85 /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF581A29E98D3B0037AA85 /* ContentView.swift */,
+			);
+			path = Pages;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
