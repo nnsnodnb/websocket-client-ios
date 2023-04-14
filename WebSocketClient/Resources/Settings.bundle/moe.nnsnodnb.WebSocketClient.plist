@@ -20,6 +20,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/combine-schedulers</string>
+			<key>Title</key>
+			<string>combine-schedulers</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.WebSocketClient/HeliumLogger</string>
 			<key>Title</key>
 			<string>HeliumLogger</string>
@@ -52,9 +60,65 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swift-case-paths</string>
+			<key>Title</key>
+			<string>swift-case-paths</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swift-clocks</string>
+			<key>Title</key>
+			<string>swift-clocks</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swift-collections</string>
+			<key>Title</key>
+			<string>swift-collections</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swift-composable-architecture</string>
+			<key>Title</key>
+			<string>swift-composable-architecture</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swift-custom-dump</string>
+			<key>Title</key>
+			<string>swift-custom-dump</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swift-dependencies</string>
+			<key>Title</key>
+			<string>swift-dependencies</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.WebSocketClient/swift-html-entities</string>
 			<key>Title</key>
 			<string>HTMLEntities</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swift-identified-collections</string>
+			<key>Title</key>
+			<string>swift-identified-collections</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -68,9 +132,25 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swiftui-navigation</string>
+			<key>Title</key>
+			<string>swiftui-navigation</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.WebSocketClient/XcodeEdit</string>
 			<key>Title</key>
 			<string>XcodeEdit</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/xctest-dynamic-overlay</string>
+			<key>Title</key>
+			<string>xctest-dynamic-overlay</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

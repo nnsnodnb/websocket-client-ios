@@ -1,5 +1,7 @@
 name: APIKit, nameSpecified: APIKit, owner: ishkawa, version: 5.4.0, source: https://github.com/ishkawa/APIKit
 
+name: combine-schedulers, nameSpecified: combine-schedulers, owner: pointfreeco, version: 0.9.1, source: https://github.com/pointfreeco/combine-schedulers
+
 name: HeliumLogger, nameSpecified: HeliumLogger, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/HeliumLogger
 
 name: LicensePlist, nameSpecified: LicensePlist, owner: mono0926, version: 3.24.9, source: https://github.com/mono0926/LicensePlist
@@ -8,11 +10,29 @@ name: LoggerAPI, nameSpecified: LoggerAPI, owner: Kitura, version: 2.0.0, source
 
 name: swift-argument-parser, nameSpecified: swift-argument-parser, owner: apple, version: 1.2.2, source: https://github.com/apple/swift-argument-parser
 
+name: swift-case-paths, nameSpecified: swift-case-paths, owner: pointfreeco, version: 0.14.1, source: https://github.com/pointfreeco/swift-case-paths
+
+name: swift-clocks, nameSpecified: swift-clocks, owner: pointfreeco, version: 0.2.0, source: https://github.com/pointfreeco/swift-clocks
+
+name: swift-collections, nameSpecified: swift-collections, owner: apple, version: 1.0.4, source: https://github.com/apple/swift-collections
+
+name: swift-composable-architecture, nameSpecified: swift-composable-architecture, owner: pointfreeco, version: 0.52.0, source: https://github.com/pointfreeco/swift-composable-architecture
+
+name: swift-custom-dump, nameSpecified: swift-custom-dump, owner: pointfreeco, version: 0.10.2, source: https://github.com/pointfreeco/swift-custom-dump
+
+name: swift-dependencies, nameSpecified: swift-dependencies, owner: pointfreeco, version: 0.4.0, source: https://github.com/pointfreeco/swift-dependencies
+
 name: swift-html-entities, nameSpecified: HTMLEntities, owner: Kitura, version: 4.0.1, source: https://github.com/Kitura/swift-html-entities
+
+name: swift-identified-collections, nameSpecified: swift-identified-collections, owner: pointfreeco, version: 0.7.1, source: https://github.com/pointfreeco/swift-identified-collections
 
 name: swift-log, nameSpecified: swift-log, owner: apple, version: 1.5.2, source: https://github.com/apple/swift-log
 
+name: swiftui-navigation, nameSpecified: swiftui-navigation, owner: pointfreeco, version: 0.7.1, source: https://github.com/pointfreeco/swiftui-navigation
+
 name: XcodeEdit, nameSpecified: XcodeEdit, owner: tomlokhorst, version: 2.9.0, source: https://github.com/tomlokhorst/XcodeEdit
+
+name: xctest-dynamic-overlay, nameSpecified: xctest-dynamic-overlay, owner: pointfreeco, version: 0.8.4, source: https://github.com/pointfreeco/xctest-dynamic-overlay
 
 name: YamlSwift, nameSpecified: Yaml, owner: behrang, version: 3.4.4, source: https://github.com/behrang/YamlSwift
 
