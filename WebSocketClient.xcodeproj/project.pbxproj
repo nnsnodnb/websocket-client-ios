@@ -14,6 +14,7 @@
 		CFFF582A29E98D3C0037AA85 /* WebSocketClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF582929E98D3C0037AA85 /* WebSocketClientTests.swift */; };
 		CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CFFF584A29E990A30037AA85 /* Settings.bundle */; };
 		CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF584D29E991EC0037AA85 /* ComposableArchitecture */; };
+		CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585229E995BA0037AA85 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		CFFF582929E98D3C0037AA85 /* WebSocketClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientTests.swift; sourceTree = "<group>"; };
 		CFFF584729E98F020037AA85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFFF584A29E990A30037AA85 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		CFFF585229E995BA0037AA85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 		CFFF584529E98E610037AA85 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				CFFF585229E995BA0037AA85 /* AppDelegate.swift */,
 				CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */,
 				CFFF584629E98E680037AA85 /* Pages */,
 			);
@@ -246,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
 				CFFF581B29E98D3B0037AA85 /* ContentView.swift in Sources */,
 				CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */,
 			);
