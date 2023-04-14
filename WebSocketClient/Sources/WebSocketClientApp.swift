@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2023/04/14.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 @main
@@ -13,7 +14,12 @@ struct WebSocketClientApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootPage(
+                store: Store(
+                    initialState: .default,
+                    reducer: RootReducer()
+                )
+            )
         }
     }
 }

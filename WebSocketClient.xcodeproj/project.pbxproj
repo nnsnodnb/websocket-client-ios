@@ -15,6 +15,8 @@
 		CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CFFF584A29E990A30037AA85 /* Settings.bundle */; };
 		CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF584D29E991EC0037AA85 /* ComposableArchitecture */; };
 		CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585229E995BA0037AA85 /* AppDelegate.swift */; };
+		CFFF585629E996FF0037AA85 /* RootPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585529E996FF0037AA85 /* RootPage.swift */; };
+		CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585929E997230037AA85 /* RootReducer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,8 @@
 		CFFF584729E98F020037AA85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFFF584A29E990A30037AA85 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CFFF585229E995BA0037AA85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		CFFF585529E996FF0037AA85 /* RootPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootPage.swift; sourceTree = "<group>"; };
+		CFFF585929E997230037AA85 /* RootReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootReducer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +123,7 @@
 				CFFF585229E995BA0037AA85 /* AppDelegate.swift */,
 				CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */,
 				CFFF584629E98E680037AA85 /* Pages */,
+				CFFF585729E997110037AA85 /* Reducers */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -126,6 +131,7 @@
 		CFFF584629E98E680037AA85 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
+				CFFF585429E996F90037AA85 /* Root */,
 				CFFF581A29E98D3B0037AA85 /* ContentView.swift */,
 			);
 			path = Pages;
@@ -137,6 +143,30 @@
 				CFFF584729E98F020037AA85 /* Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CFFF585429E996F90037AA85 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF585529E996FF0037AA85 /* RootPage.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+		CFFF585729E997110037AA85 /* Reducers */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF585829E9971B0037AA85 /* Root */,
+			);
+			path = Reducers;
+			sourceTree = "<group>";
+		};
+		CFFF585829E9971B0037AA85 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF585929E997230037AA85 /* RootReducer.swift */,
+			);
+			path = Root;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +281,8 @@
 			files = (
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
 				CFFF581B29E98D3B0037AA85 /* ContentView.swift in Sources */,
+				CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */,
+				CFFF585629E996FF0037AA85 /* RootPage.swift in Sources */,
 				CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
