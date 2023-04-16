@@ -47,22 +47,12 @@ struct FormReducer: ReducerProtocol {
                 }
                 return .none
             case let .customHeaderNameChanged(index, name):
-                let customHeader: CustomHeader
-                if let item = state.customHeaders[index] {
-                    customHeader = .init(name: name, value: item.value)
-                } else {
-                    customHeader = .init(name: name, value: "")
-                }
-                state.customHeaders[index] = customHeader
+                guard !state.customHeaders.isEmpty, let customHeader = state.customHeaders[index] else { return .none }
+                state.customHeaders[index] = .init(name: name, value: customHeader.value)
                 return .none
             case let .customHeaderValueChanged(index, value):
-                let customHeader: CustomHeader
-                if let item = state.customHeaders[index] {
-                    customHeader = .init(name: item.name, value: value)
-                } else {
-                    customHeader = .init(name: "", value: value)
-                }
-                state.customHeaders[index] = customHeader
+                guard let customHeader = state.customHeaders[index] else { return .none }
+                state.customHeaders[index] = .init(name: customHeader.name, value: value)
                 return .none
             case .connect:
                 // TODO: 接続

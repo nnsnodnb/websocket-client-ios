@@ -10,7 +10,6 @@
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
-		CFFF582A29E98D3C0037AA85 /* WebSocketClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF582929E98D3C0037AA85 /* WebSocketClientTests.swift */; };
 		CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CFFF584A29E990A30037AA85 /* Settings.bundle */; };
 		CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF584D29E991EC0037AA85 /* ComposableArchitecture */; };
 		CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585229E995BA0037AA85 /* AppDelegate.swift */; };
@@ -20,6 +19,8 @@
 		CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585F29E9990C0037AA85 /* FormReducer.swift */; };
 		CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */; };
 		CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */; };
+		CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586D29EBE72A0037AA85 /* FormReducerTests.swift */; };
+		CFFF587429EBE8DD0037AA85 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF587329EBE8DD0037AA85 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +39,6 @@
 		CFFF581C29E98D3C0037AA85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CFFF582529E98D3C0037AA85 /* WebSocketClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebSocketClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CFFF582929E98D3C0037AA85 /* WebSocketClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientTests.swift; sourceTree = "<group>"; };
 		CFFF584729E98F020037AA85 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CFFF584A29E990A30037AA85 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		CFFF585229E995BA0037AA85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +47,7 @@
 		CFFF585C29E999000037AA85 /* FormPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPage.swift; sourceTree = "<group>"; };
 		CFFF585F29E9990C0037AA85 /* FormReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReducer.swift; sourceTree = "<group>"; };
 		CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeader.swift; sourceTree = "<group>"; };
+		CFFF586D29EBE72A0037AA85 /* FormReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReducerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFFF587429EBE8DD0037AA85 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,7 +110,7 @@
 		CFFF582829E98D3C0037AA85 /* WebSocketClientTests */ = {
 			isa = PBXGroup;
 			children = (
-				CFFF582929E98D3C0037AA85 /* WebSocketClientTests.swift */,
+				CFFF586B29EBE6F20037AA85 /* Reducers */,
 			);
 			path = WebSocketClientTests;
 			sourceTree = "<group>";
@@ -201,6 +203,22 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
+		CFFF586B29EBE6F20037AA85 /* Reducers */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF586C29EBE6FB0037AA85 /* Form */,
+			);
+			path = Reducers;
+			sourceTree = "<group>";
+		};
+		CFFF586C29EBE6FB0037AA85 /* Form */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF586D29EBE72A0037AA85 /* FormReducerTests.swift */,
+			);
+			path = Form;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -240,6 +258,9 @@
 				CFFF582729E98D3C0037AA85 /* PBXTargetDependency */,
 			);
 			name = WebSocketClientTests;
+			packageProductDependencies = (
+				CFFF587329EBE8DD0037AA85 /* ComposableArchitecture */,
+			);
 			productName = WebSocketClientTests;
 			productReference = CFFF582529E98D3C0037AA85 /* WebSocketClientTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -327,7 +348,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFFF582A29E98D3C0037AA85 /* WebSocketClientTests.swift in Sources */,
+				CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -648,6 +669,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFFF586529EBCE0F0037AA85 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
 			productName = SFSafeSymbols;
+		};
+		CFFF587329EBE8DD0037AA85 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFFF584C29E991EC0037AA85 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
