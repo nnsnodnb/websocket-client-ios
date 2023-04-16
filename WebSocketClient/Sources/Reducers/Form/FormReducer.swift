@@ -12,7 +12,7 @@ struct FormReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
         var url: URL?
-        var customHeaders: [Int: CustomHeader] = [:]
+        var customHeaders: [CustomHeader] = []
         var isConnectButtonDisable = true
     }
 
@@ -39,19 +39,19 @@ struct FormReducer: ReducerProtocol {
                 state.isConnectButtonDisable = false
                 return .none
             case .addCustomHeader:
-                state.customHeaders[state.customHeaders.count] = .init(name: "", value: "")
+                state.customHeaders.append(.init(name: "", value: ""))
                 return .none
             case let .removeCustomHeader(indexSet):
-                for index in indexSet {
-                    state.customHeaders[index] = nil
-                }
+                state.customHeaders.remove(atOffsets: indexSet)
                 return .none
             case let .customHeaderNameChanged(index, name):
-                guard !state.customHeaders.isEmpty, let customHeader = state.customHeaders[index] else { return .none }
+                guard !state.customHeaders.isEmpty,
+                      let customHeader = state.customHeaders[safe: index] else { return .none }
                 state.customHeaders[index] = .init(name: name, value: customHeader.value)
                 return .none
             case let .customHeaderValueChanged(index, value):
-                guard let customHeader = state.customHeaders[index] else { return .none }
+                guard !state.customHeaders.isEmpty,
+                      let customHeader = state.customHeaders[safe: index] else { return .none }
                 state.customHeaders[index] = .init(name: customHeader.name, value: value)
                 return .none
             case .connect:

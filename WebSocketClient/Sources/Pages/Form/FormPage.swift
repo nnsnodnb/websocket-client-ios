@@ -81,7 +81,7 @@ struct FormPage: View {
                 TextField(
                     "Name",
                     text: viewStore.binding(
-                        get: { $0.customHeaders[index]?.name ?? "" },
+                        get: { $0.customHeaders[safe: index]?.name ?? "" },
                         send: { .customHeaderNameChanged(index, $0) }
                     )
                 )
@@ -90,7 +90,7 @@ struct FormPage: View {
                 TextField(
                     "Value",
                     text: viewStore.binding(
-                        get: { $0.customHeaders[index]?.value ?? "" },
+                        get: { $0.customHeaders[safe: index]?.value ?? "" },
                         send: { .customHeaderValueChanged(index, $0) }
                     )
                 )

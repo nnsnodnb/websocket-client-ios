@@ -19,7 +19,7 @@ final class FormReducerTests: XCTestCase {
 
         await store.send(.urlChanged("wss://echo.websocket.events")) {
             $0.url = URL(string: "wss://echo.websocket.events")
-            $0.customHeaders = [:]
+            $0.customHeaders = []
             $0.isConnectButtonDisable = false
         }
     }
@@ -32,14 +32,14 @@ final class FormReducerTests: XCTestCase {
 
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                0: .init(name: "", value: "")
+                .init(name: "", value: "")
             ]
         }
 
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                0: .init(name: "", value: ""),
-                1: .init(name: "", value: "")
+                .init(name: "", value: ""),
+                .init(name: "", value: "")
             ]
         }
     }
@@ -53,17 +53,17 @@ final class FormReducerTests: XCTestCase {
         // remove exist index
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                0: .init(name: "", value: "")
+                .init(name: "", value: "")
             ]
         }
         await store.send(.removeCustomHeader(.init(integer: 0))) {
-            $0.customHeaders = [:]
+            $0.customHeaders = []
         }
 
         // remove empty index
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                0: .init(name: "", value: "")
+                .init(name: "", value: "")
             ]
         }
         await store.send(.removeCustomHeader(.init(integer: 1)))
@@ -80,11 +80,13 @@ final class FormReducerTests: XCTestCase {
 
         // add & update
         await store.send(.addCustomHeader) {
-            $0.customHeaders = [0: .init(name: "", value: "")]
+            $0.customHeaders = [
+                .init(name: "", value: "")
+            ]
         }
         await store.send(.customHeaderNameChanged(0, "Authorization")) {
             $0.customHeaders = [
-                0: .init(name: "Authorization", value: "")
+                .init(name: "Authorization", value: "")
             ]
         }
 
@@ -103,11 +105,13 @@ final class FormReducerTests: XCTestCase {
 
         // add & update
         await store.send(.addCustomHeader) {
-            $0.customHeaders = [0: .init(name: "", value: "")]
+            $0.customHeaders = [
+                .init(name: "", value: "")
+            ]
         }
         await store.send(.customHeaderValueChanged(0, "application/json")) {
             $0.customHeaders = [
-                0: .init(name: "", value: "application/json")
+                .init(name: "", value: "application/json")
             ]
         }
 

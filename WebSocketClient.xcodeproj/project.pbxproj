@@ -26,6 +26,7 @@
 		CFFF588429EBFD3A0037AA85 /* SafariView in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF588329EBFD3A0037AA85 /* SafariView */; };
 		CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588929EC05F90037AA85 /* Assets.swift */; };
 		CFFF588E29EC0AA40037AA85 /* WebSocketDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588D29EC0AA40037AA85 /* WebSocketDataStore.swift */; };
+		CFFF589129EC0C2C0037AA85 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF589029EC0C2C0037AA85 /* Array+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducer.swift; sourceTree = "<group>"; };
 		CFFF588929EC05F90037AA85 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CFFF588D29EC0AA40037AA85 /* WebSocketDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketDataStore.swift; sourceTree = "<group>"; };
+		CFFF589029EC0C2C0037AA85 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 				CFFF585229E995BA0037AA85 /* AppDelegate.swift */,
 				CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */,
 				CFFF586829EBDC520037AA85 /* Entities */,
+				CFFF588F29EC0C200037AA85 /* Extensions */,
 				CFFF584629E98E680037AA85 /* Pages */,
 				CFFF585729E997110037AA85 /* Reducers */,
 			);
@@ -273,6 +276,14 @@
 			path = WebSocket;
 			sourceTree = "<group>";
 		};
+		CFFF588F29EC0C200037AA85 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF589029EC0C2C0037AA85 /* Array+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -395,6 +406,7 @@
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
 				CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */,
 				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
+				CFFF589129EC0C2C0037AA85 /* Array+Extension.swift in Sources */,
 				CFFF585D29E999000037AA85 /* FormPage.swift in Sources */,
 				CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */,
 				CFFF588E29EC0AA40037AA85 /* WebSocketDataStore.swift in Sources */,
