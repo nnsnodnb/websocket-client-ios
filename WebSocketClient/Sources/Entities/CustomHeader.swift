@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CustomHeader: Equatable {
+struct CustomHeader: Equatable, Sendable {
     // MARK: - Properties
     let name: String
     let value: String

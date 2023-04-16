@@ -25,6 +25,10 @@ struct ConnectionReducer: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .start:
+//                return .run(
+//                    priority: .background,
+//                    operation: <#T##(Send<Action>) async throws -> Void#>
+//                )
                 return .none
             case .close:
                 return .none
