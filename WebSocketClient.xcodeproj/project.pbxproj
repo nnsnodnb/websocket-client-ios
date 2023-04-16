@@ -300,10 +300,12 @@
 				CFFF581129E98D3B0037AA85 /* Sources */,
 				CFFF581229E98D3B0037AA85 /* Frameworks */,
 				CFFF581329E98D3B0037AA85 /* Resources */,
+				CFFF91D629EC6BF00037AA85 /* Copy Acknowledgements */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CFFF58A329EC6C040037AA85 /* PBXTargetDependency */,
 				CFFF588729EC05900037AA85 /* PBXTargetDependency */,
 				CFFF585129E995590037AA85 /* PBXTargetDependency */,
 			);
@@ -404,6 +406,24 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CFFF91D629EC6BF00037AA85 /* Copy Acknowledgements */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Acknowledgements";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Will copy acknowledgements\"\n\nACKNOWLEDGEMENTS_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/com.mono0926.LicensePlist.Output\nDESTINATION_PATH=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Settings.bundle/\n\ncp -r ${ACKNOWLEDGEMENTS_DIR}/* ${DESTINATION_PATH}\nrm -rf ${ACKNOWLEDGEMENTS_DIR}\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CFFF581129E98D3B0037AA85 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -449,6 +469,10 @@
 		CFFF588729EC05900037AA85 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = CFFF588629EC05900037AA85 /* SwiftGenPlugin */;
+		};
+		CFFF58A329EC6C040037AA85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = CFFF58A229EC6C040037AA85 /* LicensePlistBuildTool */;
 		};
 /* End PBXTargetDependency section */
 
@@ -786,6 +810,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFFF588529EC05290037AA85 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */;
 			productName = "plugin:SwiftGenPlugin";
+		};
+		CFFF58A229EC6C040037AA85 /* LicensePlistBuildTool */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFFF584929E990880037AA85 /* XCRemoteSwiftPackageReference "LicensePlist" */;
+			productName = "plugin:LicensePlistBuildTool";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
