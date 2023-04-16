@@ -18,6 +18,17 @@ struct FormPage: View {
                 form(viewStore)
                     .navigationTitle("WebSocket Client")
             }
+            .fullScreenCover(
+                isPresented: viewStore.binding(
+                    get: { $0.connection != nil },
+                    send: { $0 ? .connectionOpen : .connectionDismiss }
+                ),
+                content: {
+                    IfLetStore(store.scope(state: \.connection, action: FormReducer.Action.connection)) { store in
+                        ConnectionPage(store: store)
+                    }
+                }
+            )
         })
     }
 
@@ -133,7 +144,7 @@ struct FormPage: View {
     private func connectButton(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
         Button(
             action: {
-                viewStore.send(.connect)
+                viewStore.send(.connect, animation: .default)
             },
             label: {
                 Text("Connect")
@@ -148,7 +159,10 @@ struct FormPage_Previews: PreviewProvider {
     static var previews: some View {
         FormPage(
             store: Store(
-                initialState: FormReducer.State(url: nil),
+                initialState: FormReducer.State(
+                    url: URL(string: "wss://echo.websocket.events")!,
+                    isConnectButtonDisable: false
+                ),
                 reducer: FormReducer()
             )
         )

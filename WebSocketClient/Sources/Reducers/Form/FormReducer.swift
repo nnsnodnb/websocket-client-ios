@@ -14,6 +14,7 @@ struct FormReducer: ReducerProtocol {
         var url: URL?
         var customHeaders: [CustomHeader] = []
         var isConnectButtonDisable = true
+        var connection: ConnectionReducer.State?
     }
 
     // MARK: - Action
@@ -24,6 +25,9 @@ struct FormReducer: ReducerProtocol {
         case customHeaderNameChanged(Int, String)
         case customHeaderValueChanged(Int, String)
         case connect
+        case connectionOpen
+        case connectionDismiss
+        case connection(ConnectionReducer.Action)
     }
 
     var body: some ReducerProtocol<State, Action> {
@@ -55,9 +59,23 @@ struct FormReducer: ReducerProtocol {
                 state.customHeaders[index] = .init(name: customHeader.name, value: value)
                 return .none
             case .connect:
-                // TODO: 接続
+                guard let url = state.url else { return .none }
+                state.connection = .init(url: url, customHeaders: state.customHeaders)
+                return .none
+            case .connectionOpen:
+                return .none
+            case .connectionDismiss:
+                state.connection = nil
+                return .none
+            case .connection(.close):
+                state.connection = nil
+                return .none
+            case .connection:
                 return .none
             }
+        }
+        .ifLet(\.connection, action: /Action.connection) {
+            ConnectionReducer()
         }
     }
 }

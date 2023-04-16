@@ -27,6 +27,8 @@
 		CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588929EC05F90037AA85 /* Assets.swift */; };
 		CFFF588E29EC0AA40037AA85 /* WebSocketDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588D29EC0AA40037AA85 /* WebSocketDataStore.swift */; };
 		CFFF589129EC0C2C0037AA85 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF589029EC0C2C0037AA85 /* Array+Extension.swift */; };
+		CFFF589429EC525C0037AA85 /* ConnectionPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF589329EC525C0037AA85 /* ConnectionPage.swift */; };
+		CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF589629EC526A0037AA85 /* ConnectionReducer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		CFFF588929EC05F90037AA85 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CFFF588D29EC0AA40037AA85 /* WebSocketDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketDataStore.swift; sourceTree = "<group>"; };
 		CFFF589029EC0C2C0037AA85 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
+		CFFF589329EC525C0037AA85 /* ConnectionPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionPage.swift; sourceTree = "<group>"; };
+		CFFF589629EC526A0037AA85 /* ConnectionReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionReducer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +162,7 @@
 				CFFF585429E996F90037AA85 /* Root */,
 				CFFF585B29E998DA0037AA85 /* Form */,
 				CFFF587529EBF1210037AA85 /* Info */,
+				CFFF589229EC524C0037AA85 /* Connection */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -184,6 +189,7 @@
 				CFFF585829E9971B0037AA85 /* Root */,
 				CFFF585E29E999050037AA85 /* Form */,
 				CFFF587F29EBF8E70037AA85 /* Info */,
+				CFFF589529EC52620037AA85 /* Connection */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -282,6 +288,22 @@
 				CFFF589029EC0C2C0037AA85 /* Array+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CFFF589229EC524C0037AA85 /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF589329EC525C0037AA85 /* ConnectionPage.swift */,
+			);
+			path = Connection;
+			sourceTree = "<group>";
+		};
+		CFFF589529EC52620037AA85 /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF589629EC526A0037AA85 /* ConnectionReducer.swift */,
+			);
+			path = Connection;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -403,8 +425,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */,
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
 				CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */,
+				CFFF589429EC525C0037AA85 /* ConnectionPage.swift in Sources */,
 				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
 				CFFF589129EC0C2C0037AA85 /* Array+Extension.swift in Sources */,
 				CFFF585D29E999000037AA85 /* FormPage.swift in Sources */,
