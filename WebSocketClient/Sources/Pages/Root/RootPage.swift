@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import SFSafeSymbols
 import SwiftUI
 
 struct RootPage: View {
@@ -14,7 +15,37 @@ struct RootPage: View {
     var body: some View {
         SwitchStore(store) {
             CaseLet(state: /RootReducer.State.form, action: RootReducer.Action.form) { store in
-                FormPage(store: store)
+                TabView {
+                    formPage(store)
+                    historyPage()
+                    infoPage()
+                }
+            }
+        }
+    }
+
+    private func formPage(_ store: StoreOf<FormReducer>) -> some View {
+        FormPage(store: store)
+            .tabItem(systemSymbol: .squareAndPencil, text: "Connection")
+    }
+
+    private func historyPage() -> some View {
+        Text("History")
+            .tabItem(systemSymbol: .trayFullFill, text: "History")
+    }
+
+    private func infoPage() -> some View {
+        Text("Info")
+            .tabItem(systemSymbol: .infoCircleFill, text: "Info")
+    }
+}
+
+private extension View {
+    func tabItem(systemSymbol: SFSymbol, text: String) -> some View {
+        tabItem {
+            VStack {
+                Image(systemSymbol: systemSymbol)
+                Text(text)
             }
         }
     }
