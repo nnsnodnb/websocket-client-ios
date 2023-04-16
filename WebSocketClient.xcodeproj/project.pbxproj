@@ -21,6 +21,10 @@
 		CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */; };
 		CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586D29EBE72A0037AA85 /* FormReducerTests.swift */; };
 		CFFF587429EBE8DD0037AA85 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF587329EBE8DD0037AA85 /* ComposableArchitecture */; };
+		CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF587629EBF1300037AA85 /* InfoPage.swift */; };
+		CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */; };
+		CFFF588429EBFD3A0037AA85 /* SafariView in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF588329EBFD3A0037AA85 /* SafariView */; };
+		CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588929EC05F90037AA85 /* Assets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +52,9 @@
 		CFFF585F29E9990C0037AA85 /* FormReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReducer.swift; sourceTree = "<group>"; };
 		CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeader.swift; sourceTree = "<group>"; };
 		CFFF586D29EBE72A0037AA85 /* FormReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReducerTests.swift; sourceTree = "<group>"; };
+		CFFF587629EBF1300037AA85 /* InfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPage.swift; sourceTree = "<group>"; };
+		CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducer.swift; sourceTree = "<group>"; };
+		CFFF588929EC05F90037AA85 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFFF588429EBFD3A0037AA85 /* SafariView in Frameworks */,
 				CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */,
 				CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */,
 			);
@@ -93,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				CFFF584529E98E610037AA85 /* Sources */,
+				CFFF588829EC05F90037AA85 /* Generated */,
 				CFFF584429E98E3A0037AA85 /* Resources */,
 				CFFF584829E98F800037AA85 /* Supporting Files */,
 			);
@@ -142,6 +151,7 @@
 			children = (
 				CFFF585429E996F90037AA85 /* Root */,
 				CFFF585B29E998DA0037AA85 /* Form */,
+				CFFF587529EBF1210037AA85 /* Info */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -167,6 +177,7 @@
 			children = (
 				CFFF585829E9971B0037AA85 /* Root */,
 				CFFF585E29E999050037AA85 /* Form */,
+				CFFF587F29EBF8E70037AA85 /* Info */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -219,6 +230,30 @@
 			path = Form;
 			sourceTree = "<group>";
 		};
+		CFFF587529EBF1210037AA85 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF587629EBF1300037AA85 /* InfoPage.swift */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		CFFF587F29EBF8E70037AA85 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		CFFF588829EC05F90037AA85 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF588929EC05F90037AA85 /* Assets.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -233,12 +268,14 @@
 			buildRules = (
 			);
 			dependencies = (
+				CFFF588729EC05900037AA85 /* PBXTargetDependency */,
 				CFFF585129E995590037AA85 /* PBXTargetDependency */,
 			);
 			name = WebSocketClient;
 			packageProductDependencies = (
 				CFFF584D29E991EC0037AA85 /* ComposableArchitecture */,
 				CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */,
+				CFFF588329EBFD3A0037AA85 /* SafariView */,
 			);
 			productName = WebSocketClient;
 			productReference = CFFF581529E98D3B0037AA85 /* WebSocketClient.app */;
@@ -298,6 +335,8 @@
 				CFFF584C29E991EC0037AA85 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				CFFF584F29E9935E0037AA85 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 				CFFF586529EBCE0F0037AA85 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
+				CFFF588229EBFD3A0037AA85 /* XCRemoteSwiftPackageReference "SafariView" */,
+				CFFF588529EC05290037AA85 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */,
 			);
 			productRefGroup = CFFF581629E98D3B0037AA85 /* Products */;
 			projectDirPath = "";
@@ -336,10 +375,13 @@
 			files = (
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
 				CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */,
+				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
 				CFFF585D29E999000037AA85 /* FormPage.swift in Sources */,
 				CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */,
 				CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */,
 				CFFF585629E996FF0037AA85 /* RootPage.swift in Sources */,
+				CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */,
+				CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */,
 				CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,6 +405,10 @@
 		CFFF585129E995590037AA85 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = CFFF585029E995590037AA85 /* SwiftLintPlugin */;
+		};
+		CFFF588729EC05900037AA85 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = CFFF588629EC05900037AA85 /* SwiftGenPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -652,6 +698,22 @@
 				minimumVersion = 4.1.1;
 			};
 		};
+		CFFF588229EBFD3A0037AA85 /* XCRemoteSwiftPackageReference "SafariView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vsanthanam/SafariView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		CFFF588529EC05290037AA85 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BookBeat/SwiftGenPlugin.git";
+			requirement = {
+				branch = "xcodeproject-support";
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -674,6 +736,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFFF584C29E991EC0037AA85 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
 			productName = ComposableArchitecture;
+		};
+		CFFF588329EBFD3A0037AA85 /* SafariView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFFF588229EBFD3A0037AA85 /* XCRemoteSwiftPackageReference "SafariView" */;
+			productName = SafariView;
+		};
+		CFFF588629EC05900037AA85 /* SwiftGenPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFFF588529EC05290037AA85 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */;
+			productName = "plugin:SwiftGenPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

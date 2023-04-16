@@ -10,6 +10,8 @@ name: LicensePlist, nameSpecified: LicensePlist, owner: mono0926, version: 3.24.
 
 name: LoggerAPI, nameSpecified: LoggerAPI, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/LoggerAPI
 
+name: SafariView, nameSpecified: SafariView, owner: vsanthanam, version: 1.0.0, source: https://github.com/vsanthanam/SafariView
+
 name: SFSafeSymbols, nameSpecified: SFSafeSymbols, owner: SFSafeSymbols, version: 4.1.1, source: https://github.com/SFSafeSymbols/SFSafeSymbols
 
 name: SourceKitten, nameSpecified: SourceKitten, owner: jpsim, version: 0.34.1, source: https://github.com/jpsim/SourceKitten

@@ -1,0 +1,6 @@
+xcassets:
+  inputs:
+    - WebSocketClient/Resources/Assets.xcassets
+  outputs:
+    templateName: swift5
+    output: WebSocketClient/Generated/Assets.swift

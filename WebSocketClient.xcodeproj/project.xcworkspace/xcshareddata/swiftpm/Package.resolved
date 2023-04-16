@@ -55,6 +55,15 @@
       }
     },
     {
+      "identity" : "safariview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vsanthanam/SafariView.git",
+      "state" : {
+        "revision" : "f7c1ba5290ce4e8f770ca084a93a0db27be0fc66",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "sfsafesymbols",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols.git",
@@ -169,6 +178,15 @@
       "state" : {
         "revision" : "013a48e2312e57b7b355db25bd3ea75282ebf274",
         "version" : "0.50900.0-swift-DEVELOPMENT-SNAPSHOT-2023-02-06-a"
+      }
+    },
+    {
+      "identity" : "swiftgenplugin",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/BookBeat/SwiftGenPlugin.git",
+      "state" : {
+        "branch" : "xcodeproject-support",
+        "revision" : "1228d5a43ca791db0719d42f641c34a00b9c32f3"
       }
     },
     {
