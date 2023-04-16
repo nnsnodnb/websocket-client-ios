@@ -25,6 +25,7 @@
 		CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */; };
 		CFFF588429EBFD3A0037AA85 /* SafariView in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF588329EBFD3A0037AA85 /* SafariView */; };
 		CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588929EC05F90037AA85 /* Assets.swift */; };
+		CFFF588E29EC0AA40037AA85 /* WebSocketDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588D29EC0AA40037AA85 /* WebSocketDataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		CFFF587629EBF1300037AA85 /* InfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPage.swift; sourceTree = "<group>"; };
 		CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducer.swift; sourceTree = "<group>"; };
 		CFFF588929EC05F90037AA85 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		CFFF588D29EC0AA40037AA85 /* WebSocketDataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocketDataStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				CFFF584529E98E610037AA85 /* Sources */,
+				CFFF588B29EC0A8F0037AA85 /* DataStores */,
 				CFFF588829EC05F90037AA85 /* Generated */,
 				CFFF584429E98E3A0037AA85 /* Resources */,
 				CFFF584829E98F800037AA85 /* Supporting Files */,
@@ -254,6 +257,22 @@
 			path = Generated;
 			sourceTree = "<group>";
 		};
+		CFFF588B29EC0A8F0037AA85 /* DataStores */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF588C29EC0A9D0037AA85 /* WebSocket */,
+			);
+			path = DataStores;
+			sourceTree = "<group>";
+		};
+		CFFF588C29EC0A9D0037AA85 /* WebSocket */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF588D29EC0AA40037AA85 /* WebSocketDataStore.swift */,
+			);
+			path = WebSocket;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -378,6 +397,7 @@
 				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
 				CFFF585D29E999000037AA85 /* FormPage.swift in Sources */,
 				CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */,
+				CFFF588E29EC0AA40037AA85 /* WebSocketDataStore.swift in Sources */,
 				CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */,
 				CFFF585629E996FF0037AA85 /* RootPage.swift in Sources */,
 				CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */,
