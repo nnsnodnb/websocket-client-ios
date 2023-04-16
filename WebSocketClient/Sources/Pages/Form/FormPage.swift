@@ -23,28 +23,21 @@ struct FormPage: View {
 
     private func form(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
         Form {
-            Section(
-                content: {
-                    urlTextField(viewStore)
-                },
-                header: {
-                    Text("Connection setting")
-                }
-            )
-            Section(
-                content: {
-                    customHeaders(viewStore)
-                },
-                header: {
-                    Text("Custom Headers")
-                }
-            )
-            Section(
-                content: {
-                    connectButton(viewStore)
-                }
-            )
+            firstSection(viewStore)
+            secondSection(viewStore)
+            thirdSection(viewStore)
         }
+    }
+
+    private func firstSection(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+        Section(
+            content: {
+                urlTextField(viewStore)
+            },
+            header: {
+                Text("Connection setting")
+            }
+        )
     }
 
     private func urlTextField(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
@@ -59,6 +52,17 @@ struct FormPage: View {
                 )
             )
         }
+    }
+
+    private func secondSection(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+        Section(
+            content: {
+                customHeaders(viewStore)
+            },
+            header: {
+                Text("Custom Headers")
+            }
+        )
     }
 
     private func customHeaders(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
@@ -118,6 +122,14 @@ struct FormPage: View {
         .frame(maxWidth: .infinity)
     }
 
+    private func thirdSection(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+        Section(
+            content: {
+                connectButton(viewStore)
+            }
+        )
+    }
+
     private func connectButton(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
         Button(
             action: {
@@ -133,12 +145,10 @@ struct FormPage: View {
 }
 
 struct FormPage_Previews: PreviewProvider {
-    static let url: URL? = URL(string: "wss://echo.websocket.events")
-
     static var previews: some View {
         FormPage(
             store: Store(
-                initialState: FormReducer.State(url: url),
+                initialState: FormReducer.State(url: nil),
                 reducer: FormReducer()
             )
         )
