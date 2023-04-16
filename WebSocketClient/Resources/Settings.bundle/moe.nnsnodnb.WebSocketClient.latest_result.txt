@@ -10,6 +10,8 @@ name: LicensePlist, nameSpecified: LicensePlist, owner: mono0926, version: 3.24.
 
 name: LoggerAPI, nameSpecified: LoggerAPI, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/LoggerAPI
 
+name: SFSafeSymbols, nameSpecified: SFSafeSymbols, owner: SFSafeSymbols, version: 4.1.1, source: https://github.com/SFSafeSymbols/SFSafeSymbols
+
 name: SourceKitten, nameSpecified: SourceKitten, owner: jpsim, version: 0.34.1, source: https://github.com/jpsim/SourceKitten
 
 name: swift-argument-parser, nameSpecified: swift-argument-parser, owner: apple, version: 1.2.2, source: https://github.com/apple/swift-argument-parser

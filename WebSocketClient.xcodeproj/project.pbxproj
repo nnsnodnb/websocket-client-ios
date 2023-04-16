@@ -18,6 +18,8 @@
 		CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585929E997230037AA85 /* RootReducer.swift */; };
 		CFFF585D29E999000037AA85 /* InputPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585C29E999000037AA85 /* InputPage.swift */; };
 		CFFF586029E9990C0037AA85 /* InputReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585F29E9990C0037AA85 /* InputReducer.swift */; };
+		CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */; };
+		CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,7 @@
 		CFFF585929E997230037AA85 /* RootReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootReducer.swift; sourceTree = "<group>"; };
 		CFFF585C29E999000037AA85 /* InputPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPage.swift; sourceTree = "<group>"; };
 		CFFF585F29E9990C0037AA85 /* InputReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputReducer.swift; sourceTree = "<group>"; };
+		CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */,
 				CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -124,6 +128,7 @@
 			children = (
 				CFFF585229E995BA0037AA85 /* AppDelegate.swift */,
 				CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */,
+				CFFF586829EBDC520037AA85 /* Entities */,
 				CFFF584629E98E680037AA85 /* Pages */,
 				CFFF585729E997110037AA85 /* Reducers */,
 			);
@@ -188,6 +193,14 @@
 			path = Input;
 			sourceTree = "<group>";
 		};
+		CFFF586829EBDC520037AA85 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -207,6 +220,7 @@
 			name = WebSocketClient;
 			packageProductDependencies = (
 				CFFF584D29E991EC0037AA85 /* ComposableArchitecture */,
+				CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */,
 			);
 			productName = WebSocketClient;
 			productReference = CFFF581529E98D3B0037AA85 /* WebSocketClient.app */;
@@ -262,6 +276,7 @@
 				CFFF584929E990880037AA85 /* XCRemoteSwiftPackageReference "LicensePlist" */,
 				CFFF584C29E991EC0037AA85 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
 				CFFF584F29E9935E0037AA85 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				CFFF586529EBCE0F0037AA85 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
 			productRefGroup = CFFF581629E98D3B0037AA85 /* Products */;
 			projectDirPath = "";
@@ -299,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
+				CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */,
 				CFFF585D29E999000037AA85 /* InputPage.swift in Sources */,
 				CFFF586029E9990C0037AA85 /* InputReducer.swift in Sources */,
 				CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */,
@@ -607,6 +623,14 @@
 				minimumVersion = 0.51.0;
 			};
 		};
+		CFFF586529EBCE0F0037AA85 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -619,6 +643,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFFF584F29E9935E0037AA85 /* XCRemoteSwiftPackageReference "SwiftLint" */;
 			productName = "plugin:SwiftLintPlugin";
+		};
+		CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFFF586529EBCE0F0037AA85 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
+			productName = SFSafeSymbols;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
