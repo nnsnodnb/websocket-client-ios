@@ -1,5 +1,5 @@
 //
-//  InputPage.swift
+//  FormPage.swift
 //  WebSocketClient
 //
 //  Created by Yuya Oka on 2023/04/14.
@@ -9,8 +9,8 @@ import ComposableArchitecture
 import SFSafeSymbols
 import SwiftUI
 
-struct InputPage: View {
-    let store: StoreOf<InputReducer>
+struct FormPage: View {
+    let store: StoreOf<FormReducer>
 
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
@@ -21,7 +21,7 @@ struct InputPage: View {
         })
     }
 
-    private func form(_ viewStore: ViewStoreOf<InputReducer>) -> some View {
+    private func form(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
         Form {
             Section(
                 content: {
@@ -47,7 +47,7 @@ struct InputPage: View {
         }
     }
 
-    private func urlTextField(_ viewStore: ViewStoreOf<InputReducer>) -> some View {
+    private func urlTextField(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
         HStack {
             Image(systemSymbol: .link)
                 .foregroundColor(Color.blue)
@@ -55,13 +55,13 @@ struct InputPage: View {
                 "wss://echo.websocket.events",
                 text: viewStore.binding(
                     get: { $0.url?.absoluteString ?? "" },
-                    send: InputReducer.Action.urlChanged
+                    send: FormReducer.Action.urlChanged
                 )
             )
         }
     }
 
-    private func customHeaders(_ viewStore: ViewStoreOf<InputReducer>) -> some View {
+    private func customHeaders(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
         Group {
             ForEach(0..<viewStore.customHeaders.count, id: \.self) { index in
                 customHeaderTextField(viewStore, index: index)
@@ -75,7 +75,7 @@ struct InputPage: View {
         }
     }
 
-    private func customHeaderTextField(_ viewStore: ViewStoreOf<InputReducer>, index: Int) -> some View {
+    private func customHeaderTextField(_ viewStore: ViewStoreOf<FormReducer>, index: Int) -> some View {
         GeometryReader { proxy in
             HStack {
                 TextField(
@@ -98,7 +98,7 @@ struct InputPage: View {
         }
     }
 
-    private func addCustomHeaderButton(_ viewStore: ViewStoreOf<InputReducer>) -> some View {
+    private func addCustomHeaderButton(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
         Button(
             action: {
                 viewStore.send(.addCustomHeader, animation: .default)
@@ -118,7 +118,7 @@ struct InputPage: View {
         .frame(maxWidth: .infinity)
     }
 
-    private func connectButton(_ viewStore: ViewStoreOf<InputReducer>) -> some View {
+    private func connectButton(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
         Button(
             action: {
                 viewStore.send(.connect)
@@ -132,14 +132,14 @@ struct InputPage: View {
     }
 }
 
-struct InputPage_Previews: PreviewProvider {
+struct FormPage_Previews: PreviewProvider {
     static let url: URL? = URL(string: "wss://echo.websocket.events")
 
     static var previews: some View {
-        InputPage(
+        FormPage(
             store: Store(
-                initialState: InputReducer.State(url: url),
-                reducer: InputReducer()
+                initialState: FormReducer.State(url: url),
+                reducer: FormReducer()
             )
         )
     }

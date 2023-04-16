@@ -11,12 +11,12 @@ import Foundation
 struct RootReducer: ReducerProtocol {
     // MARK: - State
     enum State: Equatable {
-        case input(InputReducer.State)
+        case form(FormReducer.State)
     }
 
     // MARK: - Action
     enum Action: Equatable {
-        case input(InputReducer.Action)
+        case form(FormReducer.Action)
     }
 
     var body: some ReducerProtocol<State, Action> {
@@ -24,8 +24,8 @@ struct RootReducer: ReducerProtocol {
             // TODO: とりあえずなので後で直す
             return .none
         }
-        .ifCaseLet(/State.input, action: /Action.input) {
-            InputReducer()
+        .ifCaseLet(/State.form, action: /Action.form) {
+            FormReducer()
         }
     }
 }

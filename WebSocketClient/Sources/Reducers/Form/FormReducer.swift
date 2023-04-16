@@ -1,5 +1,5 @@
 //
-//  InputReducer.swift
+//  FormReducer.swift
 //  WebSocketClient
 //
 //  Created by Yuya Oka on 2023/04/14.
@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import Foundation
 
-struct InputReducer: ReducerProtocol {
+struct FormReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
         var url: URL?

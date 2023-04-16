@@ -16,8 +16,8 @@
 		CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585229E995BA0037AA85 /* AppDelegate.swift */; };
 		CFFF585629E996FF0037AA85 /* RootPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585529E996FF0037AA85 /* RootPage.swift */; };
 		CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585929E997230037AA85 /* RootReducer.swift */; };
-		CFFF585D29E999000037AA85 /* InputPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585C29E999000037AA85 /* InputPage.swift */; };
-		CFFF586029E9990C0037AA85 /* InputReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585F29E9990C0037AA85 /* InputReducer.swift */; };
+		CFFF585D29E999000037AA85 /* FormPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585C29E999000037AA85 /* FormPage.swift */; };
+		CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585F29E9990C0037AA85 /* FormReducer.swift */; };
 		CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */; };
 		CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */; };
 /* End PBXBuildFile section */
@@ -44,8 +44,8 @@
 		CFFF585229E995BA0037AA85 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CFFF585529E996FF0037AA85 /* RootPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootPage.swift; sourceTree = "<group>"; };
 		CFFF585929E997230037AA85 /* RootReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootReducer.swift; sourceTree = "<group>"; };
-		CFFF585C29E999000037AA85 /* InputPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPage.swift; sourceTree = "<group>"; };
-		CFFF585F29E9990C0037AA85 /* InputReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputReducer.swift; sourceTree = "<group>"; };
+		CFFF585C29E999000037AA85 /* FormPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPage.swift; sourceTree = "<group>"; };
+		CFFF585F29E9990C0037AA85 /* FormReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReducer.swift; sourceTree = "<group>"; };
 		CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,7 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				CFFF585429E996F90037AA85 /* Root */,
-				CFFF585B29E998DA0037AA85 /* Input */,
+				CFFF585B29E998DA0037AA85 /* Form */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -164,7 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				CFFF585829E9971B0037AA85 /* Root */,
-				CFFF585E29E999050037AA85 /* Input */,
+				CFFF585E29E999050037AA85 /* Form */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -177,20 +177,20 @@
 			path = Root;
 			sourceTree = "<group>";
 		};
-		CFFF585B29E998DA0037AA85 /* Input */ = {
+		CFFF585B29E998DA0037AA85 /* Form */ = {
 			isa = PBXGroup;
 			children = (
-				CFFF585C29E999000037AA85 /* InputPage.swift */,
+				CFFF585C29E999000037AA85 /* FormPage.swift */,
 			);
-			path = Input;
+			path = Form;
 			sourceTree = "<group>";
 		};
-		CFFF585E29E999050037AA85 /* Input */ = {
+		CFFF585E29E999050037AA85 /* Form */ = {
 			isa = PBXGroup;
 			children = (
-				CFFF585F29E9990C0037AA85 /* InputReducer.swift */,
+				CFFF585F29E9990C0037AA85 /* FormReducer.swift */,
 			);
-			path = Input;
+			path = Form;
 			sourceTree = "<group>";
 		};
 		CFFF586829EBDC520037AA85 /* Entities */ = {
@@ -315,8 +315,8 @@
 			files = (
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
 				CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */,
-				CFFF585D29E999000037AA85 /* InputPage.swift in Sources */,
-				CFFF586029E9990C0037AA85 /* InputReducer.swift in Sources */,
+				CFFF585D29E999000037AA85 /* FormPage.swift in Sources */,
+				CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */,
 				CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */,
 				CFFF585629E996FF0037AA85 /* RootPage.swift in Sources */,
 				CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */,

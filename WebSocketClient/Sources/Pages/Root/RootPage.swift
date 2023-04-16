@@ -13,8 +13,8 @@ struct RootPage: View {
 
     var body: some View {
         SwitchStore(store) {
-            CaseLet(state: /RootReducer.State.input, action: RootReducer.Action.input) { store in
-                InputPage(store: store)
+            CaseLet(state: /RootReducer.State.form, action: RootReducer.Action.form) { store in
+                FormPage(store: store)
             }
         }
     }
@@ -24,7 +24,7 @@ struct RootPage_Previews: PreviewProvider {
     static var previews: some View {
         RootPage(
             store: Store(
-                initialState: RootReducer.State.input(.init()),
+                initialState: RootReducer.State.form(.init()),
                 reducer: RootReducer()
             )
         )
