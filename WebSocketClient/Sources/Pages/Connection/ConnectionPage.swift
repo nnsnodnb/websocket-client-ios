@@ -14,10 +14,16 @@ struct ConnectionPage: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
             NavigationStack {
-                Text("Hello, World!")
+                Text(viewStore.connectivityState.rawValue)
                     .navigationTitle(viewStore.url.absoluteString)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar(viewStore)
+            }
+            .task {
+                viewStore.send(.start)
+            }
+            .onDisappear {
+                viewStore.send(.close)
             }
         })
     }

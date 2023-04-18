@@ -74,3 +74,6 @@ opt_in_rules:
   - void_function_in_ternary
   - xct_specific_matcher
   - yoda_condition
+
+disabled_rules:
+  - nesting
