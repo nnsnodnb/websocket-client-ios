@@ -14,11 +14,12 @@ struct ConnectionPage: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
             NavigationStack {
-                Text(viewStore.connectivityState.rawValue)
+                content(viewStore)
                     .navigationTitle(viewStore.url.absoluteString)
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar(viewStore)
             }
+            .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
             .task {
                 viewStore.send(.start)
             }
@@ -26,6 +27,46 @@ struct ConnectionPage: View {
                 viewStore.send(.close)
             }
         })
+    }
+
+    private func content(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
+        VStack(spacing: 0) {
+            messageTextField(viewStore)
+            receivedMessageList(viewStore)
+        }
+    }
+
+    private func messageTextField(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
+        HStack {
+            TextField(
+                "Message",
+                text: viewStore.binding(
+                    get: \.message,
+                    send: ConnectionReducer.Action.messageChanged
+                )
+            )
+            .padding(.vertical, 16)
+            Button(
+                action: {
+                    viewStore.send(.sendMessage)
+                },
+                label: {
+                    Text("Send")
+                        .bold()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .disabled(viewStore.isSendButtonDisabled)
+                }
+            )
+            .frame(width: 80, height: 44)
+        }
+        .padding(.horizontal)
+        .backgroundStyle(Color.clear)
+    }
+
+    private func receivedMessageList(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
+        List(viewStore.receivedMessages.reversed(), id: \.self) { receivedMessage in
+            Text(receivedMessage)
+        }
     }
 }
 

@@ -15,7 +15,9 @@ struct ConnectionReducer: ReducerProtocol {
         let customHeaders: [CustomHeader]
         var connectivityState: ConnectivityState = .disconnected
         var message: String = ""
+        var isSendButtonDisabled = true
         var receivedMessages: [String] = []
+        var alert: AlertState<Action>?
 
         // MARK: - ConnectivityState
         enum ConnectivityState: String {
@@ -30,8 +32,11 @@ struct ConnectionReducer: ReducerProtocol {
         case start
         case close
         case messageChanged(String)
+        case sendMessage
         case receivedSocketMessage(TaskResult<WebSocketClient.Message>)
+        case sendResponse(TaskResult<Bool>)
         case webSocket(WebSocketClient.Action)
+        case alertDismissed
     }
 
     @Dependency(\.continuousClock) var clock
@@ -44,60 +49,91 @@ struct ConnectionReducer: ReducerProtocol {
         Reduce { state, action in
             switch action {
             case .start:
-                guard state.connectivityState == .disconnected else { return .none }
-                state.connectivityState = .connecting
-                return .run { [state] send in
-                    var urlRequest = URLRequest(url: state.url)
-                    state.customHeaders.forEach {
-                        urlRequest.addValue($0.value, forHTTPHeaderField: $0.name)
-                    }
-                    let actions = await webSocketClient.open(WebSocketID.self, urlRequest)
-                    await withThrowingTaskGroup(of: Void.self) { group in
-                        for await action in actions {
-                            group.addTask {
-                                await send(.webSocket(action))
-                            }
-                            switch action {
-                            case .didOpen:
-                                group.addTask {
-                                    while !Task.isCancelled {
-                                        try await clock.sleep(for: .seconds(10))
-                                        try? await webSocketClient.sendPing(WebSocketID.self)
-                                    }
-                                }
-                                group.addTask {
-                                    for await result in try await webSocketClient.receive(WebSocketID.self) {
-                                        await send(.receivedSocketMessage(result))
-                                    }
-                                }
-                            case .didClose:
-                                print(action)
-                                return
-                            }
-                        }
-                    }
-                }
-                .cancellable(id: WebSocketID.self)
+                return runConnection(state: &state)
             case .close:
                 state.connectivityState = .disconnected
                 return .cancel(id: WebSocketID.self)
             case let .messageChanged(string):
                 state.message = string
+                switch state.connectivityState {
+                case .connected:
+                    state.isSendButtonDisabled = string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                case .connecting, .disconnected:
+                    state.isSendButtonDisabled = true
+                }
                 return .none
+            case .sendMessage:
+                return .task { [message = state.message] in
+                    await .sendResponse(
+                        TaskResult {
+                            try await webSocketClient.send(WebSocketID.self, .string(message))
+                            return true
+                        }
+                    )
+                }
+                .cancellable(id: WebSocketID.self)
             case let .receivedSocketMessage(.success(message)):
                 guard case let .string(string) = message else { return .none }
                 state.receivedMessages.append(string)
                 return .none
+            case .sendResponse(.success):
+                state.message = ""
+                return .none
+            case .sendResponse(.failure):
+                return .none
             case .receivedSocketMessage(.failure):
+                state.alert = AlertState {
+                    TextState("Could not send socket message. Connect to the server first, and try again.")
+                }
                 return .none
             case .webSocket(.didOpen):
                 state.connectivityState = .connected
-                state.receivedMessages.removeAll()
+                state.receivedMessages.append("Connected \(state.url.absoluteString)")
                 return .none
             case .webSocket(.didClose):
                 state.connectivityState = .disconnected
                 return .cancel(id: WebSocketID.self)
+            case .alertDismissed:
+                state.alert = nil
+                return .none
             }
         }
+    }
+
+    private func runConnection(state: inout State) -> EffectTask<Action> {
+        guard state.connectivityState == .disconnected else { return .none }
+        state.receivedMessages = ["Connecting to \(state.url.absoluteString)"]
+        state.connectivityState = .connecting
+        return .run { [state] send in
+            var urlRequest = URLRequest(url: state.url)
+            state.customHeaders.forEach {
+                urlRequest.addValue($0.value, forHTTPHeaderField: $0.name)
+            }
+            let actions = await webSocketClient.open(WebSocketID.self, urlRequest)
+            await withThrowingTaskGroup(of: Void.self) { group in
+                for await action in actions {
+                    group.addTask {
+                        await send(.webSocket(action))
+                    }
+                    switch action {
+                    case .didOpen:
+                        group.addTask {
+                            while !Task.isCancelled {
+                                try await clock.sleep(for: .seconds(10))
+                                try? await webSocketClient.sendPing(WebSocketID.self)
+                            }
+                        }
+                        group.addTask {
+                            for await result in try await webSocketClient.receive(WebSocketID.self) {
+                                await send(.receivedSocketMessage(result))
+                            }
+                        }
+                    case .didClose:
+                        return
+                    }
+                }
+            }
+        }
+        .cancellable(id: WebSocketID.self)
     }
 }
