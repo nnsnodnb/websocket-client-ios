@@ -10,6 +10,7 @@
 		CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */; };
 		CFB2CEAA29EEC1710095D7D0 /* DependencyValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */; };
 		CFD5AB8229F027EE00765E48 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8129F027EE00765E48 /* RealmSwift */; };
+		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
 		CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Extension.swift"; sourceTree = "<group>"; };
+		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		CFFF581529E98D3B0037AA85 /* WebSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientApp.swift; sourceTree = "<group>"; };
 		CFFF581C29E98D3C0037AA85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		CFB2CEA529EEBC9D0095D7D0 /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				CFD5AB8329F0283B00765E48 /* Database */,
 				CFB2CEA629EEBCA00095D7D0 /* WebSocket */,
 			);
 			path = Clients;
@@ -105,6 +108,14 @@
 				CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */,
 			);
 			path = WebSocket;
+			sourceTree = "<group>";
+		};
+		CFD5AB8329F0283B00765E48 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				CFD5AB8429F0284400765E48 /* DatabaseClient.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 		CFFF580C29E98D3B0037AA85 = {
@@ -455,6 +466,7 @@
 				CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */,
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
 				CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */,
+				CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */,
 				CFFF589429EC525C0037AA85 /* ConnectionPage.swift in Sources */,
 				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
 				CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */,

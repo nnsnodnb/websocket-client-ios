@@ -9,6 +9,13 @@ import ComposableArchitecture
 import Foundation
 
 extension DependencyValues {
+    var databaseClient: DatabaseClient {
+        get { self[DatabaseClient.self] }
+        set { self[DatabaseClient.self] = newValue }
+    }
+}
+
+extension DependencyValues {
     var webSocketClient: WebSocketClient {
         get { self[WebSocketClient.self] }
         set { self[WebSocketClient.self] = newValue }
