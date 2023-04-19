@@ -60,6 +60,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/realm-cocoa</string>
+			<key>Title</key>
+			<string>Realm</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.WebSocketClient/realm-core</string>
 			<key>Title</key>
 			<string>RealmDatabase</string>
@@ -68,9 +76,9 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>moe.nnsnodnb.WebSocketClient/realm-swift</string>
+			<string>moe.nnsnodnb.WebSocketClient/Runtime</string>
 			<key>Title</key>
-			<string>Realm</string>
+			<string>Runtime</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -215,6 +223,14 @@
 			<string>moe.nnsnodnb.WebSocketClient/SWXMLHash</string>
 			<key>Title</key>
 			<string>SWXMLHash</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/Unrealm</string>
+			<key>Title</key>
+			<string>Unrealm</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

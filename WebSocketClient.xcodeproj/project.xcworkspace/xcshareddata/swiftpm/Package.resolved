@@ -55,6 +55,15 @@
       }
     },
     {
+      "identity" : "realm-cocoa",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-cocoa.git",
+      "state" : {
+        "revision" : "71bddc82c4fe3dd6488739ff8b7e99f69183a614",
+        "version" : "10.38.0"
+      }
+    },
+    {
       "identity" : "realm-core",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
@@ -64,12 +73,12 @@
       }
     },
     {
-      "identity" : "realm-swift",
+      "identity" : "runtime",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/realm/realm-swift.git",
+      "location" : "https://github.com/wickwirew/Runtime.git",
       "state" : {
-        "revision" : "71bddc82c4fe3dd6488739ff8b7e99f69183a614",
-        "version" : "10.38.0"
+        "revision" : "dad03135d7701a4e7b3a4051e75d6b37bd8e178e",
+        "version" : "2.2.4"
       }
     },
     {
@@ -241,6 +250,15 @@
       "state" : {
         "revision" : "4d0f62f561458cbe1f732171e625f03195151b60",
         "version" : "7.0.1"
+      }
+    },
+    {
+      "identity" : "unrealm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/arturdev/Unrealm.git",
+      "state" : {
+        "revision" : "6ef4a9c4d5e081178614ab51b5f874aba1dd6f57",
+        "version" : "1.9.5"
       }
     },
     {

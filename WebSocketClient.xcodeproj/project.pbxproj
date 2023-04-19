@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */; };
 		CFB2CEAA29EEC1710095D7D0 /* DependencyValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */; };
-		CFD5AB8229F027EE00765E48 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8129F027EE00765E48 /* RealmSwift */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
+		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -75,10 +75,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFD5AB8229F027EE00765E48 /* RealmSwift in Frameworks */,
 				CFFF588429EBFD3A0037AA85 /* SafariView in Frameworks */,
 				CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */,
 				CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */,
+				CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -346,7 +346,7 @@
 				CFFF584D29E991EC0037AA85 /* ComposableArchitecture */,
 				CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */,
 				CFFF588329EBFD3A0037AA85 /* SafariView */,
-				CFD5AB8129F027EE00765E48 /* RealmSwift */,
+				CFD5AB8729F0322C00765E48 /* Unrealm */,
 			);
 			productName = WebSocketClient;
 			productReference = CFFF581529E98D3B0037AA85 /* WebSocketClient.app */;
@@ -408,7 +408,7 @@
 				CFFF586529EBCE0F0037AA85 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				CFFF588229EBFD3A0037AA85 /* XCRemoteSwiftPackageReference "SafariView" */,
 				CFFF588529EC05290037AA85 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */,
-				CFD5AB8029F027EE00765E48 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */,
 			);
 			productRefGroup = CFFF581629E98D3B0037AA85 /* Products */;
 			projectDirPath = "";
@@ -766,12 +766,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CFD5AB8029F027EE00765E48 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+		CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/realm-swift.git";
+			repositoryURL = "https://github.com/arturdev/Unrealm.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.38.0;
+				minimumVersion = 1.9.5;
 			};
 		};
 		CFFF584929E990880037AA85 /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
@@ -825,10 +825,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CFD5AB8129F027EE00765E48 /* RealmSwift */ = {
+		CFD5AB8729F0322C00765E48 /* Unrealm */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CFD5AB8029F027EE00765E48 /* XCRemoteSwiftPackageReference "realm-swift" */;
-			productName = RealmSwift;
+			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
+			productName = Unrealm;
 		};
 		CFFF584D29E991EC0037AA85 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
