@@ -23,9 +23,6 @@ struct ConnectionPage: View {
             .task {
                 viewStore.send(.start)
             }
-            .onDisappear {
-                viewStore.send(.close)
-            }
         })
     }
 
