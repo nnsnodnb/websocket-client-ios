@@ -10,6 +10,10 @@ name: LicensePlist, nameSpecified: LicensePlist, owner: mono0926, version: 3.24.
 
 name: LoggerAPI, nameSpecified: LoggerAPI, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/LoggerAPI
 
+name: realm-core, nameSpecified: RealmDatabase, owner: realm, version: 13.9.0, source: https://github.com/realm/realm-core
+
+name: realm-swift, nameSpecified: Realm, owner: realm, version: 10.38.0, source: https://github.com/realm/realm-swift
+
 name: SafariView, nameSpecified: SafariView, owner: vsanthanam, version: 1.0.0, source: https://github.com/vsanthanam/SafariView
 
 name: SFSafeSymbols, nameSpecified: SFSafeSymbols, owner: SFSafeSymbols, version: 4.1.1, source: https://github.com/SFSafeSymbols/SFSafeSymbols
@@ -37,6 +41,8 @@ name: swift-identified-collections, nameSpecified: swift-identified-collections,
 name: swift-log, nameSpecified: swift-log, owner: apple, version: 1.5.2, source: https://github.com/apple/swift-log
 
 name: swift-syntax, nameSpecified: SwiftSyntax, owner: apple, version: 0.50900.0-swift-DEVELOPMENT-SNAPSHOT-2023-02-06-a, source: https://github.com/apple/swift-syntax
+
+name: SwiftGenPlugin, nameSpecified: SwiftGenPlugin, owner: BookBeat, version: , source: https://github.com/BookBeat/SwiftGenPlugin
 
 name: SwiftLint, nameSpecified: SwiftLint, owner: realm, version: 0.51.0, source: https://github.com/realm/SwiftLint
 
