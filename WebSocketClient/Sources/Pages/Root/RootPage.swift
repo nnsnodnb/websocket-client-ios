@@ -29,8 +29,13 @@ struct RootPage: View {
     }
 
     private func historyPage() -> some View {
-        Text("History")
-            .tabItem(systemSymbol: .trayFullFill, text: "History")
+        HistoryListPage(
+            store: Store(
+                initialState: HistoryListReducer.State(),
+                reducer: HistoryListReducer()
+            )
+        )
+        .tabItem(systemSymbol: .trayFullFill, text: "History")
     }
 
     private func infoPage() -> some View {
