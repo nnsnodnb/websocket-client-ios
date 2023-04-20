@@ -8,7 +8,8 @@
 import Foundation
 import Unrealm
 
-struct History: Realmable {
+struct History: Realmable, Identifiable, Equatable {
+    // MARK: - Properties
     var id = UUID().uuidString
     var urlString: String = ""
 

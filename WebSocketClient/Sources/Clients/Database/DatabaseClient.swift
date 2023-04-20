@@ -21,6 +21,11 @@ extension DatabaseClient {
         // MARK: - Properties
         static let shared = DatabaseActor()
 
+        // MARK: - Initialize
+        init() {
+            Realm.registerRealmables([History.self])
+        }
+
         func fetchHistories() throws -> [History] {
             let realm = try Realm()
             let results = realm.objects(History.self)

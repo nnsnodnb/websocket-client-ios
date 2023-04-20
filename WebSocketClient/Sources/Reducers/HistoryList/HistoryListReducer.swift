@@ -11,18 +11,34 @@ import Foundation
 struct HistoryListReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
+        var histories: IdentifiedArrayOf<History> = []
     }
 
     // MARK: - Action
     enum Action: Equatable {
-        case `default`
+        case fetch
+        case fetchResponse(TaskResult<[History]>)
     }
 
     @Dependency(\.databaseClient) var databaseClient
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
-            return .none
+            switch action {
+            case .fetch:
+                return .task {
+                    await .fetchResponse(
+                        TaskResult {
+                            try await databaseClient.fetchHistories()
+                        }
+                    )
+                }
+            case let .fetchResponse(.success(histories)):
+                state.histories = .init(uniqueElements: histories)
+                return .none
+            case .fetchResponse(.failure):
+                return .none
+            }
         }
     }
 }

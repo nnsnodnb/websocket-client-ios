@@ -13,8 +13,48 @@ struct HistoryListPage: View {
 
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
-            Text("Hello")
+            NavigationStack {
+                content(viewStore)
+                    .navigationTitle("Histories")
+                    .task {
+                        viewStore.send(.fetch)
+                    }
+            }
         })
+    }
+
+    @ViewBuilder
+    private func content(_ viewStore: ViewStoreOf<HistoryListReducer>) -> some View {
+        if viewStore.histories.isEmpty {
+            emptyView
+        } else {
+            list(viewStore)
+        }
+    }
+
+    private var emptyView: some View {
+        VStack(spacing: 16) {
+            Image(systemSymbol: .noteText)
+                .resizable()
+                .frame(width: 56, height: 56)
+            Text("No history")
+                .font(.title2)
+                .fontWeight(.bold)
+        }
+        .foregroundColor(.orange)
+    }
+
+    private func list(_ viewStore: ViewStoreOf<HistoryListReducer>) -> some View {
+        List(viewStore.histories) { history in
+            NavigationLink(
+                destination: {
+                    EmptyView()
+                },
+                label: {
+                    Text(history.urlString)
+                }
+            )
+        }
     }
 }
 
@@ -22,7 +62,9 @@ struct HistoryListPage_Previews: PreviewProvider {
     static var previews: some View {
         HistoryListPage(
             store: Store(
-                initialState: HistoryListReducer.State(),
+                initialState: HistoryListReducer.State(
+                    histories: [.init(urlString: "wss://echo.websocket.events")]
+                ),
                 reducer: HistoryListReducer()
             )
         )
