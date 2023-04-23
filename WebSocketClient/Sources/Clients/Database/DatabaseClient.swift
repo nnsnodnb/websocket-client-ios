@@ -12,7 +12,7 @@ import XCTestDynamicOverlay
 
 struct DatabaseClient {
     // MARK: - Properties
-    var fetchHistories: @Sendable () async throws -> [History]
+    var fetchHistories: @Sendable ((Results<History>) -> Results<History>) async throws -> [History]
     var getHistory: @Sendable (Int) async throws -> History?
     var addHistory: @Sendable (History) async throws -> Void
     var updateHistory: @Sendable (History) async throws -> Void
@@ -23,10 +23,10 @@ extension DatabaseClient {
         // MARK: - Properties
         static let shared = DatabaseActor()
 
-        func fetchHistories() throws -> [History] {
+        func fetchHistories(operation: (Results<History>) -> Results<History>) throws -> [History] {
             let realm = try Realm()
             let results = realm.objects(History.self)
-            return Array(results)
+            return Array(operation(results))
         }
 
         func getHistory(id: Int) throws -> History? {
@@ -54,7 +54,7 @@ extension DatabaseClient {
 // MARK: - DependencyKey
 extension DatabaseClient: DependencyKey {
     static var liveValue = Self(
-        fetchHistories: { try await DatabaseActor.shared.fetchHistories() },
+        fetchHistories: { try await DatabaseActor.shared.fetchHistories(operation: $0) },
         getHistory: { try await DatabaseActor.shared.getHistory(id: $0) },
         addHistory: { try await DatabaseActor.shared.addHistory($0) },
         updateHistory: { try await DatabaseActor.shared.updateHistory($0) }

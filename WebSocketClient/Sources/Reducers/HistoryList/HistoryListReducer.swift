@@ -29,7 +29,9 @@ struct HistoryListReducer: ReducerProtocol {
                 return .task {
                     await .fetchResponse(
                         TaskResult {
-                            try await databaseClient.fetchHistories()
+                            try await databaseClient.fetchHistories {
+                                $0.filter("isConnectionSuccess == %@", true)
+                            }
                         }
                     )
                 }
