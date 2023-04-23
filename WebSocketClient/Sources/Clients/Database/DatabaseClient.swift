@@ -14,17 +14,14 @@ struct DatabaseClient {
     // MARK: - Properties
     var fetchHistories: @Sendable () async throws -> [History]
     var getHistory: @Sendable (Int) async throws -> History?
+    var addHistory: @Sendable (History) async throws -> Void
+    var updateHistory: @Sendable (History) async throws -> Void
 }
 
 extension DatabaseClient {
     final actor DatabaseActor: GlobalActor {
         // MARK: - Properties
         static let shared = DatabaseActor()
-
-        // MARK: - Initialize
-        init() {
-            Realm.registerRealmables([History.self])
-        }
 
         func fetchHistories() throws -> [History] {
             let realm = try Realm()
@@ -37,6 +34,20 @@ extension DatabaseClient {
             let object = realm.object(ofType: History.self, forPrimaryKey: id)
             return object
         }
+
+        func addHistory(_ history: History) throws {
+            let realm = try Realm()
+            try realm.write {
+                realm.add(history)
+            }
+        }
+
+        func updateHistory(_ history: History) throws {
+            let realm = try Realm()
+            try realm.write {
+                realm.add(history, update: .modified)
+            }
+        }
     }
 }
 
@@ -44,11 +55,15 @@ extension DatabaseClient {
 extension DatabaseClient: DependencyKey {
     static var liveValue = Self(
         fetchHistories: { try await DatabaseActor.shared.fetchHistories() },
-        getHistory: { try await DatabaseActor.shared.getHistory(id: $0) }
+        getHistory: { try await DatabaseActor.shared.getHistory(id: $0) },
+        addHistory: { try await DatabaseActor.shared.addHistory($0) },
+        updateHistory: { try await DatabaseActor.shared.updateHistory($0) }
     )
 
     static var testValue = Self(
         fetchHistories: unimplemented("\(Self.self).fetchHistories"),
-        getHistory: unimplemented("\(Self.self).getHistory")
+        getHistory: unimplemented("\(Self.self).getHistory"),
+        addHistory: unimplemented("\(Self.self).addHistory"),
+        updateHistory: unimplemented("\(Self.self).updateHistory")
     )
 }

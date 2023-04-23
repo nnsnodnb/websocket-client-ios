@@ -17,6 +17,7 @@ struct ConnectionReducer: ReducerProtocol {
         var message: String = ""
         var isSendButtonDisabled = true
         var receivedMessages: [String] = []
+        var history: History
         var alert: AlertState<Action>?
 
         // MARK: - ConnectivityState
@@ -24,6 +25,13 @@ struct ConnectionReducer: ReducerProtocol {
             case connected
             case connecting
             case disconnected
+        }
+
+        // MARK: - Initialize
+        init(url: URL, customHeaders: [CustomHeader]) {
+            self.url = url
+            self.customHeaders = customHeaders
+            self.history = .init(urlString: url.absoluteString)
         }
     }
 
@@ -36,6 +44,8 @@ struct ConnectionReducer: ReducerProtocol {
         case receivedSocketMessage(TaskResult<WebSocketClient.Message>)
         case sendResponse(TaskResult<Bool>)
         case webSocket(WebSocketClient.Action)
+        case addHistoryResponse(TaskResult<Bool>)
+        case updateHistoryResponse(TaskResult<Bool>)
         case alertDismissed
     }
 
@@ -76,7 +86,15 @@ struct ConnectionReducer: ReducerProtocol {
             case let .receivedSocketMessage(.success(message)):
                 guard case let .string(string) = message else { return .none }
                 state.receivedMessages.append(string)
-                return .none
+                state.history.messages.append(.init(text: string))
+                return .task { [history = state.history] in
+                    await .updateHistoryResponse(
+                        TaskResult {
+                            try await databaseClient.updateHistory(history)
+                            return true
+                        }
+                    )
+                }
             case .sendResponse(.success):
                 state.message = ""
                 return .none
@@ -90,12 +108,34 @@ struct ConnectionReducer: ReducerProtocol {
             case .webSocket(.didOpen):
                 state.connectivityState = .connected
                 state.receivedMessages.append("Connected \(state.url.absoluteString)")
-                return .none
+                state.history.isConnectionSuccess = true
+                return .task { [history = state.history] in
+                    await .updateHistoryResponse(
+                        TaskResult {
+                            try await databaseClient.updateHistory(history)
+                            return true
+                        }
+                    )
+                }
             case .webSocket(.didClose):
                 state.connectivityState = .disconnected
                 return .cancel(id: WebSocketID.self)
             case .alertDismissed:
                 state.alert = nil
+                return .none
+            case .addHistoryResponse(.success):
+                return .none
+            case .addHistoryResponse(.failure):
+                state.alert = AlertState {
+                    TextState("Could not update history.")
+                }
+                return .none
+            case .updateHistoryResponse(.success):
+                return .none
+            case .updateHistoryResponse(.failure):
+                state.alert = AlertState {
+                    TextState("Could not update history.")
+                }
                 return .none
             }
         }
@@ -136,5 +176,15 @@ struct ConnectionReducer: ReducerProtocol {
             }
         }
         .cancellable(id: WebSocketID.self)
+        .merge(
+            with: .task { [state] in
+                await .addHistoryResponse(
+                    TaskResult {
+                        try await databaseClient.addHistory(state.history)
+                        return true
+                    }
+                )
+            }
+        )
     }
 }
