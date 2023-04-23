@@ -12,6 +12,8 @@ struct History: Realmable, Identifiable, Equatable {
     // MARK: - Properties
     var id = UUID().uuidString
     var urlString: String = ""
+    var messages: [Message] = []
+    var isConnectionSuccess = false
 
     static func primaryKey() -> String? {
         return "id"

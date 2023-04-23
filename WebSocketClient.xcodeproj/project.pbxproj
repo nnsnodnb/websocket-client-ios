@@ -14,6 +14,7 @@
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
 		CFD5AB8D29F1746C00765E48 /* HistoryListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */; };
 		CFD5AB9029F174DB00765E48 /* HistoryListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8F29F174DB00765E48 /* HistoryListPage.swift */; };
+		CFD5AB9229F180F500765E48 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9129F180F500765E48 /* Message.swift */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -54,6 +55,7 @@
 		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
 		CFD5AB8F29F174DB00765E48 /* HistoryListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListPage.swift; sourceTree = "<group>"; };
+		CFD5AB9129F180F500765E48 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		CFFF581529E98D3B0037AA85 /* WebSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientApp.swift; sourceTree = "<group>"; };
 		CFFF581C29E98D3C0037AA85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			children = (
 				CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */,
 				CFD5AB8929F0328300765E48 /* History.swift */,
+				CFD5AB9129F180F500765E48 /* Message.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 				CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */,
 				CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */,
 				CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */,
+				CFD5AB9229F180F500765E48 /* Message.swift in Sources */,
 				CFD5AB9029F174DB00765E48 /* HistoryListPage.swift in Sources */,
 				CFD5AB8D29F1746C00765E48 /* HistoryListReducer.swift in Sources */,
 			);

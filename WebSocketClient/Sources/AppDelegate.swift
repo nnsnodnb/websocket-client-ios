@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2023/04/14.
 //
 
+import RealmSwift
 import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -12,6 +13,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
+        Realm.registerRealmables([History.self, Message.self])
+        #if DEBUG
+        print(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString ?? "Unknown realm file")
+        #endif
         return true
     }
 }
