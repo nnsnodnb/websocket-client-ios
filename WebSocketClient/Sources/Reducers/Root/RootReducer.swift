@@ -11,15 +11,23 @@ import Foundation
 struct RootReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
+        var version: String?
     }
 
     // MARK: - Action
-    struct Action: Equatable {
+    enum Action: Equatable {
+        case onAppear
     }
 
+    @Dependency(\.bundle) var bundle
+
     var body: some ReducerProtocol<State, Action> {
-        Reduce { _, _ in
-            return .none
+        Reduce { state, action in
+            switch action {
+            case .onAppear:
+                state.version = bundle.shortVersionString()
+                return .none
+            }
         }
     }
 }

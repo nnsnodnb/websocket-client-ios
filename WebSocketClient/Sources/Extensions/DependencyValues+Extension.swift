@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import Foundation
 
+// MARK: - ApplicationClient
 extension DependencyValues {
     var application: ApplicationClient {
         get { self[ApplicationClient.self] }
@@ -15,6 +16,15 @@ extension DependencyValues {
     }
 }
 
+// MARK: - BundleClient
+extension DependencyValues {
+    var bundle: BundleClient {
+        get { self[BundleClient.self] }
+        set { self[BundleClient.self] = newValue }
+    }
+}
+
+// MARK: - DatabaseClient
 extension DependencyValues {
     var databaseClient: DatabaseClient {
         get { self[DatabaseClient.self] }
@@ -22,6 +32,7 @@ extension DependencyValues {
     }
 }
 
+// MARK: - WebSocketClient
 extension DependencyValues {
     var webSocketClient: WebSocketClient {
         get { self[WebSocketClient.self] }

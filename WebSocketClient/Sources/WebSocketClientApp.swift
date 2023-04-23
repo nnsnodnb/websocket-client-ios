@@ -15,7 +15,12 @@ struct WebSocketClientApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootPage()
+            RootPage(
+                store: Store(
+                    initialState: RootReducer.State(),
+                    reducer: RootReducer()
+                )
+            )
         }
     }
 }

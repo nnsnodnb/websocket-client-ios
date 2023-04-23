@@ -10,12 +10,19 @@ import SFSafeSymbols
 import SwiftUI
 
 struct RootPage: View {
+    let store: StoreOf<RootReducer>
+
     var body: some View {
-        TabView {
-            formPage()
-            historyPage()
-            infoPage()
-        }
+        WithViewStore(store, observe: { $0 }, content: { viewStore in
+            TabView {
+                formPage()
+                historyPage()
+                infoPage(viewStore)
+            }
+            .onAppear {
+                viewStore.send(.onAppear)
+            }
+        })
     }
 
     private func formPage() -> some View {
@@ -38,14 +45,17 @@ struct RootPage: View {
         .tabItem(systemSymbol: .trayFullFill, text: "History")
     }
 
-    private func infoPage() -> some View {
-        InfoPage(
-            store: Store(
-                initialState: InfoReducer.State(version: "1.0.0"), // TODO: バージョンを取得する
-                reducer: InfoReducer()
+    @ViewBuilder
+    private func infoPage(_ viewStore: ViewStoreOf<RootReducer>) -> some View {
+        if let version = viewStore.version {
+            InfoPage(
+                store: Store(
+                    initialState: InfoReducer.State(version: version),
+                    reducer: InfoReducer()
+                )
             )
-        )
-        .tabItem(systemSymbol: .infoCircleFill, text: "Info")
+            .tabItem(systemSymbol: .infoCircleFill, text: "Info")
+        }
     }
 }
 
@@ -62,6 +72,11 @@ private extension View {
 
 struct RootPage_Previews: PreviewProvider {
     static var previews: some View {
-        RootPage()
+        RootPage(
+            store: Store(
+                initialState: RootReducer.State(),
+                reducer: RootReducer()
+            )
+        )
     }
 }
