@@ -15,6 +15,7 @@
 		CFD5AB8D29F1746C00765E48 /* HistoryListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */; };
 		CFD5AB9029F174DB00765E48 /* HistoryListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8F29F174DB00765E48 /* HistoryListPage.swift */; };
 		CFD5AB9229F180F500765E48 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9129F180F500765E48 /* Message.swift */; };
+		CFD5AB9529F526F700765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB9429F526F700765E48 /* Unrealm */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -95,6 +96,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFFF587429EBE8DD0037AA85 /* ComposableArchitecture in Frameworks */,
+				CFD5AB9529F526F700765E48 /* Unrealm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,12 +144,20 @@
 			path = HistoryList;
 			sourceTree = "<group>";
 		};
+		CFD5AB9329F526F700765E48 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CFFF580C29E98D3B0037AA85 = {
 			isa = PBXGroup;
 			children = (
 				CFFF581729E98D3B0037AA85 /* WebSocketClient */,
 				CFFF582829E98D3C0037AA85 /* WebSocketClientTests */,
 				CFFF581629E98D3B0037AA85 /* Products */,
+				CFD5AB9329F526F700765E48 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -396,6 +406,7 @@
 			name = WebSocketClientTests;
 			packageProductDependencies = (
 				CFFF587329EBE8DD0037AA85 /* ComposableArchitecture */,
+				CFD5AB9429F526F700765E48 /* Unrealm */,
 			);
 			productName = WebSocketClientTests;
 			productReference = CFFF582529E98D3C0037AA85 /* WebSocketClientTests.xctest */;
@@ -858,6 +869,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		CFD5AB8729F0322C00765E48 /* Unrealm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
+			productName = Unrealm;
+		};
+		CFD5AB9429F526F700765E48 /* Unrealm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
 			productName = Unrealm;
