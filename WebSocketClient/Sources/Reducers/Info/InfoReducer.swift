@@ -23,7 +23,10 @@ struct InfoReducer: ReducerProtocol {
         case safariOpen
         case safariDismiss
         case browserOpen(URL)
+        case browserOpenResponse(TaskResult<Bool>)
     }
+
+    @Dependency(\.application) var application
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -39,9 +42,15 @@ struct InfoReducer: ReducerProtocol {
                 state.isShowSafari = false
                 return .none
             case let .browserOpen(url):
-                // TODO: UIApplicationをDependencyにする
-                guard UIApplication.shared.canOpenURL(url) else { return .none }
-                UIApplication.shared.open(url)
+                guard application.canOpenURL(url) else { return .none }
+                return .task {
+                    await .browserOpenResponse(
+                        TaskResult {
+                            await application.open(url)
+                        }
+                    )
+                }
+            case .browserOpenResponse:
                 return .none
             }
         }
