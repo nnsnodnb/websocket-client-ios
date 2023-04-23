@@ -23,9 +23,7 @@ extension BundleClient: DependencyKey {
         )
     }
 
-    static var testValue: Self {
-        return Self(
-            shortVersionString: unimplemented("\(Self.self).shortVersionString")
-        )
-    }
+    static var testValue = Self(
+        shortVersionString: unimplemented("\(Self.self).shortVersionString")
+    )
 }

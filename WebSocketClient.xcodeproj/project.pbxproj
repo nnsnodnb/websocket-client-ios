@@ -18,6 +18,7 @@
 		CFD5AB9529F526F700765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB9429F526F700765E48 /* Unrealm */; };
 		CFD5AB9829F527AA00765E48 /* ApplicationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */; };
 		CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */; };
+		CFD5AB9E29F5C99200765E48 /* RootReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9D29F5C99200765E48 /* RootReducerTests.swift */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -61,6 +62,7 @@
 		CFD5AB9129F180F500765E48 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationClient.swift; sourceTree = "<group>"; };
 		CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleClient.swift; sourceTree = "<group>"; };
+		CFD5AB9D29F5C99200765E48 /* RootReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootReducerTests.swift; sourceTree = "<group>"; };
 		CFFF581529E98D3B0037AA85 /* WebSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientApp.swift; sourceTree = "<group>"; };
 		CFFF581C29E98D3C0037AA85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -171,6 +173,14 @@
 				CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */,
 			);
 			path = Bundle;
+			sourceTree = "<group>";
+		};
+		CFD5AB9C29F5C98400765E48 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				CFD5AB9D29F5C99200765E48 /* RootReducerTests.swift */,
+			);
+			path = Root;
 			sourceTree = "<group>";
 		};
 		CFFF580C29E98D3B0037AA85 = {
@@ -320,6 +330,7 @@
 		CFFF586B29EBE6F20037AA85 /* Reducers */ = {
 			isa = PBXGroup;
 			children = (
+				CFD5AB9C29F5C98400765E48 /* Root */,
 				CFFF586C29EBE6FB0037AA85 /* Form */,
 			);
 			path = Reducers;
@@ -553,6 +564,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFD5AB9E29F5C99200765E48 /* RootReducerTests.swift in Sources */,
 				CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
