@@ -51,9 +51,9 @@ struct ConnectionPage: View {
                     Text("Send")
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .disabled(viewStore.isSendButtonDisabled)
                 }
             )
+            .disabled(viewStore.isSendButtonDisabled)
             .frame(width: 80, height: 44)
         }
         .padding(.horizontal)
