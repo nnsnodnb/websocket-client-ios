@@ -18,7 +18,7 @@ struct InfoReducer: ReducerProtocol {
     }
 
     // MARK: - Action
-    enum Action {
+    enum Action: Equatable {
         case start
         case urlSelected(URL)
         case safariOpen
@@ -40,6 +40,7 @@ struct InfoReducer: ReducerProtocol {
                 state.url = url
                 return .none
             case .safariOpen:
+                guard state.url != nil else { return .none }
                 state.isShowSafari = true
                 return .none
             case .safariDismiss:

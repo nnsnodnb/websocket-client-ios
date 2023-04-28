@@ -173,8 +173,8 @@ extension WebSocketClient: DependencyKey {
     }
 
     static var previewValue: WebSocketClient {
-        return Self.init(
-            open: { _,_  in .never },
+        return Self(
+            open: { _, _  in .never },
             receive: { _ in .never },
             send: { _, _ in },
             sendPing: { _ in }
