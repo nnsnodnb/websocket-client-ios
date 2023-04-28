@@ -17,10 +17,10 @@ final class RootReducerTests: XCTestCase {
             reducer: RootReducer()
         )
 
-        store.dependencies.bundle.shortVersionString = { "v1.0.0" }
+        store.dependencies.bundle.shortVersionString = { "1.0.0" }
 
         await store.send(.onAppear) {
-            $0.version = "v1.0.0"
+            $0.version = "1.0.0"
         }
     }
 }
