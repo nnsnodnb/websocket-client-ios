@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/combine-schedulers",
       "state" : {
-        "revision" : "882ac01eb7ef9e36d4467eb4b1151e74fcef85ab",
-        "version" : "0.9.1"
+        "revision" : "0625932976b3ae23949f6b816d13bd97f3b40b7c",
+        "version" : "0.10.0"
       }
     },
     {
@@ -59,8 +59,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-cocoa.git",
       "state" : {
-        "revision" : "71bddc82c4fe3dd6488739ff8b7e99f69183a614",
-        "version" : "10.38.0"
+        "revision" : "933294d98787d1b85d6a9d6b3e8a4b8eecc83f08",
+        "version" : "10.38.2"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/realm/realm-core.git",
       "state" : {
-        "revision" : "e56380f05793998dfea0d87a34b68fdba475961c",
-        "version" : "13.9.0"
+        "revision" : "27cc7f4a1d60299e69a08221d807a3563d0ecc8c",
+        "version" : "13.9.3"
       }
     },
     {
@@ -131,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-clocks",
       "state" : {
-        "revision" : "20b25ca0dd88ebfb9111ec937814ddc5a8880172",
-        "version" : "0.2.0"
+        "revision" : "f9acfa1a45f4483fe0f2c434a74e6f68f865d12d",
+        "version" : "0.3.0"
       }
     },
     {
@@ -167,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-dependencies",
       "state" : {
-        "revision" : "615833420b3a01cec57530cae1287ee70dfdb77c",
-        "version" : "0.4.0"
+        "revision" : "98650d886ec950b587d671261f06d6b59dec4052",
+        "version" : "0.4.1"
       }
     },
     {
@@ -275,8 +275,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "ab8c9f45843694dd16be4297e6d44c0634fd9913",
-        "version" : "0.8.4"
+        "revision" : "4af50b38daf0037cfbab15514a241224c3f62f98",
+        "version" : "0.8.5"
       }
     },
     {
