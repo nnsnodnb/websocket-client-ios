@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF708EF829FC065A00BB93F0 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CF708EF729FC065A00BB93F0 /* Unrealm */; };
+		CF708EFB29FC0A1100BB93F0 /* InfoReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */; };
 		CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */; };
 		CFB2CEAA29EEC1710095D7D0 /* DependencyValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
@@ -15,8 +17,9 @@
 		CFD5AB8D29F1746C00765E48 /* HistoryListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */; };
 		CFD5AB9029F174DB00765E48 /* HistoryListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8F29F174DB00765E48 /* HistoryListPage.swift */; };
 		CFD5AB9229F180F500765E48 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9129F180F500765E48 /* Message.swift */; };
-		CFD5AB9529F526F700765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB9429F526F700765E48 /* Unrealm */; };
 		CFD5AB9829F527AA00765E48 /* ApplicationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */; };
+		CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */; };
+		CFD5AB9529F526F700765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB9429F526F700765E48 /* Unrealm */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -30,7 +33,6 @@
 		CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */; };
 		CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */; };
 		CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586D29EBE72A0037AA85 /* FormReducerTests.swift */; };
-		CFFF587429EBE8DD0037AA85 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF587329EBE8DD0037AA85 /* ComposableArchitecture */; };
 		CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF587629EBF1300037AA85 /* InfoPage.swift */; };
 		CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */; };
 		CFFF588429EBFD3A0037AA85 /* SafariView in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF588329EBFD3A0037AA85 /* SafariView */; };
@@ -51,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducerTests.swift; sourceTree = "<group>"; };
 		CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
 		CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Extension.swift"; sourceTree = "<group>"; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
@@ -59,6 +62,7 @@
 		CFD5AB8F29F174DB00765E48 /* HistoryListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListPage.swift; sourceTree = "<group>"; };
 		CFD5AB9129F180F500765E48 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationClient.swift; sourceTree = "<group>"; };
+		CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleClient.swift; sourceTree = "<group>"; };
 		CFFF581529E98D3B0037AA85 /* WebSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientApp.swift; sourceTree = "<group>"; };
 		CFFF581C29E98D3C0037AA85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -97,18 +101,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFFF587429EBE8DD0037AA85 /* ComposableArchitecture in Frameworks */,
-				CFD5AB9529F526F700765E48 /* Unrealm in Frameworks */,
+				CF708EF829FC065A00BB93F0 /* Unrealm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF708EF929FC09FB00BB93F0 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
 		CFB2CEA529EEBC9D0095D7D0 /* Clients */ = {
 			isa = PBXGroup;
 			children = (
 				CFD5AB9629F527A100765E48 /* Application */,
+				CFD5AB9929F5C6AD00765E48 /* Bundle */,
 				CFD5AB8329F0283B00765E48 /* Database */,
 				CFB2CEA629EEBCA00095D7D0 /* WebSocket */,
 			);
@@ -160,6 +172,14 @@
 				CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */,
 			);
 			path = Application;
+			sourceTree = "<group>";
+		};
+		CFD5AB9929F5C6AD00765E48 /* Bundle */ = {
+			isa = PBXGroup;
+			children = (
+				CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */,
+			);
+			path = Bundle;
 			sourceTree = "<group>";
 		};
 		CFFF580C29E98D3B0037AA85 = {
@@ -310,6 +330,7 @@
 			isa = PBXGroup;
 			children = (
 				CFFF586C29EBE6FB0037AA85 /* Form */,
+				CF708EF929FC09FB00BB93F0 /* Info */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -416,8 +437,7 @@
 			);
 			name = WebSocketClientTests;
 			packageProductDependencies = (
-				CFFF587329EBE8DD0037AA85 /* ComposableArchitecture */,
-				CFD5AB9429F526F700765E48 /* Unrealm */,
+				CF708EF729FC065A00BB93F0 /* Unrealm */,
 			);
 			productName = WebSocketClientTests;
 			productReference = CFFF582529E98D3C0037AA85 /* WebSocketClientTests.xctest */;
@@ -521,6 +541,7 @@
 				CFFF589429EC525C0037AA85 /* ConnectionPage.swift in Sources */,
 				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
 				CFD5AB9829F527AA00765E48 /* ApplicationClient.swift in Sources */,
+				CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */,
 				CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */,
 				CFFF589129EC0C2C0037AA85 /* Array+Extension.swift in Sources */,
 				CFFF585D29E999000037AA85 /* FormPage.swift in Sources */,
@@ -542,6 +563,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */,
+				CF708EFB29FC0A1100BB93F0 /* InfoReducerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -761,9 +783,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClientTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebSocketClient.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WebSocketClient";
 			};
 			name = Debug;
@@ -781,9 +806,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClientTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WebSocketClient.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WebSocketClient";
 			};
 			name = Release;
@@ -880,6 +908,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CF708EF729FC065A00BB93F0 /* Unrealm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
+			productName = Unrealm;
+		};
 		CFD5AB8729F0322C00765E48 /* Unrealm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
@@ -904,11 +937,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFFF586529EBCE0F0037AA85 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
 			productName = SFSafeSymbols;
-		};
-		CFFF587329EBE8DD0037AA85 /* ComposableArchitecture */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFFF584C29E991EC0037AA85 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
-			productName = ComposableArchitecture;
 		};
 		CFFF588329EBFD3A0037AA85 /* SafariView */ = {
 			isa = XCSwiftPackageProductDependency;

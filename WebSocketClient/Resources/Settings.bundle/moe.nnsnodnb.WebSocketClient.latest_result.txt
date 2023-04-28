@@ -2,7 +2,7 @@ name: APIKit, nameSpecified: APIKit, owner: ishkawa, version: 5.4.0, source: htt
 
 name: CollectionConcurrencyKit, nameSpecified: CollectionConcurrencyKit, owner: JohnSundell, version: 0.2.0, source: https://github.com/JohnSundell/CollectionConcurrencyKit
 
-name: combine-schedulers, nameSpecified: combine-schedulers, owner: pointfreeco, version: 0.9.1, source: https://github.com/pointfreeco/combine-schedulers
+name: combine-schedulers, nameSpecified: combine-schedulers, owner: pointfreeco, version: 0.10.0, source: https://github.com/pointfreeco/combine-schedulers
 
 name: HeliumLogger, nameSpecified: HeliumLogger, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/HeliumLogger
 
@@ -10,9 +10,9 @@ name: LicensePlist, nameSpecified: LicensePlist, owner: mono0926, version: 3.24.
 
 name: LoggerAPI, nameSpecified: LoggerAPI, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/LoggerAPI
 
-name: realm-cocoa, nameSpecified: Realm, owner: realm, version: 10.38.0, source: https://github.com/realm/realm-cocoa
+name: realm-cocoa, nameSpecified: Realm, owner: realm, version: 10.38.2, source: https://github.com/realm/realm-cocoa
 
-name: realm-core, nameSpecified: RealmDatabase, owner: realm, version: 13.9.0, source: https://github.com/realm/realm-core
+name: realm-core, nameSpecified: RealmDatabase, owner: realm, version: 13.9.3, source: https://github.com/realm/realm-core
 
 name: Runtime, nameSpecified: Runtime, owner: wickwirew, version: 2.2.4, source: https://github.com/wickwirew/Runtime
 
@@ -26,7 +26,7 @@ name: swift-argument-parser, nameSpecified: swift-argument-parser, owner: apple,
 
 name: swift-case-paths, nameSpecified: swift-case-paths, owner: pointfreeco, version: 0.14.1, source: https://github.com/pointfreeco/swift-case-paths
 
-name: swift-clocks, nameSpecified: swift-clocks, owner: pointfreeco, version: 0.2.0, source: https://github.com/pointfreeco/swift-clocks
+name: swift-clocks, nameSpecified: swift-clocks, owner: pointfreeco, version: 0.3.0, source: https://github.com/pointfreeco/swift-clocks
 
 name: swift-collections, nameSpecified: swift-collections, owner: apple, version: 1.0.4, source: https://github.com/apple/swift-collections
 
@@ -34,7 +34,7 @@ name: swift-composable-architecture, nameSpecified: swift-composable-architectur
 
 name: swift-custom-dump, nameSpecified: swift-custom-dump, owner: pointfreeco, version: 0.10.2, source: https://github.com/pointfreeco/swift-custom-dump
 
-name: swift-dependencies, nameSpecified: swift-dependencies, owner: pointfreeco, version: 0.4.0, source: https://github.com/pointfreeco/swift-dependencies
+name: swift-dependencies, nameSpecified: swift-dependencies, owner: pointfreeco, version: 0.4.1, source: https://github.com/pointfreeco/swift-dependencies
 
 name: swift-html-entities, nameSpecified: HTMLEntities, owner: Kitura, version: 4.0.1, source: https://github.com/Kitura/swift-html-entities
 
@@ -58,7 +58,7 @@ name: Unrealm, nameSpecified: Unrealm, owner: arturdev, version: 1.9.5, source: 
 
 name: XcodeEdit, nameSpecified: XcodeEdit, owner: tomlokhorst, version: 2.9.0, source: https://github.com/tomlokhorst/XcodeEdit
 
-name: xctest-dynamic-overlay, nameSpecified: xctest-dynamic-overlay, owner: pointfreeco, version: 0.8.4, source: https://github.com/pointfreeco/xctest-dynamic-overlay
+name: xctest-dynamic-overlay, nameSpecified: xctest-dynamic-overlay, owner: pointfreeco, version: 0.8.5, source: https://github.com/pointfreeco/xctest-dynamic-overlay
 
 name: YamlSwift, nameSpecified: Yaml, owner: behrang, version: 3.4.4, source: https://github.com/behrang/YamlSwift
 

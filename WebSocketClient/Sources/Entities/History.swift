@@ -10,11 +10,11 @@ import Unrealm
 
 struct History: Realmable, Identifiable, Equatable {
     // MARK: - Properties
-    let id = UUID().uuidString
+    var id: UUID = .init()
     var urlString: String = ""
     var messages: [Message] = []
     var isConnectionSuccess = false
-    let createdAt: Date = .init()
+    var createdAt: Date = .init()
 
     static func primaryKey() -> String? {
         return "id"

@@ -172,6 +172,15 @@ extension WebSocketClient: DependencyKey {
         )
     }
 
+    static var previewValue: WebSocketClient {
+        return Self(
+            open: { _, _  in .never },
+            receive: { _ in .never },
+            send: { _, _ in },
+            sendPing: { _ in }
+        )
+    }
+
     static var testValue = Self(
         open: unimplemented("\(Self.self).open", placeholder: AsyncStream.never),
         receive: unimplemented("\(Self.self).receive"),
