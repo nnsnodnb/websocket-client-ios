@@ -23,8 +23,10 @@ extension ApplicationClient: DependencyKey {
         )
     }
 
-    public static var testValue = Self(
-        canOpenURL: unimplemented("\(Self.self).canOpenURL"),
-        open: unimplemented("\(Self.self).open")
-    )
+    public static var testValue: Self {
+        return Self(
+            canOpenURL: unimplemented("\(Self.self).canOpenURL"),
+            open: unimplemented("\(Self.self).open")
+        )
+    }
 }
