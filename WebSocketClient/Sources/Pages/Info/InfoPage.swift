@@ -75,7 +75,7 @@ struct InfoPage: View {
         Section {
             urlRow(
                 viewStore,
-                url: URL(string: "https://example.com")!, // TODO: URL修正
+                url: URL(string: "https://itunes.apple.com/jp/app/id6448638174?mt=8&action=write-review")!,
                 icon: {
                     Image(systemSymbol: .starBubble)
                         .resizable()
