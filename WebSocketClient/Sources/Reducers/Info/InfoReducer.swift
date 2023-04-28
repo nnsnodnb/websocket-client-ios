@@ -14,11 +14,12 @@ struct InfoReducer: ReducerProtocol {
     struct State: Equatable {
         var isShowSafari = false
         var url: URL?
-        let version: String
+        var version: String = ""
     }
 
     // MARK: - Action
     enum Action {
+        case start
         case urlSelected(URL)
         case safariOpen
         case safariDismiss
@@ -27,10 +28,14 @@ struct InfoReducer: ReducerProtocol {
     }
 
     @Dependency(\.application) var application
+    @Dependency(\.bundle) var bundle
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
+            case .start:
+                state.version = bundle.shortVersionString()
+                return .none
             case let .urlSelected(url):
                 state.url = url
                 return .none

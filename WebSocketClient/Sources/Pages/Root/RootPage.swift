@@ -13,14 +13,11 @@ struct RootPage: View {
     let store: StoreOf<RootReducer>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
+        WithViewStore(store, observe: { $0 }, content: { _ in
             TabView {
                 formPage()
                 historyPage()
-                infoPage(viewStore)
-            }
-            .onAppear {
-                viewStore.send(.onAppear)
+                infoPage()
             }
         })
     }
@@ -45,17 +42,14 @@ struct RootPage: View {
         .tabItem(systemSymbol: .trayFullFill, text: "History")
     }
 
-    @ViewBuilder
-    private func infoPage(_ viewStore: ViewStoreOf<RootReducer>) -> some View {
-        if let version = viewStore.version {
-            InfoPage(
-                store: Store(
-                    initialState: InfoReducer.State(version: version),
-                    reducer: InfoReducer()
-                )
+    private func infoPage() -> some View {
+        InfoPage(
+            store: Store(
+                initialState: InfoReducer.State(),
+                reducer: InfoReducer()
             )
-            .tabItem(systemSymbol: .infoCircleFill, text: "Info")
-        }
+        )
+        .tabItem(systemSymbol: .infoCircleFill, text: "Info")
     }
 }
 

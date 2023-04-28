@@ -28,6 +28,9 @@ struct InfoPage: View {
                         }
                     )
             }
+            .task {
+                viewStore.send(.start)
+            }
         })
     }
 
