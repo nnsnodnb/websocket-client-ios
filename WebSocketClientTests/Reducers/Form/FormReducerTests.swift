@@ -137,7 +137,7 @@ final class FormReducerTests: XCTestCase {
 
         await store.send(.connect) {
             let history = History(
-                id: .init(0),
+                id: UUID(0).uuidString,
                 urlString: "wss://echo.websocket.events",
                 createdAt: now
             )

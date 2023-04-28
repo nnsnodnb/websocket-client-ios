@@ -64,7 +64,7 @@ struct FormReducer: ReducerProtocol {
             case .connect:
                 guard let url = state.url else { return .none }
                 let history = History(
-                    id: uuid.callAsFunction(),
+                    id: uuid.callAsFunction().uuidString,
                     urlString: url.absoluteString,
                     createdAt: date.callAsFunction()
                 )

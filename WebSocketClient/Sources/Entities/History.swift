@@ -10,7 +10,7 @@ import Unrealm
 
 struct History: Realmable, Identifiable, Equatable {
     // MARK: - Properties
-    var id: UUID = .init()
+    var id: String = ""
     var urlString: String = ""
     var messages: [Message] = []
     var isConnectionSuccess = false

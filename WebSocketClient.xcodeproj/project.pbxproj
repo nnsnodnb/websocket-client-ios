@@ -11,6 +11,7 @@
 		CF708EFB29FC0A1100BB93F0 /* InfoReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */; };
 		CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */; };
 		CFB2CEAA29EEC1710095D7D0 /* DependencyValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */; };
+		CFC1AA5329FC187F00C62659 /* libswift_Concurrency.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC1AA5229FC187F00C62659 /* libswift_Concurrency.tbd */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -19,7 +20,6 @@
 		CFD5AB9229F180F500765E48 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9129F180F500765E48 /* Message.swift */; };
 		CFD5AB9829F527AA00765E48 /* ApplicationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */; };
 		CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */; };
-		CFD5AB9529F526F700765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB9429F526F700765E48 /* Unrealm */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -56,6 +56,7 @@
 		CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducerTests.swift; sourceTree = "<group>"; };
 		CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
 		CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Extension.swift"; sourceTree = "<group>"; };
+		CFC1AA5229FC187F00C62659 /* libswift_Concurrency.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswift_Concurrency.tbd; path = usr/lib/swift/libswift_Concurrency.tbd; sourceTree = SDKROOT; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
@@ -101,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFC1AA5329FC187F00C62659 /* libswift_Concurrency.tbd in Frameworks */,
 				CF708EF829FC065A00BB93F0 /* Unrealm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -162,6 +164,7 @@
 		CFD5AB9329F526F700765E48 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CFC1AA5229FC187F00C62659 /* libswift_Concurrency.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -780,6 +783,10 @@
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClientTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -803,6 +810,10 @@
 				DEVELOPMENT_TEAM = 99649YXF6E;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClientTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -914,11 +925,6 @@
 			productName = Unrealm;
 		};
 		CFD5AB8729F0322C00765E48 /* Unrealm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
-			productName = Unrealm;
-		};
-		CFD5AB9429F526F700765E48 /* Unrealm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
 			productName = Unrealm;
