@@ -16,9 +16,9 @@ struct HistoryListPage: View {
             NavigationStack {
                 content(viewStore)
                     .navigationTitle("Histories")
-                    .task {
-                        viewStore.send(.fetch)
-                    }
+            }
+            .task {
+                viewStore.send(.fetch)
             }
         })
     }
