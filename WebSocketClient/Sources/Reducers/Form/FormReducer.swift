@@ -30,6 +30,9 @@ struct FormReducer: ReducerProtocol {
         case connection(ConnectionReducer.Action)
     }
 
+    @Dependency(\.date) var date
+    @Dependency(\.uuid) var uuid
+
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
             switch action {
@@ -60,7 +63,16 @@ struct FormReducer: ReducerProtocol {
                 return .none
             case .connect:
                 guard let url = state.url else { return .none }
-                state.connection = .init(url: url, customHeaders: state.customHeaders)
+                let history = History(
+                    id: uuid.callAsFunction(),
+                    urlString: url.absoluteString,
+                    createdAt: date.callAsFunction()
+                )
+                state.connection = .init(
+                    url: url,
+                    customHeaders: state.customHeaders,
+                    history: history
+                )
                 return .none
             case .connectionOpen:
                 return .none

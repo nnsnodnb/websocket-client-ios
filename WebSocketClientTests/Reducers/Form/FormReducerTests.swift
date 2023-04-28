@@ -118,4 +118,34 @@ final class FormReducerTests: XCTestCase {
         // empty index
         await store.send(.customHeaderNameChanged(1, "no-cache"))
     }
+
+    func testConnect() async {
+        let store = TestStore(
+            initialState: FormReducer.State(),
+            reducer: FormReducer()
+        )
+
+        await store.send(.urlChanged("wss://echo.websocket.events")) {
+            $0.url = URL(string: "wss://echo.websocket.events")
+            $0.customHeaders = []
+            $0.isConnectButtonDisable = false
+        }
+
+        store.dependencies.uuid = .incrementing
+        let now = Date()
+        store.dependencies.date = .constant(now)
+
+        await store.send(.connect) {
+            let history = History(
+                id: .init(0),
+                urlString: "wss://echo.websocket.events",
+                createdAt: now
+            )
+            $0.connection = .init(
+                url: URL(string: "wss://echo.websocket.events")!,
+                customHeaders: [],
+                history: history
+            )
+        }
+    }
 }

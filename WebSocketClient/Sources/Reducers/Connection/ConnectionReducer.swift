@@ -28,10 +28,10 @@ struct ConnectionReducer: ReducerProtocol {
         }
 
         // MARK: - Initialize
-        init(url: URL, customHeaders: [CustomHeader]) {
+        init(url: URL, customHeaders: [CustomHeader], history: History) {
             self.url = url
             self.customHeaders = customHeaders
-            self.history = .init(urlString: url.absoluteString)
+            self.history = history
         }
     }
 
