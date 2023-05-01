@@ -71,6 +71,8 @@ private extension View {
                 )
             }
         }
+        .toolbarRole(.editor)
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 
