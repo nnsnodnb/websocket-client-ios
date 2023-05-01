@@ -45,7 +45,7 @@ private extension View {
                                 },
                                 label: {
                                     HStack {
-                                        Text("Check custom headers")
+                                        Text(L10n.HistoryDetail.Navibar.Menu.Title.checkCustomHeaders)
                                         Image(systemSymbol: .checkmarkMessageFill)
                                     }
                                 }
@@ -58,7 +58,7 @@ private extension View {
                             },
                             label: {
                                 HStack {
-                                    Text("Delete")
+                                    Text(L10n.HistoryDetail.Navibar.Menu.Title.delete)
                                     Image(systemSymbol: .trash)
                                 }
                             }

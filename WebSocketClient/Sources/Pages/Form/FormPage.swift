@@ -51,7 +51,7 @@ struct FormPage: View {
                 urlTextField(viewStore)
             },
             header: {
-                Text("Connection setting")
+                Text(L10n.Form.Section.First.Title.header)
             }
         )
     }
@@ -78,7 +78,7 @@ struct FormPage: View {
                 customHeaders(viewStore)
             },
             header: {
-                Text("Custom Headers")
+                Text(L10n.Form.Section.Second.Title.header)
             }
         )
     }
@@ -101,7 +101,7 @@ struct FormPage: View {
         GeometryReader { proxy in
             HStack {
                 TextField(
-                    "Name",
+                    L10n.Form.Section.Second.Title.name,
                     text: viewStore.binding(
                         get: { $0.customHeaders[safe: index]?.name ?? "" },
                         send: { .customHeaderNameChanged(index, $0) }
@@ -111,7 +111,7 @@ struct FormPage: View {
                 .frame(maxWidth: proxy.frame(in: .local).width / 3, maxHeight: .infinity)
                 Divider()
                 TextField(
-                    "Value",
+                    L10n.Form.Section.Second.Title.value,
                     text: viewStore.binding(
                         get: { $0.customHeaders[safe: index]?.value ?? "" },
                         send: { .customHeaderValueChanged(index, $0) }
@@ -131,7 +131,7 @@ struct FormPage: View {
             label: {
                 Label(
                     title: {
-                        Text("Add")
+                        Text(L10n.Form.Section.Second.Title.addButton)
                             .offset(x: -12)
                     },
                     icon: {
@@ -157,7 +157,7 @@ struct FormPage: View {
                 viewStore.send(.connect, animation: .default)
             },
             label: {
-                Text("Connect")
+                Text(L10n.Form.Section.Third.Title.connectButton)
                     .frame(maxWidth: .infinity)
             }
         )
@@ -169,7 +169,7 @@ private extension View {
     func keyboardToolbar(closeAction: @escaping () -> Void) -> some View {
         toolbar {
             ToolbarItemGroup(placement: .keyboard) {
-                Button("Close", action: closeAction)
+                Button(L10n.Form.Keyboard.Title.closeButton, action: closeAction)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }

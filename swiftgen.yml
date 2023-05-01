@@ -4,3 +4,10 @@ xcassets:
   outputs:
     templateName: swift5
     output: WebSocketClient/Generated/Assets.swift
+
+strings:
+  inputs:
+    - WebSocketClient/Resources/Languages/Base.lproj
+  outputs:
+    - templateName: structured-swift5
+      output: WebSocketClient/Generated/Localizable.swift

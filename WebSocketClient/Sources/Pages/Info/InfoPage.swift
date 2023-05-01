@@ -16,7 +16,7 @@ struct InfoPage: View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
             NavigationStack {
                 form(viewStore)
-                    .navigationTitle("App Information")
+                    .navigationTitle(L10n.Info.Navibar.title)
                     .safari(
                         url: viewStore.binding(
                             get: \.url,
@@ -51,7 +51,7 @@ struct InfoPage: View {
                     Asset.icGithub.swiftUIImage
                         .resizable()
                 },
-                text: "Source codes",
+                text: L10n.Info.Section.First.Title.sourceCodes,
                 action: {
                     viewStore.send(.urlSelected($0))
                 }
@@ -63,7 +63,7 @@ struct InfoPage: View {
                     Asset.icTwitter.swiftUIImage
                         .resizable()
                 },
-                text: "Contact Developer",
+                text: L10n.Info.Section.First.Title.contactDeveloper,
                 action: {
                     viewStore.send(.urlSelected($0))
                 }
@@ -81,7 +81,7 @@ struct InfoPage: View {
                         .resizable()
                         .foregroundColor(.purple)
                 },
-                text: "App Review",
+                text: L10n.Info.Section.Second.Title.appReview,
                 action: {
                     viewStore.send(.browserOpen($0))
                 }
@@ -97,7 +97,7 @@ struct InfoPage: View {
                         .resizable()
                         .foregroundColor(.yellow)
                         .frame(width: 18, height: 18)
-                    Text("Version")
+                    Text(L10n.Info.Section.Third.Title.version)
                         .foregroundColor(.primary)
                 }
                 Spacer()
@@ -109,7 +109,7 @@ struct InfoPage: View {
                     .resizable()
                     .foregroundColor(.orange)
                     .frame(width: 18, height: 18)
-                Text("Developed by SwiftUI")
+                Text(L10n.Info.Section.Third.Title.developed)
             }
         }
     }

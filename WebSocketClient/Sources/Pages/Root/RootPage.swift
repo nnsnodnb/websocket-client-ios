@@ -29,7 +29,7 @@ struct RootPage: View {
                 reducer: FormReducer()
             )
         )
-        .tabItem(systemSymbol: .squareAndPencil, text: "Connection")
+        .tabItem(systemSymbol: .squareAndPencil, text: L10n.TabBar.Title.connection)
     }
 
     private func historyPage() -> some View {
@@ -39,7 +39,7 @@ struct RootPage: View {
                 reducer: HistoryListReducer()
             )
         )
-        .tabItem(systemSymbol: .trayFullFill, text: "History")
+        .tabItem(systemSymbol: .trayFullFill, text: L10n.TabBar.Title.histories)
     }
 
     private func infoPage() -> some View {
@@ -49,7 +49,7 @@ struct RootPage: View {
                 reducer: InfoReducer()
             )
         )
-        .tabItem(systemSymbol: .infoCircleFill, text: "Info")
+        .tabItem(systemSymbol: .infoCircleFill, text: L10n.TabBar.Title.info)
     }
 }
 
