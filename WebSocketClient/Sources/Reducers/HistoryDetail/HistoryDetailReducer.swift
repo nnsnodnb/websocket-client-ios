@@ -13,6 +13,7 @@ struct HistoryDetailReducer: ReducerProtocol {
     struct State: Equatable {
         let history: History
         var alert: AlertState<Action>?
+        var isShowCustomHeaderList = false
     }
 
     // MARK: - Action
@@ -22,6 +23,8 @@ struct HistoryDetailReducer: ReducerProtocol {
         case alertDismissed
         case deleteResponse(TaskResult<Bool>)
         case deleted
+        case showCustomHeaderList
+        case dismissCustomHeaderList
     }
 
     @Dependency(\.databaseClient) var databaseClient
@@ -71,6 +74,12 @@ struct HistoryDetailReducer: ReducerProtocol {
                 }
                 return .none
             case .deleted:
+                return .none
+            case .showCustomHeaderList:
+                state.isShowCustomHeaderList = true
+                return .none
+            case .dismissCustomHeaderList:
+                state.isShowCustomHeaderList = false
                 return .none
             }
         }

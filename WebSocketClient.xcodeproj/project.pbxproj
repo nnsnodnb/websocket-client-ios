@@ -19,6 +19,8 @@
 		CFC1AA612A00175D00C62659 /* IdentifiedArrayOf+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA602A00175D00C62659 /* IdentifiedArrayOf+Extension.swift */; };
 		CFC1AA642A001B1600C62659 /* HistoryDetailReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA632A001B1600C62659 /* HistoryDetailReducerTests.swift */; };
 		CFC1AA672A00277B00C62659 /* HistoryListReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA662A00277B00C62659 /* HistoryListReducerTests.swift */; };
+		CFC1AA6A2A00347C00C62659 /* CustomHeaderListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA692A00347C00C62659 /* CustomHeaderListPage.swift */; };
+		CFC1AA6D2A00349100C62659 /* CustomHeaderListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA6C2A00349100C62659 /* CustomHeaderListReducer.swift */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -70,6 +72,8 @@
 		CFC1AA602A00175D00C62659 /* IdentifiedArrayOf+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IdentifiedArrayOf+Extension.swift"; sourceTree = "<group>"; };
 		CFC1AA632A001B1600C62659 /* HistoryDetailReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailReducerTests.swift; sourceTree = "<group>"; };
 		CFC1AA662A00277B00C62659 /* HistoryListReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducerTests.swift; sourceTree = "<group>"; };
+		CFC1AA692A00347C00C62659 /* CustomHeaderListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderListPage.swift; sourceTree = "<group>"; };
+		CFC1AA6C2A00349100C62659 /* CustomHeaderListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderListReducer.swift; sourceTree = "<group>"; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
@@ -189,6 +193,22 @@
 				CFC1AA662A00277B00C62659 /* HistoryListReducerTests.swift */,
 			);
 			path = HistoryList;
+			sourceTree = "<group>";
+		};
+		CFC1AA682A00346500C62659 /* CustomHeaderList */ = {
+			isa = PBXGroup;
+			children = (
+				CFC1AA692A00347C00C62659 /* CustomHeaderListPage.swift */,
+			);
+			path = CustomHeaderList;
+			sourceTree = "<group>";
+		};
+		CFC1AA6B2A00348600C62659 /* CustomHeaderList */ = {
+			isa = PBXGroup;
+			children = (
+				CFC1AA6C2A00349100C62659 /* CustomHeaderListReducer.swift */,
+			);
+			path = CustomHeaderList;
 			sourceTree = "<group>";
 		};
 		CFD5AB8329F0283B00765E48 /* Database */ = {
@@ -319,6 +339,7 @@
 				CFFF587529EBF1210037AA85 /* Info */,
 				CFFF589229EC524C0037AA85 /* Connection */,
 				CFC1AA5729FFC0BF00C62659 /* HistoryDetail */,
+				CFC1AA682A00346500C62659 /* CustomHeaderList */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -348,6 +369,7 @@
 				CFFF587F29EBF8E70037AA85 /* Info */,
 				CFFF589529EC52620037AA85 /* Connection */,
 				CFC1AA5A29FFC0E100C62659 /* HistoryDetail */,
+				CFC1AA6B2A00348600C62659 /* CustomHeaderList */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -599,6 +621,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFC1AA5629FFBCB100C62659 /* MessageListView.swift in Sources */,
+				CFC1AA6A2A00347C00C62659 /* CustomHeaderListPage.swift in Sources */,
 				CFD5AB8A29F0328300765E48 /* History.swift in Sources */,
 				CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */,
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
@@ -619,6 +642,7 @@
 				CFB2CEAA29EEC1710095D7D0 /* DependencyValues+Extension.swift in Sources */,
 				CFC1AA5C29FFC0E700C62659 /* HistoryDetailReducer.swift in Sources */,
 				CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */,
+				CFC1AA6D2A00349100C62659 /* CustomHeaderListReducer.swift in Sources */,
 				CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */,
 				CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */,
 				CFD5AB9229F180F500765E48 /* Message.swift in Sources */,

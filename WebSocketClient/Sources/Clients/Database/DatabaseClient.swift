@@ -54,6 +54,7 @@ extension DatabaseClient {
             let realm = try Realm()
             try realm.write {
                 realm.delete(history.messages)
+                realm.delete(history.customHeaders)
                 realm.delete(history)
             }
         }

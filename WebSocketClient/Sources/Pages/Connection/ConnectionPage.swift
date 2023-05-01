@@ -20,6 +20,15 @@ struct ConnectionPage: View {
                     .toolbar(viewStore)
             }
             .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.isShowCustomHeaderList,
+                    send: { $0 ? .showCustomHeaderList : .dismissCustomHeaderList }
+                )
+            ) {
+                CustomHeaderListPage(customHeaders: viewStore.customHeaders)
+                    .presentationDetents([.fraction(0.2), .large])
+            }
             .task {
                 viewStore.send(.start)
             }
@@ -88,7 +97,7 @@ private extension View {
                         content: {
                             Button(
                                 action: {
-                                    // TODO: open
+                                    viewStore.send(.showCustomHeaderList, animation: .default)
                                 },
                                 label: {
                                     HStack {
