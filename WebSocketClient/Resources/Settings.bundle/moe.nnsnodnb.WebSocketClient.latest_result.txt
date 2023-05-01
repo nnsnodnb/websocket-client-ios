@@ -10,9 +10,9 @@ name: LicensePlist, nameSpecified: LicensePlist, owner: mono0926, version: 3.24.
 
 name: LoggerAPI, nameSpecified: LoggerAPI, owner: Kitura, version: 2.0.0, source: https://github.com/Kitura/LoggerAPI
 
-name: realm-cocoa, nameSpecified: Realm, owner: realm, version: 10.38.2, source: https://github.com/realm/realm-cocoa
+name: realm-cocoa, nameSpecified: Realm, owner: realm, version: 10.38.3, source: https://github.com/realm/realm-cocoa
 
-name: realm-core, nameSpecified: RealmDatabase, owner: realm, version: 13.9.3, source: https://github.com/realm/realm-core
+name: realm-core, nameSpecified: RealmDatabase, owner: realm, version: 13.9.4, source: https://github.com/realm/realm-core
 
 name: Runtime, nameSpecified: Runtime, owner: wickwirew, version: 2.2.4, source: https://github.com/wickwirew/Runtime
 
