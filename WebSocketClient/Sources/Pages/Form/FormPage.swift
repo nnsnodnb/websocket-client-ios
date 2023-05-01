@@ -62,6 +62,7 @@ struct FormPage: View {
                     send: FormReducer.Action.urlChanged
                 )
             )
+            .frame(maxHeight: .infinity)
         }
     }
 
@@ -100,7 +101,7 @@ struct FormPage: View {
                         send: { .customHeaderNameChanged(index, $0) }
                     )
                 )
-                .frame(maxWidth: proxy.frame(in: .local).width / 3)
+                .frame(maxWidth: proxy.frame(in: .local).width / 3, maxHeight: .infinity)
                 Divider()
                 TextField(
                     "Value",
@@ -109,6 +110,7 @@ struct FormPage: View {
                         send: { .customHeaderValueChanged(index, $0) }
                     )
                 )
+                .frame(maxHeight: .infinity)
             }
         }
     }
