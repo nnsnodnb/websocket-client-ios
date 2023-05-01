@@ -23,6 +23,7 @@
 		CFC1AA702A0046BC00C62659 /* ConnectionReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA6F2A0046BC00C62659 /* ConnectionReducerTests.swift */; };
 		CFC1AA782A005FC800C62659 /* Localizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA772A005FC800C62659 /* Localizable.swift */; };
 		CFC1AAA02A006C4B00C62659 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AA9E2A006C4B00C62659 /* Localizable.strings */; };
+		CFC1AAA42A00768800C62659 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -113,6 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFC1AAA42A00768800C62659 /* FirebaseAnalyticsSwift in Frameworks */,
 				CFFF588429EBFD3A0037AA85 /* SafariView in Frameworks */,
 				CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */,
 				CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */,
@@ -526,6 +528,7 @@
 				CFFF588329EBFD3A0037AA85 /* SafariView */,
 				CFD5AB8729F0322C00765E48 /* Unrealm */,
 				CFC1AA5E29FFE77B00C62659 /* SwiftUINavigation */,
+				CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */,
 			);
 			productName = WebSocketClient;
 			productReference = CFFF581529E98D3B0037AA85 /* WebSocketClient.app */;
@@ -590,6 +593,7 @@
 				CFFF588529EC05290037AA85 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */,
 				CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */,
 				CFC1AA5D29FFE77B00C62659 /* XCRemoteSwiftPackageReference "swiftui-navigation" */,
+				CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = CFFF581629E98D3B0037AA85 /* Products */;
 			projectDirPath = "";
@@ -998,6 +1002,14 @@
 				minimumVersion = 0.7.1;
 			};
 		};
+		CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.9.0;
+			};
+		};
 		CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/arturdev/Unrealm.git";
@@ -1066,6 +1078,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFC1AA5D29FFE77B00C62659 /* XCRemoteSwiftPackageReference "swiftui-navigation" */;
 			productName = SwiftUINavigation;
+		};
+		CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
 		};
 		CFD5AB8729F0322C00765E48 /* Unrealm */ = {
 			isa = XCSwiftPackageProductDependency;
