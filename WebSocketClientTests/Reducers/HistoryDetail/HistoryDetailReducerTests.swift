@@ -40,20 +40,20 @@ final class HistoryDetailReducerTests: XCTestCase {
         await store.send(.checkDelete) {
             $0.alert = AlertState(
                 title: {
-                    TextState("本当に削除しますか？")
+                    TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
                 },
                 actions: {
                     ButtonState(
                         role: .cancel,
                         label: {
-                            TextState("キャンセル")
+                            TextState(L10n.HistoryDetail.Alert.Confirm.Title.cancel)
                         }
                     )
                     ButtonState(
                         role: .destructive,
                         action: .send(.confirm),
                         label: {
-                            TextState("削除")
+                            TextState(L10n.HistoryDetail.Alert.Confirm.Title.delete)
                         }
                     )
                 }
@@ -101,7 +101,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         await store.send(.confirm)
         await store.receive(.deleteResponse(.failure(Error.delete))) {
             $0.alert = AlertState {
-                TextState("削除に失敗しました")
+                TextState(L10n.HistoryDetail.Alert.DeletionFailed.Title.message)
             }
         }
         await store.send(.alertDismissed) {

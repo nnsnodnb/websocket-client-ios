@@ -21,7 +21,7 @@ struct HistoryListPage: View {
                 )
             ) {
                 content(viewStore)
-                    .navigationTitle("Histories")
+                    .navigationTitle(L10n.HistoryList.Navibar.title)
                     .navigationBarTitleDisplayMode(.inline)
             }
             .task {
@@ -44,7 +44,7 @@ struct HistoryListPage: View {
             Image(systemSymbol: .noteText)
                 .resizable()
                 .frame(width: 56, height: 56)
-            Text("No history")
+            Text(L10n.HistoryList.Content.Title.empty)
                 .font(.title2)
                 .fontWeight(.bold)
         }

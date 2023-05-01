@@ -45,7 +45,7 @@ struct ConnectionPage: View {
     private func messageTextField(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
         HStack {
             TextField(
-                "Message",
+                L10n.Connection.TextField.placeholder,
                 text: viewStore.binding(
                     get: \.message,
                     send: ConnectionReducer.Action.messageChanged
@@ -57,7 +57,7 @@ struct ConnectionPage: View {
                     viewStore.send(.sendMessage)
                 },
                 label: {
-                    Text("Send")
+                    Text(L10n.Connection.Title.sendButton)
                         .bold()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
@@ -101,7 +101,7 @@ private extension View {
                                 },
                                 label: {
                                     HStack {
-                                        Text("Check custom headers")
+                                        Text(L10n.Connection.Navibar.Menu.Title.checkCustomHeaders)
                                         Image(systemSymbol: .checkmarkMessageFill)
                                     }
                                 }

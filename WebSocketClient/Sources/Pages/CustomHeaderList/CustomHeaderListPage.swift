@@ -14,7 +14,7 @@ struct CustomHeaderListPage: View {
     var body: some View {
         NavigationStack {
             list
-                .navigationTitle("Additional headers")
+                .navigationTitle(L10n.CustomHeaderList.Navibar.title)
                 .navigationBarTitleDisplayMode(.inline)
         }
     }
