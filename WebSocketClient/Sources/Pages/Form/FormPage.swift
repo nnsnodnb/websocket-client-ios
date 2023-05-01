@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import FirebaseAnalyticsSwift
 import SFSafeSymbols
 import SwiftUI
 
@@ -32,6 +33,7 @@ struct FormPage: View {
                 }
             )
         })
+        .analyticsScreen(name: "form-page")
     }
 
     private func form(_ viewStore: ViewStoreOf<FormReducer>) -> some View {

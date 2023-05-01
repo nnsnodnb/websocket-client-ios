@@ -6,6 +6,8 @@
 //
 
 import ComposableArchitecture
+import FirebaseAnalytics
+import FirebaseAnalyticsSwift
 import SafariView
 import SwiftUI
 
@@ -32,6 +34,7 @@ struct InfoPage: View {
                 viewStore.send(.start)
             }
         })
+        .analyticsScreen(name: "info-page")
     }
 
     private func form(_ viewStore: ViewStoreOf<InfoReducer>) -> some View {
@@ -124,6 +127,12 @@ struct InfoPage: View {
         Button(
             action: {
                 action(url)
+                Analytics.logEvent(
+                    "url-tapped",
+                    parameters: [
+                        "url": url.absoluteString
+                    ]
+                )
             },
             label: {
                 HStack {

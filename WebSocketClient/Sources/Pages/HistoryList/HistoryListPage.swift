@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import FirebaseAnalyticsSwift
 import SFSafeSymbols
 import SwiftUI
 
@@ -28,6 +29,7 @@ struct HistoryListPage: View {
                 viewStore.send(.fetch)
             }
         })
+        .analyticsScreen(name: "history-list-page")
     }
 
     @ViewBuilder

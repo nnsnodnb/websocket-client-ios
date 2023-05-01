@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import FirebaseAnalyticsSwift
 import SFSafeSymbols
 import SwiftUI
 
@@ -29,6 +30,7 @@ struct HistoryDetailPage: View {
                 }
                 .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
         })
+        .analyticsScreen(name: "history-detail-page")
     }
 }
 
