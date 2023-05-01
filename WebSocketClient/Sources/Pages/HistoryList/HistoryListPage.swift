@@ -22,6 +22,7 @@ struct HistoryListPage: View {
             ) {
                 content(viewStore)
                     .navigationTitle("Histories")
+                    .navigationBarTitleDisplayMode(.inline)
             }
             .task {
                 viewStore.send(.fetch)
