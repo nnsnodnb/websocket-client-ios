@@ -12,12 +12,15 @@ struct HistoryListReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
         var histories: IdentifiedArrayOf<History> = []
+        var selectionHistory: Identified<History, HistoryDetailReducer.State?>?
     }
 
     // MARK: - Action
     enum Action: Equatable {
         case fetch
         case fetchResponse(TaskResult<[History]>)
+        case setNavigation(History?)
+        case historyDetail(HistoryDetailReducer.Action)
     }
 
     @Dependency(\.databaseClient) var databaseClient
@@ -40,7 +43,21 @@ struct HistoryListReducer: ReducerProtocol {
                 return .none
             case .fetchResponse(.failure):
                 return .none
+            case let .setNavigation(.some(history)):
+                state.selectionHistory = .init(.init(history: history), id: history)
+                return .none
+            case .setNavigation(.none):
+                state.selectionHistory = nil
+                return .none
+            case .historyDetail:
+                return .none
             }
+        }
+        .ifLet(\.selectionHistory, action: /Action.historyDetail) {
+            EmptyReducer()
+                .ifLet(\.value, action: .self) {
+                    HistoryDetailReducer()
+                }
         }
     }
 }

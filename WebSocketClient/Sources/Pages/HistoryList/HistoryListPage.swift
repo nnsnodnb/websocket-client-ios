@@ -47,9 +47,20 @@ struct HistoryListPage: View {
     private func list(_ viewStore: ViewStoreOf<HistoryListReducer>) -> some View {
         List(viewStore.histories) { history in
             NavigationLink(
-                destination: {
-                    EmptyView()
-                },
+                destination: IfLetStore(
+                    store.scope(
+                        state: \.selectionHistory?.value,
+                        action: HistoryListReducer.Action.historyDetail
+                    ),
+                    then: { store in
+                        HistoryDetailPage(store: store)
+                    }
+                ),
+                tag: history,
+                selection: viewStore.binding(
+                    get: \.selectionHistory?.id,
+                    send: HistoryListReducer.Action.setNavigation
+                ),
                 label: {
                     Text(history.urlString)
                 }
