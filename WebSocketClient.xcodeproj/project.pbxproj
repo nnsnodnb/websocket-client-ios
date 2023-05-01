@@ -25,6 +25,7 @@
 		CFC1AAA02A006C4B00C62659 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AA9E2A006C4B00C62659 /* Localizable.strings */; };
 		CFC1AAA42A00768800C62659 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */; };
 		CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */; };
+		CFC1AAAF2A007EC300C62659 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAAE2A007EC300C62659 /* FirebaseAnalytics */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -131,6 +132,7 @@
 			files = (
 				CFC1AA5329FC187F00C62659 /* libswift_Concurrency.tbd in Frameworks */,
 				CF708EF829FC065A00BB93F0 /* Unrealm in Frameworks */,
+				CFC1AAAF2A007EC300C62659 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,6 +556,7 @@
 			name = WebSocketClientTests;
 			packageProductDependencies = (
 				CF708EF729FC065A00BB93F0 /* Unrealm */,
+				CFC1AAAE2A007EC300C62659 /* FirebaseAnalytics */,
 			);
 			productName = WebSocketClientTests;
 			productReference = CFFF582529E98D3C0037AA85 /* WebSocketClientTests.xctest */;
@@ -890,6 +893,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -922,6 +926,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1109,6 +1114,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalyticsSwift;
+		};
+		CFC1AAAE2A007EC300C62659 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 		CFD5AB8729F0322C00765E48 /* Unrealm */ = {
 			isa = XCSwiftPackageProductDependency;
