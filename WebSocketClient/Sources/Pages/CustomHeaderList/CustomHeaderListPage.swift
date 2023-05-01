@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import FirebaseAnalyticsSwift
 import SwiftUI
 
 struct CustomHeaderListPage: View {
@@ -17,6 +18,7 @@ struct CustomHeaderListPage: View {
                 .navigationTitle(L10n.CustomHeaderList.Navibar.title)
                 .navigationBarTitleDisplayMode(.inline)
         }
+        .analyticsScreen(name: "custom-header-list-page")
     }
 
     private var list: some View {

@@ -12,6 +12,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/abseil-cpp-binary</string>
+			<key>Title</key>
+			<string>abseil</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.WebSocketClient/APIKit</string>
 			<key>Title</key>
 			<string>APIKit</string>
@@ -36,9 +44,65 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/firebase-ios-sdk</string>
+			<key>Title</key>
+			<string>Firebase</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/GoogleAppMeasurement</string>
+			<key>Title</key>
+			<string>GoogleAppMeasurement</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/GoogleDataTransport</string>
+			<key>Title</key>
+			<string>GoogleDataTransport</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/GoogleUtilities</string>
+			<key>Title</key>
+			<string>GoogleUtilities</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/grpc-binary</string>
+			<key>Title</key>
+			<string>gRPC</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/gtm-session-fetcher</string>
+			<key>Title</key>
+			<string>GTMSessionFetcher</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>moe.nnsnodnb.WebSocketClient/HeliumLogger</string>
 			<key>Title</key>
 			<string>HeliumLogger</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/leveldb</string>
+			<key>Title</key>
+			<string>leveldb</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -55,6 +119,22 @@
 			<string>moe.nnsnodnb.WebSocketClient/LoggerAPI</string>
 			<key>Title</key>
 			<string>LoggerAPI</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/nanopb</string>
+			<key>Title</key>
+			<string>nanopb</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/promises</string>
+			<key>Title</key>
+			<string>Promises</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
@@ -183,6 +263,14 @@
 			<string>moe.nnsnodnb.WebSocketClient/swift-log</string>
 			<key>Title</key>
 			<string>swift-log</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>moe.nnsnodnb.WebSocketClient/swift-protobuf</string>
+			<key>Title</key>
+			<string>SwiftProtobuf</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

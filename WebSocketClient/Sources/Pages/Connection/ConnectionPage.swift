@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import FirebaseAnalyticsSwift
 import SwiftUI
 
 struct ConnectionPage: View {
@@ -33,6 +34,7 @@ struct ConnectionPage: View {
                 viewStore.send(.start)
             }
         })
+        .analyticsScreen(name: "connection-page")
     }
 
     private func content(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {

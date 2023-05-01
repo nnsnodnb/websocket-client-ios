@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2023/04/14.
 //
 
+import FirebaseCore
 import RealmSwift
 import UIKit
 
@@ -17,6 +18,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         #if DEBUG
         print(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString ?? "Unknown realm file")
         #endif
+        FirebaseApp.configure()
         return true
     }
 }

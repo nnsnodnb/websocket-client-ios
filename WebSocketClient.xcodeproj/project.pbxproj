@@ -23,6 +23,8 @@
 		CFC1AA702A0046BC00C62659 /* ConnectionReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA6F2A0046BC00C62659 /* ConnectionReducerTests.swift */; };
 		CFC1AA782A005FC800C62659 /* Localizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA772A005FC800C62659 /* Localizable.swift */; };
 		CFC1AAA02A006C4B00C62659 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AA9E2A006C4B00C62659 /* Localizable.strings */; };
+		CFC1AAA42A00768800C62659 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */; };
+		CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -79,6 +81,7 @@
 		CFC1AA772A005FC800C62659 /* Localizable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Localizable.swift; sourceTree = "<group>"; };
 		CFC1AA9F2A006C4B00C62659 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Localizable.strings; sourceTree = "<group>"; };
 		CFC1AAA12A006C5500C62659 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ../ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
@@ -113,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFC1AAA42A00768800C62659 /* FirebaseAnalyticsSwift in Frameworks */,
 				CFFF588429EBFD3A0037AA85 /* SafariView in Frameworks */,
 				CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */,
 				CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */,
@@ -329,6 +333,7 @@
 		CFFF584429E98E3A0037AA85 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */,
 				CFFF581C29E98D3C0037AA85 /* Assets.xcassets */,
 				CFFF581E29E98D3C0037AA85 /* Preview Content */,
 				CFFF584A29E990A30037AA85 /* Settings.bundle */,
@@ -511,6 +516,7 @@
 				CFFF581229E98D3B0037AA85 /* Frameworks */,
 				CFFF581329E98D3B0037AA85 /* Resources */,
 				CFFF91D629EC6BF00037AA85 /* Copy Acknowledgements */,
+				CFC1AAA92A007B4200C62659 /* Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -526,6 +532,7 @@
 				CFFF588329EBFD3A0037AA85 /* SafariView */,
 				CFD5AB8729F0322C00765E48 /* Unrealm */,
 				CFC1AA5E29FFE77B00C62659 /* SwiftUINavigation */,
+				CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */,
 			);
 			productName = WebSocketClient;
 			productReference = CFFF581529E98D3B0037AA85 /* WebSocketClient.app */;
@@ -590,6 +597,7 @@
 				CFFF588529EC05290037AA85 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */,
 				CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */,
 				CFC1AA5D29FFE77B00C62659 /* XCRemoteSwiftPackageReference "swiftui-navigation" */,
+				CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = CFFF581629E98D3B0037AA85 /* Products */;
 			projectDirPath = "";
@@ -608,6 +616,7 @@
 			files = (
 				CFC1AAA02A006C4B00C62659 /* Localizable.strings in Resources */,
 				CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */,
+				CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */,
 				CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */,
 				CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */,
 			);
@@ -623,6 +632,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		CFC1AAA92A007B4200C62659 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = Crashlytics;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"${DEBUG_INFORMATION_FORMAT}\" = \"dwarf-with-dsym\" ]]; then\n  \"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nfi\n";
+		};
 		CFFF91D629EC6BF00037AA85 /* Copy Acknowledgements */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -998,6 +1028,14 @@
 				minimumVersion = 0.7.1;
 			};
 		};
+		CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.9.0;
+			};
+		};
 		CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/arturdev/Unrealm.git";
@@ -1066,6 +1104,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFC1AA5D29FFE77B00C62659 /* XCRemoteSwiftPackageReference "swiftui-navigation" */;
 			productName = SwiftUINavigation;
+		};
+		CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
 		};
 		CFD5AB8729F0322C00765E48 /* Unrealm */ = {
 			isa = XCSwiftPackageProductDependency;
