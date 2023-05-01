@@ -12,6 +12,7 @@
 		CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */; };
 		CFB2CEAA29EEC1710095D7D0 /* DependencyValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */; };
 		CFC1AA5329FC187F00C62659 /* libswift_Concurrency.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC1AA5229FC187F00C62659 /* libswift_Concurrency.tbd */; };
+		CFC1AA5629FFBCB100C62659 /* MessageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA5529FFBCB100C62659 /* MessageListView.swift */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -57,6 +58,7 @@
 		CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
 		CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Extension.swift"; sourceTree = "<group>"; };
 		CFC1AA5229FC187F00C62659 /* libswift_Concurrency.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswift_Concurrency.tbd; path = usr/lib/swift/libswift_Concurrency.tbd; sourceTree = SDKROOT; };
+		CFC1AA5529FFBCB100C62659 /* MessageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageListView.swift; sourceTree = "<group>"; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
@@ -135,6 +137,14 @@
 				CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */,
 			);
 			path = WebSocket;
+			sourceTree = "<group>";
+		};
+		CFC1AA5429FFBC9400C62659 /* Componenets */ = {
+			isa = PBXGroup;
+			children = (
+				CFC1AA5529FFBCB100C62659 /* MessageListView.swift */,
+			);
+			path = Componenets;
 			sourceTree = "<group>";
 		};
 		CFD5AB8329F0283B00765E48 /* Database */ = {
@@ -249,6 +259,7 @@
 				CFFF586829EBDC520037AA85 /* Entities */,
 				CFFF588F29EC0C200037AA85 /* Extensions */,
 				CFFF584629E98E680037AA85 /* Pages */,
+				CFC1AA5429FFBC9400C62659 /* Componenets */,
 				CFFF585729E997110037AA85 /* Reducers */,
 				CFB2CEA529EEBC9D0095D7D0 /* Clients */,
 			);
@@ -536,6 +547,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFC1AA5629FFBCB100C62659 /* MessageListView.swift in Sources */,
 				CFD5AB8A29F0328300765E48 /* History.swift in Sources */,
 				CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */,
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
