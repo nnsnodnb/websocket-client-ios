@@ -12,9 +12,11 @@ struct CustomHeaderListPage: View {
     let customHeaders: [CustomHeader]
 
     var body: some View {
-        list
-            .navigationTitle("Additional headers")
-            .navigationBarTitleDisplayMode(.inline)
+        NavigationStack {
+            list
+                .navigationTitle("Additional headers")
+                .navigationBarTitleDisplayMode(.inline)
+        }
     }
 
     private var list: some View {
