@@ -19,6 +19,7 @@ struct ConnectionReducer: ReducerProtocol {
         var receivedMessages: [String] = []
         var history: History
         var alert: AlertState<Action>?
+        var isShowCustomHeaderList = false
 
         // MARK: - ConnectivityState
         enum ConnectivityState: String {
@@ -28,9 +29,9 @@ struct ConnectionReducer: ReducerProtocol {
         }
 
         // MARK: - Initialize
-        init(url: URL, customHeaders: [CustomHeader], history: History) {
+        init(url: URL, history: History) {
             self.url = url
-            self.customHeaders = customHeaders
+            self.customHeaders = history.customHeaders
             self.history = history
         }
     }
@@ -47,6 +48,8 @@ struct ConnectionReducer: ReducerProtocol {
         case addHistoryResponse(TaskResult<Bool>)
         case updateHistoryResponse(TaskResult<Bool>)
         case alertDismissed
+        case showCustomHeaderList
+        case dismissCustomHeaderList
     }
 
     @Dependency(\.continuousClock) var clock
@@ -136,6 +139,12 @@ struct ConnectionReducer: ReducerProtocol {
                 state.alert = AlertState {
                     TextState("Could not update history.")
                 }
+                return .none
+            case .showCustomHeaderList:
+                state.isShowCustomHeaderList = true
+                return .none
+            case .dismissCustomHeaderList:
+                state.isShowCustomHeaderList = false
                 return .none
             }
         }

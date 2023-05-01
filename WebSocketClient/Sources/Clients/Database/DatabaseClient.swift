@@ -54,6 +54,7 @@ extension DatabaseClient {
             let realm = try Realm()
             try realm.write {
                 realm.delete(history.messages)
+                realm.delete(history.customHeaders)
                 realm.delete(history)
             }
         }
@@ -68,6 +69,14 @@ extension DatabaseClient: DependencyKey {
         addHistory: { try await DatabaseActor.shared.addHistory($0) },
         updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
         deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) }
+    )
+
+    static var previewValue = Self(
+        fetchHistories: { _ in [] },
+        getHistory: { _ in nil },
+        addHistory: { _ in },
+        updateHistory: { _ in },
+        deleteHistory: { _ in }
     )
 
     static var testValue = Self(

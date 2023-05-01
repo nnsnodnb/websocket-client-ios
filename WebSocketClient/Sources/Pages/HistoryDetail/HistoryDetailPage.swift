@@ -15,41 +15,62 @@ struct HistoryDetailPage: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
             MessageListView(messages: viewStore.history.messages.map { $0.text })
-                .navigationBar(viewStore)
+                .navigationTitle(viewStore.history.urlString)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar(viewStore)
+                .sheet(
+                    isPresented: viewStore.binding(
+                        get: \.isShowCustomHeaderList,
+                        send: { $0 ? .showCustomHeaderList : .dismissCustomHeaderList }
+                    )
+                ) {
+                    CustomHeaderListPage(customHeaders: viewStore.history.customHeaders)
+                        .presentationDetents([.fraction(0.2), .large])
+                }
                 .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
         })
     }
 }
 
 private extension View {
-    func navigationBar(_ viewStore: ViewStoreOf<HistoryDetailReducer>) -> some View {
-        self
-            .navigationTitle(viewStore.history.urlString)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu(
-                        content: {
+    func toolbar(_ viewStore: ViewStoreOf<HistoryDetailReducer>) -> some View {
+        toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu(
+                    content: {
+                        if !viewStore.history.customHeaders.isEmpty {
                             Button(
-                                role: .destructive,
                                 action: {
-                                    viewStore.send(.checkDelete)
+                                    viewStore.send(.showCustomHeaderList, animation: .default)
                                 },
                                 label: {
                                     HStack {
-                                        Text("削除")
-                                        Image(systemSymbol: .trash)
+                                        Text("Check custom headers")
+                                        Image(systemSymbol: .checkmarkMessageFill)
                                     }
                                 }
                             )
-                        },
-                        label: {
-                            Image(systemSymbol: .ellipsisCircle)
-                                .foregroundColor(.blue)
                         }
-                    )
-                }
+                        Button(
+                            role: .destructive,
+                            action: {
+                                viewStore.send(.checkDelete)
+                            },
+                            label: {
+                                HStack {
+                                    Text("Delete")
+                                    Image(systemSymbol: .trash)
+                                }
+                            }
+                        )
+                    },
+                    label: {
+                        Image(systemSymbol: .ellipsisCircle)
+                            .foregroundColor(.blue)
+                    }
+                )
             }
+        }
     }
 }
 
@@ -66,6 +87,9 @@ struct HistoryDetailPage_Previews: PreviewProvider {
                                 .init(text: "Hello")
                             ],
                             isConnectionSuccess: true,
+                            customHeaders: [
+                                .init(name: "name", value: "value")
+                            ],
                             createdAt: .init()
                         )
                     ),
