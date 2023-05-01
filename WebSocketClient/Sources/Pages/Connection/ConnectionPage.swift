@@ -61,9 +61,7 @@ struct ConnectionPage: View {
     }
 
     private func receivedMessageList(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
-        List(viewStore.receivedMessages.reversed(), id: \.self) { receivedMessage in
-            Text(receivedMessage)
-        }
+        MessageListView(messages: viewStore.receivedMessages)
     }
 }
 

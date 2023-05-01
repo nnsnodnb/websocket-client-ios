@@ -8,7 +8,7 @@
 import Foundation
 import Unrealm
 
-struct Message: Realmable, Equatable {
+struct Message: Realmable, Hashable {
     // MARK: - Properties
     let id = UUID().uuidString
     var text: String = ""

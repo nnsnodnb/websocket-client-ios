@@ -25,8 +25,7 @@ struct RootPage: View {
     private func formPage() -> some View {
         FormPage(
             store: Store(
-                initialState: FormReducer.State(url: URL(string: "https://echo.websocket.events"), isConnectButtonDisable: false),
-//                initialState: FormReducer.State(),
+                initialState: FormReducer.State(),
                 reducer: FormReducer()
             )
         )
