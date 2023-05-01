@@ -17,6 +17,7 @@
 		CFC1AA5C29FFC0E700C62659 /* HistoryDetailReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA5B29FFC0E700C62659 /* HistoryDetailReducer.swift */; };
 		CFC1AA5F29FFE77B00C62659 /* SwiftUINavigation in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AA5E29FFE77B00C62659 /* SwiftUINavigation */; };
 		CFC1AA612A00175D00C62659 /* IdentifiedArrayOf+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA602A00175D00C62659 /* IdentifiedArrayOf+Extension.swift */; };
+		CFC1AA642A001B1600C62659 /* HistoryDetailReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA632A001B1600C62659 /* HistoryDetailReducerTests.swift */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -66,6 +67,7 @@
 		CFC1AA5829FFC0CA00C62659 /* HistoryDetailPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailPage.swift; sourceTree = "<group>"; };
 		CFC1AA5B29FFC0E700C62659 /* HistoryDetailReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailReducer.swift; sourceTree = "<group>"; };
 		CFC1AA602A00175D00C62659 /* IdentifiedArrayOf+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IdentifiedArrayOf+Extension.swift"; sourceTree = "<group>"; };
+		CFC1AA632A001B1600C62659 /* HistoryDetailReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailReducerTests.swift; sourceTree = "<group>"; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
@@ -167,6 +169,14 @@
 			isa = PBXGroup;
 			children = (
 				CFC1AA5B29FFC0E700C62659 /* HistoryDetailReducer.swift */,
+			);
+			path = HistoryDetail;
+			sourceTree = "<group>";
+		};
+		CFC1AA622A001AFE00C62659 /* HistoryDetail */ = {
+			isa = PBXGroup;
+			children = (
+				CFC1AA632A001B1600C62659 /* HistoryDetailReducerTests.swift */,
 			);
 			path = HistoryDetail;
 			sourceTree = "<group>";
@@ -371,6 +381,7 @@
 			children = (
 				CFFF586C29EBE6FB0037AA85 /* Form */,
 				CF708EF929FC09FB00BB93F0 /* Info */,
+				CFC1AA622A001AFE00C62659 /* HistoryDetail */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -610,6 +621,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */,
+				CFC1AA642A001B1600C62659 /* HistoryDetailReducerTests.swift in Sources */,
 				CF708EFB29FC0A1100BB93F0 /* InfoReducerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
