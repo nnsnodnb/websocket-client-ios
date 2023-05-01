@@ -42,7 +42,7 @@ struct ConnectionPage: View {
                     send: ConnectionReducer.Action.messageChanged
                 )
             )
-            .padding(.vertical, 16)
+            .frame(height: 44)
             Button(
                 action: {
                     viewStore.send(.sendMessage)
@@ -54,9 +54,10 @@ struct ConnectionPage: View {
                 }
             )
             .disabled(viewStore.isSendButtonDisabled)
-            .frame(width: 80, height: 44)
+            .frame(width: 80)
         }
         .padding(.horizontal)
+        .frame(height: 44)
         .backgroundStyle(Color.clear)
     }
 
@@ -81,20 +82,55 @@ private extension View {
                     }
                 )
             }
+            if !viewStore.customHeaders.isEmpty {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu(
+                        content: {
+                            Button(
+                                action: {
+                                    // TODO: open
+                                },
+                                label: {
+                                    HStack {
+                                        Text("Check custom headers")
+                                        Image(systemSymbol: .checkmarkMessageFill)
+                                    }
+                                }
+                            )
+                        },
+                        label: {
+                            Image(systemSymbol: .ellipsisCircle)
+                        }
+                    )
+                }
+            }
         }
     }
 }
 
 struct ConnectionPage_Previews: PreviewProvider {
     static var previews: some View {
-        ConnectionPage(
-            store: .init(
-                initialState: ConnectionReducer.State(
-                    url: URL(string: "wss://echo.websocket.events")!,
-                    history: .init()
-                ),
-                reducer: ConnectionReducer()
+        Group {
+            ConnectionPage(
+                store: .init(
+                    initialState: ConnectionReducer.State(
+                        url: URL(string: "wss://echo.websocket.events")!,
+                        history: .init()
+                    ),
+                    reducer: ConnectionReducer()
+                )
             )
-        )
+            .previewDisplayName("Empty custom header")
+            ConnectionPage(
+                store: .init(
+                    initialState: ConnectionReducer.State(
+                        url: URL(string: "wss://echo.websocket.events")!,
+                        history: .init(customHeaders: [.init(name: "name", value: "value")])
+                    ),
+                    reducer: ConnectionReducer()
+                )
+            )
+            .previewDisplayName("Exist custom headers")
+        }
     }
 }

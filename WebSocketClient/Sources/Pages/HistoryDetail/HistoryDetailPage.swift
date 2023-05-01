@@ -15,41 +15,40 @@ struct HistoryDetailPage: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
             MessageListView(messages: viewStore.history.messages.map { $0.text })
-                .navigationBar(viewStore)
+                .navigationTitle(viewStore.history.urlString)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar(viewStore)
                 .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
         })
     }
 }
 
 private extension View {
-    func navigationBar(_ viewStore: ViewStoreOf<HistoryDetailReducer>) -> some View {
-        self
-            .navigationTitle(viewStore.history.urlString)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu(
-                        content: {
-                            Button(
-                                role: .destructive,
-                                action: {
-                                    viewStore.send(.checkDelete)
-                                },
-                                label: {
-                                    HStack {
-                                        Text("削除")
-                                        Image(systemSymbol: .trash)
-                                    }
+    func toolbar(_ viewStore: ViewStoreOf<HistoryDetailReducer>) -> some View {
+        toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Menu(
+                    content: {
+                        Button(
+                            role: .destructive,
+                            action: {
+                                viewStore.send(.checkDelete)
+                            },
+                            label: {
+                                HStack {
+                                    Text("削除")
+                                    Image(systemSymbol: .trash)
                                 }
-                            )
-                        },
-                        label: {
-                            Image(systemSymbol: .ellipsisCircle)
-                                .foregroundColor(.blue)
-                        }
-                    )
-                }
+                            }
+                        )
+                    },
+                    label: {
+                        Image(systemSymbol: .ellipsisCircle)
+                            .foregroundColor(.blue)
+                    }
+                )
             }
+        }
     }
 }
 

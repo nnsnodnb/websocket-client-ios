@@ -70,6 +70,14 @@ extension DatabaseClient: DependencyKey {
         deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) }
     )
 
+    static var previewValue = Self(
+        fetchHistories: { _ in [] },
+        getHistory: { _ in nil },
+        addHistory: { _ in },
+        updateHistory: { _ in },
+        deleteHistory: { _ in }
+    )
+
     static var testValue = Self(
         fetchHistories: unimplemented("\(Self.self).fetchHistories"),
         getHistory: unimplemented("\(Self.self).getHistory"),
