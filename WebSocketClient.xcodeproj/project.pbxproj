@@ -20,7 +20,7 @@
 		CFC1AA642A001B1600C62659 /* HistoryDetailReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA632A001B1600C62659 /* HistoryDetailReducerTests.swift */; };
 		CFC1AA672A00277B00C62659 /* HistoryListReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA662A00277B00C62659 /* HistoryListReducerTests.swift */; };
 		CFC1AA6A2A00347C00C62659 /* CustomHeaderListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA692A00347C00C62659 /* CustomHeaderListPage.swift */; };
-		CFC1AA6D2A00349100C62659 /* CustomHeaderListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA6C2A00349100C62659 /* CustomHeaderListReducer.swift */; };
+		CFC1AA702A0046BC00C62659 /* ConnectionReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC1AA6F2A0046BC00C62659 /* ConnectionReducerTests.swift */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -73,7 +73,7 @@
 		CFC1AA632A001B1600C62659 /* HistoryDetailReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailReducerTests.swift; sourceTree = "<group>"; };
 		CFC1AA662A00277B00C62659 /* HistoryListReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducerTests.swift; sourceTree = "<group>"; };
 		CFC1AA692A00347C00C62659 /* CustomHeaderListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderListPage.swift; sourceTree = "<group>"; };
-		CFC1AA6C2A00349100C62659 /* CustomHeaderListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderListReducer.swift; sourceTree = "<group>"; };
+		CFC1AA6F2A0046BC00C62659 /* ConnectionReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionReducerTests.swift; sourceTree = "<group>"; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
@@ -203,12 +203,12 @@
 			path = CustomHeaderList;
 			sourceTree = "<group>";
 		};
-		CFC1AA6B2A00348600C62659 /* CustomHeaderList */ = {
+		CFC1AA6E2A0046AB00C62659 /* Connection */ = {
 			isa = PBXGroup;
 			children = (
-				CFC1AA6C2A00349100C62659 /* CustomHeaderListReducer.swift */,
+				CFC1AA6F2A0046BC00C62659 /* ConnectionReducerTests.swift */,
 			);
-			path = CustomHeaderList;
+			path = Connection;
 			sourceTree = "<group>";
 		};
 		CFD5AB8329F0283B00765E48 /* Database */ = {
@@ -369,7 +369,6 @@
 				CFFF587F29EBF8E70037AA85 /* Info */,
 				CFFF589529EC52620037AA85 /* Connection */,
 				CFC1AA5A29FFC0E100C62659 /* HistoryDetail */,
-				CFC1AA6B2A00348600C62659 /* CustomHeaderList */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -414,6 +413,7 @@
 				CFFF586C29EBE6FB0037AA85 /* Form */,
 				CFC1AA652A00276200C62659 /* HistoryList */,
 				CF708EF929FC09FB00BB93F0 /* Info */,
+				CFC1AA6E2A0046AB00C62659 /* Connection */,
 				CFC1AA622A001AFE00C62659 /* HistoryDetail */,
 			);
 			path = Reducers;
@@ -642,7 +642,6 @@
 				CFB2CEAA29EEC1710095D7D0 /* DependencyValues+Extension.swift in Sources */,
 				CFC1AA5C29FFC0E700C62659 /* HistoryDetailReducer.swift in Sources */,
 				CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */,
-				CFC1AA6D2A00349100C62659 /* CustomHeaderListReducer.swift in Sources */,
 				CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */,
 				CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */,
 				CFD5AB9229F180F500765E48 /* Message.swift in Sources */,
@@ -658,6 +657,7 @@
 				CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */,
 				CFC1AA642A001B1600C62659 /* HistoryDetailReducerTests.swift in Sources */,
 				CF708EFB29FC0A1100BB93F0 /* InfoReducerTests.swift in Sources */,
+				CFC1AA702A0046BC00C62659 /* ConnectionReducerTests.swift in Sources */,
 				CFC1AA672A00277B00C62659 /* HistoryListReducerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

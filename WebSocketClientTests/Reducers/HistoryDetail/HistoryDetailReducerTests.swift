@@ -108,4 +108,33 @@ final class HistoryDetailReducerTests: XCTestCase {
             $0.alert = nil
         }
     }
+
+    func testShowCustomHeaderList() async throws {
+        let store = TestStore(
+            initialState: HistoryDetailReducer.State(history: history),
+            reducer: HistoryDetailReducer()
+        )
+
+        await store.send(.showCustomHeaderList) {
+            $0.isShowCustomHeaderList = true
+        }
+    }
+
+    func testDismissCustomHeaderList() async throws {
+        let store = TestStore(
+            initialState: HistoryDetailReducer.State(history: history),
+            reducer: HistoryDetailReducer()
+        )
+
+        // already dismiss
+        await store.send(.dismissCustomHeaderList)
+
+        // dismiss
+        await store.send(.showCustomHeaderList) {
+            $0.isShowCustomHeaderList = true
+        }
+        await store.send(.dismissCustomHeaderList) {
+            $0.isShowCustomHeaderList = false
+        }
+    }
 }
