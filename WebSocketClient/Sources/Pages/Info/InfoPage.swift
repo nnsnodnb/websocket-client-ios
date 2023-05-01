@@ -104,7 +104,7 @@ struct InfoPage: View {
                 Text("v\(viewStore.version)")
                     .foregroundColor(.secondary)
             }
-            HStack {
+            HStack(spacing: 12) {
                 Image(systemSymbol: .swift)
                     .resizable()
                     .foregroundColor(.orange)
