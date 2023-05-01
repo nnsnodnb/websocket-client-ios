@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Unrealm
 
-struct CustomHeader: Equatable, Sendable {
+struct CustomHeader: Realmable, Hashable, Sendable {
     // MARK: - Properties
-    let name: String
-    let value: String
+    var name: String = ""
+    var value: String = ""
 }

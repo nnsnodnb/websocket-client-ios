@@ -14,6 +14,7 @@ struct History: Realmable, Identifiable, Hashable {
     var urlString: String = ""
     var messages: [Message] = []
     var isConnectionSuccess = false
+    var customHeaders: [CustomHeader] = []
     var createdAt: Date = .init()
 
     static func primaryKey() -> String? {

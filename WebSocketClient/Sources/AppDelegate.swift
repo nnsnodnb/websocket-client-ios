@@ -13,7 +13,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-        Realm.registerRealmables([History.self, Message.self])
+        Realm.registerRealmables([CustomHeader.self, History.self, Message.self])
         #if DEBUG
         print(Realm.Configuration.defaultConfiguration.fileURL?.absoluteString ?? "Unknown realm file")
         #endif
