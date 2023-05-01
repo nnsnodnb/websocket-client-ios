@@ -12,6 +12,8 @@ import SwiftUI
 struct FormPage: View {
     let store: StoreOf<FormReducer>
 
+    @FocusState private var isFocused: Bool
+
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
             NavigationStack {
@@ -38,6 +40,9 @@ struct FormPage: View {
             secondSection(viewStore)
             thirdSection(viewStore)
         }
+        .keyboardToolbar {
+            isFocused = false
+        }
     }
 
     private func firstSection(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
@@ -62,6 +67,8 @@ struct FormPage: View {
                     send: FormReducer.Action.urlChanged
                 )
             )
+            .focused($isFocused)
+            .frame(maxHeight: .infinity)
         }
     }
 
@@ -100,7 +107,8 @@ struct FormPage: View {
                         send: { .customHeaderNameChanged(index, $0) }
                     )
                 )
-                .frame(maxWidth: proxy.frame(in: .local).width / 3)
+                .focused($isFocused)
+                .frame(maxWidth: proxy.frame(in: .local).width / 3, maxHeight: .infinity)
                 Divider()
                 TextField(
                     "Value",
@@ -109,6 +117,8 @@ struct FormPage: View {
                         send: { .customHeaderValueChanged(index, $0) }
                     )
                 )
+                .focused($isFocused)
+                .frame(maxHeight: .infinity)
             }
         }
     }
@@ -152,6 +162,17 @@ struct FormPage: View {
             }
         )
         .disabled(viewStore.isConnectButtonDisable)
+    }
+}
+
+private extension View {
+    func keyboardToolbar(closeAction: @escaping () -> Void) -> some View {
+        toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Button("Close", action: closeAction)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+        }
     }
 }
 
