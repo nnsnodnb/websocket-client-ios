@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import SFSafeSymbols
 import SwiftUI
 
 struct HistoryListPage: View {
@@ -13,7 +14,12 @@ struct HistoryListPage: View {
 
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
-            NavigationStack {
+            NavigationStack(
+                path: viewStore.binding(
+                    get: \.paths,
+                    send: HistoryListReducer.Action.navigationPathChanged
+                )
+            ) {
                 content(viewStore)
                     .navigationTitle("Histories")
             }
@@ -45,27 +51,49 @@ struct HistoryListPage: View {
     }
 
     private func list(_ viewStore: ViewStoreOf<HistoryListReducer>) -> some View {
-        List(viewStore.histories) { history in
-            NavigationLink(
-                destination: IfLetStore(
-                    store.scope(
-                        state: \.selectionHistory?.value,
-                        action: HistoryListReducer.Action.historyDetail
-                    ),
-                    then: { store in
-                        HistoryDetailPage(store: store)
-                    }
-                ),
-                tag: history,
-                selection: viewStore.binding(
-                    get: \.selectionHistory?.id,
-                    send: HistoryListReducer.Action.setNavigation
-                ),
+        List {
+            ForEach(viewStore.histories) { history in
+                row(viewStore, for: history)
+            }
+            .onDelete {
+                viewStore.send(.deleteHistory($0), animation: .default)
+            }
+        }
+    }
+
+    private func row(_ viewStore: ViewStoreOf<HistoryListReducer>, for history: History) -> some View {
+        HStack {
+            Button(
+                action: {
+                    viewStore.send(.setNavigation(history))
+                },
                 label: {
                     Text(history.urlString)
+                        .foregroundColor(.primary)
                 }
             )
+            Spacer()
+            Image(systemSymbol: .chevronRight)
+                .foregroundColor(.secondary)
+                .frame(width: 12, height: 12)
         }
+        .navigationDestination(
+            for: HistoryListReducer.State.Destination.self,
+            destination: { destination in
+                switch destination {
+                case .historyDetail:
+                    IfLetStore(
+                        store.scope(
+                            state: \.selectionHistory?.value,
+                            action: HistoryListReducer.Action.historyDetail
+                        ),
+                        then: { store in
+                            HistoryDetailPage(store: store)
+                        }
+                    )
+                }
+            }
+        )
     }
 }
 

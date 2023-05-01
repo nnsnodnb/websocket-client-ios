@@ -16,6 +16,7 @@ struct DatabaseClient {
     var getHistory: @Sendable (Int) async throws -> History?
     var addHistory: @Sendable (History) async throws -> Void
     var updateHistory: @Sendable (History) async throws -> Void
+    var deleteHistory: @Sendable (History) async throws -> Void
 }
 
 extension DatabaseClient {
@@ -48,6 +49,14 @@ extension DatabaseClient {
                 realm.add(history, update: .modified)
             }
         }
+
+        func deleteHistory(_ history: History) throws {
+            let realm = try Realm()
+            try realm.write {
+                realm.delete(history.messages)
+                realm.delete(history)
+            }
+        }
     }
 }
 
@@ -57,13 +66,15 @@ extension DatabaseClient: DependencyKey {
         fetchHistories: { try await DatabaseActor.shared.fetchHistories(operation: $0) },
         getHistory: { try await DatabaseActor.shared.getHistory(id: $0) },
         addHistory: { try await DatabaseActor.shared.addHistory($0) },
-        updateHistory: { try await DatabaseActor.shared.updateHistory($0) }
+        updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
+        deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) }
     )
 
     static var testValue = Self(
         fetchHistories: unimplemented("\(Self.self).fetchHistories"),
         getHistory: unimplemented("\(Self.self).getHistory"),
         addHistory: unimplemented("\(Self.self).addHistory"),
-        updateHistory: unimplemented("\(Self.self).updateHistory")
+        updateHistory: unimplemented("\(Self.self).updateHistory"),
+        deleteHistory: unimplemented("\(Self.self).deleteHistory")
     )
 }

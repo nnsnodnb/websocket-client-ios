@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import SFSafeSymbols
 import SwiftUI
 
 struct HistoryDetailPage: View {
@@ -13,18 +14,64 @@ struct HistoryDetailPage: View {
 
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
-            Text(viewStore.history.id)
+            MessageListView(messages: viewStore.history.messages.map { $0.text })
+                .navigationBar(viewStore)
+                .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
         })
+    }
+}
+
+private extension View {
+    func navigationBar(_ viewStore: ViewStoreOf<HistoryDetailReducer>) -> some View {
+        self
+            .navigationTitle(viewStore.history.urlString)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Menu(
+                        content: {
+                            Button(
+                                role: .destructive,
+                                action: {
+                                    viewStore.send(.checkDelete)
+                                },
+                                label: {
+                                    HStack {
+                                        Text("削除")
+                                        Image(systemSymbol: .trash)
+                                    }
+                                }
+                            )
+                        },
+                        label: {
+                            Image(systemSymbol: .ellipsisCircle)
+                                .foregroundColor(.blue)
+                        }
+                    )
+                }
+            }
     }
 }
 
 struct HistoryDetailPage_Previews: PreviewProvider {
     static var previews: some View {
-        HistoryDetailPage(
-            store: .init(
-                initialState: HistoryDetailReducer.State(history: .init()),
-                reducer: HistoryDetailReducer()
+        NavigationStack {
+            HistoryDetailPage(
+                store: .init(
+                    initialState: HistoryDetailReducer.State(
+                        history: .init(
+                            id: UUID(0).uuidString,
+                            urlString: "wss://echo.websocket.events",
+                            messages: [
+                                .init(text: "Hello")
+                            ],
+                            isConnectionSuccess: true,
+                            createdAt: .init()
+                        )
+                    ),
+                    reducer: HistoryDetailReducer()
+                )
             )
-        )
+        }
     }
 }
