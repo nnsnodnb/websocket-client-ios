@@ -46,24 +46,24 @@ struct InfoPage: View {
         Section {
             urlRow(
                 viewStore,
-                url: URL(string: "https://twitter.com/nnsnodnb")!,
-                icon: {
-                    Asset.icTwitter.swiftUIImage
-                        .resizable()
-                },
-                text: "Contact Developer",
-                action: {
-                    viewStore.send(.urlSelected($0))
-                }
-            )
-            urlRow(
-                viewStore,
                 url: URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!,
                 icon: {
                     Asset.icGithub.swiftUIImage
                         .resizable()
                 },
                 text: "Source codes",
+                action: {
+                    viewStore.send(.urlSelected($0))
+                }
+            )
+            urlRow(
+                viewStore,
+                url: URL(string: "https://twitter.com/nnsnodnb")!,
+                icon: {
+                    Asset.icTwitter.swiftUIImage
+                        .resizable()
+                },
+                text: "Contact Developer",
                 action: {
                     viewStore.send(.urlSelected($0))
                 }
@@ -103,6 +103,13 @@ struct InfoPage: View {
                 Spacer()
                 Text("v\(viewStore.version)")
                     .foregroundColor(.secondary)
+            }
+            HStack(spacing: 12) {
+                Image(systemSymbol: .swift)
+                    .resizable()
+                    .foregroundColor(.orange)
+                    .frame(width: 18, height: 18)
+                Text("Developed by SwiftUI")
             }
         }
     }
