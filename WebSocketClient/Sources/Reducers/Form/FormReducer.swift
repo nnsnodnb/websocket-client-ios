@@ -66,13 +66,10 @@ struct FormReducer: ReducerProtocol {
                 let history = History(
                     id: uuid.callAsFunction().uuidString,
                     urlString: url.absoluteString,
+                    customHeaders: state.customHeaders,
                     createdAt: date.callAsFunction()
                 )
-                state.connection = .init(
-                    url: url,
-                    customHeaders: state.customHeaders,
-                    history: history
-                )
+                state.connection = .init(url: url, history: history)
                 return .none
             case .connectionOpen:
                 return .none

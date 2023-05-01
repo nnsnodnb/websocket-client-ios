@@ -91,7 +91,6 @@ struct ConnectionPage_Previews: PreviewProvider {
             store: .init(
                 initialState: ConnectionReducer.State(
                     url: URL(string: "wss://echo.websocket.events")!,
-                    customHeaders: [],
                     history: .init()
                 ),
                 reducer: ConnectionReducer()

@@ -28,9 +28,9 @@ struct ConnectionReducer: ReducerProtocol {
         }
 
         // MARK: - Initialize
-        init(url: URL, customHeaders: [CustomHeader], history: History) {
+        init(url: URL, history: History) {
             self.url = url
-            self.customHeaders = customHeaders
+            self.customHeaders = history.customHeaders
             self.history = history
         }
     }

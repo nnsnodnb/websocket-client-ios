@@ -143,7 +143,6 @@ final class FormReducerTests: XCTestCase {
             )
             $0.connection = .init(
                 url: URL(string: "wss://echo.websocket.events")!,
-                customHeaders: [],
                 history: history
             )
         }
