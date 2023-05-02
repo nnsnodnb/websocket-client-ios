@@ -31,8 +31,11 @@ workflows:
         - cache_paths: |-
             ./vendor/bundle -> Gemfile.lock
     - script@1:
-          inputs:
-          - content: cp -r fastlane/test_output/* /Users/vagrant/deploy
+        inputs:
+        - content: |
+            cp -r fastlane/test_output/* /Users/vagrant/deploy
+            cp -r Products/* /Users/vagrant/deploy
+        title: Copy fastlane's ouptuts
     - deploy-to-bitrise-io@2:
         inputs:
         - notify_user_groups: none
@@ -76,6 +79,9 @@ app:
   - opts:
       is_expand: false
     BITRISE_SCHEME: WebSocketClient
+  - opts:
+      is_expand: false
+    MATCH_KEYCHAIN_PASSWORD: ""
 
 meta:
   bitrise.io:
