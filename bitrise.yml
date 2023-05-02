@@ -7,20 +7,39 @@ workflows:
     steps:
     - activate-ssh-key@4: {}
     - git-clone@8: {}
+    - cache-pull@2: {}
+    - script@1:
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -e
+            set -o pipefail
+            set -x
+
+            gem install bundler -v "$(tail -n 1 Gemfile.lock | sed -r 's/ //g')" -N
+            bundle config set path './vendor/bundle'
+            bundle config set jobs '4'
+            bundle config set retry '3'
+            bundle install
+        title: Bundle Install
     - restore-spm-cache@1: {}
     - script@1:
-          inputs:
-          - content: |-
-              #!/usr/bin/env bash
-              set -e
-              set -o pipefail
-              set -x
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -e
+            set -o pipefail
+            set -x
 
-              defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
-          title: Write IDESkipPackagePluginFingerprintValidatation
+            defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+        title: Write IDESkipPackagePluginFingerprintValidatation
   _teardown:
     steps:
     - save-spm-cache@1: {}
+    - cache-push@2:
+        inputs:
+        - cache_paths: |-
+            ./vendor/bundle -> Gemfile.lock
     - deploy-to-bitrise-io@2: {}
   deploy:
     before_run:
@@ -35,16 +54,14 @@ workflows:
           - cache_level: none
     after_run:
       - _teardown
-  primary:
+  test:
     before_run:
       - _setup
     steps:
-      - xcode-test@4:
+      - fastlane@3:
           inputs:
-          - project_path: "$BITRISE_PROJECT_PATH"
-          - scheme: "$BITRISE_SCHEME"
-          - test_repetition_mode: retry_on_failure
-          - cache_level: none
+          - lane: "test"
+          - update_fastlane: false
     after_run:
       - _teardown
 
@@ -52,7 +69,7 @@ trigger_map:
   - push_branch: main
     workflow: deploy
   - pull_request_source_branch: '*'
-    workflow: primary
+    workflow: test
 
 app:
   envs:
