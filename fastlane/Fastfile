@@ -1,0 +1,58 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Run tests"
+  lane :test do
+    scan
+  end
+
+  # Match
+  desc "Setup development certificates"
+  lane :setup_development_certificates do
+    match(
+      type: "development",
+    )
+  end
+
+  desc "Setup adhoc certificates"
+  lane :setup_adhoc_certificates do
+    match(
+      type: "adhoc",
+    )
+  end
+
+  desc "Setup AppStore certificates"
+  lane :setup_appstore_certificates do
+    match(
+      type: "appstore",
+    )
+  end
+
+  # Gym
+  desc "Gym for adhoc"
+  lane :adhoc do
+    setup_adhoc_certificates
+
+    gym(
+      export_method: "ad-hoc",
+      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient'",
+    )
+
+    if is_ci
+      firebase_app_distribution(
+        app: "1:89035443908:ios:2b6115971af3118435c391",
+        ipa_path: "Products/WebSocketClient.ipa",
+        groups: "owner",
+      )
+    end
+  end
+
+  desc "Gym for appstore"
+  lane :release do
+    setup_appstore_certificates
+
+    gym(
+      export_method: "app-store",
+    )
+  end
+end

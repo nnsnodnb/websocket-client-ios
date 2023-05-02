@@ -7,52 +7,82 @@ workflows:
     steps:
     - activate-ssh-key@4: {}
     - git-clone@8: {}
+    - script@1:
+        run_if: .IsCI
+        inputs:
+        - content: rbenv global 3.2.1
+        title: Switch Ruby version
+    - cache-pull@2: {}
     - restore-spm-cache@1: {}
     - script@1:
-          inputs:
-          - content: |-
-              #!/usr/bin/env bash
-              set -e
-              set -o pipefail
-              set -x
+        inputs:
+        - content: |-
+            #!/usr/bin/env bash
+            set -e
+            set -o pipefail
+            set -x
 
-              defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
-          title: Write IDESkipPackagePluginFingerprintValidatation
+            defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+        title: Write IDESkipPackagePluginFingerprintValidatation
   _teardown:
     steps:
     - save-spm-cache@1: {}
-    - deploy-to-bitrise-io@2: {}
-  deploy:
+    - cache-push@2:
+        inputs:
+        - cache_paths: |-
+            ./vendor/bundle -> Gemfile.lock
+    - script@1:
+        inputs:
+        - content: |
+            if [[ -f fastlane/test_output ]]; then
+              cp -r fastlane/test_output/* /Users/vagrant/deploy
+            fi
+            if [[ -f Products ]]; then
+              cp -r Products/* /Users/vagrant/deploy
+            fi
+        title: Copy fastlane's ouptuts
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_user_groups: none
+  adhoc:
     before_run:
       - _setup
     steps:
-      - xcode-archive@4:
+      - script@1:
           inputs:
-          - project_path: "$BITRISE_PROJECT_PATH"
-          - scheme: "$BITRISE_SCHEME"
-          - distribution_method: "$BITRISE_DISTRIBUTION_METHOD"
-          - automatic_code_signing: api-key
-          - cache_level: none
+          - content: |-
+              envman add --key MATCH_GIT_PRIVATE_KEY --value "$(echo -n ${GIT_PRIVATE_KEY} | base64 -d)"
+          title: Add MATCH_GIT_PRIVATE_KEY
+      - file-downloader@1:
+          inputs:
+          - source: "${BITRISEIO_FIREBASE_APP_DISTRIBUTION_KEY_URL}"
+          - destination: "/tmp/app-distribution-key.json"
+      - scirpt@1:
+          inputs:
+          - content: |-
+              envman add --key GOOGLE_APPLICATION_CREDENTIALS --value "/tmp/app-distribution-key.json"
+      - fastlane@3:
+          inputs:
+          - lane: "adhoc"
+          - update_fastlane: false
     after_run:
       - _teardown
-  primary:
+  test:
     before_run:
       - _setup
     steps:
-      - xcode-test@4:
+      - fastlane@3:
           inputs:
-          - project_path: "$BITRISE_PROJECT_PATH"
-          - scheme: "$BITRISE_SCHEME"
-          - test_repetition_mode: retry_on_failure
-          - cache_level: none
+          - lane: "test"
+          - update_fastlane: false
     after_run:
       - _teardown
 
 trigger_map:
   - push_branch: main
-    workflow: deploy
+    workflow: adhoc
   - pull_request_source_branch: '*'
-    workflow: primary
+    workflow: test
 
 app:
   envs:
@@ -62,9 +92,6 @@ app:
   - opts:
       is_expand: false
     BITRISE_SCHEME: WebSocketClient
-  - opts:
-      is_expand: false
-    BITRISE_DISTRIBUTION_METHOD: development
 
 meta:
   bitrise.io:
