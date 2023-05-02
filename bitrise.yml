@@ -79,7 +79,7 @@ workflows:
       - _teardown
 
 trigger_map:
-  - push_branch: main
+  - push_branch: develop
     workflow: adhoc
   - pull_request_source_branch: '*'
     workflow: test
