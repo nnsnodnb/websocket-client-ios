@@ -8,6 +8,7 @@ workflows:
     - activate-ssh-key@4: {}
     - git-clone@8: {}
     - script@1:
+        run_if: .IsCI
         inputs:
         - content: rbenv global 3.2.1
         title: Switch Ruby version
