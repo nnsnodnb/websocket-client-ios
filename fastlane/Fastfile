@@ -35,7 +35,7 @@ platform :ios do
 
     gym(
       export_method: "ad-hoc",
-      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient'",
+      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient' MARKETING_VERSION='#{generate_version_name}'",
     )
 
     if is_ci
@@ -54,5 +54,15 @@ platform :ios do
     gym(
       export_method: "app-store",
     )
+  end
+
+  desc "Generate version name"
+  private_lane :generate_version_name do
+    version = get_xcconfig_value(
+      path: "Configurations/App/App.base.xcconfig",
+      name: "MARKETING_VERSION",
+    )
+    short_hash = last_git_commit[:abbreviated_commit_hash]
+    "#{version}-#{short_hash}"
   end
 end
