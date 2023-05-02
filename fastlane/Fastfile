@@ -54,4 +54,13 @@ platform :ios do
       xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc #{app_identifier}'",
     )
   end
+
+  desc "Gym for appstore"
+  lane :appstore do
+    setup_appstore_certificates
+
+    gym(
+      export_method: "app-store",
+    )
+  end
 end

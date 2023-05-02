@@ -55,6 +55,14 @@ Setup AppStore certificates
 
 Gym for adhoc
 
+### ios appstore
+
+```sh
+[bundle exec] fastlane ios appstore
+```
+
+Gym for appstore
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
