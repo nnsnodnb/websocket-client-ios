@@ -30,7 +30,9 @@ workflows:
         inputs:
         - cache_paths: |-
             ./vendor/bundle -> Gemfile.lock
-    - deploy-to-bitrise-io@2: {}
+    - deploy-to-bitrise-io@2:
+        inputs:
+        - notify_user_groups: none
   deploy:
     before_run:
       - _setup
@@ -52,6 +54,9 @@ workflows:
           inputs:
           - lane: "test"
           - update_fastlane: false
+      - script@1:
+          inputs:
+          - content: cp -r fastlane/test_output/* /Users/vagrant/deploy
     after_run:
       - _teardown
 
