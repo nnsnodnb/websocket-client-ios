@@ -33,8 +33,12 @@ workflows:
     - script@1:
         inputs:
         - content: |
-            cp -r fastlane/test_output/* /Users/vagrant/deploy
-            cp -r Products/* /Users/vagrant/deploy
+            if [[ -f fastlane/test_output ]]; then
+              cp -r fastlane/test_output/* /Users/vagrant/deploy
+            fi
+            if [[ -f Products ]]; then
+              cp -r Products/* /Users/vagrant/deploy
+            fi
         title: Copy fastlane's ouptuts
     - deploy-to-bitrise-io@2:
         inputs:
