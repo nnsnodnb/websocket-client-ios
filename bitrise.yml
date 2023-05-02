@@ -57,7 +57,7 @@ workflows:
           inputs:
           - source: "${BITRISEIO_FIREBASE_APP_DISTRIBUTION_KEY_URL}"
           - destination: "/tmp/app-distribution-key.json"
-      - scirpt@1:
+      - script@1:
           inputs:
           - content: |-
               envman add --key GOOGLE_APPLICATION_CREDENTIALS --value "/tmp/app-distribution-key.json"
