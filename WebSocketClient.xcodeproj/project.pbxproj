@@ -26,6 +26,10 @@
 		CFC1AAA42A00768800C62659 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */; };
 		CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */; };
 		CFC1AAAF2A007EC300C62659 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAAE2A007EC300C62659 /* FirebaseAnalytics */; };
+		CFC1AABA2A019E5B00C62659 /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AAB62A019E5B00C62659 /* Project.xcconfig */; };
+		CFC1AABE2A019E9800C62659 /* App.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AABB2A019E9800C62659 /* App.release.xcconfig */; };
+		CFC1AABF2A019E9800C62659 /* App.base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AABC2A019E9800C62659 /* App.base.xcconfig */; };
+		CFC1AAC02A019E9800C62659 /* App.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AABD2A019E9800C62659 /* App.debug.xcconfig */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -83,6 +87,10 @@
 		CFC1AA9F2A006C4B00C62659 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Localizable.strings; sourceTree = "<group>"; };
 		CFC1AAA12A006C5500C62659 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ../ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CFC1AAB62A019E5B00C62659 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
+		CFC1AABB2A019E9800C62659 /* App.release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = App.release.xcconfig; sourceTree = "<group>"; };
+		CFC1AABC2A019E9800C62659 /* App.base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = App.base.xcconfig; sourceTree = "<group>"; };
+		CFC1AABD2A019E9800C62659 /* App.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = App.debug.xcconfig; sourceTree = "<group>"; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
 		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
@@ -238,6 +246,25 @@
 			path = Base.lproj;
 			sourceTree = "<group>";
 		};
+		CFC1AAB12A019E5B00C62659 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				CFC1AAB22A019E5B00C62659 /* App */,
+				CFC1AAB62A019E5B00C62659 /* Project.xcconfig */,
+			);
+			path = Configurations;
+			sourceTree = "<group>";
+		};
+		CFC1AAB22A019E5B00C62659 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				CFC1AABC2A019E9800C62659 /* App.base.xcconfig */,
+				CFC1AABD2A019E9800C62659 /* App.debug.xcconfig */,
+				CFC1AABB2A019E9800C62659 /* App.release.xcconfig */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		CFD5AB8329F0283B00765E48 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -290,6 +317,7 @@
 			isa = PBXGroup;
 			children = (
 				CFFF581729E98D3B0037AA85 /* WebSocketClient */,
+				CFC1AAB12A019E5B00C62659 /* Configurations */,
 				CFFF582829E98D3C0037AA85 /* WebSocketClientTests */,
 				CFFF581629E98D3B0037AA85 /* Products */,
 				CFD5AB9329F526F700765E48 /* Frameworks */,
@@ -619,7 +647,11 @@
 			files = (
 				CFC1AAA02A006C4B00C62659 /* Localizable.strings in Resources */,
 				CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */,
+				CFC1AABF2A019E9800C62659 /* App.base.xcconfig in Resources */,
+				CFC1AABE2A019E9800C62659 /* App.release.xcconfig in Resources */,
+				CFC1AAC02A019E9800C62659 /* App.debug.xcconfig in Resources */,
 				CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */,
+				CFC1AABA2A019E5B00C62659 /* Project.xcconfig in Resources */,
 				CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */,
 				CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */,
 			);
@@ -874,15 +906,12 @@
 		};
 		CFFF583A29E98D3C0037AA85 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFC1AABD2A019E9800C62659 /* App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WebSocketClient/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = 99649YXF6E;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "WebSocketClient/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -892,30 +921,24 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		CFFF583B29E98D3C0037AA85 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFC1AABB2A019E9800C62659 /* App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"WebSocketClient/Resources/Preview Content\"";
-				DEVELOPMENT_TEAM = 99649YXF6E;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "WebSocketClient/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -925,16 +948,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClient;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

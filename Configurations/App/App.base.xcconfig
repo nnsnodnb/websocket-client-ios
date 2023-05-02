@@ -1,0 +1,12 @@
+#include "Configurations/Project.xcconfig"
+
+CODE_SIGN_STYLE = Manual
+PRODUCT_BUNDLE_IDENTIFIER = moe.nnsnodnb.WebSocketClient
+
+GENERATE_INFOPLIST_FILE = NO
+INFOPLIST_FILE = WebSocketClient/Supporting Files/Info.plist
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1
+
+COPY_PHASE_STRIP = YES
+STRIP_INSTALLED_PRODUCT = YES

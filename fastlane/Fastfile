@@ -1,0 +1,43 @@
+default_platform(:ios)
+
+app_identifier = "moe.nnsnodnb.WebSocketClient"
+
+platform :ios do
+  desc "Run tests"
+  lane :test do
+    scan
+  end
+
+  # Match
+  desc "Setup development certificates"
+  lane :setup_development_certificates do
+    match(
+      type: "development",
+    )
+  end
+
+  desc "Setup adhoc certificates"
+  lane :setup_adhoc_certificates do
+    match(
+      type: "adhoc",
+    )
+  end
+
+  desc "Setup AppStore certificates"
+  lane :setup_appstore_certificates do
+    match(
+      type: "appstore",
+    )
+  end
+
+  # Gym
+  desc "Gym for adhoc"
+  lane :adhoc do
+    setup_adhoc_certificates
+
+    gym(
+      export_method: "ad-hoc",
+      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc #{app_identifier}'",
+    )
+  end
+end
