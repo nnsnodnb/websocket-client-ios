@@ -55,10 +55,10 @@ Setup AppStore certificates
 
 Gym for adhoc
 
-### ios appstore
+### ios release
 
 ```sh
-[bundle exec] fastlane ios appstore
+[bundle exec] fastlane ios release
 ```
 
 Gym for appstore
