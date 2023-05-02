@@ -1,7 +1,5 @@
 default_platform(:ios)
 
-app_identifier = "moe.nnsnodnb.WebSocketClient"
-
 platform :ios do
   before_all do
     if is_ci
@@ -51,7 +49,7 @@ platform :ios do
 
     gym(
       export_method: "ad-hoc",
-      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc #{app_identifier}'",
+      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient'",
     )
   end
 
