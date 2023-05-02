@@ -37,6 +37,14 @@ platform :ios do
       export_method: "ad-hoc",
       xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient'",
     )
+
+    if is_ci
+      firebase_app_distribution(
+        app: "1:89035443908:ios:2b6115971af3118435c391",
+        ipa_path: "Products/WebSocketClient.ipa",
+        groups: "owner",
+      )
+    end
   end
 
   desc "Gym for appstore"
