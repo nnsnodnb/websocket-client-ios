@@ -7,6 +7,10 @@ workflows:
     steps:
     - activate-ssh-key@4: {}
     - git-clone@8: {}
+    - script@1:
+        inputs:
+        - content: rbenv global 3.2.1
+        title: Switch Ruby version
     - cache-pull@2: {}
     - script@1:
         inputs:
