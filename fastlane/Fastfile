@@ -11,7 +11,7 @@ platform :ios do
         unlock: true,
         timeout: 3600,
         lock_when_sleeps: true,
-        password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+        password: "",
         add_to_search_list: true,
       )
     end

@@ -79,9 +79,6 @@ app:
   - opts:
       is_expand: false
     BITRISE_SCHEME: WebSocketClient
-  - opts:
-      is_expand: false
-    MATCH_KEYCHAIN_PASSWORD: ""
 
 meta:
   bitrise.io:
