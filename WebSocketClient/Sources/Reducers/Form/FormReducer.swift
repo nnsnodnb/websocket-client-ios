@@ -46,20 +46,22 @@ struct FormReducer: ReducerProtocol {
                 state.isConnectButtonDisable = false
                 return .none
             case .addCustomHeader:
-                state.customHeaders.append(.init(name: "", value: ""))
+                state.customHeaders.append(.init(id: uuid.callAsFunction().uuidString, name: "", value: ""))
                 return .none
             case let .removeCustomHeader(indexSet):
                 state.customHeaders.remove(atOffsets: indexSet)
                 return .none
             case let .customHeaderNameChanged(index, name):
                 guard !state.customHeaders.isEmpty,
-                      let customHeader = state.customHeaders[safe: index] else { return .none }
-                state.customHeaders[index] = .init(name: name, value: customHeader.value)
+                      var customHeader = state.customHeaders[safe: index] else { return .none }
+                customHeader.name = name
+                state.customHeaders[index] = customHeader
                 return .none
             case let .customHeaderValueChanged(index, value):
                 guard !state.customHeaders.isEmpty,
-                      let customHeader = state.customHeaders[safe: index] else { return .none }
-                state.customHeaders[index] = .init(name: customHeader.name, value: value)
+                      var customHeader = state.customHeaders[safe: index] else { return .none }
+                customHeader.value = value
+                state.customHeaders[index] = customHeader
                 return .none
             case .connect:
                 guard let url = state.url else { return .none }

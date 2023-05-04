@@ -48,6 +48,7 @@
 		CFFEE5B62A03C4C300C46BFE /* AppIconListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5B52A03C4C300C46BFE /* AppIconListPage.swift */; };
 		CFFEE5B92A03C62100C46BFE /* AppIconListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5B82A03C62100C46BFE /* AppIconListReducer.swift */; };
 		CFFEE5BE2A03D25800C46BFE /* AppIconListReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5BD2A03D25800C46BFE /* AppIconListReducerTests.swift */; };
+		CFFEE5C12A0439DC00C46BFE /* RealmMigrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5C02A0439DC00C46BFE /* RealmMigrations.swift */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -118,6 +119,7 @@
 		CFFEE5B52A03C4C300C46BFE /* AppIconListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListPage.swift; sourceTree = "<group>"; };
 		CFFEE5B82A03C62100C46BFE /* AppIconListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListReducer.swift; sourceTree = "<group>"; };
 		CFFEE5BD2A03D25800C46BFE /* AppIconListReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListReducerTests.swift; sourceTree = "<group>"; };
+		CFFEE5C02A0439DC00C46BFE /* RealmMigrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmMigrations.swift; sourceTree = "<group>"; };
 		CFFF581529E98D3B0037AA85 /* WebSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientApp.swift; sourceTree = "<group>"; };
 		CFFF581C29E98D3C0037AA85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -371,6 +373,14 @@
 			path = AppIconList;
 			sourceTree = "<group>";
 		};
+		CFFEE5BF2A0439CE00C46BFE /* Migrations */ = {
+			isa = PBXGroup;
+			children = (
+				CFFEE5C02A0439DC00C46BFE /* RealmMigrations.swift */,
+			);
+			path = Migrations;
+			sourceTree = "<group>";
+		};
 		CFFF580C29E98D3B0037AA85 = {
 			isa = PBXGroup;
 			children = (
@@ -437,6 +447,7 @@
 				CFFF585229E995BA0037AA85 /* AppDelegate.swift */,
 				CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */,
 				CFFF586829EBDC520037AA85 /* Entities */,
+				CFFEE5BF2A0439CE00C46BFE /* Migrations */,
 				CFFF588F29EC0C200037AA85 /* Extensions */,
 				CFFF584629E98E680037AA85 /* Pages */,
 				CFC1AA5429FFBC9400C62659 /* Componenets */,
@@ -782,6 +793,7 @@
 				CFC1AA5629FFBCB100C62659 /* MessageListView.swift in Sources */,
 				CFC1AA6A2A00347C00C62659 /* CustomHeaderListPage.swift in Sources */,
 				CFFEE5B62A03C4C300C46BFE /* AppIconListPage.swift in Sources */,
+				CFFEE5C12A0439DC00C46BFE /* RealmMigrations.swift in Sources */,
 				CFD5AB8A29F0328300765E48 /* History.swift in Sources */,
 				CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */,
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,

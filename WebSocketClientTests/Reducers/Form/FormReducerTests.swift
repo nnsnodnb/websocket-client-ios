@@ -30,16 +30,18 @@ final class FormReducerTests: XCTestCase {
             reducer: FormReducer()
         )
 
+        store.dependencies.uuid = .incrementing
+
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(name: "", value: "")
+                .init(id: UUID(0).uuidString, name: "", value: "")
             ]
         }
 
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(name: "", value: ""),
-                .init(name: "", value: "")
+                .init(id: UUID(0).uuidString, name: "", value: ""),
+                .init(id: UUID(1).uuidString, name: "", value: "")
             ]
         }
     }
@@ -50,10 +52,12 @@ final class FormReducerTests: XCTestCase {
             reducer: FormReducer()
         )
 
+        store.dependencies.uuid = .incrementing
+
         // remove exist index
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(name: "", value: "")
+                .init(id: UUID(0).uuidString, name: "", value: "")
             ]
         }
         await store.send(.removeCustomHeader(.init(integer: 0))) {
@@ -63,7 +67,7 @@ final class FormReducerTests: XCTestCase {
         // remove empty index
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(name: "", value: "")
+                .init(id: UUID(1).uuidString, name: "", value: "")
             ]
         }
         await store.send(.removeCustomHeader(.init(integer: 1)))
@@ -75,18 +79,20 @@ final class FormReducerTests: XCTestCase {
             reducer: FormReducer()
         )
 
+        store.dependencies.uuid = .incrementing
+
         // empty index
         await store.send(.customHeaderNameChanged(0, "Authorization"))
 
         // add & update
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(name: "", value: "")
+                .init(id: UUID(0).uuidString, name: "", value: "")
             ]
         }
         await store.send(.customHeaderNameChanged(0, "Authorization")) {
             $0.customHeaders = [
-                .init(name: "Authorization", value: "")
+                .init(id: UUID(0).uuidString, name: "Authorization", value: "")
             ]
         }
 
@@ -100,18 +106,20 @@ final class FormReducerTests: XCTestCase {
             reducer: FormReducer()
         )
 
+        store.dependencies.uuid = .incrementing
+
         // empty index
         await store.send(.customHeaderValueChanged(0, "application/json"))
 
         // add & update
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(name: "", value: "")
+                .init(id: UUID(0).uuidString, name: "", value: "")
             ]
         }
         await store.send(.customHeaderValueChanged(0, "application/json")) {
             $0.customHeaders = [
-                .init(name: "", value: "application/json")
+                .init(id: UUID(0).uuidString, name: "", value: "application/json")
             ]
         }
 
