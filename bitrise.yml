@@ -60,7 +60,7 @@ workflows:
         - content: |
             #!/bin/enb bash
             set -ex
-            if [[ -f Products ]]; then
+            if [[ -d Products ]]; then
               cp -r Products/* /Users/vagrant/deploy
             fi
         title: Copy fastlane's ouptuts
@@ -72,7 +72,7 @@ workflows:
     - script@1:
         inputs:
         - content: |
-            envman add --key MATCH_GIT_PRIVATE_KEY --value "$(echo -n ${GIT_PRIVATE_KEY} | base64 -d)"
+            envman add --key MATCH_GIT_PRIVATE_KEY --value "$(echo -n ${GIT_PRIVATE_KEY} | base64 -d)" --sensitive
         title: Add MATCH_GIT_PRIVATE_KEY
   adhoc:
     before_run:
@@ -86,7 +86,7 @@ workflows:
       - script@1:
           inputs:
           - content: |-
-              envman add --key GOOGLE_APPLICATION_CREDENTIALS --value "/tmp/app-distribution-key.json"
+              envman add --key GOOGLE_APPLICATION_CREDENTIALS --value "/tmp/app-distribution-key.json" --sensitive
       - fastlane@3:
           inputs:
           - lane: "adhoc"
