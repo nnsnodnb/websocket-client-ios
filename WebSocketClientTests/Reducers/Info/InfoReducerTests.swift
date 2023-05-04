@@ -6,8 +6,8 @@
 //
 
 import ComposableArchitecture
-import XCTest
 @testable import WebSocketClient
+import XCTest
 
 @MainActor
 final class InfoReducerTests: XCTestCase {

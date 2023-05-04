@@ -12,7 +12,7 @@ import XCTest
 
 @MainActor
 final class HistoryDetailReducerTests: XCTestCase {
-    var history: History!
+    private var history: History!
 
     override func setUp() {
         super.setUp()
@@ -95,7 +95,7 @@ final class HistoryDetailReducerTests: XCTestCase {
             getHistory: { _ in await self.history },
             addHistory: { _ in },
             updateHistory: { _ in },
-            deleteHistory: { _ in throw Error.delete}
+            deleteHistory: { _ in throw Error.delete }
         )
 
         await store.send(.confirm)

@@ -1,14 +1,27 @@
 default_platform(:ios)
 
 platform :ios do
+  # Test
   desc "Run tests"
   lane :test do
-    scan
+    scan(
+      result_bundle: true,
+      skip_package_dependencies_resolution: is_ci,
+    )
+  end
+
+  # Package resolve
+  desc "Resolving Swift Pacakges"
+  lane :resolve_swift_packages do
+    Dir.chdir("..") do
+      sh("xcodebuild -resolvePackageDependencies -scheme WebSocketClient -project WebSocketClient.xcodeproj -clonedSourcePackagesDirPath .swiftpm -disableAutomaticPackageResolution")
+    end
   end
 
   # Match
   desc "Setup development certificates"
   lane :setup_development_certificates do
+    keychain
     match(
       type: "development",
     )
@@ -16,6 +29,7 @@ platform :ios do
 
   desc "Setup adhoc certificates"
   lane :setup_adhoc_certificates do
+    keychain
     match(
       type: "adhoc",
     )
@@ -23,6 +37,7 @@ platform :ios do
 
   desc "Setup AppStore certificates"
   lane :setup_appstore_certificates do
+    keychain
     match(
       type: "appstore",
     )
@@ -35,7 +50,13 @@ platform :ios do
 
     gym(
       export_method: "ad-hoc",
+      skip_package_dependencies_resolution: is_ci,
       xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient' MARKETING_VERSION='#{generate_version_name}'",
+    )
+
+    upload_symbols_to_crashlytics(
+      gsp_path: "WebSocketClient/Resources/GoogleService-Info.plist",
+      binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
     )
 
     if is_ci
@@ -53,7 +74,26 @@ platform :ios do
 
     gym(
       export_method: "app-store",
+      skip_package_dependencies_resolution: is_ci,
     )
+
+    upload_symbols_to_crashlytics(
+      gsp_path: "WebSocketClient/Resources/GoogleService-Info.plist",
+      binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
+    )
+
+    if is_ci
+      deliver(
+        app_identifier: "moe.nnsnodnb.WebSocketClient",
+        ipa: "Products/WebSocketClient.ipa",
+        precheck_default_rule_level: :error,
+        precheck_include_in_app_purchases: false,
+        skip_metadata: true,
+        skip_screenshots: true,
+        submit_for_review: false,
+        force: true,
+      )
+    end
   end
 
   desc "Generate version name"
@@ -64,5 +104,20 @@ platform :ios do
     )
     short_hash = last_git_commit[:abbreviated_commit_hash]
     "#{version}-#{short_hash}"
+  end
+
+  desc "Create temporary keychain for CI"
+  private_lane :keychain do
+    if is_ci
+      create_keychain(
+        name: ENV["MATCH_KEYCHAIN_NAME"],
+        default_keychain: true,
+        unlock: true,
+        timeout: 3600,
+        lock_when_sleeps: true,
+        password: "",
+        add_to_search_list: true,
+      )
+    end
   end
 end

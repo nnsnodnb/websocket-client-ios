@@ -11,7 +11,7 @@ import XCTest
 
 @MainActor
 final class ConnectionReducerTests: XCTestCase {
-    var history: History!
+    private var history: History!
 
     override func setUp() {
         super.setUp()
