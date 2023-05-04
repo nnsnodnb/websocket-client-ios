@@ -66,7 +66,7 @@ struct AppIconListReducer: ReducerProtocol {
 
     // MARK: - Action
     enum Action: Equatable {
-        case selection(String?)
+        case appIconChanged(State.AppIcon)
         case setAlternateIconNameResponse(TaskResult<Bool>)
     }
 
@@ -75,11 +75,11 @@ struct AppIconListReducer: ReducerProtocol {
     var body: some ReducerProtocol<State, Action> {
         Reduce { _, action in
             switch action {
-            case let .selection(name):
+            case let .appIconChanged(appIcon):
                 return .task {
                     await .setAlternateIconNameResponse(
                         TaskResult {
-                            try await application.setAlternateIconName(name)
+                            try await application.setAlternateIconName(appIcon.name)
                             return true
                         }
                     )

@@ -27,7 +27,7 @@ struct AppIconListPage: View {
     ) -> some View {
         Button(
             action: {
-                viewStore.send(.selection(appIcon.name))
+                viewStore.send(.appIconChanged(appIcon))
             },
             label: {
                 HStack(spacing: 12) {
