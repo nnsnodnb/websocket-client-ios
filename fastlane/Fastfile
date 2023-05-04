@@ -113,7 +113,7 @@ platform :ios do
         name: ENV["MATCH_KEYCHAIN_NAME"],
         default_keychain: true,
         unlock: true,
-        timeout: 3600,
+        timeout: 0,
         lock_when_sleeps: true,
         password: ENV["MATCH_KEYCHAIN_PASSWORD"]
         add_to_search_list: true,
