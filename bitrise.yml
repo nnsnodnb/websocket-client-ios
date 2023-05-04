@@ -1,5 +1,5 @@
 ---
-format_version: '11'
+format_version: "11"
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: ios
 workflows:
@@ -19,7 +19,7 @@ workflows:
         title: Restore rubygems
     - script@1:
         inputs:
-        - content: bundle config set --global path './vendor/bundle'
+        - content: bundle config set --global path "./vendor/bundle"
         title: Configure Bundler
     - install-bundler@1: {}
     - save-cache@1:
@@ -131,8 +131,10 @@ workflows:
 trigger_map:
   - push_branch: develop
     workflow: adhoc
-  - pull_request_source_branch: '*'
+  - pull_request_source_branch: "*"
     workflow: test
+  - tag: "v*.*.*"
+    workflow: appstore
 
 app:
   envs:
