@@ -60,7 +60,7 @@ workflows:
         - content: |
             #!/bin/enb bash
             set -ex
-            if [[ -f Products ]]; then
+            if [[ -d Products ]]; then
               cp -r Products/* /Users/vagrant/deploy
             fi
         title: Copy fastlane's ouptuts
