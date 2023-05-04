@@ -145,6 +145,9 @@ app:
   - opts:
       is_expand: false
     FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
+  - opts:
+      is_expand: false
+    MATCH_KEYCHAIN_NAME: fastlane_keychain
 
 meta:
   bitrise.io:
