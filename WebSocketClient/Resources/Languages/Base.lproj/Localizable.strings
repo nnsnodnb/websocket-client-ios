@@ -29,6 +29,7 @@
 "info.section.first.title.source-codes" = "Source codes";
 "info.section.first.title.contact-developer" = "Contact Developer";
 "info.section.second.title.app-review" = "App Review";
+"info.section.second.title.change-app-icon" = "Change App Icon";
 "info.section.third.title.version" = "Version";
 "info.section.third.title.developed" = "Developed by SwiftUI";
 
@@ -47,3 +48,14 @@
 
 // CustomHeaderList
 "custom-header-list.navibar.title" = "Additional headers";
+
+// AppIconList
+"app-icon-list.navibar.title" = "Change App Icon";
+"app-icon-list.content.title.default" = "Default";
+"app-icon-list.content.title.yellow" = "Yellow";
+"app-icon-list.content.title.red" = "Red";
+"app-icon-list.content.title.green" = "Green";
+"app-icon-list.content.title.blue" = "Blue";
+"app-icon-list.content.title.purple" = "Purple";
+"app-icon-list.content.title.black" = "Black";
+"app-icon-list.content.title.white" = "White";

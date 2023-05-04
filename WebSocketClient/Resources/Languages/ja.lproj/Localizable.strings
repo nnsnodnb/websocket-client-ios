@@ -29,6 +29,7 @@
 "info.section.first.title.source-codes" = "ソースコード";
 "info.section.first.title.contact-developer" = "開発者への連絡";
 "info.section.second.title.app-review" = "アプリのレビュー";
+"info.section.second.title.change-app-icon" = "アプリアイコン変更";
 "info.section.third.title.version" = "バージョン";
 "info.section.third.title.developed" = "SwiftUIによって開発されました";
 
@@ -47,3 +48,14 @@
 
 // CustomHeaderList
 "custom-header-list.navibar.title" = "追加ヘッダー";
+
+// AppIconList
+"app-icon-list.navibar.title" = "アプリアイコン変更";
+"app-icon-list.content.title.default" = "デフォルト";
+"app-icon-list.content.title.yellow" = "黄色";
+"app-icon-list.content.title.red" = "赤色";
+"app-icon-list.content.title.green" = "緑色";
+"app-icon-list.content.title.blue" = "青色";
+"app-icon-list.content.title.purple" = "紫色";
+"app-icon-list.content.title.black" = "黒色";
+"app-icon-list.content.title.white" = "白色";

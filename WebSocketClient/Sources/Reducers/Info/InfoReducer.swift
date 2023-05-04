@@ -15,6 +15,7 @@ struct InfoReducer: ReducerProtocol {
         var isShowSafari = false
         var url: URL?
         var version: String = ""
+        var appIconList: AppIconListReducer.State = .init()
     }
 
     // MARK: - Action
@@ -25,6 +26,7 @@ struct InfoReducer: ReducerProtocol {
         case safariDismiss
         case browserOpen(URL)
         case browserOpenResponse(TaskResult<Bool>)
+        case appIconList(AppIconListReducer.Action)
     }
 
     @Dependency(\.application) var application
@@ -58,7 +60,12 @@ struct InfoReducer: ReducerProtocol {
                 }
             case .browserOpenResponse:
                 return .none
+            case .appIconList:
+                return .none
             }
+        }
+        Scope(state: \.appIconList, action: /Action.appIconList) {
+            AppIconListReducer()
         }
     }
 }

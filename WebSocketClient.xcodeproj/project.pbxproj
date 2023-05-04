@@ -38,6 +38,15 @@
 		CFD5AB9229F180F500765E48 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9129F180F500765E48 /* Message.swift */; };
 		CFD5AB9829F527AA00765E48 /* ApplicationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */; };
 		CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */; };
+		CFFEE5AD2A03BCEE00C46BFE /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5A62A03BCEE00C46BFE /* red.png */; };
+		CFFEE5AE2A03BCEE00C46BFE /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5A72A03BCEE00C46BFE /* white.png */; };
+		CFFEE5AF2A03BCEE00C46BFE /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5A82A03BCEE00C46BFE /* default.png */; };
+		CFFEE5B02A03BCEE00C46BFE /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5A92A03BCEE00C46BFE /* blue.png */; };
+		CFFEE5B12A03BCEE00C46BFE /* black.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5AA2A03BCEE00C46BFE /* black.png */; };
+		CFFEE5B22A03BCEE00C46BFE /* purple.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5AB2A03BCEE00C46BFE /* purple.png */; };
+		CFFEE5B32A03BCEE00C46BFE /* yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5AC2A03BCEE00C46BFE /* yellow.png */; };
+		CFFEE5B62A03C4C300C46BFE /* AppIconListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5B52A03C4C300C46BFE /* AppIconListPage.swift */; };
+		CFFEE5B92A03C62100C46BFE /* AppIconListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5B82A03C62100C46BFE /* AppIconListReducer.swift */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -98,6 +107,15 @@
 		CFD5AB9129F180F500765E48 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationClient.swift; sourceTree = "<group>"; };
 		CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleClient.swift; sourceTree = "<group>"; };
+		CFFEE5A62A03BCEE00C46BFE /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
+		CFFEE5A72A03BCEE00C46BFE /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
+		CFFEE5A82A03BCEE00C46BFE /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
+		CFFEE5A92A03BCEE00C46BFE /* blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue.png; sourceTree = "<group>"; };
+		CFFEE5AA2A03BCEE00C46BFE /* black.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black.png; sourceTree = "<group>"; };
+		CFFEE5AB2A03BCEE00C46BFE /* purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purple.png; sourceTree = "<group>"; };
+		CFFEE5AC2A03BCEE00C46BFE /* yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow.png; sourceTree = "<group>"; };
+		CFFEE5B52A03C4C300C46BFE /* AppIconListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListPage.swift; sourceTree = "<group>"; };
+		CFFEE5B82A03C62100C46BFE /* AppIconListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListReducer.swift; sourceTree = "<group>"; };
 		CFFF581529E98D3B0037AA85 /* WebSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientApp.swift; sourceTree = "<group>"; };
 		CFFF581C29E98D3C0037AA85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -313,6 +331,36 @@
 			path = Bundle;
 			sourceTree = "<group>";
 		};
+		CFFEE5A52A03BCE300C46BFE /* AppIcons */ = {
+			isa = PBXGroup;
+			children = (
+				CFFEE5AA2A03BCEE00C46BFE /* black.png */,
+				CFFEE5A92A03BCEE00C46BFE /* blue.png */,
+				CFFEE5A82A03BCEE00C46BFE /* default.png */,
+				CFFEE5AB2A03BCEE00C46BFE /* purple.png */,
+				CFFEE5A62A03BCEE00C46BFE /* red.png */,
+				CFFEE5A72A03BCEE00C46BFE /* white.png */,
+				CFFEE5AC2A03BCEE00C46BFE /* yellow.png */,
+			);
+			path = AppIcons;
+			sourceTree = "<group>";
+		};
+		CFFEE5B42A03C4B800C46BFE /* AppIconList */ = {
+			isa = PBXGroup;
+			children = (
+				CFFEE5B52A03C4C300C46BFE /* AppIconListPage.swift */,
+			);
+			path = AppIconList;
+			sourceTree = "<group>";
+		};
+		CFFEE5B72A03C61400C46BFE /* AppIconList */ = {
+			isa = PBXGroup;
+			children = (
+				CFFEE5B82A03C62100C46BFE /* AppIconListReducer.swift */,
+			);
+			path = AppIconList;
+			sourceTree = "<group>";
+		};
 		CFFF580C29E98D3B0037AA85 = {
 			isa = PBXGroup;
 			children = (
@@ -363,6 +411,7 @@
 		CFFF584429E98E3A0037AA85 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CFFEE5A52A03BCE300C46BFE /* AppIcons */,
 				CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */,
 				CFFF581C29E98D3C0037AA85 /* Assets.xcassets */,
 				CFFF581E29E98D3C0037AA85 /* Preview Content */,
@@ -397,6 +446,7 @@
 				CFFF589229EC524C0037AA85 /* Connection */,
 				CFC1AA5729FFC0BF00C62659 /* HistoryDetail */,
 				CFC1AA682A00346500C62659 /* CustomHeaderList */,
+				CFFEE5B42A03C4B800C46BFE /* AppIconList */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -426,6 +476,7 @@
 				CFFF587F29EBF8E70037AA85 /* Info */,
 				CFFF589529EC52620037AA85 /* Connection */,
 				CFC1AA5A29FFC0E100C62659 /* HistoryDetail */,
+				CFFEE5B72A03C61400C46BFE /* AppIconList */,
 			);
 			path = Reducers;
 			sourceTree = "<group>";
@@ -646,14 +697,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFC1AAA02A006C4B00C62659 /* Localizable.strings in Resources */,
+				CFFEE5B12A03BCEE00C46BFE /* black.png in Resources */,
+				CFFEE5B22A03BCEE00C46BFE /* purple.png in Resources */,
 				CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */,
 				CFC1AABF2A019E9800C62659 /* App.base.xcconfig in Resources */,
+				CFFEE5AD2A03BCEE00C46BFE /* red.png in Resources */,
 				CFC1AABE2A019E9800C62659 /* App.release.xcconfig in Resources */,
 				CFC1AAC02A019E9800C62659 /* App.debug.xcconfig in Resources */,
+				CFFEE5B02A03BCEE00C46BFE /* blue.png in Resources */,
+				CFFEE5B32A03BCEE00C46BFE /* yellow.png in Resources */,
 				CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */,
+				CFFEE5AE2A03BCEE00C46BFE /* white.png in Resources */,
 				CFC1AABA2A019E5B00C62659 /* Project.xcconfig in Resources */,
 				CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */,
 				CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */,
+				CFFEE5AF2A03BCEE00C46BFE /* default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,6 +770,7 @@
 			files = (
 				CFC1AA5629FFBCB100C62659 /* MessageListView.swift in Sources */,
 				CFC1AA6A2A00347C00C62659 /* CustomHeaderListPage.swift in Sources */,
+				CFFEE5B62A03C4C300C46BFE /* AppIconListPage.swift in Sources */,
 				CFD5AB8A29F0328300765E48 /* History.swift in Sources */,
 				CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */,
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
@@ -720,6 +779,7 @@
 				CFFF589429EC525C0037AA85 /* ConnectionPage.swift in Sources */,
 				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
 				CFD5AB9829F527AA00765E48 /* ApplicationClient.swift in Sources */,
+				CFFEE5B92A03C62100C46BFE /* AppIconListReducer.swift in Sources */,
 				CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */,
 				CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */,
 				CFC1AA5929FFC0CA00C62659 /* HistoryDetailPage.swift in Sources */,
