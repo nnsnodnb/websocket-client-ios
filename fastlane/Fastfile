@@ -1,0 +1,117 @@
+default_platform(:ios)
+
+platform :ios do
+  # Test
+  desc "Run tests"
+  lane :test do
+    scan(
+      result_bundle: true,
+      skip_package_dependencies_resolution: is_ci,
+    )
+  end
+
+  # Package resolve
+  desc "Resolving Swift Pacakges"
+  lane :resolve_swift_packages do
+    Dir.chdir("..") do
+      sh("xcodebuild -resolvePackageDependencies -scheme WebSocketClient -project WebSocketClient.xcodeproj -clonedSourcePackagesDirPath .swiftpm -disableAutomaticPackageResolution")
+    end
+  end
+
+  # Match
+  desc "Setup development certificates"
+  lane :setup_development_certificates do
+    keychain
+    match(
+      type: "development",
+    )
+  end
+
+  desc "Setup adhoc certificates"
+  lane :setup_adhoc_certificates do
+    keychain
+    match(
+      type: "adhoc",
+    )
+  end
+
+  desc "Setup AppStore certificates"
+  lane :setup_appstore_certificates do
+    keychain
+    match(
+      type: "appstore",
+    )
+  end
+
+  # Gym
+  desc "Gym for adhoc"
+  lane :adhoc do
+    setup_adhoc_certificates
+
+    gym(
+      export_method: "ad-hoc",
+      skip_package_dependencies_resolution: is_ci,
+      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient' MARKETING_VERSION='#{generate_version_name}'",
+    )
+
+    upload_symbols_to_crashlytics(
+      gsp_path: "WebSocketClient/Resources/GoogleService-Info.plist",
+      binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
+    )
+
+    if is_ci
+      firebase_app_distribution(
+        app: "1:89035443908:ios:2b6115971af3118435c391",
+        ipa_path: "Products/WebSocketClient.ipa",
+        groups: "owner",
+      )
+    end
+  end
+
+  desc "Gym for appstore"
+  lane :release do
+    setup_appstore_certificates
+
+    gym(
+      export_method: "app-store",
+      skip_package_dependencies_resolution: is_ci,
+    )
+
+    upload_symbols_to_crashlytics(
+      gsp_path: "WebSocketClient/Resources/GoogleService-Info.plist",
+      binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
+    )
+
+    if is_ci
+      deliver(
+        ipa: "Products/WebSocketClient.ipa",
+        precheck_default_rule_level: :error,
+      )
+    end
+  end
+
+  desc "Generate version name"
+  private_lane :generate_version_name do
+    version = get_xcconfig_value(
+      path: "Configurations/App/App.base.xcconfig",
+      name: "MARKETING_VERSION",
+    )
+    short_hash = last_git_commit[:abbreviated_commit_hash]
+    "#{version}-#{short_hash}"
+  end
+
+  desc "Create temporary keychain for CI"
+  private_lane :keychain do
+    if is_ci
+      create_keychain(
+        name: ENV["MATCH_KEYCHAIN_NAME"],
+        default_keychain: true,
+        unlock: true,
+        timeout: 0,
+        lock_when_sleeps: true,
+        password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+        add_to_search_list: true,
+      )
+    end
+  end
+end

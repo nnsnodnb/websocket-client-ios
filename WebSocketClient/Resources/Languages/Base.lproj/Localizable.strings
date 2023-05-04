@@ -1,0 +1,61 @@
+/* 
+  Localizable.strings
+  WebSocketClient
+
+  Created by Yuya Oka on 2023/05/02.
+  
+*/
+
+// Tabbar
+"tab-bar.title.connection" = "Connection";
+"tab-bar.title.histories" = "History";
+"tab-bar.title.info" = "Info";
+
+// Form
+"form.section.first.title.header" = "Connection setting";
+"form.section.second.title.header" = "Custom headers";
+"form.section.second.title.name" = "Name";
+"form.section.second.title.value" = "Value";
+"form.section.second.title.add-button" = "Add";
+"form.section.third.title.connect-button" = "Connect";
+"form.keyboard.title.close-button" = "Close";
+
+// HistoryList
+"history-list.navibar.title" = "Histories";
+"history-list.content.title.empty" = "No history";
+
+// Info
+"info.navibar.title" = "App Information";
+"info.section.first.title.source-codes" = "Source codes";
+"info.section.first.title.contact-developer" = "Contact Developer";
+"info.section.second.title.app-review" = "App Review";
+"info.section.second.title.change-app-icon" = "Change App Icon";
+"info.section.third.title.version" = "Version";
+"info.section.third.title.developed" = "Developed by SwiftUI";
+
+// Connection
+"connection.navibar.menu.title.check-custom-headers" = "Check custom headers";
+"connection.text-field.placeholder" = "Message";
+"connection.title.send-button" = "Send";
+
+// HistoryDetail
+"history-detail.navibar.menu.title.check-custom-headers" = "Check cusom headers";
+"history-detail.navibar.menu.title.delete" = "Delete";
+"history-detail.alert.confirm.title.message" = "Do you really want to delete it?";
+"history-detail.alert.confirm.title.cancel" = "Cancel";
+"history-detail.alert.confirm.title.delete" = "Delete";
+"history-detail.alert.deletion-failed.title.message" = "Deletion failed.";
+
+// CustomHeaderList
+"custom-header-list.navibar.title" = "Additional headers";
+
+// AppIconList
+"app-icon-list.navibar.title" = "Change App Icon";
+"app-icon-list.content.title.default" = "Default";
+"app-icon-list.content.title.yellow" = "Yellow";
+"app-icon-list.content.title.red" = "Red";
+"app-icon-list.content.title.green" = "Green";
+"app-icon-list.content.title.blue" = "Blue";
+"app-icon-list.content.title.purple" = "Purple";
+"app-icon-list.content.title.black" = "Black";
+"app-icon-list.content.title.white" = "White";
