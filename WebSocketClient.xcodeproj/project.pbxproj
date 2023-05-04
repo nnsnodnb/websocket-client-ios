@@ -755,7 +755,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"${DEBUG_INFORMATION_FORMAT}\" = \"dwarf-with-dsym\" ]]; then\n  \"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nfi\n";
+			shellScript = "if [[ \"${DEBUG_INFORMATION_FORMAT}\" = \"dwarf-with-dsym\" ]]; then\n  if [[ \"${CI}\" = \"true\" ]]; then\n    \"${SRCROOT}/.swiftpm/checkouts/firebase-ios-sdk/Crashlytics/run\"\n  else\n    \"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n  fi\nfi\n";
 		};
 		CFFF91D629EC6BF00037AA85 /* Copy Acknowledgements */ = {
 			isa = PBXShellScriptBuildPhase;
