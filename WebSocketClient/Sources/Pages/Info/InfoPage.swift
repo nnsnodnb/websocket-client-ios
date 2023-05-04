@@ -89,6 +89,25 @@ struct InfoPage: View {
                     viewStore.send(.browserOpen($0))
                 }
             )
+            NavigationLink(
+                destination: {
+                    AppIconListPage(
+                        store: store.scope(
+                            state: \.appIconList,
+                            action: InfoReducer.Action.appIconList
+                        )
+                    )
+                },
+                label: {
+                    HStack(spacing: 12) {
+                        Asset.icDefaultIcon.swiftUIImage
+                            .resizable()
+                            .frame(width: 18, height: 18)
+                            .cornerRadius(4)
+                        Text(L10n.Info.Section.Second.Title.changeAppIcon)
+                    }
+                }
+            )
         }
     }
 
@@ -144,8 +163,9 @@ struct InfoPage: View {
                     }
                     Spacer()
                     Image(systemSymbol: .chevronRight)
+                        .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(.secondary)
-                        .frame(width: 12, height: 12)
+                        .opacity(0.5)
                 }
             }
         )

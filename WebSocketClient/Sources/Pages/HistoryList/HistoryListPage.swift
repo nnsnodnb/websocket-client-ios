@@ -77,8 +77,9 @@ struct HistoryListPage: View {
             )
             Spacer()
             Image(systemSymbol: .chevronRight)
+                .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(.secondary)
-                .frame(width: 12, height: 12)
+                .opacity(0.5)
         }
         .navigationDestination(
             for: HistoryListReducer.State.Destination.self,
