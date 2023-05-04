@@ -84,14 +84,8 @@ platform :ios do
 
     if is_ci
       deliver(
-        app_identifier: "moe.nnsnodnb.WebSocketClient",
         ipa: "Products/WebSocketClient.ipa",
         precheck_default_rule_level: :error,
-        precheck_include_in_app_purchases: false,
-        skip_metadata: true,
-        skip_screenshots: true,
-        submit_for_review: false,
-        force: true,
       )
     end
   end
