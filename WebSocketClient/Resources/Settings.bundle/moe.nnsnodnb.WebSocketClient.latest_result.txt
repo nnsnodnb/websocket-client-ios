@@ -30,9 +30,9 @@ name: nanopb, nameSpecified: nanopb, owner: firebase, version: 2.30909.0, source
 
 name: promises, nameSpecified: Promises, owner: google, version: 2.2.0, source: https://github.com/google/promises
 
-name: realm-cocoa, nameSpecified: Realm, owner: realm, version: 10.38.3, source: https://github.com/realm/realm-cocoa
+name: realm-cocoa, nameSpecified: Realm, owner: realm, version: 10.39.0, source: https://github.com/realm/realm-cocoa
 
-name: realm-core, nameSpecified: RealmDatabase, owner: realm, version: 13.9.4, source: https://github.com/realm/realm-core
+name: realm-core, nameSpecified: RealmDatabase, owner: realm, version: 13.10.0, source: https://github.com/realm/realm-core
 
 name: Runtime, nameSpecified: Runtime, owner: wickwirew, version: 2.2.4, source: https://github.com/wickwirew/Runtime
 
