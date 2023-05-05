@@ -83,6 +83,11 @@ workflows:
           inputs:
           - lane: "adhoc"
           - update_fastlane: false
+      - script@1:
+          inputs:
+          - content: |-
+              cp -r Products/* "${BITRISE_DEPLOY_DIR}"
+          title: Copy Products
     after_run:
       - _teardown
   appstore:
