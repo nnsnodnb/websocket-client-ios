@@ -86,6 +86,7 @@ platform :ios do
       deliver(
         ipa: "Products/WebSocketClient.ipa",
         precheck_default_rule_level: :error,
+        screenshots_path: "fastlane/screenshots",
       )
     end
   end

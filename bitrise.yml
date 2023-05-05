@@ -109,8 +109,8 @@ workflows:
           - name: "${BITRISE_GIT_TAG}"
           - body: "Release ${BITRISE_GIT_TAG}"
           - files_to_upload: |
-              "Products/WebSocketClient.ipa"
-              "Products/WebSocketClient.app.dSYM.zip"
+              "${BITRISE_SOURCE_DIR}/Products/WebSocketClient.ipa"
+              "${BITRISE_SOURCE_DIR}/Products/WebSocketClient.app.dSYM.zip"
     after_run:
       - _teardown
   test:
