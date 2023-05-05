@@ -55,15 +55,6 @@ workflows:
         title: Write IDESkipPackagePluginFingerprintValidatation
   _teardown:
     steps:
-    - script@1:
-        inputs:
-        - content: |
-            #!/bin/enb bash
-            set -ex
-            if [[ -d Products ]]; then
-              cp -r Products/* /Users/vagrant/deploy
-            fi
-        title: Copy fastlane's ouptuts
     - deploy-to-bitrise-io@2:
         inputs:
         - notify_user_groups: none
@@ -87,6 +78,7 @@ workflows:
           inputs:
           - content: |-
               envman add --key GOOGLE_APPLICATION_CREDENTIALS --value "/tmp/app-distribution-key.json" --sensitive
+          title: Set GOOGLE_APPLICATION_CREDENTIALS
       - fastlane@3:
           inputs:
           - lane: "adhoc"
@@ -102,6 +94,11 @@ workflows:
           inputs:
           - lane: "release"
           - update_fastlane: false
+      - script@1:
+          inputs:
+          - content: |-
+              cp -r Products/* "${BITRISE_DEPLOY_DIR}"
+          title: Copy Products
       - github-release@0:
           inputs:
           - api_token: "${GITHUB_TOKEN}"
