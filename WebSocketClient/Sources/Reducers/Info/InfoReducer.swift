@@ -16,6 +16,7 @@ struct InfoReducer: ReducerProtocol {
         var url: URL?
         var version: String = ""
         var appIconList: AppIconListReducer.State = .init()
+        var alert: AlertState<Action>?
     }
 
     // MARK: - Action
@@ -27,9 +28,14 @@ struct InfoReducer: ReducerProtocol {
         case browserOpen(URL)
         case browserOpenResponse(TaskResult<Bool>)
         case appIconList(AppIconListReducer.Action)
+        case checkDeleteAllData
+        case deleteAllData
+        case deleteAllDataResponse(TaskResult<Bool>)
+        case alertDismissed
     }
 
     @Dependency(\.application) var application
+    @Dependency(\.databaseClient) var databaseClient
     @Dependency(\.bundle) var bundle
 
     var body: some ReducerProtocol<State, Action> {
@@ -61,6 +67,47 @@ struct InfoReducer: ReducerProtocol {
             case .browserOpenResponse:
                 return .none
             case .appIconList:
+                return .none
+            case .checkDeleteAllData:
+                state.alert = AlertState(
+                    title: {
+                        TextState(L10n.Info.Alert.Confirm.Title.message)
+                    },
+                    actions: {
+                        ButtonState(
+                            role: .cancel,
+                            label: {
+                                TextState(L10n.Alert.Button.Title.cancel)
+                            }
+                        )
+                        ButtonState(
+                            role: .destructive,
+                            action: .send(.deleteAllData),
+                            label: {
+                                TextState(L10n.Alert.Button.Title.delete)
+                            }
+                        )
+                    }
+                )
+                return .none
+            case .deleteAllData:
+                return .task {
+                    await .deleteAllDataResponse(
+                        TaskResult {
+                            try await databaseClient.deleteAllData()
+                            return true
+                        }
+                    )
+                }
+            case .deleteAllDataResponse(.success):
+                return .none
+            case .deleteAllDataResponse(.failure):
+                state.alert = AlertState {
+                    TextState(L10n.Info.Alert.DeletionFailed.Title.message)
+                }
+                return .none
+            case .alertDismissed:
+                state.alert = nil
                 return .none
             }
         }

@@ -9,6 +9,7 @@ import ComposableArchitecture
 import FirebaseAnalytics
 import FirebaseAnalyticsSwift
 import SafariView
+import SFSafeSymbols
 import SwiftUI
 
 struct InfoPage: View {
@@ -30,6 +31,7 @@ struct InfoPage: View {
                         }
                     )
             }
+            .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
             .task {
                 viewStore.send(.start)
             }
@@ -108,6 +110,17 @@ struct InfoPage: View {
                     }
                 }
             )
+            buttonRow(
+                action: {
+                    viewStore.send(.checkDeleteAllData)
+                },
+                image: {
+                    Image(systemSymbol: .trashSquare)
+                        .resizable()
+                        .foregroundColor(.red)
+                },
+                title: L10n.Info.Section.Second.Title.deleteAllHistoryData
+            )
         }
     }
 
@@ -143,7 +156,7 @@ struct InfoPage: View {
         text: String,
         action: @escaping (URL) -> Void
     ) -> some View {
-        Button(
+        buttonRow(
             action: {
                 action(url)
                 Analytics.logEvent(
@@ -153,12 +166,24 @@ struct InfoPage: View {
                     ]
                 )
             },
+            image: icon,
+            title: text
+        )
+    }
+
+    private func buttonRow(
+        action: @escaping () -> Void,
+        image: () -> some View,
+        title: String
+    ) -> some View {
+        Button(
+            action: action,
             label: {
                 HStack {
                     HStack(spacing: 12) {
-                        icon()
+                        image()
                             .frame(width: 18, height: 18)
-                        Text(text)
+                        Text(title)
                             .foregroundColor(.primary)
                     }
                     Spacer()

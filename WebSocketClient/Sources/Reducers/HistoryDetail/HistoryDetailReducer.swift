@@ -41,14 +41,14 @@ struct HistoryDetailReducer: ReducerProtocol {
                         ButtonState(
                             role: .cancel,
                             label: {
-                                TextState(L10n.HistoryDetail.Alert.Confirm.Title.cancel)
+                                TextState(L10n.Alert.Button.Title.cancel)
                             }
                         )
                         ButtonState(
                             role: .destructive,
                             action: .send(.confirm),
                             label: {
-                                TextState(L10n.HistoryDetail.Alert.Confirm.Title.delete)
+                                TextState(L10n.Alert.Button.Title.delete)
                             }
                         )
                     }
