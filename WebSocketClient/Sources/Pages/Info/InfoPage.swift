@@ -31,7 +31,7 @@ struct InfoPage: View {
                         }
                     )
             }
-            .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
+            .alert(store.scope(state: \.alert, action: { $0 }), dismiss: .alertDismissed)
             .task {
                 viewStore.send(.start)
             }
