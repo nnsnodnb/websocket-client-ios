@@ -32,7 +32,8 @@ struct HistoryListReducer: ReducerProtocol {
         case historyDetail(HistoryDetailReducer.Action)
     }
 
-    @Dependency(\.databaseClient) var databaseClient
+    @Dependency(\.databaseClient)
+    var databaseClient
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

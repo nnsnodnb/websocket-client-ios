@@ -27,7 +27,8 @@ struct HistoryDetailReducer: ReducerProtocol {
         case dismissCustomHeaderList
     }
 
-    @Dependency(\.databaseClient) var databaseClient
+    @Dependency(\.databaseClient)
+    var databaseClient
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

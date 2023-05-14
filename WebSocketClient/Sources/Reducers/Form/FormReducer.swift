@@ -30,8 +30,10 @@ struct FormReducer: ReducerProtocol {
         case connection(ConnectionReducer.Action)
     }
 
-    @Dependency(\.date) var date
-    @Dependency(\.uuid) var uuid
+    @Dependency(\.date)
+    var date
+    @Dependency(\.uuid)
+    var uuid
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

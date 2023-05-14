@@ -34,9 +34,12 @@ struct InfoReducer: ReducerProtocol {
         case alertDismissed
     }
 
-    @Dependency(\.application) var application
-    @Dependency(\.databaseClient) var databaseClient
-    @Dependency(\.bundle) var bundle
+    @Dependency(\.application)
+    var application
+    @Dependency(\.databaseClient)
+    var databaseClient
+    @Dependency(\.bundle)
+    var bundle
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in

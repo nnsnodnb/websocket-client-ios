@@ -52,9 +52,12 @@ struct ConnectionReducer: ReducerProtocol {
         case dismissCustomHeaderList
     }
 
-    @Dependency(\.continuousClock) var clock
-    @Dependency(\.databaseClient) var databaseClient
-    @Dependency(\.webSocketClient) var webSocketClient
+    @Dependency(\.continuousClock)
+    var clock
+    @Dependency(\.databaseClient)
+    var databaseClient
+    @Dependency(\.webSocketClient)
+    var webSocketClient
 
     // MARK: - WebSocketID
     enum CancelID {
