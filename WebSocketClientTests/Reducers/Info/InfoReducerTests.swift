@@ -83,4 +83,86 @@ final class InfoReducerTests: XCTestCase {
         await store.send(.browserOpen(URL(string: "https://example.com")!))
         await store.receive(.browserOpenResponse(.success(true)))
     }
+
+    func testCheckDeleteAllData() async {
+        let store = TestStore(
+            initialState: InfoReducer.State(),
+            reducer: InfoReducer()
+        )
+
+        await store.send(.checkDeleteAllData) {
+            $0.alert = AlertState(
+                title: {
+                    TextState(L10n.Info.Alert.Confirm.Title.message)
+                },
+                actions: {
+                    ButtonState(
+                        role: .cancel,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.cancel)
+                        }
+                    )
+                    ButtonState(
+                        role: .destructive,
+                        action: .send(.deleteAllData),
+                        label: {
+                            TextState(L10n.Alert.Button.Title.delete)
+                        }
+                    )
+                }
+            )
+        }
+        await store.send(.alertDismissed) {
+            $0.alert = nil
+        }
+    }
+
+    func testDeleteAllDataSuccess() async {
+        let store = TestStore(
+            initialState: InfoReducer.State(),
+            reducer: InfoReducer()
+        )
+
+        store.dependencies.databaseClient = .init(
+            fetchHistories: { _ in [] },
+            getHistory: { _ in nil },
+            addHistory: { _ in },
+            updateHistory: { _ in },
+            deleteHistory: { _ in },
+            deleteAllData: {}
+        )
+
+        await store.send(.deleteAllData)
+        await store.receive(.deleteAllDataResponse(.success(true)))
+    }
+
+    func testDeleteAllDataFailure() async  {
+        let store = TestStore(
+            initialState: InfoReducer.State(),
+            reducer: InfoReducer()
+        )
+
+        enum Error: Swift.Error {
+            case delete
+        }
+
+        store.dependencies.databaseClient = .init(
+            fetchHistories: { _ in [] },
+            getHistory: { _ in nil },
+            addHistory: { _ in },
+            updateHistory: { _ in },
+            deleteHistory: { _ in },
+            deleteAllData: { throw Error.delete }
+        )
+
+        await store.send(.deleteAllData)
+        await store.receive(.deleteAllDataResponse(.failure(Error.delete))) {
+            $0.alert = AlertState {
+                TextState(L10n.Info.Alert.DeletionFailed.Title.message)
+            }
+        }
+        await store.send(.alertDismissed) {
+            $0.alert = nil
+        }
+    }
 }
