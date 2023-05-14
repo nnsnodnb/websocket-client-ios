@@ -30,7 +30,8 @@ final class HistoryListReducerTests: XCTestCase {
             getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
-            deleteHistory: { _ in }
+            deleteHistory: { _ in },
+            deleteAllData: {}
         )
 
         await store.send(.fetch)
@@ -70,7 +71,8 @@ final class HistoryListReducerTests: XCTestCase {
             getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
-            deleteHistory: { _ in }
+            deleteHistory: { _ in },
+            deleteAllData: {}
         )
 
         await store.send(.fetch)
@@ -108,7 +110,8 @@ final class HistoryListReducerTests: XCTestCase {
             getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
-            deleteHistory: { _ in throw Error.delete }
+            deleteHistory: { _ in throw Error.delete },
+            deleteAllData: {}
         )
 
         await store.send(.fetch)
@@ -140,7 +143,8 @@ final class HistoryListReducerTests: XCTestCase {
             getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
-            deleteHistory: { _ in }
+            deleteHistory: { _ in },
+            deleteAllData: {}
         )
 
         await store.send(.fetch)

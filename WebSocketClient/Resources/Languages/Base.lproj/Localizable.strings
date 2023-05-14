@@ -6,6 +6,10 @@
   
 */
 
+// Common
+"alert.button.title.cancel" = "Cancel";
+"alert.button.title.delete" = "Delete";
+
 // Tabbar
 "tab-bar.title.connection" = "Connection";
 "tab-bar.title.histories" = "History";
@@ -30,8 +34,11 @@
 "info.section.first.title.contact-developer" = "Contact Developer";
 "info.section.second.title.app-review" = "App Review";
 "info.section.second.title.change-app-icon" = "Change App Icon";
+"info.section.second.title.delete-all-history-data" = "Delete all history data";
 "info.section.third.title.version" = "Version";
 "info.section.third.title.developed" = "Developed by SwiftUI";
+"info.alert.confirm.title.message" = "Do you really want to delete all history?";
+"info.alert.deletion-failed.title.message" = "Deletion failed.";
 
 // Connection
 "connection.navibar.menu.title.check-custom-headers" = "Check custom headers";
@@ -42,8 +49,6 @@
 "history-detail.navibar.menu.title.check-custom-headers" = "Check cusom headers";
 "history-detail.navibar.menu.title.delete" = "Delete";
 "history-detail.alert.confirm.title.message" = "Do you really want to delete it?";
-"history-detail.alert.confirm.title.cancel" = "Cancel";
-"history-detail.alert.confirm.title.delete" = "Delete";
 "history-detail.alert.deletion-failed.title.message" = "Deletion failed.";
 
 // CustomHeaderList

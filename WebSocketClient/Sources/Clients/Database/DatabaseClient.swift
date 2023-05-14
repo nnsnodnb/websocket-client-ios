@@ -17,6 +17,7 @@ struct DatabaseClient {
     var addHistory: @Sendable (History) async throws -> Void
     var updateHistory: @Sendable (History) async throws -> Void
     var deleteHistory: @Sendable (History) async throws -> Void
+    var deleteAllData: @Sendable () async throws -> Void
 }
 
 extension DatabaseClient {
@@ -58,6 +59,13 @@ extension DatabaseClient {
                 realm.delete(history)
             }
         }
+
+        func deleteAllData() throws {
+            let realm = try Realm()
+            try realm.write {
+                realm.deleteAll()
+            }
+        }
     }
 }
 
@@ -68,7 +76,8 @@ extension DatabaseClient: DependencyKey {
         getHistory: { try await DatabaseActor.shared.getHistory(id: $0) },
         addHistory: { try await DatabaseActor.shared.addHistory($0) },
         updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
-        deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) }
+        deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) },
+        deleteAllData: { try await DatabaseActor.shared.deleteAllData() }
     )
 
     static var previewValue = Self(
@@ -76,7 +85,8 @@ extension DatabaseClient: DependencyKey {
         getHistory: { _ in nil },
         addHistory: { _ in },
         updateHistory: { _ in },
-        deleteHistory: { _ in }
+        deleteHistory: { _ in },
+        deleteAllData: {}
     )
 
     static var testValue = Self(
@@ -84,6 +94,7 @@ extension DatabaseClient: DependencyKey {
         getHistory: unimplemented("\(Self.self).getHistory"),
         addHistory: unimplemented("\(Self.self).addHistory"),
         updateHistory: unimplemented("\(Self.self).updateHistory"),
-        deleteHistory: unimplemented("\(Self.self).deleteHistory")
+        deleteHistory: unimplemented("\(Self.self).deleteHistory"),
+        deleteAllData: unimplemented("\(Self.self).deleteAllData")
     )
 }

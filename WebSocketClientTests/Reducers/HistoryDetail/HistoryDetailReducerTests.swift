@@ -46,14 +46,14 @@ final class HistoryDetailReducerTests: XCTestCase {
                     ButtonState(
                         role: .cancel,
                         label: {
-                            TextState(L10n.HistoryDetail.Alert.Confirm.Title.cancel)
+                            TextState(L10n.Alert.Button.Title.cancel)
                         }
                     )
                     ButtonState(
                         role: .destructive,
                         action: .send(.confirm),
                         label: {
-                            TextState(L10n.HistoryDetail.Alert.Confirm.Title.delete)
+                            TextState(L10n.Alert.Button.Title.delete)
                         }
                     )
                 }
@@ -72,7 +72,8 @@ final class HistoryDetailReducerTests: XCTestCase {
             getHistory: { _ in await self.history },
             addHistory: { _ in },
             updateHistory: { _ in },
-            deleteHistory: { _ in }
+            deleteHistory: { _ in },
+            deleteAllData: {}
         )
 
         await store.send(.confirm)
@@ -95,7 +96,8 @@ final class HistoryDetailReducerTests: XCTestCase {
             getHistory: { _ in await self.history },
             addHistory: { _ in },
             updateHistory: { _ in },
-            deleteHistory: { _ in throw Error.delete }
+            deleteHistory: { _ in throw Error.delete },
+            deleteAllData: {}
         )
 
         await store.send(.confirm)

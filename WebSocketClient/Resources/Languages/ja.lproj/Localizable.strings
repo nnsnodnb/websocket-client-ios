@@ -6,6 +6,10 @@
 
 */
 
+// Common
+"alert.button.title.cancel" = "キャンセル";
+"alert.button.title.delete" = "削除";
+
 // Tabbar
 "tab-bar.title.connection" = "接続";
 "tab-bar.title.histories" = "履歴";
@@ -30,8 +34,11 @@
 "info.section.first.title.contact-developer" = "開発者への連絡";
 "info.section.second.title.app-review" = "アプリのレビュー";
 "info.section.second.title.change-app-icon" = "アプリアイコン変更";
+"info.section.second.title.delete-all-history-data" = "すべての履歴を削除";
 "info.section.third.title.version" = "バージョン";
 "info.section.third.title.developed" = "SwiftUIによって開発されました";
+"info.alert.confirm.title.message" = "本当にすべての履歴を削除しますか？";
+"info.alert.deletion-failed.title.message" = "削除に失敗しました";
 
 // Connection
 "connection.navibar.menu.title.check-custom-headers" = "カスタムヘッダーを確認";
@@ -42,7 +49,6 @@
 "history-detail.navibar.menu.title.check-custom-headers" = "カスタムヘッダーを確認";
 "history-detail.navibar.menu.title.delete" = "削除";
 "history-detail.alert.confirm.title.message" = "本当に削除しますか？";
-"history-detail.alert.confirm.title.cancel" = "キャンセル";
 "history-detail.alert.confirm.title.delete" = "削除";
 "history-detail.alert.deletion-failed.title.message" = "削除に失敗しました";
 
