@@ -136,7 +136,7 @@ final class InfoReducerTests: XCTestCase {
         await store.receive(.deleteAllDataResponse(.success(true)))
     }
 
-    func testDeleteAllDataFailure() async  {
+    func testDeleteAllDataFailure() async {
         let store = TestStore(
             initialState: InfoReducer.State(),
             reducer: InfoReducer()
