@@ -70,7 +70,8 @@ struct AppIconListReducer: ReducerProtocol {
         case setAlternateIconNameResponse(TaskResult<Bool>)
     }
 
-    @Dependency(\.application) var application
+    @Dependency(\.application)
+    var application
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { _, action in

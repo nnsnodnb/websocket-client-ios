@@ -52,12 +52,17 @@ struct ConnectionReducer: ReducerProtocol {
         case dismissCustomHeaderList
     }
 
-    @Dependency(\.continuousClock) var clock
-    @Dependency(\.databaseClient) var databaseClient
-    @Dependency(\.webSocketClient) var webSocketClient
+    @Dependency(\.continuousClock)
+    var clock
+    @Dependency(\.databaseClient)
+    var databaseClient
+    @Dependency(\.webSocketClient)
+    var webSocketClient
 
     // MARK: - WebSocketID
-    enum WebSocketID {}
+    enum CancelID {
+        case websocket
+    }
 
     var body: some ReducerProtocol<State, Action> {
         Reduce { state, action in
@@ -66,7 +71,7 @@ struct ConnectionReducer: ReducerProtocol {
                 return runConnection(state: &state)
             case .close:
                 state.connectivityState = .disconnected
-                return .cancel(id: WebSocketID.self)
+                return .cancel(id: CancelID.websocket)
             case let .messageChanged(string):
                 state.message = string
                 switch state.connectivityState {
@@ -80,12 +85,12 @@ struct ConnectionReducer: ReducerProtocol {
                 return .task { [message = state.message] in
                     await .sendResponse(
                         TaskResult {
-                            try await webSocketClient.send(WebSocketID.self, .string(message))
+                            try await webSocketClient.send(CancelID.websocket, .string(message))
                             return true
                         }
                     )
                 }
-                .cancellable(id: WebSocketID.self)
+                .cancellable(id: CancelID.websocket)
             case let .receivedSocketMessage(.success(message)):
                 guard case let .string(string) = message else { return .none }
                 state.receivedMessages.append(string)
@@ -122,7 +127,7 @@ struct ConnectionReducer: ReducerProtocol {
                 }
             case .webSocket(.didClose):
                 state.connectivityState = .disconnected
-                return .cancel(id: WebSocketID.self)
+                return .cancel(id: CancelID.websocket)
             case .alertDismissed:
                 state.alert = nil
                 return .none
@@ -159,7 +164,7 @@ struct ConnectionReducer: ReducerProtocol {
             state.customHeaders.forEach {
                 urlRequest.addValue($0.value, forHTTPHeaderField: $0.name)
             }
-            let actions = await webSocketClient.open(WebSocketID.self, urlRequest)
+            let actions = await webSocketClient.open(CancelID.websocket, urlRequest)
             await withThrowingTaskGroup(of: Void.self) { group in
                 for await action in actions {
                     group.addTask {
@@ -170,11 +175,11 @@ struct ConnectionReducer: ReducerProtocol {
                         group.addTask {
                             while !Task.isCancelled {
                                 try await clock.sleep(for: .seconds(10))
-                                try? await webSocketClient.sendPing(WebSocketID.self)
+                                try? await webSocketClient.sendPing(CancelID.websocket)
                             }
                         }
                         group.addTask {
-                            for await result in try await webSocketClient.receive(WebSocketID.self) {
+                            for await result in try await webSocketClient.receive(CancelID.websocket) {
                                 await send(.receivedSocketMessage(result))
                             }
                         }
@@ -184,7 +189,7 @@ struct ConnectionReducer: ReducerProtocol {
                 }
             }
         }
-        .cancellable(id: WebSocketID.self)
+        .cancellable(id: CancelID.websocket)
         .merge(
             with: .task { [state] in
                 await .addHistoryResponse(

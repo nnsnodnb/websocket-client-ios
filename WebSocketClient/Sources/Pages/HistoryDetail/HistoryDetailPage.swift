@@ -28,7 +28,7 @@ struct HistoryDetailPage: View {
                     CustomHeaderListPage(customHeaders: viewStore.history.customHeaders)
                         .presentationDetents([.fraction(0.2), .large])
                 }
-                .alert(store.scope(state: \.alert), dismiss: .alertDismissed)
+                .alert(store.scope(state: \.alert, action: { $0 }), dismiss: .alertDismissed)
         })
         .analyticsScreen(name: "history-detail-page")
     }

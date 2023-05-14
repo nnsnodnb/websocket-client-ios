@@ -40,10 +40,10 @@ struct WebSocketClient {
     }
 
     // MARK: - Properties
-    var open: @Sendable (Any.Type, URLRequest) async -> AsyncStream<Action>
-    var receive: @Sendable (Any.Type) async throws -> AsyncStream<TaskResult<Message>>
-    var send: @Sendable (Any.Type, URLSessionWebSocketTask.Message) async throws -> Void
-    var sendPing: @Sendable (Any.Type) async throws -> Void
+    var open: @Sendable (AnyHashable, URLRequest) async -> AsyncStream<Action>
+    var receive: @Sendable (AnyHashable) async throws -> AsyncStream<TaskResult<Message>>
+    var send: @Sendable (AnyHashable, URLSessionWebSocketTask.Message) async throws -> Void
+    var sendPing: @Sendable (AnyHashable) async throws -> Void
 }
 
 // MARK: - WebSocketActor
@@ -80,10 +80,9 @@ extension WebSocketClient {
         // MARK: - Properties
         static let shared = WebSocketActor()
 
-        var dependencies: [ObjectIdentifier: Dependencies] = [:]
+        var dependencies: [AnyHashable: Dependencies] = [:]
 
-        func open(id: Any.Type, urlRequest: URLRequest) -> AsyncStream<Action> {
-            let id = ObjectIdentifier(id)
+        func open(id: AnyHashable, urlRequest: URLRequest) -> AsyncStream<Action> {
             let delegate = Delegate()
             let session = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
             let socket = session.webSocketTask(with: urlRequest)
@@ -104,15 +103,14 @@ extension WebSocketClient {
         }
 
         func close(
-            id: Any.Type, with closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?
+            id: AnyHashable, with closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?
         ) async throws {
-            let id = ObjectIdentifier(id)
             defer { dependencies[id] = nil }
             try socket(id: id).cancel(with: closeCode, reason: reason)
         }
 
-        func receive(id: Any.Type) throws -> AsyncStream<TaskResult<Message>> {
-            let socket = try self.socket(id: ObjectIdentifier(id))
+        func receive(id: AnyHashable) throws -> AsyncStream<TaskResult<Message>> {
+            let socket = try self.socket(id: id)
             return AsyncStream { continuation in
                 let task = Task {
                     while !Task.isCancelled {
@@ -130,12 +128,12 @@ extension WebSocketClient {
             }
         }
 
-        func send(id: Any.Type, message: URLSessionWebSocketTask.Message) async throws {
-            try await socket(id: ObjectIdentifier(id)).send(message)
+        func send(id: AnyHashable, message: URLSessionWebSocketTask.Message) async throws {
+            try await socket(id: id).send(message)
         }
 
-        func sendPing(id: Any.Type) async throws {
-            let socket = try socket(id: ObjectIdentifier(id))
+        func sendPing(id: AnyHashable) async throws {
+            let socket = try socket(id: id)
             return try await withCheckedThrowingContinuation { continuation in
                 socket.sendPing { error in
                     if let error {
@@ -147,7 +145,7 @@ extension WebSocketClient {
             }
         }
 
-        private func socket(id: ObjectIdentifier) throws -> URLSessionWebSocketTask {
+        private func socket(id: AnyHashable) throws -> URLSessionWebSocketTask {
             guard let dependencies = dependencies[id]?.socket else {
                 struct Closed: Error {}
                 throw Closed()
@@ -155,8 +153,8 @@ extension WebSocketClient {
             return dependencies
         }
 
-        private func removeDependencies(id: ObjectIdentifier) {
-          self.dependencies[id] = nil
+        private func removeDependencies(id: AnyHashable) {
+            dependencies[id] = nil
         }
     }
 }
