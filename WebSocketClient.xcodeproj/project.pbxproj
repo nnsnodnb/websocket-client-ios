@@ -26,10 +26,6 @@
 		CFC1AAA42A00768800C62659 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */; };
 		CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */; };
 		CFC1AAAF2A007EC300C62659 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAAE2A007EC300C62659 /* FirebaseAnalytics */; };
-		CFC1AABA2A019E5B00C62659 /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AAB62A019E5B00C62659 /* Project.xcconfig */; };
-		CFC1AABE2A019E9800C62659 /* App.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AABB2A019E9800C62659 /* App.release.xcconfig */; };
-		CFC1AABF2A019E9800C62659 /* App.base.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AABC2A019E9800C62659 /* App.base.xcconfig */; };
-		CFC1AAC02A019E9800C62659 /* App.debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AABD2A019E9800C62659 /* App.debug.xcconfig */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
 		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
 		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
@@ -722,15 +718,11 @@
 				CFFEE5B12A03BCEE00C46BFE /* black.png in Resources */,
 				CFFEE5B22A03BCEE00C46BFE /* purple.png in Resources */,
 				CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */,
-				CFC1AABF2A019E9800C62659 /* App.base.xcconfig in Resources */,
 				CFFEE5AD2A03BCEE00C46BFE /* red.png in Resources */,
-				CFC1AABE2A019E9800C62659 /* App.release.xcconfig in Resources */,
-				CFC1AAC02A019E9800C62659 /* App.debug.xcconfig in Resources */,
 				CFFEE5B02A03BCEE00C46BFE /* blue.png in Resources */,
 				CFFEE5B32A03BCEE00C46BFE /* yellow.png in Resources */,
 				CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */,
 				CFFEE5AE2A03BCEE00C46BFE /* white.png in Resources */,
-				CFC1AABA2A019E5B00C62659 /* Project.xcconfig in Resources */,
 				CFFF584B29E990A30037AA85 /* Settings.bundle in Resources */,
 				CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */,
 				CFFEE5AF2A03BCEE00C46BFE /* default.png in Resources */,
