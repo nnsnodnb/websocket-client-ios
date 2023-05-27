@@ -52,7 +52,7 @@ name: swift-clocks, nameSpecified: swift-clocks, owner: pointfreeco, version: 0.
 
 name: swift-collections, nameSpecified: swift-collections, owner: apple, version: 1.0.4, source: https://github.com/apple/swift-collections
 
-name: swift-composable-architecture, nameSpecified: swift-composable-architecture, owner: pointfreeco, version: 0.53.0, source: https://github.com/pointfreeco/swift-composable-architecture
+name: swift-composable-architecture, nameSpecified: swift-composable-architecture, owner: pointfreeco, version: 0.53.2, source: https://github.com/pointfreeco/swift-composable-architecture
 
 name: swift-custom-dump, nameSpecified: swift-custom-dump, owner: pointfreeco, version: 0.10.2, source: https://github.com/pointfreeco/swift-custom-dump
 
