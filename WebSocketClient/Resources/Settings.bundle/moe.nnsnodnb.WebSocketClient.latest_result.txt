@@ -1,4 +1,4 @@
-name: abseil-cpp-binary, nameSpecified: abseil, owner: google, version: 1.2021110200.0, source: https://github.com/google/abseil-cpp-binary
+name: abseil-cpp-binary, nameSpecified: abseil, owner: google, version: 1.2022062300.0, source: https://github.com/google/abseil-cpp-binary
 
 name: APIKit, nameSpecified: APIKit, owner: ishkawa, version: 5.4.0, source: https://github.com/ishkawa/APIKit
 
@@ -8,15 +8,15 @@ name: combine-schedulers, nameSpecified: combine-schedulers, owner: pointfreeco,
 
 name: CryptoSwift, nameSpecified: CryptoSwift, owner: krzyzanowskim, version: 1.7.1, source: https://github.com/krzyzanowskim/CryptoSwift
 
-name: firebase-ios-sdk, nameSpecified: Firebase, owner: firebase, version: 10.9.0, source: https://github.com/firebase/firebase-ios-sdk
+name: firebase-ios-sdk, nameSpecified: Firebase, owner: firebase, version: 10.10.0, source: https://github.com/firebase/firebase-ios-sdk
 
-name: GoogleAppMeasurement, nameSpecified: GoogleAppMeasurement, owner: google, version: 10.9.0, source: https://github.com/google/GoogleAppMeasurement
+name: GoogleAppMeasurement, nameSpecified: GoogleAppMeasurement, owner: google, version: 10.10.0, source: https://github.com/google/GoogleAppMeasurement
 
 name: GoogleDataTransport, nameSpecified: GoogleDataTransport, owner: google, version: 9.2.2, source: https://github.com/google/GoogleDataTransport
 
 name: GoogleUtilities, nameSpecified: GoogleUtilities, owner: google, version: 7.11.1, source: https://github.com/google/GoogleUtilities
 
-name: grpc-binary, nameSpecified: gRPC, owner: google, version: 1.44.0, source: https://github.com/google/grpc-binary
+name: grpc-binary, nameSpecified: gRPC, owner: google, version: 1.50.1, source: https://github.com/google/grpc-binary
 
 name: gtm-session-fetcher, nameSpecified: GTMSessionFetcher, owner: google, version: 3.1.1, source: https://github.com/google/gtm-session-fetcher
 
@@ -52,11 +52,11 @@ name: swift-clocks, nameSpecified: swift-clocks, owner: pointfreeco, version: 0.
 
 name: swift-collections, nameSpecified: swift-collections, owner: apple, version: 1.0.4, source: https://github.com/apple/swift-collections
 
-name: swift-composable-architecture, nameSpecified: swift-composable-architecture, owner: pointfreeco, version: 0.52.0, source: https://github.com/pointfreeco/swift-composable-architecture
+name: swift-composable-architecture, nameSpecified: swift-composable-architecture, owner: pointfreeco, version: 0.53.0, source: https://github.com/pointfreeco/swift-composable-architecture
 
 name: swift-custom-dump, nameSpecified: swift-custom-dump, owner: pointfreeco, version: 0.10.2, source: https://github.com/pointfreeco/swift-custom-dump
 
-name: swift-dependencies, nameSpecified: swift-dependencies, owner: pointfreeco, version: 0.4.2, source: https://github.com/pointfreeco/swift-dependencies
+name: swift-dependencies, nameSpecified: swift-dependencies, owner: pointfreeco, version: 0.5.0, source: https://github.com/pointfreeco/swift-dependencies
 
 name: swift-html-entities, nameSpecified: HTMLEntities, owner: Kitura, version: 4.0.1, source: https://github.com/Kitura/swift-html-entities
 
