@@ -6,7 +6,6 @@ platform :ios do
   lane :test do
     scan(
       result_bundle: true,
-      skip_package_dependencies_resolution: is_ci,
     )
   end
 
@@ -50,7 +49,6 @@ platform :ios do
 
     gym(
       export_method: "ad-hoc",
-      skip_package_dependencies_resolution: is_ci,
       xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient' MARKETING_VERSION='#{generate_version_name}'",
     )
 
@@ -74,7 +72,6 @@ platform :ios do
 
     gym(
       export_method: "app-store",
-      skip_package_dependencies_resolution: is_ci,
     )
 
     upload_symbols_to_crashlytics(
