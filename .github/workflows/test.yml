@@ -6,6 +6,9 @@ jobs:
   test:
     runs-on: macos-13
 
+    env:
+      FASTLANE_SKIP_UPDATE_CHECK: 1
+
     permissions:
       checks: write
       issues: write
