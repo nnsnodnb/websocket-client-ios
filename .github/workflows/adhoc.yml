@@ -3,7 +3,7 @@ name: AdHoc
 on:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
   test:
