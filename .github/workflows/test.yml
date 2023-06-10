@@ -6,6 +6,11 @@ jobs:
   test:
     runs-on: macos-13
 
+    permissions:
+      checks: write
+      issues: write
+      pull-requests: write
+
     steps:
     - uses: actions/checkout@v3
 
