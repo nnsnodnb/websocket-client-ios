@@ -65,31 +65,6 @@ workflows:
         - content: |
             envman add --key MATCH_GIT_PRIVATE_KEY --value "$(echo -n ${GIT_PRIVATE_KEY} | base64 -d)" --sensitive
         title: Add MATCH_GIT_PRIVATE_KEY
-  adhoc:
-    before_run:
-      - _setup
-      - _prepare_match
-    steps:
-      - file-downloader@1:
-          inputs:
-          - source: "${BITRISEIO_FIREBASE_APP_DISTRIBUTION_KEY_URL}"
-          - destination: "/tmp/app-distribution-key.json"
-      - script@1:
-          inputs:
-          - content: |-
-              envman add --key GOOGLE_APPLICATION_CREDENTIALS --value "/tmp/app-distribution-key.json" --sensitive
-          title: Set GOOGLE_APPLICATION_CREDENTIALS
-      - fastlane@3:
-          inputs:
-          - lane: "adhoc"
-          - update_fastlane: false
-      - script@1:
-          inputs:
-          - content: |-
-              cp -r Products/* "${BITRISE_DEPLOY_DIR}"
-          title: Copy Products
-    after_run:
-      - _teardown
   appstore:
     before_run:
       - _setup
@@ -117,8 +92,6 @@ workflows:
       - _teardown
 
 trigger_map:
-  - push_branch: develop
-    workflow: adhoc
   - tag: "v*.*.*"
     workflow: appstore
 
