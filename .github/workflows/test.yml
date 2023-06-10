@@ -1,0 +1,56 @@
+name: Test
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: macos-13
+
+    env:
+      FASTLANE_SKIP_UPDATE_CHECK: 1
+
+    permissions:
+      checks: write
+      issues: write
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.2"
+        bundler-cache: true
+
+    - name: Select Xcode
+      run: |
+        sudo xcode-select -s /Applications/Xcode_14.3.1.app/Contents/Developer
+        xcodebuild -version
+
+    - name: Cache Swift Packages
+      uses: actions/cache@v3
+      id: cache-swiftpm
+      with:
+        path: .swiftpm
+        key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+
+    - name: Swift Packages Resolve
+      if: steps.cache-swiftpm.outputs.cache-hit != 'true'
+      run: bundle exec fastlane resolve_swift_packages
+
+    - name: Write IDESkipPackagePluginFingerprintValidatation
+      run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+
+    - name: Fastlane test
+      env:
+        FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
+      run: bundle exec fastlane test
+
+    - name: Publish unit test results
+      uses: kishikawakatsumi/xcresulttool@v1
+      if: success() || failure()
+      with:
+        path: fastlane/test_output/WebSocketClient.xcresult
+        show-passed-tests: false
+        show-code-coverage: false
