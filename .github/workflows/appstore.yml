@@ -1,4 +1,4 @@
-name: AdHoc
+name: AppStore
 
 on:
   push:
