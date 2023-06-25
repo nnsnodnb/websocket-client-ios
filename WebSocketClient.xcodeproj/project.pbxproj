@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CF708EF829FC065A00BB93F0 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CF708EF729FC065A00BB93F0 /* Unrealm */; };
 		CF708EFB29FC0A1100BB93F0 /* InfoReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */; };
+		CF948B162A4840E5003D9A9D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CF948B142A4840E5003D9A9D /* Model.xcdatamodeld */; };
+		CFB1FB552A486A9300667B3F /* NSPredicate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1FB542A486A9300667B3F /* NSPredicate+Extension.swift */; };
 		CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */; };
 		CFB2CEAA29EEC1710095D7D0 /* DependencyValues+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */; };
 		CFC1AA5329FC187F00C62659 /* libswift_Concurrency.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = CFC1AA5229FC187F00C62659 /* libswift_Concurrency.tbd */; };
@@ -27,11 +28,8 @@
 		CFC1AAA62A00773000C62659 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CFC1AAA52A00773000C62659 /* GoogleService-Info.plist */; };
 		CFC1AAAF2A007EC300C62659 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CFC1AAAE2A007EC300C62659 /* FirebaseAnalytics */; };
 		CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8429F0284400765E48 /* DatabaseClient.swift */; };
-		CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */ = {isa = PBXBuildFile; productRef = CFD5AB8729F0322C00765E48 /* Unrealm */; };
-		CFD5AB8A29F0328300765E48 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8929F0328300765E48 /* History.swift */; };
 		CFD5AB8D29F1746C00765E48 /* HistoryListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */; };
 		CFD5AB9029F174DB00765E48 /* HistoryListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB8F29F174DB00765E48 /* HistoryListPage.swift */; };
-		CFD5AB9229F180F500765E48 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9129F180F500765E48 /* Message.swift */; };
 		CFD5AB9829F527AA00765E48 /* ApplicationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */; };
 		CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */; };
 		CFFEE5AD2A03BCEE00C46BFE /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5A62A03BCEE00C46BFE /* red.png */; };
@@ -44,7 +42,6 @@
 		CFFEE5B62A03C4C300C46BFE /* AppIconListPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5B52A03C4C300C46BFE /* AppIconListPage.swift */; };
 		CFFEE5B92A03C62100C46BFE /* AppIconListReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5B82A03C62100C46BFE /* AppIconListReducer.swift */; };
 		CFFEE5BE2A03D25800C46BFE /* AppIconListReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5BD2A03D25800C46BFE /* AppIconListReducerTests.swift */; };
-		CFFEE5C12A0439DC00C46BFE /* RealmMigrations.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFEE5C02A0439DC00C46BFE /* RealmMigrations.swift */; };
 		CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */; };
 		CFFF581D29E98D3C0037AA85 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581C29E98D3C0037AA85 /* Assets.xcassets */; };
 		CFFF582029E98D3C0037AA85 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFFF581F29E98D3C0037AA85 /* Preview Assets.xcassets */; };
@@ -56,7 +53,6 @@
 		CFFF585D29E999000037AA85 /* FormPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585C29E999000037AA85 /* FormPage.swift */; };
 		CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF585F29E9990C0037AA85 /* FormReducer.swift */; };
 		CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */; };
-		CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */; };
 		CFFF586E29EBE72A0037AA85 /* FormReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF586D29EBE72A0037AA85 /* FormReducerTests.swift */; };
 		CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF587629EBF1300037AA85 /* InfoPage.swift */; };
 		CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */; };
@@ -79,6 +75,8 @@
 
 /* Begin PBXFileReference section */
 		CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducerTests.swift; sourceTree = "<group>"; };
+		CF948B152A4840E5003D9A9D /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		CFB1FB542A486A9300667B3F /* NSPredicate+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Extension.swift"; sourceTree = "<group>"; };
 		CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
 		CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DependencyValues+Extension.swift"; sourceTree = "<group>"; };
 		CFC1AA5229FC187F00C62659 /* libswift_Concurrency.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswift_Concurrency.tbd; path = usr/lib/swift/libswift_Concurrency.tbd; sourceTree = SDKROOT; };
@@ -99,10 +97,8 @@
 		CFC1AABC2A019E9800C62659 /* App.base.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = App.base.xcconfig; sourceTree = "<group>"; };
 		CFC1AABD2A019E9800C62659 /* App.debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = App.debug.xcconfig; sourceTree = "<group>"; };
 		CFD5AB8429F0284400765E48 /* DatabaseClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseClient.swift; sourceTree = "<group>"; };
-		CFD5AB8929F0328300765E48 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CFD5AB8C29F1746C00765E48 /* HistoryListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListReducer.swift; sourceTree = "<group>"; };
 		CFD5AB8F29F174DB00765E48 /* HistoryListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListPage.swift; sourceTree = "<group>"; };
-		CFD5AB9129F180F500765E48 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationClient.swift; sourceTree = "<group>"; };
 		CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleClient.swift; sourceTree = "<group>"; };
 		CFFEE5A62A03BCEE00C46BFE /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
@@ -115,7 +111,6 @@
 		CFFEE5B52A03C4C300C46BFE /* AppIconListPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListPage.swift; sourceTree = "<group>"; };
 		CFFEE5B82A03C62100C46BFE /* AppIconListReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListReducer.swift; sourceTree = "<group>"; };
 		CFFEE5BD2A03D25800C46BFE /* AppIconListReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconListReducerTests.swift; sourceTree = "<group>"; };
-		CFFEE5C02A0439DC00C46BFE /* RealmMigrations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmMigrations.swift; sourceTree = "<group>"; };
 		CFFF581529E98D3B0037AA85 /* WebSocketClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebSocketClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClientApp.swift; sourceTree = "<group>"; };
 		CFFF581C29E98D3C0037AA85 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -128,7 +123,6 @@
 		CFFF585929E997230037AA85 /* RootReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootReducer.swift; sourceTree = "<group>"; };
 		CFFF585C29E999000037AA85 /* FormPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormPage.swift; sourceTree = "<group>"; };
 		CFFF585F29E9990C0037AA85 /* FormReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReducer.swift; sourceTree = "<group>"; };
-		CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeader.swift; sourceTree = "<group>"; };
 		CFFF586D29EBE72A0037AA85 /* FormReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormReducerTests.swift; sourceTree = "<group>"; };
 		CFFF587629EBF1300037AA85 /* InfoPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoPage.swift; sourceTree = "<group>"; };
 		CFFF588029EBF8ED0037AA85 /* InfoReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducer.swift; sourceTree = "<group>"; };
@@ -148,7 +142,6 @@
 				CFFF586729EBCE0F0037AA85 /* SFSafeSymbols in Frameworks */,
 				CFFF584E29E991EC0037AA85 /* ComposableArchitecture in Frameworks */,
 				CFC1AA5F29FFE77B00C62659 /* SwiftUINavigation in Frameworks */,
-				CFD5AB8829F0322C00765E48 /* Unrealm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +150,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFC1AA5329FC187F00C62659 /* libswift_Concurrency.tbd in Frameworks */,
-				CF708EF829FC065A00BB93F0 /* Unrealm in Frameworks */,
 				CFC1AAAF2A007EC300C62659 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -369,14 +361,6 @@
 			path = AppIconList;
 			sourceTree = "<group>";
 		};
-		CFFEE5BF2A0439CE00C46BFE /* Migrations */ = {
-			isa = PBXGroup;
-			children = (
-				CFFEE5C02A0439DC00C46BFE /* RealmMigrations.swift */,
-			);
-			path = Migrations;
-			sourceTree = "<group>";
-		};
 		CFFF580C29E98D3B0037AA85 = {
 			isa = PBXGroup;
 			children = (
@@ -404,6 +388,7 @@
 				CFFF588829EC05F90037AA85 /* Generated */,
 				CFFF584429E98E3A0037AA85 /* Resources */,
 				CFFF584829E98F800037AA85 /* Supporting Files */,
+				CF948B142A4840E5003D9A9D /* Model.xcdatamodeld */,
 			);
 			path = WebSocketClient;
 			sourceTree = "<group>";
@@ -442,8 +427,6 @@
 			children = (
 				CFFF585229E995BA0037AA85 /* AppDelegate.swift */,
 				CFFF581829E98D3B0037AA85 /* WebSocketClientApp.swift */,
-				CFFF586829EBDC520037AA85 /* Entities */,
-				CFFEE5BF2A0439CE00C46BFE /* Migrations */,
 				CFFF588F29EC0C200037AA85 /* Extensions */,
 				CFFF584629E98E680037AA85 /* Pages */,
 				CFC1AA5429FFBC9400C62659 /* Componenets */,
@@ -522,16 +505,6 @@
 			path = Form;
 			sourceTree = "<group>";
 		};
-		CFFF586829EBDC520037AA85 /* Entities */ = {
-			isa = PBXGroup;
-			children = (
-				CFFF586929EBDC5D0037AA85 /* CustomHeader.swift */,
-				CFD5AB8929F0328300765E48 /* History.swift */,
-				CFD5AB9129F180F500765E48 /* Message.swift */,
-			);
-			path = Entities;
-			sourceTree = "<group>";
-		};
 		CFFF586B29EBE6F20037AA85 /* Reducers */ = {
 			isa = PBXGroup;
 			children = (
@@ -584,6 +557,7 @@
 				CFFF589029EC0C2C0037AA85 /* Array+Extension.swift */,
 				CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */,
 				CFC1AA602A00175D00C62659 /* IdentifiedArrayOf+Extension.swift */,
+				CFB1FB542A486A9300667B3F /* NSPredicate+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -629,7 +603,6 @@
 				CFFF584D29E991EC0037AA85 /* ComposableArchitecture */,
 				CFFF586629EBCE0F0037AA85 /* SFSafeSymbols */,
 				CFFF588329EBFD3A0037AA85 /* SafariView */,
-				CFD5AB8729F0322C00765E48 /* Unrealm */,
 				CFC1AA5E29FFE77B00C62659 /* SwiftUINavigation */,
 				CFC1AAA32A00768800C62659 /* FirebaseAnalyticsSwift */,
 			);
@@ -652,7 +625,6 @@
 			);
 			name = WebSocketClientTests;
 			packageProductDependencies = (
-				CF708EF729FC065A00BB93F0 /* Unrealm */,
 				CFC1AAAE2A007EC300C62659 /* FirebaseAnalytics */,
 			);
 			productName = WebSocketClientTests;
@@ -695,7 +667,6 @@
 				CFFF586529EBCE0F0037AA85 /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 				CFFF588229EBFD3A0037AA85 /* XCRemoteSwiftPackageReference "SafariView" */,
 				CFFF588529EC05290037AA85 /* XCRemoteSwiftPackageReference "SwiftGenPlugin" */,
-				CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */,
 				CFC1AA5D29FFE77B00C62659 /* XCRemoteSwiftPackageReference "swiftui-navigation" */,
 				CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
@@ -785,11 +756,8 @@
 				CFC1AA5629FFBCB100C62659 /* MessageListView.swift in Sources */,
 				CFC1AA6A2A00347C00C62659 /* CustomHeaderListPage.swift in Sources */,
 				CFFEE5B62A03C4C300C46BFE /* AppIconListPage.swift in Sources */,
-				CFFEE5C12A0439DC00C46BFE /* RealmMigrations.swift in Sources */,
-				CFD5AB8A29F0328300765E48 /* History.swift in Sources */,
 				CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */,
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
-				CFFF586A29EBDC5D0037AA85 /* CustomHeader.swift in Sources */,
 				CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */,
 				CFFF589429EC525C0037AA85 /* ConnectionPage.swift in Sources */,
 				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
@@ -801,6 +769,7 @@
 				CFFF589129EC0C2C0037AA85 /* Array+Extension.swift in Sources */,
 				CFFF585D29E999000037AA85 /* FormPage.swift in Sources */,
 				CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */,
+				CFB1FB552A486A9300667B3F /* NSPredicate+Extension.swift in Sources */,
 				CFC1AA612A00175D00C62659 /* IdentifiedArrayOf+Extension.swift in Sources */,
 				CFFF585A29E997230037AA85 /* RootReducer.swift in Sources */,
 				CFFF585629E996FF0037AA85 /* RootPage.swift in Sources */,
@@ -809,8 +778,8 @@
 				CFFF588129EBF8ED0037AA85 /* InfoReducer.swift in Sources */,
 				CFC1AA782A005FC800C62659 /* Localizable.swift in Sources */,
 				CFFF588A29EC05F90037AA85 /* Assets.swift in Sources */,
+				CF948B162A4840E5003D9A9D /* Model.xcdatamodeld in Sources */,
 				CFFF581929E98D3B0037AA85 /* WebSocketClientApp.swift in Sources */,
-				CFD5AB9229F180F500765E48 /* Message.swift in Sources */,
 				CFD5AB9029F174DB00765E48 /* HistoryListPage.swift in Sources */,
 				CFD5AB8D29F1746C00765E48 /* HistoryListReducer.swift in Sources */,
 			);
@@ -1137,14 +1106,6 @@
 				minimumVersion = 10.9.0;
 			};
 		};
-		CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/arturdev/Unrealm.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.9.5;
-			};
-		};
 		CFFF584929E990880037AA85 /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mono0926/LicensePlist.git";
@@ -1196,11 +1157,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CF708EF729FC065A00BB93F0 /* Unrealm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
-			productName = Unrealm;
-		};
 		CFC1AA5E29FFE77B00C62659 /* SwiftUINavigation */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CFC1AA5D29FFE77B00C62659 /* XCRemoteSwiftPackageReference "swiftui-navigation" */;
@@ -1215,11 +1171,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CFC1AAA22A00768800C62659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
-		};
-		CFD5AB8729F0322C00765E48 /* Unrealm */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CFD5AB8629F0322C00765E48 /* XCRemoteSwiftPackageReference "Unrealm" */;
-			productName = Unrealm;
 		};
 		CFFF584D29E991EC0037AA85 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -1252,6 +1203,19 @@
 			productName = "plugin:LicensePlistBuildTool";
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		CF948B142A4840E5003D9A9D /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CF948B152A4840E5003D9A9D /* Model.xcdatamodel */,
+			);
+			currentVersion = CF948B152A4840E5003D9A9D /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = CFFF580D29E98D3B0037AA85 /* Project object */;
 }

@@ -6,17 +6,18 @@
 //
 
 import ComposableArchitecture
+import CoreData
 import Foundation
-import Unrealm
 import XCTestDynamicOverlay
 
 struct DatabaseClient {
     // MARK: - Properties
-    var fetchHistories: @Sendable ((Results<History>) -> Results<History>) async throws -> [History]
-    var getHistory: @Sendable (Int) async throws -> History?
-    var addHistory: @Sendable (History) async throws -> Void
-    var updateHistory: @Sendable (History) async throws -> Void
-    var deleteHistory: @Sendable (History) async throws -> Void
+    var managedObjectContext: @Sendable () -> NSManagedObjectContext
+    var fetchHistories: @Sendable (NSPredicate?) async throws -> [CDHistory]
+    var getHistory: @Sendable (Int) async throws -> CDHistory?
+    var addHistory: @Sendable (CDHistory) async throws -> Void
+    var updateHistory: @Sendable (CDHistory) async throws -> Void
+    var deleteHistory: @Sendable (CDHistory) async throws -> Void
     var deleteAllData: @Sendable () async throws -> Void
 }
 
@@ -25,46 +26,70 @@ extension DatabaseClient {
         // MARK: - Properties
         static let shared = DatabaseActor()
 
-        func fetchHistories(operation: (Results<History>) -> Results<History>) throws -> [History] {
-            let realm = try Realm()
-            let results = realm.objects(History.self)
-            return Array(operation(results))
-        }
+        fileprivate static let preview = DatabaseActor(inMemory: true)
 
-        func getHistory(id: Int) throws -> History? {
-            let realm = try Realm()
-            let object = realm.object(ofType: History.self, forPrimaryKey: id)
-            return object
-        }
+        fileprivate let container: NSPersistentContainer
 
-        func addHistory(_ history: History) throws {
-            let realm = try Realm()
-            try realm.write {
-                realm.add(history)
+        // MARK: - Initialize
+        private init(inMemory: Bool = false) {
+            self.container = NSPersistentContainer(name: "Model")
+            if inMemory {
+                container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
             }
+            container.loadPersistentStores { storeDescription, error in
+                guard let error else {
+                    #if Debug
+                    print("CoreData sqlite location: \(storeDescription.url?.path(percentEncoded: false) ?? "")")
+                    #endif
+                    return
+                }
+                fatalError("\(error)")
+            }
+            container.viewContext.automaticallyMergesChangesFromParent = true
         }
 
-        func updateHistory(_ history: History) throws {
-            let realm = try Realm()
-            try realm.write {
-                realm.add(history, update: .modified)
-            }
+        func context() -> NSManagedObjectContext {
+            return container.viewContext
         }
 
-        func deleteHistory(_ history: History) throws {
-            let realm = try Realm()
-            try realm.write {
-                realm.delete(history.messages)
-                realm.delete(history.customHeaders)
-                realm.delete(history)
-            }
+        func fetchHistories(_ predicate: NSPredicate? = nil) throws -> [CDHistory] {
+            let request = CDHistory.fetchRequest()
+            request.sortDescriptors = [.init(key: "createdAt", ascending: true)]
+            request.predicate = predicate
+            return try container.viewContext.fetch(request)
+        }
+
+        func getHistory(id: Int) throws -> CDHistory? {
+            let request = CDHistory.fetchRequest()
+            let predicate = NSPredicate(format: "id == %@", id)
+            request.predicate = predicate
+            return try container.viewContext.fetch(request).first
+        }
+
+        func addHistory(_ history: CDHistory) throws {
+            container.viewContext.insert(history)
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
+        }
+
+        func updateHistory(_ history: CDHistory) throws {
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
+        }
+
+        func deleteHistory(_ history: CDHistory) throws {
+            container.viewContext.delete(history)
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
         }
 
         func deleteAllData() throws {
-            let realm = try Realm()
-            try realm.write {
-                realm.deleteAll()
-            }
+            let request = CDHistory.fetchRequest()
+            let histories = try container.viewContext.fetch(request)
+            guard !histories.isEmpty else { return }
+            histories.forEach(container.viewContext.delete)
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
         }
     }
 }
@@ -72,7 +97,8 @@ extension DatabaseClient {
 // MARK: - DependencyKey
 extension DatabaseClient: DependencyKey {
     static var liveValue = Self(
-        fetchHistories: { try await DatabaseActor.shared.fetchHistories(operation: $0) },
+        managedObjectContext: { DatabaseActor.shared.container.viewContext },
+        fetchHistories: { try await DatabaseActor.shared.fetchHistories($0) },
         getHistory: { try await DatabaseActor.shared.getHistory(id: $0) },
         addHistory: { try await DatabaseActor.shared.addHistory($0) },
         updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
@@ -81,6 +107,7 @@ extension DatabaseClient: DependencyKey {
     )
 
     static var previewValue = Self(
+        managedObjectContext: { DatabaseActor.preview.container.viewContext },
         fetchHistories: { _ in [] },
         getHistory: { _ in nil },
         addHistory: { _ in },
@@ -90,6 +117,7 @@ extension DatabaseClient: DependencyKey {
     )
 
     static var testValue = Self(
+        managedObjectContext: unimplemented("\(Self.self).managedObjectContext"),
         fetchHistories: unimplemented("\(Self.self).fetchHistories"),
         getHistory: unimplemented("\(Self.self).getHistory"),
         addHistory: unimplemented("\(Self.self).addHistory"),
