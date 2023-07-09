@@ -12,7 +12,7 @@ import XCTestDynamicOverlay
 
 struct DatabaseClient {
     // MARK: - Properties
-    var managedObjectContext: @Sendable () -> NSManagedObjectContext
+    var managedObjectContext: @Sendable () -> NSManagedObjectContextProtocol
     var fetchHistories: @Sendable (NSPredicate?) async throws -> [CDHistory]
     var getHistory: @Sendable (Int) async throws -> CDHistory?
     var addHistory: @Sendable (CDHistory) async throws -> Void
@@ -48,7 +48,7 @@ extension DatabaseClient {
             container.viewContext.automaticallyMergesChangesFromParent = true
         }
 
-        func context() -> NSManagedObjectContext {
+        func context() -> NSManagedObjectContextProtocol {
             return container.viewContext
         }
 
@@ -56,40 +56,40 @@ extension DatabaseClient {
             let request = CDHistory.fetchRequest()
             request.sortDescriptors = [.init(key: "createdAt", ascending: true)]
             request.predicate = predicate
-            return try container.viewContext.fetch(request)
+            return try context().fetch(request)
         }
 
         func getHistory(id: Int) throws -> CDHistory? {
             let request = CDHistory.fetchRequest()
             let predicate = NSPredicate(format: "id == %@", id)
             request.predicate = predicate
-            return try container.viewContext.fetch(request).first
+            return try context().fetch(request).first
         }
 
         func addHistory(_ history: CDHistory) throws {
-            container.viewContext.insert(history)
-            guard container.viewContext.hasChanges else { return }
-            try container.viewContext.save()
+            context().insert(history)
+            guard context().hasChanges else { return }
+            try context().save()
         }
 
         func updateHistory(_ history: CDHistory) throws {
-            guard container.viewContext.hasChanges else { return }
-            try container.viewContext.save()
+            guard context().hasChanges else { return }
+            try context().save()
         }
 
         func deleteHistory(_ history: CDHistory) throws {
-            container.viewContext.delete(history)
-            guard container.viewContext.hasChanges else { return }
-            try container.viewContext.save()
+            context().delete(history)
+            guard context().hasChanges else { return }
+            try context().save()
         }
 
         func deleteAllData() throws {
             let request = CDHistory.fetchRequest()
-            let histories = try container.viewContext.fetch(request)
+            let histories = try context().fetch(request)
             guard !histories.isEmpty else { return }
-            histories.forEach(container.viewContext.delete)
-            guard container.viewContext.hasChanges else { return }
-            try container.viewContext.save()
+            histories.forEach(context().delete)
+            guard context().hasChanges else { return }
+            try context().save()
         }
     }
 }
