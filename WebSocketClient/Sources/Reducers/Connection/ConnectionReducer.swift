@@ -12,12 +12,12 @@ struct ConnectionReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
         let url: URL
-        let customHeaders: [CustomHeader]
+        let customHeaders: [CDCustomHeader]
         var connectivityState: ConnectivityState = .disconnected
         var message: String = ""
         var isSendButtonDisabled = true
         var receivedMessages: [String] = []
-        var history: History
+        var history: CDHistory
         var alert: AlertState<Action>?
         var isShowCustomHeaderList = false
 
@@ -29,9 +29,9 @@ struct ConnectionReducer: ReducerProtocol {
         }
 
         // MARK: - Initialize
-        init(url: URL, history: History) {
+        init(url: URL, history: CDHistory) {
             self.url = url
-            self.customHeaders = history.customHeaders
+            self.customHeaders = (history.customHeaders?.allObjects as? [CDCustomHeader]) ?? []
             self.history = history
         }
     }
@@ -56,8 +56,12 @@ struct ConnectionReducer: ReducerProtocol {
     var clock
     @Dependency(\.databaseClient)
     var databaseClient
+    @Dependency(\.date)
+    var date
     @Dependency(\.webSocketClient)
     var webSocketClient
+    @Dependency(\.uuid)
+    var uuid
 
     // MARK: - WebSocketID
     enum CancelID {
@@ -94,7 +98,11 @@ struct ConnectionReducer: ReducerProtocol {
             case let .receivedSocketMessage(.success(message)):
                 guard case let .string(string) = message else { return .none }
                 state.receivedMessages.append(string)
-                state.history.messages.append(.init(text: string))
+                let message = CDMessage(context: databaseClient.managedObjectContext())
+                message.id = uuid.callAsFunction()
+                message.text = string
+                message.createdAt = date.callAsFunction()
+                state.history.addToMessages(message)
                 return .task { [history = state.history] in
                     await .updateHistoryResponse(
                         TaskResult {
@@ -162,7 +170,8 @@ struct ConnectionReducer: ReducerProtocol {
         return .run { [state] send in
             var urlRequest = URLRequest(url: state.url)
             state.customHeaders.forEach {
-                urlRequest.addValue($0.value, forHTTPHeaderField: $0.name)
+                guard let value = $0.value, let name = $0.name else { return }
+                urlRequest.addValue(value, forHTTPHeaderField: name)
             }
             let actions = await webSocketClient.open(CancelID.websocket, urlRequest)
             await withThrowingTaskGroup(of: Void.self) { group in

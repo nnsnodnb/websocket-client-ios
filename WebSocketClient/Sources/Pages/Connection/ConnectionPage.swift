@@ -120,13 +120,15 @@ private extension View {
 }
 
 struct ConnectionPage_Previews: PreviewProvider {
+    static let context = DatabaseClient.previewValue.managedObjectContext()
+
     static var previews: some View {
         Group {
             ConnectionPage(
                 store: .init(
                     initialState: ConnectionReducer.State(
                         url: URL(string: "wss://echo.websocket.events")!,
-                        history: .init()
+                        history: .init(context: context)
                     ),
                     reducer: ConnectionReducer()
                 )
@@ -136,7 +138,15 @@ struct ConnectionPage_Previews: PreviewProvider {
                 store: .init(
                     initialState: ConnectionReducer.State(
                         url: URL(string: "wss://echo.websocket.events")!,
-                        history: .init(customHeaders: [.init(name: "name", value: "value")])
+                        history: {
+                            let history = CDHistory(context: context)
+                            let customHeader = CDCustomHeader(context: context)
+                            customHeader.name = "name"
+                            customHeader.value = "value"
+                            customHeader.history = history
+                            history.addToCustomHeaders(customHeader)
+                            return history
+                        }()
                     ),
                     reducer: ConnectionReducer()
                 )

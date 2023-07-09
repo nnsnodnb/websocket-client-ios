@@ -11,7 +11,7 @@ import Foundation
 struct HistoryDetailReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
-        let history: History
+        let history: CDHistory
         var alert: AlertState<Action>?
         var isShowCustomHeaderList = false
     }

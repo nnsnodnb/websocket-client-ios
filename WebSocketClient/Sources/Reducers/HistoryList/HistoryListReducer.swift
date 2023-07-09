@@ -11,8 +11,8 @@ import Foundation
 struct HistoryListReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
-        var histories: IdentifiedArrayOf<History> = []
-        var selectionHistory: Identified<History, HistoryDetailReducer.State?>?
+        var histories: IdentifiedArrayOf<CDHistory> = []
+        var selectionHistory: Identified<CDHistory, HistoryDetailReducer.State?>?
         var paths: [Destination] = []
 
         // MARK: - Destination
@@ -24,11 +24,11 @@ struct HistoryListReducer: ReducerProtocol {
     // MARK: - Action
     enum Action: Equatable {
         case fetch
-        case fetchResponse(TaskResult<[History]>)
-        case setNavigation(History?)
+        case fetchResponse(TaskResult<[CDHistory]>)
+        case setNavigation(CDHistory?)
         case navigationPathChanged([State.Destination])
         case deleteHistory(IndexSet)
-        case deleteHistoryResponse(TaskResult<History>)
+        case deleteHistoryResponse(TaskResult<CDHistory>)
         case historyDetail(HistoryDetailReducer.Action)
     }
 
@@ -42,9 +42,9 @@ struct HistoryListReducer: ReducerProtocol {
                 return .task {
                     await .fetchResponse(
                         TaskResult {
-                            try await databaseClient.fetchHistories {
-                                $0.filter("isConnectionSuccess == %@", true)
-                            }
+                            try await databaseClient.fetchHistories(
+                                NSPredicate(format: "isConnectionSuccess == %d", true)
+                            )
                         }
                     )
                 }
