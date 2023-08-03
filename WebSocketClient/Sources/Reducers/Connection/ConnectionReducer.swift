@@ -12,12 +12,12 @@ struct ConnectionReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
         let url: URL
-        let customHeaders: [CDCustomHeader]
+        let customHeaders: [CustomHeaderEntity]
         var connectivityState: ConnectivityState = .disconnected
         var message: String = ""
         var isSendButtonDisabled = true
         var receivedMessages: [String] = []
-        var history: CDHistory
+        var history: HistoryEntity
         var alert: AlertState<Action>?
         var isShowCustomHeaderList = false
 
@@ -29,9 +29,9 @@ struct ConnectionReducer: ReducerProtocol {
         }
 
         // MARK: - Initialize
-        init(url: URL, history: CDHistory) {
+        init(url: URL, history: HistoryEntity) {
             self.url = url
-            self.customHeaders = (history.customHeaders?.allObjects as? [CDCustomHeader]) ?? []
+            self.customHeaders = history.customHeaders
             self.history = history
         }
     }
@@ -98,10 +98,11 @@ struct ConnectionReducer: ReducerProtocol {
             case let .receivedSocketMessage(.success(message)):
                 guard case let .string(string) = message else { return .none }
                 state.receivedMessages.append(string)
-                let message = CDMessage(context: databaseClient.managedObjectContext())
-                message.id = uuid.callAsFunction()
-                message.text = string
-                message.createdAt = date.callAsFunction()
+                let message = MessageEntity(
+                    id: uuid.callAsFunction(),
+                    text: string,
+                    createdAt: date.callAsFunction()
+                )
                 state.history.addToMessages(message)
                 return .task { [history = state.history] in
                     await .updateHistoryResponse(
@@ -124,7 +125,7 @@ struct ConnectionReducer: ReducerProtocol {
             case .webSocket(.didOpen):
                 state.connectivityState = .connected
                 state.receivedMessages.append("Connected \(state.url.absoluteString)")
-                state.history.isConnectionSuccess = true
+                state.history.successfulConnection()
                 return .task { [history = state.history] in
                     await .updateHistoryResponse(
                         TaskResult {
@@ -170,8 +171,7 @@ struct ConnectionReducer: ReducerProtocol {
         return .run { [state] send in
             var urlRequest = URLRequest(url: state.url)
             state.customHeaders.forEach {
-                guard let value = $0.value, let name = $0.name else { return }
-                urlRequest.addValue(value, forHTTPHeaderField: name)
+                urlRequest.addValue($0.value, forHTTPHeaderField: $0.name)
             }
             let actions = await webSocketClient.open(CancelID.websocket, urlRequest)
             await withThrowingTaskGroup(of: Void.self) { group in

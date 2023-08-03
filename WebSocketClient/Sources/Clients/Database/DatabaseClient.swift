@@ -12,12 +12,10 @@ import XCTestDynamicOverlay
 
 struct DatabaseClient {
     // MARK: - Properties
-    var managedObjectContext: @Sendable () -> NSManagedObjectContextProtocol
-    var fetchHistories: @Sendable (NSPredicate?) async throws -> [CDHistory]
-    var getHistory: @Sendable (Int) async throws -> CDHistory?
-    var addHistory: @Sendable (CDHistory) async throws -> Void
-    var updateHistory: @Sendable (CDHistory) async throws -> Void
-    var deleteHistory: @Sendable (CDHistory) async throws -> Void
+    var fetchHistories: @Sendable (NSPredicate?) async throws -> [HistoryEntity]
+    var addHistory: @Sendable (HistoryEntity) async throws -> Void
+    var updateHistory: @Sendable (HistoryEntity) async throws -> Void
+    var deleteHistory: @Sendable (HistoryEntity) async throws -> Void
     var deleteAllData: @Sendable () async throws -> Void
 }
 
@@ -49,48 +47,100 @@ extension DatabaseClient {
             container.viewContext.automaticallyMergesChangesFromParent = true
         }
 
-        func context() -> NSManagedObjectContextProtocol {
-            return container.viewContext
-        }
-
-        func fetchHistories(_ predicate: NSPredicate? = nil) throws -> [CDHistory] {
+        func fetchHistories(_ predicate: NSPredicate? = nil) throws -> [HistoryEntity] {
             let request = CDHistory.fetchRequest()
             request.sortDescriptors = [.init(key: "createdAt", ascending: true)]
             request.predicate = predicate
-            return try context().fetch(request)
+            return try container.viewContext.fetch(request)
+                .map(convertToHistoryEntity(with:))
         }
 
-        func getHistory(id: Int) throws -> CDHistory? {
-            let request = CDHistory.fetchRequest()
-            let predicate = NSPredicate(format: "id == %@", id)
-            request.predicate = predicate
-            return try context().fetch(request).first
+        func addHistory(_ history: HistoryEntity) throws {
+            container.viewContext.insert(convertToCDHistory(with: history))
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
         }
 
-        func addHistory(_ history: CDHistory) throws {
-            context().insert(history)
-            guard context().hasChanges else { return }
-            try context().save()
+        func updateHistory(_ history: HistoryEntity) throws {
+            guard let entity = try getHistory(id: history.id) else { return }
+            entity.customHeaders = .init(array: history.customHeaders.map(convertToCDCustomHeader(with:)))
+            entity.messages = .init(array: history.messages.map(convertToCDMessage(with:)))
+            entity.isConnectionSuccess = history.isConnectionSuccess
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
         }
 
-        func updateHistory(_ history: CDHistory) throws {
-            guard context().hasChanges else { return }
-            try context().save()
-        }
-
-        func deleteHistory(_ history: CDHistory) throws {
-            context().delete(history)
-            guard context().hasChanges else { return }
-            try context().save()
+        func deleteHistory(_ history: HistoryEntity) throws {
+            guard let entity = try getHistory(id: history.id) else { return }
+            container.viewContext.delete(entity)
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
         }
 
         func deleteAllData() throws {
             let request = CDHistory.fetchRequest()
-            let histories = try context().fetch(request)
+            let histories = try container.viewContext.fetch(request)
             guard !histories.isEmpty else { return }
-            histories.forEach(context().delete)
-            guard context().hasChanges else { return }
-            try context().save()
+            histories.forEach(container.viewContext.delete)
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
+        }
+
+        // MARK: - Private method
+        private func getHistory(id: UUID) throws -> CDHistory? {
+            let request = CDHistory.fetchRequest()
+            let predicate = NSPredicate(format: "id == %@", id as CVarArg)
+            request.predicate = predicate
+            return try container.viewContext.fetch(request).first
+        }
+
+        private func convertToHistoryEntity(with history: CDHistory) -> HistoryEntity {
+            let customHeaders = (history.customHeaders?.allObjects as? [CDCustomHeader] ?? []).map {
+                var entity = CustomHeaderEntity(id: $0.id!)
+                entity.setName($0.name!)
+                entity.setValue($0.value!)
+                return entity
+            }
+            let messages = (history.messages?.allObjects as? [CDMessage] ?? []).map {
+                MessageEntity(id: $0.id!, text: $0.text!, createdAt: $0.createdAt!)
+            }
+            return HistoryEntity(
+                id: history.id!,
+                url: URL(string: history.urlString!)!,
+                customHeaders: customHeaders,
+                messages: messages,
+                isConnectionSuccess: history.isConnectionSuccess,
+                createdAt: history.createdAt!
+            )
+        }
+
+        private func convertToCDHistory(with history: HistoryEntity) -> CDHistory {
+            let entity = CDHistory(context: container.viewContext)
+            entity.id = history.id
+            entity.urlString = history.url.absoluteString
+            let customHeaders = history.customHeaders.map(convertToCDCustomHeader(with:))
+            entity.customHeaders = .init(array: customHeaders)
+            let messages = history.messages.map(convertToCDMessage(with:))
+            entity.messages = .init(array: messages)
+            entity.isConnectionSuccess = history.isConnectionSuccess
+            entity.createdAt = history.createdAt
+            return entity
+        }
+
+        private func convertToCDCustomHeader(with customHeader: CustomHeaderEntity) -> CDCustomHeader {
+            let entity = CDCustomHeader(context: container.viewContext)
+            entity.id = customHeader.id
+            entity.name = customHeader.name
+            entity.value = customHeader.value
+            return entity
+        }
+
+        private func convertToCDMessage(with message: MessageEntity) -> CDMessage {
+            let entity = CDMessage(context: container.viewContext)
+            entity.id = message.id
+            entity.text = message.text
+            entity.createdAt = message.createdAt
+            return entity
         }
     }
 }
@@ -98,9 +148,7 @@ extension DatabaseClient {
 // MARK: - DependencyKey
 extension DatabaseClient: DependencyKey {
     static var liveValue = Self(
-        managedObjectContext: { DatabaseActor.shared.container.viewContext },
         fetchHistories: { try await DatabaseActor.shared.fetchHistories($0) },
-        getHistory: { try await DatabaseActor.shared.getHistory(id: $0) },
         addHistory: { try await DatabaseActor.shared.addHistory($0) },
         updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
         deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) },
@@ -108,9 +156,7 @@ extension DatabaseClient: DependencyKey {
     )
 
     static var previewValue = Self(
-        managedObjectContext: { DatabaseActor.preview.container.viewContext },
         fetchHistories: { _ in [] },
-        getHistory: { _ in nil },
         addHistory: { _ in },
         updateHistory: { _ in },
         deleteHistory: { _ in },
@@ -118,9 +164,7 @@ extension DatabaseClient: DependencyKey {
     )
 
     static var testValue = Self(
-        managedObjectContext: { DatabaseActor.test.container.viewContext },
         fetchHistories: unimplemented("\(Self.self).fetchHistories"),
-        getHistory: unimplemented("\(Self.self).getHistory"),
         addHistory: unimplemented("\(Self.self).addHistory"),
         updateHistory: unimplemented("\(Self.self).updateHistory"),
         deleteHistory: unimplemented("\(Self.self).deleteHistory"),

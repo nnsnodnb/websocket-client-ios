@@ -12,7 +12,7 @@ struct FormReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
         var url: URL?
-        var customHeaders: [CDCustomHeader] = []
+        var customHeaders: [CustomHeaderEntity] = []
         var isConnectButtonDisable = true
         var connection: ConnectionReducer.State?
     }
@@ -50,10 +50,7 @@ struct FormReducer: ReducerProtocol {
                 state.isConnectButtonDisable = false
                 return .none
             case .addCustomHeader:
-                let customHeader = CDCustomHeader(context: databaseClient.managedObjectContext())
-                customHeader.id = uuid.callAsFunction()
-                customHeader.name = ""
-                customHeader.value = ""
+                let customHeader = CustomHeaderEntity(id: uuid.callAsFunction())
                 state.customHeaders.append(customHeader)
                 return .none
             case let .removeCustomHeader(indexSet):
@@ -61,23 +58,26 @@ struct FormReducer: ReducerProtocol {
                 return .none
             case let .customHeaderNameChanged(index, name):
                 guard !state.customHeaders.isEmpty,
-                      let customHeader = state.customHeaders[safe: index] else { return .none }
-                customHeader.name = name
+                      var customHeader = state.customHeaders[safe: index] else { return .none }
+                customHeader.setName(name)
                 state.customHeaders[index] = customHeader
                 return .none
             case let .customHeaderValueChanged(index, value):
                 guard !state.customHeaders.isEmpty,
-                      let customHeader = state.customHeaders[safe: index] else { return .none }
-                customHeader.value = value
+                      var customHeader = state.customHeaders[safe: index] else { return .none }
+                customHeader.setValue(value)
                 state.customHeaders[index] = customHeader
                 return .none
             case .connect:
                 guard let url = state.url else { return .none }
-                let history = CDHistory(context: databaseClient.managedObjectContext())
-                history.id = uuid.callAsFunction()
-                history.urlString = url.absoluteString
-                state.customHeaders.forEach(history.addToCustomHeaders)
-                history.createdAt = date.callAsFunction()
+                let history = HistoryEntity(
+                    id: uuid.callAsFunction(),
+                    url: url,
+                    customHeaders: state.customHeaders,
+                    messages: [],
+                    isConnectionSuccess: false,
+                    createdAt: date.callAsFunction()
+                )
                 state.connection = .init(url: url, history: history)
                 return .none
             case .connectionOpen:

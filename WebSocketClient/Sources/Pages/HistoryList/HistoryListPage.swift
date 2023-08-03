@@ -64,14 +64,14 @@ struct HistoryListPage: View {
         }
     }
 
-    private func row(_ viewStore: ViewStoreOf<HistoryListReducer>, for history: CDHistory) -> some View {
+    private func row(_ viewStore: ViewStoreOf<HistoryListReducer>, for history: HistoryEntity) -> some View {
         HStack {
             Button(
                 action: {
                     viewStore.send(.setNavigation(history))
                 },
                 label: {
-                    Text(history.urlString ?? "")
+                    Text(history.url.absoluteString)
                         .foregroundColor(.primary)
                 }
             )
@@ -102,12 +102,15 @@ struct HistoryListPage: View {
 }
 
 struct HistoryListPage_Previews: PreviewProvider {
-    static let context = DatabaseClient.previewValue.managedObjectContext()
-
-    static var history: CDHistory {
-        let history = CDHistory(context: context)
-        history.urlString = "wss://echo.websocket.events"
-        return history
+    static var history: HistoryEntity {
+        return .init(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
+            messages: [],
+            isConnectionSuccess: false,
+            createdAt: .init()
+        )
     }
 
     static var previews: some View {

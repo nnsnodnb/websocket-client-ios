@@ -9,6 +9,6 @@ import CoreData
 
 extension NSManagedObject {
     convenience init(context: NSManagedObjectContextProtocol) {
-        self.init(context: context)
+        self.init(context: context as! NSManagedObjectContext) // swiftlint:disable:this force_cast
     }
 }

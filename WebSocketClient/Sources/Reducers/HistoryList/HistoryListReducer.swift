@@ -11,8 +11,8 @@ import Foundation
 struct HistoryListReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
-        var histories: IdentifiedArrayOf<CDHistory> = []
-        var selectionHistory: Identified<CDHistory, HistoryDetailReducer.State?>?
+        var histories: IdentifiedArrayOf<HistoryEntity> = []
+        var selectionHistory: Identified<HistoryEntity, HistoryDetailReducer.State?>?
         var paths: [Destination] = []
 
         // MARK: - Destination
@@ -24,11 +24,11 @@ struct HistoryListReducer: ReducerProtocol {
     // MARK: - Action
     enum Action: Equatable {
         case fetch
-        case fetchResponse(TaskResult<[CDHistory]>)
-        case setNavigation(CDHistory?)
+        case fetchResponse(TaskResult<[HistoryEntity]>)
+        case setNavigation(HistoryEntity?)
         case navigationPathChanged([State.Destination])
         case deleteHistory(IndexSet)
-        case deleteHistoryResponse(TaskResult<CDHistory>)
+        case deleteHistoryResponse(TaskResult<HistoryEntity>)
         case historyDetail(HistoryDetailReducer.Action)
     }
 

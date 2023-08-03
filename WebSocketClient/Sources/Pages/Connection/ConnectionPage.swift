@@ -120,15 +120,20 @@ private extension View {
 }
 
 struct ConnectionPage_Previews: PreviewProvider {
-    static let context = DatabaseClient.previewValue.managedObjectContext()
-
     static var previews: some View {
         Group {
             ConnectionPage(
                 store: .init(
                     initialState: ConnectionReducer.State(
                         url: URL(string: "wss://echo.websocket.events")!,
-                        history: .init(context: context)
+                        history: .init(
+                            id: .init(0),
+                            url: URL(string: "wss://echo.websocket.events")!,
+                            customHeaders: [],
+                            messages: [],
+                            isConnectionSuccess: false,
+                            createdAt: .init()
+                        )
                     ),
                     reducer: ConnectionReducer()
                 )
@@ -139,13 +144,17 @@ struct ConnectionPage_Previews: PreviewProvider {
                     initialState: ConnectionReducer.State(
                         url: URL(string: "wss://echo.websocket.events")!,
                         history: {
-                            let history = CDHistory(context: context)
-                            let customHeader = CDCustomHeader(context: context)
-                            customHeader.name = "name"
-                            customHeader.value = "value"
-                            customHeader.history = history
-                            history.addToCustomHeaders(customHeader)
-                            return history
+                            var customHeader = CustomHeaderEntity(id: .init(1))
+                            customHeader.setName("name")
+                            customHeader.setValue("value")
+                            return .init(
+                                id: .init(1),
+                                url: URL(string: "wss://echo.websocket.events")!,
+                                customHeaders: [customHeader],
+                                messages: [],
+                                isConnectionSuccess: false,
+                                createdAt: .init()
+                            )
                         }()
                     ),
                     reducer: ConnectionReducer()
