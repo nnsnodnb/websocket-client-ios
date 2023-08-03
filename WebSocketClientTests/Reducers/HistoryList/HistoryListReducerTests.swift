@@ -11,38 +11,23 @@ import XCTest
 
 @MainActor
 final class HistoryListReducerTests: XCTestCase {
-    // MARK: - Properties
-    private var managedObjectContext: NSManagedObjectContextProtocol!
-
-    // MARK: - Life Cycle
-    override func setUp() {
-        super.setUp()
-        self.managedObjectContext = DatabaseClient.testValue.managedObjectContext()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-        self.managedObjectContext = nil
-    }
-
     func testSetNavigation() async throws {
         let store = TestStore(
             initialState: HistoryListReducer.State(),
             reducer: HistoryListReducer()
         )
 
-        let history = CDHistory.insertNewObject(managedObjectContext: managedObjectContext)
-        history.id = .init(0)
-        history.urlString = "wss://echo.websocket.events"
-        history.messages = .init(array: [])
-        history.isConnectionSuccess = true
-        history.customHeaders = .init(array: [])
-        history.createdAt = .init()
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
+            messages: [],
+            isConnectionSuccess: true,
+            createdAt: .init()
+        )
 
         store.dependencies.databaseClient = .init(
-            managedObjectContext: DatabaseClient.testValue.managedObjectContext,
             fetchHistories: { _ in [history] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
@@ -73,18 +58,17 @@ final class HistoryListReducerTests: XCTestCase {
             reducer: HistoryListReducer()
         )
 
-        let history = CDHistory.insertNewObject(managedObjectContext: managedObjectContext)
-        history.id = .init(0)
-        history.urlString = "wss://echo.websocket.events"
-        history.messages = .init(array: [])
-        history.isConnectionSuccess = true
-        history.customHeaders = .init(array: [])
-        history.createdAt = .init()
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
+            messages: [],
+            isConnectionSuccess: true,
+            createdAt: .init()
+        )
 
         store.dependencies.databaseClient = .init(
-            managedObjectContext: DatabaseClient.testValue.managedObjectContext,
             fetchHistories: { _ in [history] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
@@ -113,18 +97,17 @@ final class HistoryListReducerTests: XCTestCase {
             reducer: HistoryListReducer()
         )
 
-        let history = CDHistory.insertNewObject(managedObjectContext: managedObjectContext)
-        history.id = .init(0)
-        history.urlString = "wss://echo.websocket.events"
-        history.messages = .init(array: [])
-        history.isConnectionSuccess = true
-        history.customHeaders = .init(array: [])
-        history.createdAt = .init()
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
+            messages: [],
+            isConnectionSuccess: true,
+            createdAt: .init()
+        )
 
         store.dependencies.databaseClient = .init(
-            managedObjectContext: DatabaseClient.testValue.managedObjectContext,
             fetchHistories: { _ in [history] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in throw Error.delete },
@@ -147,18 +130,17 @@ final class HistoryListReducerTests: XCTestCase {
             reducer: HistoryListReducer()
         )
 
-        let history = CDHistory.insertNewObject(managedObjectContext: managedObjectContext)
-        history.id = .init(0)
-        history.urlString = "wss://echo.websocket.events"
-        history.messages = .init(array: [])
-        history.isConnectionSuccess = true
-        history.customHeaders = .init(array: [])
-        history.createdAt = .init()
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
+            messages: [],
+            isConnectionSuccess: true,
+            createdAt: .init()
+        )
 
         store.dependencies.databaseClient = .init(
-            managedObjectContext: DatabaseClient.testValue.managedObjectContext,
             fetchHistories: { _ in [history] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },

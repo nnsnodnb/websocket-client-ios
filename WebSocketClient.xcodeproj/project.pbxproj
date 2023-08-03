@@ -353,13 +353,6 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
-		CFD5CEC82A5ACBB90097E34B /* Stubs */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Stubs;
-			sourceTree = "<group>";
-		};
 		CFFEE5A52A03BCE300C46BFE /* AppIcons */ = {
 			isa = PBXGroup;
 			children = (
@@ -441,7 +434,6 @@
 		CFFF582829E98D3C0037AA85 /* WebSocketClientTests */ = {
 			isa = PBXGroup;
 			children = (
-				CFD5CEC82A5ACBB90097E34B /* Stubs */,
 				CFFF586B29EBE6F20037AA85 /* Reducers */,
 			);
 			path = WebSocketClientTests;

@@ -124,9 +124,7 @@ final class InfoReducerTests: XCTestCase {
         )
 
         store.dependencies.databaseClient = .init(
-            managedObjectContext: { StubManagedObjectContext() },
             fetchHistories: { _ in [] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
@@ -148,9 +146,7 @@ final class InfoReducerTests: XCTestCase {
         }
 
         store.dependencies.databaseClient = .init(
-            managedObjectContext: { StubManagedObjectContext() },
             fetchHistories: { _ in [] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
