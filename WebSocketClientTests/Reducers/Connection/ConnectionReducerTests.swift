@@ -11,16 +11,16 @@ import XCTest
 
 @MainActor
 final class ConnectionReducerTests: XCTestCase {
-    private var history: History!
+    private var history: HistoryEntity!
 
     override func setUp() {
         super.setUp()
         history = .init(
-            id: UUID(0).uuidString,
-            urlString: "wss://echo.websocket.events",
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
             messages: [],
             isConnectionSuccess: false,
-            customHeaders: [],
             createdAt: .init()
         )
     }

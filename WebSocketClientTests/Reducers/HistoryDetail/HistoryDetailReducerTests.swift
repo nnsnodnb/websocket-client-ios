@@ -12,16 +12,16 @@ import XCTest
 
 @MainActor
 final class HistoryDetailReducerTests: XCTestCase {
-    private var history: History!
+    private var history: HistoryEntity!
 
     override func setUp() {
         super.setUp()
-        history = History(
-            id: UUID(0).uuidString,
-            urlString: "wss://echo.websocket.events",
+        history = .init(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
-            customHeaders: [],
             createdAt: .init()
         )
     }
@@ -69,7 +69,6 @@ final class HistoryDetailReducerTests: XCTestCase {
 
         store.dependencies.databaseClient = .init(
             fetchHistories: { _ in [] },
-            getHistory: { _ in await self.history },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
@@ -93,7 +92,6 @@ final class HistoryDetailReducerTests: XCTestCase {
 
         store.dependencies.databaseClient = .init(
             fetchHistories: { _ in [] },
-            getHistory: { _ in await self.history },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in throw Error.delete },

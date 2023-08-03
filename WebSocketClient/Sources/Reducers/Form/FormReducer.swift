@@ -12,7 +12,7 @@ struct FormReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
         var url: URL?
-        var customHeaders: [CustomHeader] = []
+        var customHeaders: [CustomHeaderEntity] = []
         var isConnectButtonDisable = true
         var connection: ConnectionReducer.State?
     }
@@ -48,7 +48,8 @@ struct FormReducer: ReducerProtocol {
                 state.isConnectButtonDisable = false
                 return .none
             case .addCustomHeader:
-                state.customHeaders.append(.init(id: uuid.callAsFunction().uuidString, name: "", value: ""))
+                let customHeader = CustomHeaderEntity(id: uuid.callAsFunction())
+                state.customHeaders.append(customHeader)
                 return .none
             case let .removeCustomHeader(indexSet):
                 state.customHeaders.remove(atOffsets: indexSet)
@@ -56,21 +57,23 @@ struct FormReducer: ReducerProtocol {
             case let .customHeaderNameChanged(index, name):
                 guard !state.customHeaders.isEmpty,
                       var customHeader = state.customHeaders[safe: index] else { return .none }
-                customHeader.name = name
+                customHeader.setName(name)
                 state.customHeaders[index] = customHeader
                 return .none
             case let .customHeaderValueChanged(index, value):
                 guard !state.customHeaders.isEmpty,
                       var customHeader = state.customHeaders[safe: index] else { return .none }
-                customHeader.value = value
+                customHeader.setValue(value)
                 state.customHeaders[index] = customHeader
                 return .none
             case .connect:
                 guard let url = state.url else { return .none }
-                let history = History(
-                    id: uuid.callAsFunction().uuidString,
-                    urlString: url.absoluteString,
+                let history = HistoryEntity(
+                    id: uuid.callAsFunction(),
+                    url: url,
                     customHeaders: state.customHeaders,
+                    messages: [],
+                    isConnectionSuccess: false,
                     createdAt: date.callAsFunction()
                 )
                 state.connection = .init(url: url, history: history)

@@ -12,12 +12,12 @@ struct ConnectionReducer: ReducerProtocol {
     // MARK: - State
     struct State: Equatable {
         let url: URL
-        let customHeaders: [CustomHeader]
+        let customHeaders: [CustomHeaderEntity]
         var connectivityState: ConnectivityState = .disconnected
         var message: String = ""
         var isSendButtonDisabled = true
         var receivedMessages: [String] = []
-        var history: History
+        var history: HistoryEntity
         var alert: AlertState<Action>?
         var isShowCustomHeaderList = false
 
@@ -29,7 +29,7 @@ struct ConnectionReducer: ReducerProtocol {
         }
 
         // MARK: - Initialize
-        init(url: URL, history: History) {
+        init(url: URL, history: HistoryEntity) {
             self.url = url
             self.customHeaders = history.customHeaders
             self.history = history
@@ -56,8 +56,12 @@ struct ConnectionReducer: ReducerProtocol {
     var clock
     @Dependency(\.databaseClient)
     var databaseClient
+    @Dependency(\.date)
+    var date
     @Dependency(\.webSocketClient)
     var webSocketClient
+    @Dependency(\.uuid)
+    var uuid
 
     // MARK: - WebSocketID
     enum CancelID {
@@ -94,7 +98,12 @@ struct ConnectionReducer: ReducerProtocol {
             case let .receivedSocketMessage(.success(message)):
                 guard case let .string(string) = message else { return .none }
                 state.receivedMessages.append(string)
-                state.history.messages.append(.init(text: string))
+                let message = MessageEntity(
+                    id: uuid.callAsFunction(),
+                    text: string,
+                    createdAt: date.callAsFunction()
+                )
+                state.history.addToMessages(message)
                 return .task { [history = state.history] in
                     await .updateHistoryResponse(
                         TaskResult {
@@ -116,7 +125,7 @@ struct ConnectionReducer: ReducerProtocol {
             case .webSocket(.didOpen):
                 state.connectivityState = .connected
                 state.receivedMessages.append("Connected \(state.url.absoluteString)")
-                state.history.isConnectionSuccess = true
+                state.history.successfulConnection()
                 return .task { [history = state.history] in
                     await .updateHistoryResponse(
                         TaskResult {

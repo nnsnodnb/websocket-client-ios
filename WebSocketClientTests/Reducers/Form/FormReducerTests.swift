@@ -34,14 +34,14 @@ final class FormReducerTests: XCTestCase {
 
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(id: UUID(0).uuidString, name: "", value: "")
+                .init(id: .init(0))
             ]
         }
 
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(id: UUID(0).uuidString, name: "", value: ""),
-                .init(id: UUID(1).uuidString, name: "", value: "")
+                .init(id: .init(0)),
+                .init(id: .init(1))
             ]
         }
     }
@@ -57,7 +57,7 @@ final class FormReducerTests: XCTestCase {
         // remove exist index
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(id: UUID(0).uuidString, name: "", value: "")
+                .init(id: .init(0))
             ]
         }
         await store.send(.removeCustomHeader(.init(integer: 0))) {
@@ -67,7 +67,7 @@ final class FormReducerTests: XCTestCase {
         // remove empty index
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(id: UUID(1).uuidString, name: "", value: "")
+                .init(id: .init(1))
             ]
         }
         await store.send(.removeCustomHeader(.init(integer: 1)))
@@ -87,12 +87,14 @@ final class FormReducerTests: XCTestCase {
         // add & update
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(id: UUID(0).uuidString, name: "", value: "")
+                .init(id: .init(0))
             ]
         }
         await store.send(.customHeaderNameChanged(0, "Authorization")) {
+            var customHeader = CustomHeaderEntity(id: .init(0))
+            customHeader.setName("Authorization")
             $0.customHeaders = [
-                .init(id: UUID(0).uuidString, name: "Authorization", value: "")
+                customHeader
             ]
         }
 
@@ -114,12 +116,14 @@ final class FormReducerTests: XCTestCase {
         // add & update
         await store.send(.addCustomHeader) {
             $0.customHeaders = [
-                .init(id: UUID(0).uuidString, name: "", value: "")
+                .init(id: .init(0))
             ]
         }
         await store.send(.customHeaderValueChanged(0, "application/json")) {
+            var customHeader = CustomHeaderEntity(id: .init(0))
+            customHeader.setValue("application/json")
             $0.customHeaders = [
-                .init(id: UUID(0).uuidString, name: "", value: "application/json")
+                customHeader
             ]
         }
 
@@ -144,9 +148,12 @@ final class FormReducerTests: XCTestCase {
         store.dependencies.date = .constant(now)
 
         await store.send(.connect) {
-            let history = History(
-                id: UUID(0).uuidString,
-                urlString: "wss://echo.websocket.events",
+            let history = HistoryEntity(
+                id: .init(0),
+                url: URL(string: "wss://echo.websocket.events")!,
+                customHeaders: [],
+                messages: [],
+                isConnectionSuccess: false,
                 createdAt: now
             )
             $0.connection = .init(

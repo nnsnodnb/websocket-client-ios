@@ -6,17 +6,16 @@
 //
 
 import ComposableArchitecture
+import CoreData
 import Foundation
-import Unrealm
 import XCTestDynamicOverlay
 
 struct DatabaseClient {
     // MARK: - Properties
-    var fetchHistories: @Sendable ((Results<History>) -> Results<History>) async throws -> [History]
-    var getHistory: @Sendable (Int) async throws -> History?
-    var addHistory: @Sendable (History) async throws -> Void
-    var updateHistory: @Sendable (History) async throws -> Void
-    var deleteHistory: @Sendable (History) async throws -> Void
+    var fetchHistories: @Sendable (NSPredicate?) async throws -> [HistoryEntity]
+    var addHistory: @Sendable (HistoryEntity) async throws -> Void
+    var updateHistory: @Sendable (HistoryEntity) async throws -> Void
+    var deleteHistory: @Sendable (HistoryEntity) async throws -> Void
     var deleteAllData: @Sendable () async throws -> Void
 }
 
@@ -25,46 +24,137 @@ extension DatabaseClient {
         // MARK: - Properties
         static let shared = DatabaseActor()
 
-        func fetchHistories(operation: (Results<History>) -> Results<History>) throws -> [History] {
-            let realm = try Realm()
-            let results = realm.objects(History.self)
-            return Array(operation(results))
-        }
+        fileprivate static let preview = DatabaseActor(inMemory: true)
+        fileprivate static let test = DatabaseActor(inMemory: true)
 
-        func getHistory(id: Int) throws -> History? {
-            let realm = try Realm()
-            let object = realm.object(ofType: History.self, forPrimaryKey: id)
-            return object
-        }
+        fileprivate let container: NSPersistentContainer
 
-        func addHistory(_ history: History) throws {
-            let realm = try Realm()
-            try realm.write {
-                realm.add(history)
+        // MARK: - Initialize
+        private init(inMemory: Bool = false) {
+            self.container = NSPersistentContainer(name: "Model")
+            if inMemory {
+                container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
             }
+            container.loadPersistentStores { storeDescription, error in
+                guard let error else {
+                    #if Debug
+                    print("CoreData sqlite location: \(storeDescription.url?.path(percentEncoded: false) ?? "")")
+                    #endif
+                    return
+                }
+                fatalError("\(error)")
+            }
+            container.viewContext.automaticallyMergesChangesFromParent = true
         }
 
-        func updateHistory(_ history: History) throws {
-            let realm = try Realm()
-            try realm.write {
-                realm.add(history, update: .modified)
-            }
+        func fetchHistories(_ predicate: NSPredicate? = nil) throws -> [HistoryEntity] {
+            let request = CDHistory.fetchRequest()
+            request.sortDescriptors = [.init(key: "createdAt", ascending: true)]
+            request.predicate = predicate
+            return try container.viewContext.fetch(request)
+                .map(convertToHistoryEntity(with:))
         }
 
-        func deleteHistory(_ history: History) throws {
-            let realm = try Realm()
-            try realm.write {
-                realm.delete(history.messages)
-                realm.delete(history.customHeaders)
-                realm.delete(history)
-            }
+        func addHistory(_ history: HistoryEntity) throws {
+            container.viewContext.insert(convertToCDHistory(with: history))
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
+        }
+
+        func updateHistory(_ history: HistoryEntity) throws {
+            guard let entity = try getHistory(id: history.id) else { return }
+            let cdCustomHeaders = entity.customHeaders?.allObjects as? [CDCustomHeader] ?? []
+            history.customHeaders
+                .filter { customHeader in
+                    !cdCustomHeaders.contains(where: { $0.id == customHeader.id })
+                }
+                .map { convertToCDCustomHeader(with: $0, of: entity) }
+                .forEach(entity.addToCustomHeaders(_:))
+            let cdMessages = entity.messages?.allObjects as? [CDMessage] ?? []
+            history.messages
+                .filter { message in
+                    !cdMessages.contains(where: { $0.id == message.id })
+                }
+                .map { convertToCDMessage(with: $0, of: entity) }
+                .forEach(entity.addToMessages(_:))
+            entity.isConnectionSuccess = history.isConnectionSuccess
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
+        }
+
+        func deleteHistory(_ history: HistoryEntity) throws {
+            guard let entity = try getHistory(id: history.id) else { return }
+            container.viewContext.delete(entity)
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
         }
 
         func deleteAllData() throws {
-            let realm = try Realm()
-            try realm.write {
-                realm.deleteAll()
+            let request = CDHistory.fetchRequest()
+            let histories = try container.viewContext.fetch(request)
+            guard !histories.isEmpty else { return }
+            histories.forEach(container.viewContext.delete)
+            guard container.viewContext.hasChanges else { return }
+            try container.viewContext.save()
+        }
+
+        // MARK: - Private method
+        private func getHistory(id: UUID) throws -> CDHistory? {
+            let request = CDHistory.fetchRequest()
+            let predicate = NSPredicate(format: "id == %@", id as CVarArg)
+            request.predicate = predicate
+            return try container.viewContext.fetch(request).first
+        }
+
+        private func convertToHistoryEntity(with history: CDHistory) -> HistoryEntity {
+            let customHeaders = (history.customHeaders?.allObjects as? [CDCustomHeader] ?? []).map {
+                var entity = CustomHeaderEntity(id: $0.id!)
+                entity.setName($0.name!)
+                entity.setValue($0.value!)
+                return entity
             }
+            let messages = (history.messages?.allObjects as? [CDMessage] ?? []).map {
+                MessageEntity(id: $0.id!, text: $0.text!, createdAt: $0.createdAt!)
+            }
+            return HistoryEntity(
+                id: history.id!,
+                url: URL(string: history.urlString!)!,
+                customHeaders: customHeaders,
+                messages: messages,
+                isConnectionSuccess: history.isConnectionSuccess,
+                createdAt: history.createdAt!
+            )
+        }
+
+        private func convertToCDHistory(with history: HistoryEntity) -> CDHistory {
+            let entity = CDHistory(context: container.viewContext)
+            entity.id = history.id
+            entity.urlString = history.url.absoluteString
+            let customHeaders = history.customHeaders.map { convertToCDCustomHeader(with: $0, of: entity) }
+            entity.customHeaders = .init(array: customHeaders)
+            let messages = history.messages.map { convertToCDMessage(with: $0, of: entity) }
+            entity.messages = .init(array: messages)
+            entity.isConnectionSuccess = history.isConnectionSuccess
+            entity.createdAt = history.createdAt
+            return entity
+        }
+
+        private func convertToCDCustomHeader(with customHeader: CustomHeaderEntity, of history: CDHistory) -> CDCustomHeader {
+            let entity = CDCustomHeader(context: container.viewContext)
+            entity.id = customHeader.id
+            entity.name = customHeader.name
+            entity.value = customHeader.value
+            entity.history = history
+            return entity
+        }
+
+        private func convertToCDMessage(with message: MessageEntity, of history: CDHistory) -> CDMessage {
+            let entity = CDMessage(context: container.viewContext)
+            entity.id = message.id
+            entity.text = message.text
+            entity.createdAt = message.createdAt
+            entity.history = history
+            return entity
         }
     }
 }
@@ -72,8 +162,7 @@ extension DatabaseClient {
 // MARK: - DependencyKey
 extension DatabaseClient: DependencyKey {
     static var liveValue = Self(
-        fetchHistories: { try await DatabaseActor.shared.fetchHistories(operation: $0) },
-        getHistory: { try await DatabaseActor.shared.getHistory(id: $0) },
+        fetchHistories: { try await DatabaseActor.shared.fetchHistories($0) },
         addHistory: { try await DatabaseActor.shared.addHistory($0) },
         updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
         deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) },
@@ -82,7 +171,6 @@ extension DatabaseClient: DependencyKey {
 
     static var previewValue = Self(
         fetchHistories: { _ in [] },
-        getHistory: { _ in nil },
         addHistory: { _ in },
         updateHistory: { _ in },
         deleteHistory: { _ in },
@@ -91,7 +179,6 @@ extension DatabaseClient: DependencyKey {
 
     static var testValue = Self(
         fetchHistories: unimplemented("\(Self.self).fetchHistories"),
-        getHistory: unimplemented("\(Self.self).getHistory"),
         addHistory: unimplemented("\(Self.self).addHistory"),
         updateHistory: unimplemented("\(Self.self).updateHistory"),
         deleteHistory: unimplemented("\(Self.self).deleteHistory"),

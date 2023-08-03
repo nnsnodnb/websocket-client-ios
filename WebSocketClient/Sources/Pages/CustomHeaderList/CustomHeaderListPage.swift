@@ -10,7 +10,7 @@ import FirebaseAnalyticsSwift
 import SwiftUI
 
 struct CustomHeaderListPage: View {
-    let customHeaders: [CustomHeader]
+    let customHeaders: [CustomHeaderEntity]
 
     var body: some View {
         NavigationStack {
@@ -29,26 +29,30 @@ struct CustomHeaderListPage: View {
         }
     }
 
-    private func section(for customHeader: CustomHeader) -> some View {
-        Section {
-            VStack(alignment: .leading) {
-                Text(customHeader.name)
-                    .font(.system(size: 12))
-                    .foregroundColor(.blue)
-                Text(customHeader.value)
-            }
+    @ViewBuilder
+    private func section(for customHeader: CustomHeaderEntity) -> some View {
+        VStack(alignment: .leading) {
+            Text(customHeader.name)
+                .font(.system(size: 12))
+                .foregroundColor(.blue)
+            Text(customHeader.value)
         }
     }
 }
 
 struct CustomHeaderListPage_Previews: PreviewProvider {
+    static var customHeaders: [CustomHeaderEntity] {
+        return (1...3).map { index in
+            var customHeader = CustomHeaderEntity(id: .init(index))
+            customHeader.setName("name-\(index)")
+            customHeader.setValue("value-\(index)")
+            return customHeader
+        }
+    }
+
     static var previews: some View {
         CustomHeaderListPage(
-            customHeaders: [
-                .init(name: "name-1", value: "value 1"),
-                .init(name: "name-2", value: "value 2"),
-                .init(name: "name-3", value: "value 3")
-            ]
+            customHeaders: customHeaders
         )
     }
 }

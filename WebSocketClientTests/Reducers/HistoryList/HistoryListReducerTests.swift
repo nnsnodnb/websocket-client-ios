@@ -17,17 +17,17 @@ final class HistoryListReducerTests: XCTestCase {
             reducer: HistoryListReducer()
         )
 
-        let history = History(
-            id: UUID(0).uuidString,
-            urlString: "wss://echo.websocket.events",
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
-            customHeaders: [],
             createdAt: .init()
         )
+
         store.dependencies.databaseClient = .init(
             fetchHistories: { _ in [history] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
@@ -58,17 +58,17 @@ final class HistoryListReducerTests: XCTestCase {
             reducer: HistoryListReducer()
         )
 
-        let history = History(
-            id: UUID(0).uuidString,
-            urlString: "wss://echo.websocket.events",
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
-            customHeaders: [],
             createdAt: .init()
         )
+
         store.dependencies.databaseClient = .init(
             fetchHistories: { _ in [history] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
@@ -97,17 +97,17 @@ final class HistoryListReducerTests: XCTestCase {
             reducer: HistoryListReducer()
         )
 
-        let history = History(
-            id: UUID(0).uuidString,
-            urlString: "wss://echo.websocket.events",
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
-            customHeaders: [],
             createdAt: .init()
         )
+
         store.dependencies.databaseClient = .init(
             fetchHistories: { _ in [history] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in throw Error.delete },
@@ -130,17 +130,17 @@ final class HistoryListReducerTests: XCTestCase {
             reducer: HistoryListReducer()
         )
 
-        let history = History(
-            id: UUID(0).uuidString,
-            urlString: "wss://echo.websocket.events",
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.websocket.events")!,
+            customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
-            customHeaders: [],
             createdAt: .init()
         )
+
         store.dependencies.databaseClient = .init(
             fetchHistories: { _ in [history] },
-            getHistory: { _ in nil },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },

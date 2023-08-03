@@ -16,7 +16,7 @@ struct HistoryDetailPage: View {
     var body: some View {
         WithViewStore(store, observe: { $0 }, content: { viewStore in
             MessageListView(messages: viewStore.history.messages.map { $0.text })
-                .navigationTitle(viewStore.history.urlString)
+                .navigationTitle(viewStore.history.url.absoluteString)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar(viewStore)
                 .sheet(
@@ -79,23 +79,28 @@ private extension View {
 }
 
 struct HistoryDetailPage_Previews: PreviewProvider {
+    static var history: HistoryEntity {
+        var customHeader = CustomHeaderEntity(id: .init(0))
+        customHeader.setName("name")
+        customHeader.setValue("value")
+        let message = MessageEntity(id: .init(0), text: "Hello", createdAt: .init())
+        let history = HistoryEntity(
+            id: .init(0),
+            url: URL(string: "wss://echo.socket.events")!,
+            customHeaders: [customHeader],
+            messages: [message],
+            isConnectionSuccess: true,
+            createdAt: .init()
+        )
+        return history
+    }
+
     static var previews: some View {
         NavigationStack {
             HistoryDetailPage(
                 store: .init(
                     initialState: HistoryDetailReducer.State(
-                        history: .init(
-                            id: UUID(0).uuidString,
-                            urlString: "wss://echo.websocket.events",
-                            messages: [
-                                .init(text: "Hello")
-                            ],
-                            isConnectionSuccess: true,
-                            customHeaders: [
-                                .init(name: "name", value: "value")
-                            ],
-                            createdAt: .init()
-                        )
+                        history: history
                     ),
                     reducer: HistoryDetailReducer()
                 )
