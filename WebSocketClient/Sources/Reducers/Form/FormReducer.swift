@@ -30,8 +30,6 @@ struct FormReducer: ReducerProtocol {
         case connection(ConnectionReducer.Action)
     }
 
-    @Dependency(\.databaseClient)
-    var databaseClient
     @Dependency(\.date)
     var date
     @Dependency(\.uuid)

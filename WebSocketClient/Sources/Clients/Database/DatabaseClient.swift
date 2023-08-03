@@ -63,8 +63,20 @@ extension DatabaseClient {
 
         func updateHistory(_ history: HistoryEntity) throws {
             guard let entity = try getHistory(id: history.id) else { return }
-            entity.customHeaders = .init(array: history.customHeaders.map(convertToCDCustomHeader(with:)))
-            entity.messages = .init(array: history.messages.map(convertToCDMessage(with:)))
+            let cdCustomHeaders = entity.customHeaders?.allObjects as? [CDCustomHeader] ?? []
+            history.customHeaders
+                .filter { customHeader in
+                    !cdCustomHeaders.contains(where: { $0.id == customHeader.id })
+                }
+                .map { convertToCDCustomHeader(with: $0, of: entity) }
+                .forEach(entity.addToCustomHeaders(_:))
+            let cdMessages = entity.messages?.allObjects as? [CDMessage] ?? []
+            history.messages
+                .filter { message in
+                    !cdMessages.contains(where: { $0.id == message.id })
+                }
+                .map { convertToCDMessage(with: $0, of: entity) }
+                .forEach(entity.addToMessages(_:))
             entity.isConnectionSuccess = history.isConnectionSuccess
             guard container.viewContext.hasChanges else { return }
             try container.viewContext.save()
@@ -118,28 +130,30 @@ extension DatabaseClient {
             let entity = CDHistory(context: container.viewContext)
             entity.id = history.id
             entity.urlString = history.url.absoluteString
-            let customHeaders = history.customHeaders.map(convertToCDCustomHeader(with:))
+            let customHeaders = history.customHeaders.map { convertToCDCustomHeader(with: $0, of: entity) }
             entity.customHeaders = .init(array: customHeaders)
-            let messages = history.messages.map(convertToCDMessage(with:))
+            let messages = history.messages.map { convertToCDMessage(with: $0, of: entity) }
             entity.messages = .init(array: messages)
             entity.isConnectionSuccess = history.isConnectionSuccess
             entity.createdAt = history.createdAt
             return entity
         }
 
-        private func convertToCDCustomHeader(with customHeader: CustomHeaderEntity) -> CDCustomHeader {
+        private func convertToCDCustomHeader(with customHeader: CustomHeaderEntity, of history: CDHistory) -> CDCustomHeader {
             let entity = CDCustomHeader(context: container.viewContext)
             entity.id = customHeader.id
             entity.name = customHeader.name
             entity.value = customHeader.value
+            entity.history = history
             return entity
         }
 
-        private func convertToCDMessage(with message: MessageEntity) -> CDMessage {
+        private func convertToCDMessage(with message: MessageEntity, of history: CDHistory) -> CDMessage {
             let entity = CDMessage(context: container.viewContext)
             entity.id = message.id
             entity.text = message.text
             entity.createdAt = message.createdAt
+            entity.history = history
             return entity
         }
     }
