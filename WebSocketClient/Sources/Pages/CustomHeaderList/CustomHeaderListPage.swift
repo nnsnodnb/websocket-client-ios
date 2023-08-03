@@ -31,13 +31,11 @@ struct CustomHeaderListPage: View {
 
     @ViewBuilder
     private func section(for customHeader: CustomHeaderEntity) -> some View {
-        Section {
-            VStack(alignment: .leading) {
-                Text(customHeader.name)
-                    .font(.system(size: 12))
-                    .foregroundColor(.blue)
-                Text(customHeader.value)
-            }
+        VStack(alignment: .leading) {
+            Text(customHeader.name)
+                .font(.system(size: 12))
+                .foregroundColor(.blue)
+            Text(customHeader.value)
         }
     }
 }
