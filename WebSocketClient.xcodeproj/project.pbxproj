@@ -36,8 +36,6 @@
 		CFD5AB9829F527AA00765E48 /* ApplicationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */; };
 		CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */; };
 		CFD5CEC32A5AC9A00097E34B /* NSManagedObjectContextProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5CEC22A5AC9A00097E34B /* NSManagedObjectContextProtocol.swift */; };
-		CFD5CEC52A5AC9B20097E34B /* NSManagedObjectContext+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5CEC42A5AC9B20097E34B /* NSManagedObjectContext+Extension.swift */; };
-		CFD5CEC72A5ACB570097E34B /* NSManagedObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD5CEC62A5ACB570097E34B /* NSManagedObject+Extension.swift */; };
 		CFFEE5AD2A03BCEE00C46BFE /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5A62A03BCEE00C46BFE /* red.png */; };
 		CFFEE5AE2A03BCEE00C46BFE /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5A72A03BCEE00C46BFE /* white.png */; };
 		CFFEE5AF2A03BCEE00C46BFE /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = CFFEE5A82A03BCEE00C46BFE /* default.png */; };
@@ -111,8 +109,6 @@
 		CFD5AB9729F527AA00765E48 /* ApplicationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationClient.swift; sourceTree = "<group>"; };
 		CFD5AB9A29F5C6B900765E48 /* BundleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleClient.swift; sourceTree = "<group>"; };
 		CFD5CEC22A5AC9A00097E34B /* NSManagedObjectContextProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSManagedObjectContextProtocol.swift; sourceTree = "<group>"; };
-		CFD5CEC42A5AC9B20097E34B /* NSManagedObjectContext+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+Extension.swift"; sourceTree = "<group>"; };
-		CFD5CEC62A5ACB570097E34B /* NSManagedObject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extension.swift"; sourceTree = "<group>"; };
 		CFFEE5A62A03BCEE00C46BFE /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
 		CFFEE5A72A03BCEE00C46BFE /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
 		CFFEE5A82A03BCEE00C46BFE /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
@@ -590,8 +586,6 @@
 				CFB2CEA929EEC1710095D7D0 /* DependencyValues+Extension.swift */,
 				CFC1AA602A00175D00C62659 /* IdentifiedArrayOf+Extension.swift */,
 				CFB1FB542A486A9300667B3F /* NSPredicate+Extension.swift */,
-				CFD5CEC42A5AC9B20097E34B /* NSManagedObjectContext+Extension.swift */,
-				CFD5CEC62A5ACB570097E34B /* NSManagedObject+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -794,7 +788,6 @@
 				CFFF589729EC526A0037AA85 /* ConnectionReducer.swift in Sources */,
 				CFFF585329E995BA0037AA85 /* AppDelegate.swift in Sources */,
 				CFD5AB8529F0284400765E48 /* DatabaseClient.swift in Sources */,
-				CFD5CEC72A5ACB570097E34B /* NSManagedObject+Extension.swift in Sources */,
 				CFFF589429EC525C0037AA85 /* ConnectionPage.swift in Sources */,
 				CF90EFCC2A7BF3330075586D /* HistoryEntity.swift in Sources */,
 				CFFF587729EBF1300037AA85 /* InfoPage.swift in Sources */,
@@ -803,7 +796,6 @@
 				CFD5AB9B29F5C6B900765E48 /* BundleClient.swift in Sources */,
 				CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */,
 				CFC1AA5929FFC0CA00C62659 /* HistoryDetailPage.swift in Sources */,
-				CFD5CEC52A5AC9B20097E34B /* NSManagedObjectContext+Extension.swift in Sources */,
 				CFFF589129EC0C2C0037AA85 /* Array+Extension.swift in Sources */,
 				CFFF585D29E999000037AA85 /* FormPage.swift in Sources */,
 				CFFF586029E9990C0037AA85 /* FormReducer.swift in Sources */,
