@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CF708EFB29FC0A1100BB93F0 /* InfoReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */; };
-		CF90EFC82A7BEBF20075586D /* NSManagedObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90EFC72A7BEBF20075586D /* NSManagedObject+Extension.swift */; };
 		CF90EFCC2A7BF3330075586D /* HistoryEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90EFCB2A7BF3330075586D /* HistoryEntity.swift */; };
 		CF90EFCE2A7BF3920075586D /* CustomHeaderEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90EFCD2A7BF3920075586D /* CustomHeaderEntity.swift */; };
 		CF90EFD02A7BF3AA0075586D /* MessageEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90EFCF2A7BF3AA0075586D /* MessageEntity.swift */; };
@@ -82,7 +81,6 @@
 
 /* Begin PBXFileReference section */
 		CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducerTests.swift; sourceTree = "<group>"; };
-		CF90EFC72A7BEBF20075586D /* NSManagedObject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extension.swift"; sourceTree = "<group>"; };
 		CF90EFCB2A7BF3330075586D /* HistoryEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntity.swift; sourceTree = "<group>"; };
 		CF90EFCD2A7BF3920075586D /* CustomHeaderEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderEntity.swift; sourceTree = "<group>"; };
 		CF90EFCF2A7BF3AA0075586D /* MessageEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageEntity.swift; sourceTree = "<group>"; };
@@ -177,14 +175,6 @@
 				CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */,
 			);
 			path = Info;
-			sourceTree = "<group>";
-		};
-		CF90EFC62A7BEBD60075586D /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				CF90EFC72A7BEBF20075586D /* NSManagedObject+Extension.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		CF90EFCA2A7BF31F0075586D /* Entities */ = {
@@ -451,7 +441,6 @@
 		CFFF582829E98D3C0037AA85 /* WebSocketClientTests */ = {
 			isa = PBXGroup;
 			children = (
-				CF90EFC62A7BEBD60075586D /* Extensions */,
 				CFD5CEC82A5ACBB90097E34B /* Stubs */,
 				CFFF586B29EBE6F20037AA85 /* Reducers */,
 			);
@@ -854,7 +843,6 @@
 				CFFEE5BE2A03D25800C46BFE /* AppIconListReducerTests.swift in Sources */,
 				CFC1AA702A0046BC00C62659 /* ConnectionReducerTests.swift in Sources */,
 				CFC1AA672A00277B00C62659 /* HistoryListReducerTests.swift in Sources */,
-				CF90EFC82A7BEBF20075586D /* NSManagedObject+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
