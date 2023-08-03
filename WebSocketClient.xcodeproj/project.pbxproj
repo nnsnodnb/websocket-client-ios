@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CF708EFB29FC0A1100BB93F0 /* InfoReducerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */; };
+		CF90EFC82A7BEBF20075586D /* NSManagedObject+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF90EFC72A7BEBF20075586D /* NSManagedObject+Extension.swift */; };
 		CF948B162A4840E5003D9A9D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CF948B142A4840E5003D9A9D /* Model.xcdatamodeld */; };
 		CFB1FB552A486A9300667B3F /* NSPredicate+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB1FB542A486A9300667B3F /* NSPredicate+Extension.swift */; };
 		CFB2CEA829EEBCA70095D7D0 /* WebSocketClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */; };
@@ -79,6 +80,7 @@
 
 /* Begin PBXFileReference section */
 		CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoReducerTests.swift; sourceTree = "<group>"; };
+		CF90EFC72A7BEBF20075586D /* NSManagedObject+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+Extension.swift"; sourceTree = "<group>"; };
 		CF948B152A4840E5003D9A9D /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		CFB1FB542A486A9300667B3F /* NSPredicate+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPredicate+Extension.swift"; sourceTree = "<group>"; };
 		CFB2CEA729EEBCA70095D7D0 /* WebSocketClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketClient.swift; sourceTree = "<group>"; };
@@ -171,6 +173,14 @@
 				CF708EFA29FC0A1100BB93F0 /* InfoReducerTests.swift */,
 			);
 			path = Info;
+			sourceTree = "<group>";
+		};
+		CF90EFC62A7BEBD60075586D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CF90EFC72A7BEBF20075586D /* NSManagedObject+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		CFB2CEA529EEBC9D0095D7D0 /* Clients */ = {
@@ -436,6 +446,7 @@
 		CFFF582829E98D3C0037AA85 /* WebSocketClientTests */ = {
 			isa = PBXGroup;
 			children = (
+				CF90EFC62A7BEBD60075586D /* Extensions */,
 				CFD5CEC82A5ACBB90097E34B /* Stubs */,
 				CFFF586B29EBE6F20037AA85 /* Reducers */,
 			);
@@ -835,6 +846,7 @@
 				CFD5CECC2A5ACBCF0097E34B /* StubManagedObjectContext.swift in Sources */,
 				CFC1AA702A0046BC00C62659 /* ConnectionReducerTests.swift in Sources */,
 				CFC1AA672A00277B00C62659 /* HistoryListReducerTests.swift in Sources */,
+				CF90EFC82A7BEBF20075586D /* NSManagedObject+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

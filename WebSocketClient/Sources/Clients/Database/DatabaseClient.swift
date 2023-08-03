@@ -27,6 +27,7 @@ extension DatabaseClient {
         static let shared = DatabaseActor()
 
         fileprivate static let preview = DatabaseActor(inMemory: true)
+        fileprivate static let test = DatabaseActor(inMemory: true)
 
         fileprivate let container: NSPersistentContainer
 
@@ -117,7 +118,7 @@ extension DatabaseClient: DependencyKey {
     )
 
     static var testValue = Self(
-        managedObjectContext: unimplemented("\(Self.self).managedObjectContext"),
+        managedObjectContext: { DatabaseActor.test.container.viewContext },
         fetchHistories: unimplemented("\(Self.self).fetchHistories"),
         getHistory: unimplemented("\(Self.self).getHistory"),
         addHistory: unimplemented("\(Self.self).addHistory"),
