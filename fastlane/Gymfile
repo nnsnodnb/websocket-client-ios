@@ -1,7 +1,6 @@
-project("WebSocketClient.xcodeproj")
+workspace("WebSocketClient.xcworkspace")
 scheme("WebSocketClient")
 clean(true)
 cloned_source_packages_path(".swiftpm")
-skip_package_dependencies_resolution(true)
 disable_package_automatic_updates(true)
 output_directory("Products")
