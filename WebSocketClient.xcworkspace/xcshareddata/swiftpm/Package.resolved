@@ -282,10 +282,10 @@
     {
       "identity" : "swiftgenplugin",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/BookBeat/SwiftGenPlugin.git",
+      "location" : "https://github.com/SwiftGen/SwiftGenPlugin.git",
       "state" : {
-        "branch" : "xcodeproject-support",
-        "revision" : "1228d5a43ca791db0719d42f641c34a00b9c32f3"
+        "branch" : "6.6.2",
+        "revision" : "879b85a470cacd70c19e22eb7e11a3aed66f4068"
       }
     },
     {
