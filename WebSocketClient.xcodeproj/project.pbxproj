@@ -151,6 +151,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				CF794B912A7ED17D00551589 /* PBXTargetDependency */,
 			);
 			name = WebSocketClient;
 			packageProductDependencies = (
@@ -186,6 +187,7 @@
 			);
 			mainGroup = CFFF580C29E98D3B0037AA85;
 			packageReferences = (
+				CF794B8F2A7ED17500551589 /* XCRemoteSwiftPackageReference "LicensePlist" */,
 			);
 			productRefGroup = CFFF581629E98D3B0037AA85 /* Products */;
 			projectDirPath = "";
@@ -260,6 +262,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CF794B912A7ED17D00551589 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = CF794B902A7ED17D00551589 /* LicensePlistBuildTool */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		CFFF583729E98D3C0037AA85 /* Debug */ = {
@@ -455,10 +464,26 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		CF794B8F2A7ED17500551589 /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mono0926/LicensePlist.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.24.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		CF74F4122A7C24F3005BBCAD /* WebSocketClientPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WebSocketClientPackage;
+		};
+		CF794B902A7ED17D00551589 /* LicensePlistBuildTool */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF794B8F2A7ED17500551589 /* XCRemoteSwiftPackageReference "LicensePlist" */;
+			productName = "plugin:LicensePlistBuildTool";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
