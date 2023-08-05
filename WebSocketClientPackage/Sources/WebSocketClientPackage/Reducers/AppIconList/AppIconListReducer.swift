@@ -24,32 +24,32 @@ public struct AppIconListReducer: ReducerProtocol {
             static let yellow: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.yellow,
                 image: Asset.icYellowIcon.swiftUIImage,
-                name: "Yellow"
+                name: "AppIcon-Yellow"
             )
             static let red: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.red,
                 image: Asset.icRedIcon.swiftUIImage,
-                name: "Red"
+                name: "AppIcon-Red"
             )
             static let blue: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.blue,
                 image: Asset.icBlueIcon.swiftUIImage,
-                name: "Blue"
+                name: "AppIcon-Blue"
             )
             static let purple: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.purple,
                 image: Asset.icPurpleIcon.swiftUIImage,
-                name: "Purple"
+                name: "AppIcon-Purple"
             )
             static let black: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.black,
                 image: Asset.icBlackIcon.swiftUIImage,
-                name: "Black"
+                name: "AppIcon-Black"
             )
             static let white: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.white,
                 image: Asset.icWhiteIcon.swiftUIImage,
-                name: "White"
+                name: "AppIcon-White"
             )
 
             public static var allCases: [Self] {

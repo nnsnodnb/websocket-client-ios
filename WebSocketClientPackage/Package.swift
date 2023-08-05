@@ -50,9 +50,6 @@ let package = Package(
                     package: "swiftui-navigation"
                 ),
             ],
-            resources: [
-                .copy("Resources/AppIcons"),
-            ],
             plugins: [
                 .plugin(name: "SwiftGenPlugin", package: "SwiftGenPlugin"),
                 .plugin(name: "SwiftLintPlugin", package: "SwiftLint"),
