@@ -41,8 +41,7 @@ jobs:
     - name: Fastlane test
       env:
         FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
-        DEVICE_TYPE: com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro
-        RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-16-4
+        FASTLANE_SKIP_UPDATE_CHECK: 1
       run: |
         device_id="$(xcrun simctl create "Test" "${DEVICE_TYPE}" "${RUNTIME}")"
         echo "Boot ${device_id}"

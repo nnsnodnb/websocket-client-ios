@@ -44,6 +44,7 @@ jobs:
     - name: Fastlane adhoc
       env:
         FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
+        FASTLANE_SKIP_UPDATE_CHECK: 1
         MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
         MATCH_KEYCHAIN_NAME: "fastlane_keychain"
         MATCH_KEYCHAIN_PASSWORD: ""
