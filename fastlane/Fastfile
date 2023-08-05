@@ -1,22 +1,6 @@
 default_platform(:ios)
 
 platform :ios do
-  # Test
-  desc "Run tests"
-  lane :test do
-    scan(
-      result_bundle: true,
-    )
-  end
-
-  # Package resolve
-  desc "Resolving Swift Pacakges"
-  lane :resolve_swift_packages do
-    Dir.chdir("..") do
-      sh("xcodebuild -resolvePackageDependencies -scheme WebSocketClient -project WebSocketClient.xcodeproj -clonedSourcePackagesDirPath .swiftpm -disableAutomaticPackageResolution")
-    end
-  end
-
   # Match
   desc "Setup development certificates"
   lane :setup_development_certificates do

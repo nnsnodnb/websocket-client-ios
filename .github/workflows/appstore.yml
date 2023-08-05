@@ -36,10 +36,6 @@ jobs:
         path: .swiftpm
         key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
 
-    - name: Swift Packages Resolve
-      if: steps.cache-swiftpm.outputs.cache-hit != 'true'
-      run: bundle exec fastlane resolve_swift_packages
-
     - name: Write IDESkipPackagePluginFingerprintValidatation
       run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
 
