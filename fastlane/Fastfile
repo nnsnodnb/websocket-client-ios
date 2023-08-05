@@ -1,16 +1,6 @@
 default_platform(:ios)
 
 platform :ios do
-  # Test
-  desc "Run tests"
-  lane :test do
-    scan(
-      result_bundle: true,
-      destination: "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4",
-      output_directory: Dir.pwd + "/test_output"
-    )
-  end
-
   # Match
   desc "Setup development certificates"
   lane :setup_development_certificates do

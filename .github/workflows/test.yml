@@ -38,18 +38,25 @@ jobs:
     - name: Write IDESkipPackagePluginFingerprintValidatation
       run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
 
-    - name: Fastlane test
+    - name: xcodebuild test
       env:
-        FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
-        FASTLANE_SKIP_UPDATE_CHECK: 1
+        DEVICE_NAME: iPhone 14 Pro Max
+        OS: 16.4
       run: |
-        cp WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved WebSocketClientPackage/
-        bundle exec fastlane test
+        rm -rf TestResults.xctest
+        set -o pipefail && env NSUnbufferedIO=YES xcodebuild test clean \
+          -workspace WebSocketClient.xcworkspace \
+          -scheme WebSocketClientPackageTests \
+          -clonedSourcePackagesDirPath .swiftpm \
+          -disableAutomaticPackageResolution \
+          -sdk iphonesimulator \
+          -destination "platform=iOS Simulator,name=${DEVICE_NAME},OS=${OS}" \
+          -resultBundlePath TestResults.xcresult | bundle exec xcpretty
 
     - name: Publish unit test results
       uses: kishikawakatsumi/xcresulttool@v1
       if: success() || failure()
       with:
-        path: fastlane/test_output/WebSocketClientPackage.xcresult
+        path: TestResults.xcresult
         show-passed-tests: false
         show-code-coverage: false
