@@ -3,17 +3,12 @@ default_platform(:ios)
 platform :ios do
   # Test
   desc "Run tests"
-  lane :test do |options|
-    args = "-scheme WebSocketClientPackageTests -workspace WebSocketClient.xcworkspace -clonedSourcePackagesDirPath .swiftpm -disableAutomaticPackageResolution "
-    if is_ci
-      args += "-destination \"id=#{options[:device_id]}}\" -resultBundlePath TestResults.xcresult"
-      sh("rm -rf TestResults.xcresult")
-    else
-      args += "-destination \"platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4\""
-    end
-    Dir.chdir("..") do
-      sh("xcodebuild test clean #{args} | bundle exec xcpretty")
-    end
+  lane :test do
+    scan(
+      result_bundle: true,
+      destination: "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4",
+      output_directory: Dir.pwd + "/test_output"
+    )
   end
 
   # Match
