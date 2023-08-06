@@ -16,14 +16,14 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", exact: "10.9.0"),
-        .package(url: "https://github.com/mono0926/LicensePlist.git", exact: "3.24.9"),
-        .package(url: "https://github.com/vsanthanam/SafariView.git", exact: "1.0.0"),
-        .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", exact: "4.1.1"),
-        .package(url: "https://github.com/SwiftGen/SwiftGenPlugin.git", branch: "6.6.2"),
-        .package(url: "https://github.com/realm/SwiftLint.git", exact: "0.51.0"),
-        .package(url: "https://github.com/pointfreeco/swiftui-navigation.git", exact: "0.7.1"),
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", exact: "0.52.0"),
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.9.0")),
+        .package(url: "https://github.com/mono0926/LicensePlist.git", .upToNextMajor(from: "3.24.9")),
+        .package(url: "https://github.com/vsanthanam/SafariView.git", .upToNextMajor(from: "1.0.0")),
+        .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "4.1.1")),
+        .package(url: "https://github.com/SwiftGen/SwiftGenPlugin.git", .upToNextMajor(from: "6.6.2")),
+        .package(url: "https://github.com/realm/SwiftLint.git", .upToNextMajor(from: "0.51.0")),
+        .package(url: "https://github.com/pointfreeco/swiftui-navigation.git", .upToNextMajor(from: "0.7.1")),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "0.52.0")),
     ],
     targets: [
         .target(
