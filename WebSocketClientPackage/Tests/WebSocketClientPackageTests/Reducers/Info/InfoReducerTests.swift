@@ -13,9 +13,10 @@ import XCTest
 final class InfoReducerTests: XCTestCase {
     func testStart() async {
         let store = TestStore(
-            initialState: InfoReducer.State(),
-            reducer: InfoReducer()
-        )
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
 
         store.dependencies.bundle.shortVersionString = { "1.0.0" }
 
@@ -26,9 +27,10 @@ final class InfoReducerTests: XCTestCase {
 
     func testURLSelected() async {
         let store = TestStore(
-            initialState: InfoReducer.State(),
-            reducer: InfoReducer()
-        )
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
 
         await store.send(.urlSelected(URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!)) {
             $0.url = URL(string: "https://github.com/nnsnodnb/websocket-client-ios")
@@ -37,9 +39,10 @@ final class InfoReducerTests: XCTestCase {
 
     func testSafariOpen() async {
         let store = TestStore(
-            initialState: InfoReducer.State(),
-            reducer: InfoReducer()
-        )
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
 
         // no exist url
         await store.send(.safariOpen)
@@ -55,9 +58,10 @@ final class InfoReducerTests: XCTestCase {
 
     func testSafariDismiss() async {
         let store = TestStore(
-            initialState: InfoReducer.State(),
-            reducer: InfoReducer()
-        )
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
 
         await store.send(.urlSelected(URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!)) {
             $0.url = URL(string: "https://github.com/nnsnodnb/websocket-client-ios")
@@ -73,9 +77,10 @@ final class InfoReducerTests: XCTestCase {
 
     func testBrowserOpen() async {
         let store = TestStore(
-            initialState: InfoReducer.State(),
-            reducer: InfoReducer()
-        )
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
 
         store.dependencies.application.canOpenURL = { _ in true }
         store.dependencies.application.open = { _ in true }
@@ -86,9 +91,10 @@ final class InfoReducerTests: XCTestCase {
 
     func testCheckDeleteAllData() async {
         let store = TestStore(
-            initialState: InfoReducer.State(),
-            reducer: InfoReducer()
-        )
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
 
         await store.send(.checkDeleteAllData) {
             $0.alert = AlertState(
@@ -112,16 +118,17 @@ final class InfoReducerTests: XCTestCase {
                 }
             )
         }
-        await store.send(.alertDismissed) {
+        await store.send(.alert(.dismiss)) {
             $0.alert = nil
         }
     }
 
     func testDeleteAllDataSuccess() async {
         let store = TestStore(
-            initialState: InfoReducer.State(),
-            reducer: InfoReducer()
-        )
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
 
         store.dependencies.databaseClient = .init(
             fetchHistories: { _ in [] },
@@ -131,15 +138,40 @@ final class InfoReducerTests: XCTestCase {
             deleteAllData: {}
         )
 
-        await store.send(.deleteAllData)
+        await store.send(.checkDeleteAllData) {
+            $0.alert = AlertState(
+                title: {
+                    TextState(L10n.Info.Alert.Confirm.Title.message)
+                },
+                actions: {
+                    ButtonState(
+                        role: .cancel,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.cancel)
+                        }
+                    )
+                    ButtonState(
+                        role: .destructive,
+                        action: .deleteAllData,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.delete)
+                        }
+                    )
+                }
+            )
+        }
+        await store.send(.alert(.presented(.deleteAllData))) {
+            $0.alert = nil
+        }
         await store.receive(.deleteAllDataResponse(.success(true)))
     }
 
     func testDeleteAllDataFailure() async {
         let store = TestStore(
-            initialState: InfoReducer.State(),
-            reducer: InfoReducer()
-        )
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
 
         enum Error: Swift.Error {
             case delete
@@ -153,13 +185,37 @@ final class InfoReducerTests: XCTestCase {
             deleteAllData: { throw Error.delete }
         )
 
-        await store.send(.deleteAllData)
+        await store.send(.checkDeleteAllData) {
+            $0.alert = AlertState(
+                title: {
+                    TextState(L10n.Info.Alert.Confirm.Title.message)
+                },
+                actions: {
+                    ButtonState(
+                        role: .cancel,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.cancel)
+                        }
+                    )
+                    ButtonState(
+                        role: .destructive,
+                        action: .deleteAllData,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.delete)
+                        }
+                    )
+                }
+            )
+        }
+        await store.send(.alert(.presented(.deleteAllData))) {
+            $0.alert = nil
+        }
         await store.receive(.deleteAllDataResponse(.failure(Error.delete))) {
             $0.alert = AlertState {
                 TextState(L10n.Info.Alert.DeletionFailed.Title.message)
             }
         }
-        await store.send(.alertDismissed) {
+        await store.send(.alert(.dismiss)) {
             $0.alert = nil
         }
     }

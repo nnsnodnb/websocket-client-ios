@@ -13,9 +13,10 @@ import XCTest
 final class HistoryListReducerTests: XCTestCase {
     func testSetNavigation() async throws {
         let store = TestStore(
-            initialState: HistoryListReducer.State(),
-            reducer: HistoryListReducer()
-        )
+            initialState: HistoryListReducer.State()
+        ) {
+            HistoryListReducer()
+        }
 
         let history = HistoryEntity(
             id: .init(0),
@@ -54,9 +55,10 @@ final class HistoryListReducerTests: XCTestCase {
 
     func testDeleteHistorySuccess() async throws {
         let store = TestStore(
-            initialState: HistoryListReducer.State(),
-            reducer: HistoryListReducer()
-        )
+            initialState: HistoryListReducer.State()
+        ) {
+            HistoryListReducer()
+        }
 
         let history = HistoryEntity(
             id: .init(0),
@@ -93,9 +95,10 @@ final class HistoryListReducerTests: XCTestCase {
         }
 
         let store = TestStore(
-            initialState: HistoryListReducer.State(),
-            reducer: HistoryListReducer()
-        )
+            initialState: HistoryListReducer.State()
+        ) {
+            HistoryListReducer()
+        }
 
         let history = HistoryEntity(
             id: .init(0),
@@ -126,9 +129,10 @@ final class HistoryListReducerTests: XCTestCase {
 
     func testHistoryDetailDeleted() async throws {
         let store = TestStore(
-            initialState: HistoryListReducer.State(),
-            reducer: HistoryListReducer()
-        )
+            initialState: HistoryListReducer.State()
+        ) {
+            HistoryListReducer()
+        }
 
         let history = HistoryEntity(
             id: .init(0),

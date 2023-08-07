@@ -112,7 +112,6 @@ public struct InfoReducer: Reducer {
                     }
                 )
             case .alert:
-                state.alert = nil
                 return .none
             }
         }

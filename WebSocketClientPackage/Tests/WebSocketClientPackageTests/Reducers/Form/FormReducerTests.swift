@@ -13,9 +13,10 @@ import XCTest
 final class FormReducerTests: XCTestCase {
     func testURLChanged() async {
         let store = TestStore(
-            initialState: FormReducer.State(),
-            reducer: FormReducer()
-        )
+            initialState: FormReducer.State()
+        ) {
+            FormReducer()
+        }
 
         await store.send(.urlChanged("wss://echo.websocket.events")) {
             $0.url = URL(string: "wss://echo.websocket.events")
@@ -26,9 +27,10 @@ final class FormReducerTests: XCTestCase {
 
     func testAddCustomHeader() async {
         let store = TestStore(
-            initialState: FormReducer.State(),
-            reducer: FormReducer()
-        )
+            initialState: FormReducer.State()
+        ) {
+            FormReducer()
+        }
 
         store.dependencies.uuid = .incrementing
 
@@ -48,9 +50,10 @@ final class FormReducerTests: XCTestCase {
 
     func testRemoveCustomHeader() async {
         let store = TestStore(
-            initialState: FormReducer.State(),
-            reducer: FormReducer()
-        )
+            initialState: FormReducer.State()
+        ) {
+            FormReducer()
+        }
 
         store.dependencies.uuid = .incrementing
 
@@ -75,9 +78,10 @@ final class FormReducerTests: XCTestCase {
 
     func testCustomHeaderNameChanged() async {
         let store = TestStore(
-            initialState: FormReducer.State(),
-            reducer: FormReducer()
-        )
+            initialState: FormReducer.State()
+        ) {
+            FormReducer()
+        }
 
         store.dependencies.uuid = .incrementing
 
@@ -104,9 +108,10 @@ final class FormReducerTests: XCTestCase {
 
     func testCustomHeaderValueChanged() async {
         let store = TestStore(
-            initialState: FormReducer.State(),
-            reducer: FormReducer()
-        )
+            initialState: FormReducer.State()
+        ) {
+            FormReducer()
+        }
 
         store.dependencies.uuid = .incrementing
 
@@ -133,9 +138,10 @@ final class FormReducerTests: XCTestCase {
 
     func testConnect() async {
         let store = TestStore(
-            initialState: FormReducer.State(),
-            reducer: FormReducer()
-        )
+            initialState: FormReducer.State()
+        ) {
+            FormReducer()
+        }
 
         await store.send(.urlChanged("wss://echo.websocket.events")) {
             $0.url = URL(string: "wss://echo.websocket.events")

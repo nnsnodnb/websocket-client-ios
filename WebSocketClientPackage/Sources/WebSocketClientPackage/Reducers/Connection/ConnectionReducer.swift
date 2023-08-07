@@ -146,7 +146,6 @@ public struct ConnectionReducer: Reducer {
                 state.connectivityState = .disconnected
                 return .cancel(id: CancelID.websocket)
             case .alert:
-                state.alert = nil
                 return .none
             case .addHistoryResponse(.success):
                 return .none

@@ -71,7 +71,6 @@ public struct HistoryDetailReducer: Reducer {
                     }
                 )
             case .alert:
-                state.alert = nil
                 return .none
             case .deleteResponse(.success):
                 return .send(.deleted)
