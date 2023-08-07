@@ -58,18 +58,16 @@ jobs:
           -disableAutomaticPackageResolution
 
     - name: xcodebuild test
-      env:
-        DEVICE_NAME: iPhone 14 Pro Max
-        OS: 16.4
       run: |
+        device_id=$(xcrun simctl create "iPhone 14 Pro (Test)" com.apple.CoreSimulator.SimDeviceType.iPhone-14-Pro com.apple.CoreSimulator.SimRuntime.iOS-16-4)
+        echo "Destination: ${device_id}"
         rm -rf TestResults.xctest
         set -o pipefail && env NSUnbufferedIO=YES xcodebuild test clean \
           -workspace WebSocketClient.xcworkspace \
           -scheme WebSocketClientPackageTests \
           -clonedSourcePackagesDirPath .swiftpm \
           -disableAutomaticPackageResolution \
-          -sdk iphonesimulator \
-          -destination "platform=iOS Simulator,name=${DEVICE_NAME},OS=${OS}" \
+          -destination "id=${device_id}" \
           -resultBundlePath TestResults.xcresult | bundle exec xcpretty
 
     - name: Publish unit test results
