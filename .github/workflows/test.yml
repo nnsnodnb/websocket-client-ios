@@ -39,7 +39,7 @@ jobs:
       id: cache-swiftpm
       with:
         path: .swiftpm
-        key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+        key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
 
     - name: Write IDESkipPackagePluginFingerprintValidatation
       run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
