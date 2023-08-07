@@ -20,6 +20,10 @@ jobs:
     runs-on: macos-13
     needs: precheck
     if: contains(fromJson(needs.precheck.outputs.files_changes), 'Package.resolved') == false
+
+    permissions:
+      contents: write
+
     steps:
     - uses: actions/checkout@v3
 
