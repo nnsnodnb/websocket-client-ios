@@ -49,6 +49,6 @@ jobs:
     - name: Commit & Push
       run: |
         git add WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
-        if git commit -m "Resolve Swift Package": then
+        if git commit -m "Resolve Swift Package"; then
           git push origin HEAD:${{ github.head_ref }}
         fi
