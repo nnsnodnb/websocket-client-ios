@@ -37,6 +37,10 @@ let package = Package(
                     package: "firebase-ios-sdk"
                 ),
                 .product(
+                    name: "FirebaseCrashlytics",
+                    package: "firebase-ios-sdk"
+                ),
+                .product(
                     name: "SafariView",
                     package: "SafariView"
                 ),
