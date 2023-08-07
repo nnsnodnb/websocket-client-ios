@@ -34,9 +34,11 @@ final class ConnectionReducerTests: XCTestCase {
         let store = TestStore(
             initialState: ConnectionReducer.State(
                 url: URL(string: "wss://echo.websocket.events")!,
-                history: history),
-            reducer: ConnectionReducer()
-        )
+                history: history
+            )
+        ) {
+            ConnectionReducer()
+        }
 
         // show
         await store.send(.showCustomHeaderList) {
@@ -48,9 +50,11 @@ final class ConnectionReducerTests: XCTestCase {
         let store = TestStore(
             initialState: ConnectionReducer.State(
                 url: URL(string: "wss://echo.websocket.events")!,
-                history: history),
-            reducer: ConnectionReducer()
-        )
+                history: history
+            )
+        ) {
+            ConnectionReducer()
+        }
 
         // already dismiss
         await store.send(.dismissCustomHeaderList)

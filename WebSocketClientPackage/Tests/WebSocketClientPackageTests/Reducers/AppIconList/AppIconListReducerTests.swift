@@ -13,9 +13,10 @@ import XCTest
 final class AppIconListReducerTests: XCTestCase {
     func testAppIconChanged() async throws {
         let store = TestStore(
-            initialState: AppIconListReducer.State(),
-            reducer: AppIconListReducer()
-        )
+            initialState: AppIconListReducer.State()
+        ) {
+            AppIconListReducer()
+        }
 
         store.dependencies.application = .init(
             canOpenURL: { _ in true },

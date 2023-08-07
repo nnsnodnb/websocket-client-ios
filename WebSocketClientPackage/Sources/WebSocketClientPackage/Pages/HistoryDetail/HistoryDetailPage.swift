@@ -28,7 +28,7 @@ struct HistoryDetailPage: View {
                     CustomHeaderListPage(customHeaders: viewStore.history.customHeaders)
                         .presentationDetents([.fraction(0.2), .large])
                 }
-                .alert(store.scope(state: \.alert, action: { $0 }), dismiss: .alertDismissed)
+                .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
         })
         .analyticsScreen(name: "history-detail-page")
     }
@@ -101,9 +101,10 @@ struct HistoryDetailPage_Previews: PreviewProvider {
                 store: .init(
                     initialState: HistoryDetailReducer.State(
                         history: history
-                    ),
-                    reducer: HistoryDetailReducer()
-                )
+                    )
+                ) {
+                    HistoryDetailReducer()
+                }
             )
         }
     }

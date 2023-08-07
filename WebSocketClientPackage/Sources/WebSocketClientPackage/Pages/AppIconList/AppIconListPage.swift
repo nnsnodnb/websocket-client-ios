@@ -46,10 +46,9 @@ struct AppIconListPage: View {
 struct AppIconListPage_Previews: PreviewProvider {
     static var previews: some View {
         AppIconListPage(
-            store: Store(
-                initialState: AppIconListReducer.State(),
-                reducer: AppIconListReducer()
-            )
+            store: Store(initialState: AppIconListReducer.State()) {
+                AppIconListReducer()
+            }
         )
     }
 }

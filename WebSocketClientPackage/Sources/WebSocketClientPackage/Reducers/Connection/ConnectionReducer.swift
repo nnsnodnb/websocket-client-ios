@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import Foundation
 
-public struct ConnectionReducer: ReducerProtocol {
+public struct ConnectionReducer: Reducer {
     // MARK: - State
     public struct State: Equatable {
         let url: URL
@@ -18,7 +18,7 @@ public struct ConnectionReducer: ReducerProtocol {
         var isSendButtonDisabled = true
         var receivedMessages: [String] = []
         var history: HistoryEntity
-        var alert: AlertState<Action>?
+        @PresentationState var alert: AlertState<Action.Alert>?
         var isShowCustomHeaderList = false
 
         // MARK: - ConnectivityState
@@ -47,9 +47,14 @@ public struct ConnectionReducer: ReducerProtocol {
         case webSocket(WebSocketClient.Action)
         case addHistoryResponse(TaskResult<Bool>)
         case updateHistoryResponse(TaskResult<Bool>)
-        case alertDismissed
+        case alert(PresentationAction<Alert>)
         case showCustomHeaderList
         case dismissCustomHeaderList
+
+        // MARK: - Alert
+        public enum Alert: Equatable {
+            case dismiss
+        }
     }
 
     @Dependency(\.continuousClock)
@@ -68,7 +73,7 @@ public struct ConnectionReducer: ReducerProtocol {
         case websocket
     }
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .start:
@@ -86,14 +91,15 @@ public struct ConnectionReducer: ReducerProtocol {
                 }
                 return .none
             case .sendMessage:
-                return .task { [message = state.message] in
-                    await .sendResponse(
-                        TaskResult {
-                            try await webSocketClient.send(CancelID.websocket, .string(message))
-                            return true
-                        }
-                    )
-                }
+                return .run(
+                    operation: { [message = state.message] send in
+                        try await webSocketClient.send(CancelID.websocket, .string(message))
+                        await send(.sendResponse(.success(true)))
+                    },
+                    catch: { error, send in
+                        await send(.sendResponse(.failure(error)))
+                    }
+                )
                 .cancellable(id: CancelID.websocket)
             case let .receivedSocketMessage(.success(message)):
                 guard case let .string(string) = message else { return .none }
@@ -104,14 +110,15 @@ public struct ConnectionReducer: ReducerProtocol {
                     createdAt: date.callAsFunction()
                 )
                 state.history.addToMessages(message)
-                return .task { [history = state.history] in
-                    await .updateHistoryResponse(
-                        TaskResult {
-                            try await databaseClient.updateHistory(history)
-                            return true
-                        }
-                    )
-                }
+                return .run(
+                    operation: { [history = state.history] send in
+                        try await databaseClient.updateHistory(history)
+                        await send(.updateHistoryResponse(.success(true)))
+                    },
+                    catch: { error, send in
+                        await send(.updateHistoryResponse(.failure(error)))
+                    }
+                )
             case .sendResponse(.success):
                 state.message = ""
                 return .none
@@ -126,19 +133,19 @@ public struct ConnectionReducer: ReducerProtocol {
                 state.connectivityState = .connected
                 state.receivedMessages.append("Connected \(state.url.absoluteString)")
                 state.history.successfulConnection()
-                return .task { [history = state.history] in
-                    await .updateHistoryResponse(
-                        TaskResult {
-                            try await databaseClient.updateHistory(history)
-                            return true
-                        }
-                    )
-                }
+                return .run(
+                    operation: { [history = state.history] send in
+                        try await databaseClient.updateHistory(history)
+                        await send(.updateHistoryResponse(.success(true)))
+                    },
+                    catch: { error, send in
+                        await send(.updateHistoryResponse(.failure(error)))
+                    }
+                )
             case .webSocket(.didClose):
                 state.connectivityState = .disconnected
                 return .cancel(id: CancelID.websocket)
-            case .alertDismissed:
-                state.alert = nil
+            case .alert:
                 return .none
             case .addHistoryResponse(.success):
                 return .none
@@ -162,9 +169,10 @@ public struct ConnectionReducer: ReducerProtocol {
                 return .none
             }
         }
+        .ifLet(\.$alert, action: /Action.alert)
     }
 
-    private func runConnection(state: inout State) -> EffectTask<Action> {
+    private func runConnection(state: inout State) -> Effect<Action> {
         guard state.connectivityState == .disconnected else { return .none }
         state.receivedMessages = ["Connecting to \(state.url.absoluteString)"]
         state.connectivityState = .connecting
@@ -200,14 +208,15 @@ public struct ConnectionReducer: ReducerProtocol {
         }
         .cancellable(id: CancelID.websocket)
         .merge(
-            with: .task { [state] in
-                await .addHistoryResponse(
-                    TaskResult {
-                        try await databaseClient.addHistory(state.history)
-                        return true
-                    }
-                )
-            }
+            with: .run(
+                operation: { [history = state.history] send in
+                    try await databaseClient.addHistory(history)
+                    await send(.addHistoryResponse(.success(true)))
+                },
+                catch: { error, send in
+                    await send(.addHistoryResponse(.failure(error)))
+                }
+            )
         )
     }
 }

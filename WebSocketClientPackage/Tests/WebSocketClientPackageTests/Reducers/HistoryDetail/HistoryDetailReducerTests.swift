@@ -6,7 +6,6 @@
 //
 
 import ComposableArchitecture
-import SwiftUINavigation
 @testable import WebSocketClientPackage
 import XCTest
 
@@ -33,9 +32,10 @@ final class HistoryDetailReducerTests: XCTestCase {
 
     func testCheckDelete() async throws {
         let store = TestStore(
-            initialState: HistoryDetailReducer.State(history: history),
-            reducer: HistoryDetailReducer()
-        )
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+        }
 
         await store.send(.checkDelete) {
             $0.alert = AlertState(
@@ -63,9 +63,10 @@ final class HistoryDetailReducerTests: XCTestCase {
 
     func testConfirmSuccess() async throws {
         let store = TestStore(
-            initialState: HistoryDetailReducer.State(history: history),
-            reducer: HistoryDetailReducer()
-        )
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+        }
 
         store.dependencies.databaseClient = .init(
             fetchHistories: { _ in [] },
@@ -75,16 +76,41 @@ final class HistoryDetailReducerTests: XCTestCase {
             deleteAllData: {}
         )
 
-        await store.send(.confirm)
+        await store.send(.checkDelete) {
+            $0.alert = AlertState(
+                title: {
+                    TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
+                },
+                actions: {
+                    ButtonState(
+                        role: .cancel,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.cancel)
+                        }
+                    )
+                    ButtonState(
+                        role: .destructive,
+                        action: .send(.confirm),
+                        label: {
+                            TextState(L10n.Alert.Button.Title.delete)
+                        }
+                    )
+                }
+            )
+        }
+        await store.send(.alert(.presented(.confirm))) {
+            $0.alert = nil
+        }
         await store.receive(.deleteResponse(.success(true)))
         await store.receive(.deleted)
     }
 
     func testConfirmFailure() async throws {
         let store = TestStore(
-            initialState: HistoryDetailReducer.State(history: history),
-            reducer: HistoryDetailReducer()
-        )
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+        }
 
         enum Error: Swift.Error {
             case delete
@@ -98,22 +124,47 @@ final class HistoryDetailReducerTests: XCTestCase {
             deleteAllData: {}
         )
 
-        await store.send(.confirm)
+        await store.send(.checkDelete) {
+            $0.alert = AlertState(
+                title: {
+                    TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
+                },
+                actions: {
+                    ButtonState(
+                        role: .cancel,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.cancel)
+                        }
+                    )
+                    ButtonState(
+                        role: .destructive,
+                        action: .send(.confirm),
+                        label: {
+                            TextState(L10n.Alert.Button.Title.delete)
+                        }
+                    )
+                }
+            )
+        }
+        await store.send(.alert(.presented(.confirm))) {
+            $0.alert = nil
+        }
         await store.receive(.deleteResponse(.failure(Error.delete))) {
             $0.alert = AlertState {
                 TextState(L10n.HistoryDetail.Alert.DeletionFailed.Title.message)
             }
         }
-        await store.send(.alertDismissed) {
+        await store.send(.alert(.dismiss)) {
             $0.alert = nil
         }
     }
 
     func testShowCustomHeaderList() async throws {
         let store = TestStore(
-            initialState: HistoryDetailReducer.State(history: history),
-            reducer: HistoryDetailReducer()
-        )
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+        }
 
         await store.send(.showCustomHeaderList) {
             $0.isShowCustomHeaderList = true
@@ -122,9 +173,10 @@ final class HistoryDetailReducerTests: XCTestCase {
 
     func testDismissCustomHeaderList() async throws {
         let store = TestStore(
-            initialState: HistoryDetailReducer.State(history: history),
-            reducer: HistoryDetailReducer()
-        )
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+        }
 
         // already dismiss
         await store.send(.dismissCustomHeaderList)

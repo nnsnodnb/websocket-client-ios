@@ -5,32 +5,37 @@
 //  Created by Yuya Oka on 2023/05/01.
 //
 
+import Combine
 import ComposableArchitecture
 import Foundation
 
-public struct HistoryDetailReducer: ReducerProtocol {
+public struct HistoryDetailReducer: Reducer {
     // MARK: - State
     public struct State: Equatable {
         let history: HistoryEntity
-        var alert: AlertState<Action>?
+        @PresentationState var alert: AlertState<Action.Alert>?
         var isShowCustomHeaderList = false
     }
 
     // MARK: - Action
     public enum Action: Equatable {
         case checkDelete
-        case confirm
-        case alertDismissed
+        case alert(PresentationAction<Alert>)
         case deleteResponse(TaskResult<Bool>)
         case deleted
         case showCustomHeaderList
         case dismissCustomHeaderList
+
+        // MARK: - Alert
+        public enum Alert: Equatable {
+            case confirm
+        }
     }
 
     @Dependency(\.databaseClient)
     var databaseClient
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .checkDelete:
@@ -47,7 +52,7 @@ public struct HistoryDetailReducer: ReducerProtocol {
                         )
                         ButtonState(
                             role: .destructive,
-                            action: .send(.confirm),
+                            action: .confirm,
                             label: {
                                 TextState(L10n.Alert.Button.Title.delete)
                             }
@@ -55,17 +60,17 @@ public struct HistoryDetailReducer: ReducerProtocol {
                     }
                 )
                 return .none
-            case .confirm:
-                return .task { [state] in
-                    await .deleteResponse(
-                        TaskResult {
-                            try await databaseClient.deleteHistory(state.history)
-                            return true
-                        }
-                    )
-                }
-            case .alertDismissed:
-                state.alert = nil
+            case .alert(.presented(.confirm)):
+                return .run(
+                    operation: { [history = state.history] send in
+                        try await databaseClient.deleteHistory(history)
+                        await send(.deleteResponse(.success(true)))
+                    },
+                    catch: { error, send in
+                        await send(.deleteResponse(.failure(error)))
+                    }
+                )
+            case .alert:
                 return .none
             case .deleteResponse(.success):
                 return .send(.deleted)
@@ -84,5 +89,6 @@ public struct HistoryDetailReducer: ReducerProtocol {
                 return .none
             }
         }
+        .ifLet(\.$alert, action: /Action.alert)
     }
 }
