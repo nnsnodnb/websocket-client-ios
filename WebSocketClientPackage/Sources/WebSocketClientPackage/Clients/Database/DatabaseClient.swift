@@ -31,7 +31,11 @@ public extension DatabaseClient {
 
         // MARK: - Initialize
         private init(inMemory: Bool = false) {
-            self.container = NSPersistentContainer(name: "Model")
+            guard let coreDataModelURL = Bundle.module.url(forResource: "Model", withExtension: "momd"),
+                  let model = NSManagedObjectModel(contentsOf: coreDataModelURL) else {
+                fatalError("Wrong Swift Package's manifest for CoreData.")
+            }
+            self.container = NSPersistentContainer(name: "Model", managedObjectModel: model)
             if inMemory {
                 container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
             }
