@@ -63,13 +63,4 @@ jobs:
           -clonedSourcePackagesDirPath ../.swiftpm \
           -disableAutomaticPackageResolution \
           -sdk iphonesimulator \
-          -destination "platform=iOS Simulator,OS=${OS},name=${DEVICE_NAME}" \
-          -resultBundlePath TestResults.xcresult | bundle exec xcpretty
-
-    - name: Publish unit test results
-      uses: kishikawakatsumi/xcresulttool@v1
-      if: success() || failure()
-      with:
-        path: WebSocketClientPackage/TestResults.xcresult
-        show-passed-tests: false
-        show-code-coverage: false
+          -destination "platform=iOS Simulator,OS=${OS},name=${DEVICE_NAME}" | bundle exec xcpretty
