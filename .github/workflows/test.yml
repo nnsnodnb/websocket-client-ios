@@ -48,6 +48,15 @@ jobs:
     - name: Write IDESkipPackagePluginFingerprintValidatation
       run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
 
+    - name: Show destinations
+      run: |
+        xcodebuild \
+          -showdestinations \
+          -workspace WebSocketClient.xcworkspace \
+          -scheme WebSocketClientPackageTests \
+          -clonedSourcePackagesDirPath .swiftpm \
+          -disableAutomaticPackageResolution
+
     - name: xcodebuild test
       env:
         DEVICE_NAME: iPhone 14 Pro Max
