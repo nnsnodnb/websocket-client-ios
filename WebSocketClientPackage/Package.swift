@@ -22,8 +22,7 @@ let package = Package(
         .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "4.1.1")),
         .package(url: "https://github.com/SwiftGen/SwiftGenPlugin.git", .upToNextMajor(from: "6.6.2")),
         .package(url: "https://github.com/realm/SwiftLint.git", .upToNextMajor(from: "0.51.0")),
-        .package(url: "https://github.com/pointfreeco/swiftui-navigation.git", .upToNextMajor(from: "0.7.1")),
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "0.52.0")),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "1.0.0")),
     ],
     targets: [
         .target(
@@ -44,10 +43,6 @@ let package = Package(
                 .product(
                     name: "SFSafeSymbols",
                     package: "SFSafeSymbols"
-                ),
-                .product(
-                    name: "SwiftUINavigation",
-                    package: "swiftui-navigation"
                 ),
             ],
             plugins: [
