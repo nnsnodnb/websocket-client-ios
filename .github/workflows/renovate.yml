@@ -47,8 +47,10 @@ jobs:
         git config --global user.name "github-actions[bot]"
 
     - name: Commit & Push
+      env:
+        HEAD_REF: ${{ github.head_ref }}
       run: |
         git add WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
         if git commit -m "Resolve Swift Package"; then
-          git push origin HEAD:${{ github.head_ref }}
+          git push origin HEAD:${HEAD_REF}
         fi
