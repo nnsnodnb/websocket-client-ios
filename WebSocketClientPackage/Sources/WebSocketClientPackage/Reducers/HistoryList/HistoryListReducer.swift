@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import Foundation
 
-public struct HistoryListReducer: ReducerProtocol {
+public struct HistoryListReducer: Reducer {
     // MARK: - State
     public struct State: Equatable {
         var histories: IdentifiedArrayOf<HistoryEntity> = []
@@ -35,19 +35,21 @@ public struct HistoryListReducer: ReducerProtocol {
     @Dependency(\.databaseClient)
     var databaseClient
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .fetch:
-                return .task {
-                    await .fetchResponse(
-                        TaskResult {
-                            try await databaseClient.fetchHistories(
-                                NSPredicate(format: "isConnectionSuccess == %d", true)
-                            )
-                        }
-                    )
-                }
+                return .run(
+                    operation: { send in
+                        let histories = try await databaseClient.fetchHistories(
+                            NSPredicate(format: "isConnectionSuccess == %d", true)
+                        )
+                        await send(.fetchResponse(.success(histories)))
+                    },
+                    catch: { error, send in
+                        await send(.fetchResponse(.failure(error)))
+                    }
+                )
             case let .fetchResponse(.success(histories)):
                 state.histories = .init(uniqueElements: histories)
                 return .none
@@ -71,14 +73,15 @@ public struct HistoryListReducer: ReducerProtocol {
             case let .deleteHistory(indexSet):
                 guard let index = indexSet.first,
                       let history = state.histories[safe: index] else { return .none }
-                return .task {
-                    await .deleteHistoryResponse(
-                        TaskResult {
-                            try await databaseClient.deleteHistory(history)
-                            return history
-                        }
-                    )
-                }
+                return .run(
+                    operation: { send in
+                        try await databaseClient.deleteHistory(history)
+                        await send(.deleteHistoryResponse(.success(history)))
+                    },
+                    catch: { error, send in
+                        await send(.deleteHistoryResponse(.failure(error)))
+                    }
+                )
             case let .deleteHistoryResponse(.success(history)):
                 state.histories.removeAll(where: { $0.id == history.id })
                 return .none

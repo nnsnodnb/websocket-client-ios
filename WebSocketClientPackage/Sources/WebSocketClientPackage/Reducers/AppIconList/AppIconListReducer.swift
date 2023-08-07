@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct AppIconListReducer: ReducerProtocol {
+public struct AppIconListReducer: Reducer {
     // MARK: - State
     public struct State: Equatable {
         let appIcons: [AppIcon] = AppIcon.allCases
@@ -73,17 +73,13 @@ public struct AppIconListReducer: ReducerProtocol {
     @Dependency(\.application)
     var application
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { _, action in
             switch action {
             case let .appIconChanged(appIcon):
-                return .task {
-                    await .setAlternateIconNameResponse(
-                        TaskResult {
-                            try await application.setAlternateIconName(appIcon.name)
-                            return true
-                        }
-                    )
+                return .run { send in
+                    try await application.setAlternateIconName(appIcon.name)
+                    await send(.setAlternateIconNameResponse(.success(true)))
                 }
             case .setAlternateIconNameResponse(.success):
                 return .none

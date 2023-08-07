@@ -185,9 +185,10 @@ struct FormPage_Previews: PreviewProvider {
                 initialState: FormReducer.State(
                     url: URL(string: "wss://echo.websocket.events")!,
                     isConnectButtonDisable: false
-                ),
-                reducer: FormReducer()
-            )
+                )
+            ) {
+                FormReducer()
+            }
         )
     }
 }

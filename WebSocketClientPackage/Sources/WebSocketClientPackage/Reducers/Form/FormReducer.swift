@@ -8,7 +8,7 @@
 import ComposableArchitecture
 import Foundation
 
-public struct FormReducer: ReducerProtocol {
+public struct FormReducer: Reducer {
     // MARK: - State
     public struct State: Equatable {
         var url: URL?
@@ -35,7 +35,7 @@ public struct FormReducer: ReducerProtocol {
     @Dependency(\.uuid)
     var uuid
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case let .urlChanged(text):

@@ -9,14 +9,14 @@ import ComposableArchitecture
 import Foundation
 import UIKit
 
-public struct InfoReducer: ReducerProtocol {
+public struct InfoReducer: Reducer {
     // MARK: - State
     public struct State: Equatable {
         var isShowSafari = false
         var url: URL?
         var version: String = ""
         var appIconList: AppIconListReducer.State = .init()
-        var alert: AlertState<Action>?
+        @PresentationState var alert: AlertState<Action.Alert>?
     }
 
     // MARK: - Action
@@ -29,9 +29,13 @@ public struct InfoReducer: ReducerProtocol {
         case browserOpenResponse(TaskResult<Bool>)
         case appIconList(AppIconListReducer.Action)
         case checkDeleteAllData
-        case deleteAllData
         case deleteAllDataResponse(TaskResult<Bool>)
-        case alertDismissed
+        case alert(PresentationAction<Alert>)
+
+        // MARK: - Alert
+        public enum Alert: Equatable {
+            case deleteAllData
+        }
     }
 
     @Dependency(\.application)
@@ -41,7 +45,7 @@ public struct InfoReducer: ReducerProtocol {
     @Dependency(\.bundle)
     var bundle
 
-    public var body: some ReducerProtocol<State, Action> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
             case .start:
@@ -60,12 +64,9 @@ public struct InfoReducer: ReducerProtocol {
                 return .none
             case let .browserOpen(url):
                 guard application.canOpenURL(url) else { return .none }
-                return .task {
-                    await .browserOpenResponse(
-                        TaskResult {
-                            await application.open(url)
-                        }
-                    )
+                return .run { send in
+                    let success = await application.open(url)
+                    await send(.browserOpenResponse(.success(success)))
                 }
             case .browserOpenResponse:
                 return .none
@@ -85,7 +86,7 @@ public struct InfoReducer: ReducerProtocol {
                         )
                         ButtonState(
                             role: .destructive,
-                            action: .send(.deleteAllData),
+                            action: .deleteAllData,
                             label: {
                                 TextState(L10n.Alert.Button.Title.delete)
                             }
@@ -93,15 +94,6 @@ public struct InfoReducer: ReducerProtocol {
                     }
                 )
                 return .none
-            case .deleteAllData:
-                return .task {
-                    await .deleteAllDataResponse(
-                        TaskResult {
-                            try await databaseClient.deleteAllData()
-                            return true
-                        }
-                    )
-                }
             case .deleteAllDataResponse(.success):
                 return .none
             case .deleteAllDataResponse(.failure):
@@ -109,11 +101,22 @@ public struct InfoReducer: ReducerProtocol {
                     TextState(L10n.Info.Alert.DeletionFailed.Title.message)
                 }
                 return .none
-            case .alertDismissed:
+            case .alert(.presented(.deleteAllData)):
+                return .run(
+                    operation: { send in
+                        try await databaseClient.deleteAllData()
+                        await send(.deleteAllDataResponse(.success(true)))
+                    },
+                    catch: { error, send in
+                        await send(.deleteAllDataResponse(.failure(error)))
+                    }
+                )
+            case .alert:
                 state.alert = nil
                 return .none
             }
         }
+        .ifLet(\.$alert, action: /Action.alert)
         Scope(state: \.appIconList, action: /Action.appIconList) {
             AppIconListReducer()
         }

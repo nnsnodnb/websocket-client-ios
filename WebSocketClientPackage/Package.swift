@@ -45,6 +45,9 @@ let package = Package(
                     package: "SFSafeSymbols"
                 ),
             ],
+            resources: [
+                .process("Model.xcdatamodeld")
+            ],
             plugins: [
                 .plugin(name: "SwiftGenPlugin", package: "SwiftGenPlugin"),
                 .plugin(name: "SwiftLintPlugin", package: "SwiftLint"),

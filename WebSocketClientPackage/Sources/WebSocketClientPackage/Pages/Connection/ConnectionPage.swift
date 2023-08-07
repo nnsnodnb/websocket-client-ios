@@ -20,7 +20,7 @@ struct ConnectionPage: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar(viewStore)
             }
-            .alert(store.scope(state: \.alert, action: { $0 }), dismiss: .alertDismissed)
+            .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
             .sheet(
                 isPresented: viewStore.binding(
                     get: \.isShowCustomHeaderList,
@@ -134,9 +134,10 @@ struct ConnectionPage_Previews: PreviewProvider {
                             isConnectionSuccess: false,
                             createdAt: .init()
                         )
-                    ),
-                    reducer: ConnectionReducer()
-                )
+                    )
+                ) {
+                    ConnectionReducer()
+                }
             )
             .previewDisplayName("Empty custom header")
             ConnectionPage(
@@ -156,9 +157,10 @@ struct ConnectionPage_Previews: PreviewProvider {
                                 createdAt: .init()
                             )
                         }()
-                    ),
-                    reducer: ConnectionReducer()
-                )
+                    )
+                ) {
+                    ConnectionReducer()
+                }
             )
             .previewDisplayName("Exist custom headers")
         }

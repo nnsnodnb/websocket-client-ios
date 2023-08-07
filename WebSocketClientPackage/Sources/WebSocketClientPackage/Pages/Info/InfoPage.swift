@@ -31,7 +31,7 @@ struct InfoPage: View {
                     )
                     .safariDismissButtonStyle(.close)
             }
-            .alert(store.scope(state: \.alert, action: { $0 }), dismiss: .alertDismissed)
+            .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
             .task {
                 viewStore.send(.start)
             }
@@ -201,9 +201,10 @@ struct InfoPage_Previews: PreviewProvider {
     static var previews: some View {
         InfoPage(
             store: Store(
-                initialState: InfoReducer.State(version: "1.0.0"),
-                reducer: InfoReducer()
-            )
+                initialState: InfoReducer.State(version: "1.0.0")
+            ) {
+                InfoReducer()
+            }
         )
     }
 }

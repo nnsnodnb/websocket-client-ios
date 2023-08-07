@@ -118,9 +118,10 @@ struct HistoryListPage_Previews: PreviewProvider {
             store: Store(
                 initialState: HistoryListReducer.State(
                     histories: [history]
-                ),
-                reducer: HistoryListReducer()
-            )
+                )
+            ) {
+                HistoryListReducer()
+            }
         )
     }
 }

@@ -24,30 +24,27 @@ public struct RootPage: View {
 
     private func formPage() -> some View {
         FormPage(
-            store: Store(
-                initialState: FormReducer.State(),
-                reducer: FormReducer()
-            )
+            store: Store(initialState: FormReducer.State()) {
+                FormReducer()
+            }
         )
         .tabItem(systemSymbol: .squareAndPencil, text: L10n.TabBar.Title.connection)
     }
 
     private func historyPage() -> some View {
         HistoryListPage(
-            store: Store(
-                initialState: HistoryListReducer.State(),
-                reducer: HistoryListReducer()
-            )
+            store: Store(initialState: HistoryListReducer.State()) {
+                HistoryListReducer()
+            }
         )
         .tabItem(systemSymbol: .trayFullFill, text: L10n.TabBar.Title.histories)
     }
 
     private func infoPage() -> some View {
         InfoPage(
-            store: Store(
-                initialState: InfoReducer.State(),
-                reducer: InfoReducer()
-            )
+            store: Store(initialState: InfoReducer.State()) {
+                InfoReducer()
+            }
         )
         .tabItem(systemSymbol: .infoCircleFill, text: L10n.TabBar.Title.info)
     }
@@ -72,10 +69,9 @@ private extension View {
 struct RootPage_Previews: PreviewProvider {
     static var previews: some View {
         RootPage(
-            store: Store(
-                initialState: RootReducer.State(),
-                reducer: RootReducer()
-            )
+            store: Store(initialState: RootReducer.State()) {
+                RootReducer()
+            }
         )
     }
 }
