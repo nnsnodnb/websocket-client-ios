@@ -6,7 +6,9 @@
   "packageRules": [
     {
       "groupName": "swift-composable-architecture",
-      "manager": "swift",
+      "managers": [
+        "swift"
+      ],
       "packageNames": [
         "swiftui-navigation",
         "swift-composable-architecture"
