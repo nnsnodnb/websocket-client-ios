@@ -16,7 +16,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.9.0")),
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.13.0")),
         .package(url: "https://github.com/mono0926/LicensePlist.git", .upToNextMajor(from: "3.24.10")),
         .package(url: "https://github.com/vsanthanam/SafariView.git", .upToNextMajor(from: "2.1.1")),
         .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "4.1.1")),
@@ -34,6 +34,10 @@ let package = Package(
                 ),
                 .product(
                     name: "FirebaseAnalyticsSwift",
+                    package: "firebase-ios-sdk"
+                ),
+                .product(
+                    name: "FirebaseCrashlytics",
                     package: "firebase-ios-sdk"
                 ),
                 .product(
