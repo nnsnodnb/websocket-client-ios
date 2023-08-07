@@ -52,5 +52,5 @@ jobs:
       run: |
         git add WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
         if git commit -m "Resolve Swift Package"; then
-          git push origin HEAD:${HEAD_REF}
+          git push origin "HEAD:${HEAD_REF}"
         fi
