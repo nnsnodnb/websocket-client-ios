@@ -27,9 +27,9 @@ struct InfoPage: View {
                         ),
                         safariView: {
                             SafariView(url: $0)
-                                .dismissButtonStyle(.close)
                         }
                     )
+                    .safariDismissButtonStyle(.close)
             }
             .alert(store.scope(state: \.alert, action: { $0 }), dismiss: .alertDismissed)
             .task {
