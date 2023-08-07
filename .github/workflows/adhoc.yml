@@ -29,6 +29,7 @@ jobs:
     - name: Cache Swift Packages
       uses: actions/cache@v3
       id: cache-swiftpm
+      timeout-minutes: 20
       with:
         path: .swiftpm
         key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
