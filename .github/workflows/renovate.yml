@@ -8,24 +8,30 @@ on:
 jobs:
   precheck:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: read
+
     outputs:
       files_changes: ${{ steps.files_changes.outputs.files }}
+
     steps:
     - uses: actions/checkout@v3
 
-    - uses: trilom/file-changes-action@v1
+    - uses: trilom/file-changes-action@v1.2.4
       id: files_changes
 
   resolve-swift-packages:
     runs-on: macos-13
     needs: precheck
-    if: contains(fromJson(needs.precheck.outputs.files_changes), 'Package.resolved') == false
-
-    permissions:
-      contents: write
+    if: contains(fromJson(needs.precheck.outputs.files_changes), 'WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') == false
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.FINE_GRAINED_PAT }}
 
     - name: Select Xcode
       run: |
@@ -43,12 +49,13 @@ jobs:
 
     - name: Git Config
       run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
+        git config --global user.email "nnsnodnb@users.noreply.github.com"
+        git config --global user.name "nnsnodnb"
 
     - name: Commit & Push
       env:
         HEAD_REF: ${{ github.head_ref }}
+        GITHUB_TOKEN: ${{ secrets.FINE_GRAINED_PAT }}
       run: |
         git add WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
         if git commit -m "Resolve Swift Package"; then
