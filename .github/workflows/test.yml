@@ -3,7 +3,10 @@ name: Test
 on:
   pull_request:
     paths-ignore:
+      - .github/workflows/adhoc.yml
+      - .github/workflows/appstore.yml
       - .github/workflows/lint.yml
+      - .github/workflows/renovate.yml
       - LICENSE
       - README.md
       - renovate.json
