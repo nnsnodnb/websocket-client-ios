@@ -1,6 +1,13 @@
 name: Lint
 
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - .github/workflows/**
+      - Dangerfile
+      - scripts/danger/**
+      - Gemfile
+      - Gemfile.lock
 
 jobs:
   actionlint:
@@ -18,7 +25,7 @@ jobs:
         level: warning
 
   danger:
-    runs-on: macos-12
+    runs-on: macos-13
 
     permissions:
       pull-requests: write
@@ -41,7 +48,7 @@ jobs:
     - name: Download SwiftLint
       if: steps.cache-swiftlint.outputs.cache-hit != 'true'
       run: |
-        version=$(jq -r '.pins[] | select( .identity == "swiftlint" ) | .state.version' < WebSocketClient.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved)
+        version=$(jq -r '.pins[] | select( .identity == "swiftlint" ) | .state.version' < WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved)
         mkdir swiftlint
         cd swiftlint
         wget "https://github.com/realm/SwiftLint/releases/download/${version}/portable_swiftlint.zip"

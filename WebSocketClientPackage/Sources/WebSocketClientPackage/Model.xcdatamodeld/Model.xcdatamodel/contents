@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F82" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDCustomHeader" representedClassName="CDCustomHeader" syncable="YES" codeGenerationType="class">
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" attributeType="String" defaultValueString=""/>
+        <attribute name="value" attributeType="String" defaultValueString=""/>
+        <relationship name="history" maxCount="1" deletionRule="Cascade" destinationEntity="CDHistory" inverseName="customHeaders" inverseEntity="CDHistory"/>
+    </entity>
+    <entity name="CDHistory" representedClassName="CDHistory" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isConnectionSuccess" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="urlString" attributeType="String" defaultValueString=""/>
+        <relationship name="customHeaders" toMany="YES" deletionRule="Cascade" destinationEntity="CDCustomHeader" inverseName="history" inverseEntity="CDCustomHeader"/>
+        <relationship name="messages" toMany="YES" deletionRule="Cascade" destinationEntity="CDMessage" inverseName="history" inverseEntity="CDMessage"/>
+    </entity>
+    <entity name="CDMessage" representedClassName="CDMessage" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="text" attributeType="String" defaultValueString=""/>
+        <relationship name="history" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDHistory" inverseName="messages" inverseEntity="CDHistory"/>
+    </entity>
+</model>

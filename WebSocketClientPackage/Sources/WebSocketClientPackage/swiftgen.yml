@@ -1,0 +1,16 @@
+input_dir: Resources
+output_dir: ${DERIVED_SOURCES_DIR}
+
+xcassets:
+  inputs:
+    - Assets.xcassets
+  outputs:
+    templateName: swift5
+    output: Assets.swift
+
+strings:
+  inputs:
+    - Languages/Base.lproj
+  outputs:
+    - templateName: structured-swift5
+      output: Localizable.swift

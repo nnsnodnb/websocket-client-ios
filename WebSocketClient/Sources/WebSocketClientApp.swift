@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import SwiftUI
+import WebSocketClientPackage
 import XCTestDynamicOverlay
 
 @main
@@ -18,10 +19,9 @@ struct WebSocketClientApp: App {
         WindowGroup {
             if !_XCTIsTesting {
                 RootPage(
-                    store: Store(
-                        initialState: RootReducer.State(),
-                        reducer: RootReducer()
-                    )
+                    store: Store(initialState: RootReducer.State()) {
+                        RootReducer()
+                    }
                 )
             }
         }

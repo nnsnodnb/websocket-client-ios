@@ -1,23 +1,6 @@
 default_platform(:ios)
 
 platform :ios do
-  # Test
-  desc "Run tests"
-  lane :test do
-    scan(
-      result_bundle: true,
-      skip_package_dependencies_resolution: is_ci,
-    )
-  end
-
-  # Package resolve
-  desc "Resolving Swift Pacakges"
-  lane :resolve_swift_packages do
-    Dir.chdir("..") do
-      sh("xcodebuild -resolvePackageDependencies -scheme WebSocketClient -project WebSocketClient.xcodeproj -clonedSourcePackagesDirPath .swiftpm -disableAutomaticPackageResolution")
-    end
-  end
-
   # Match
   desc "Setup development certificates"
   lane :setup_development_certificates do
@@ -50,7 +33,6 @@ platform :ios do
 
     gym(
       export_method: "ad-hoc",
-      skip_package_dependencies_resolution: is_ci,
       xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient' MARKETING_VERSION='#{generate_version_name}'",
     )
 
@@ -74,7 +56,6 @@ platform :ios do
 
     gym(
       export_method: "app-store",
-      skip_package_dependencies_resolution: is_ci,
     )
 
     upload_symbols_to_crashlytics(

@@ -2,14 +2,16 @@
 
 WebSocket Client for iOS
 
+<a href="https://apps.apple.com/us/app/simple-websocket-client/id6448638174?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1683331200" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 83px;"></a>
+
 ## Environment
 
 ### Xcode
 
 ```command
 $ xcodebuild -verison
-Xcode 14.2
-Build version 14C18
+Xcode 14.3.1
+Build version 14E300c
 ```
 
 ### Ruby
