@@ -29,17 +29,6 @@ $ cd websocket-client-ios
 $ xed .
 ```
 
-## Tests
-
-This project needs fastlane.
-
-```command
-$ gem install bunder -v "$(tail -n 1 Gemfile.lock | sed -r 's/ //g')"
-$ bundle config set './vendor/bundle'
-$ bundle install --jobs 3
-$ bundle exec fastlane ios test
-```
-
 ## License
 
 This software is licensed under the MIT License (See [LICENSE](LICENSE)).
