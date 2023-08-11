@@ -38,7 +38,9 @@ jobs:
         APP_ID: ${{ secrets.APP_ID }}
         PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
       run: |
-        echo "${PRIVATE_KEY}" > /tmp/github-apps-private-key.pem
+        cat << "EOF" > /tmp/github-apps-private-key.pem
+        ${PRIVATE_KEY}
+        EOF
         token=$(github-apps-token create \
                   -a "${APP_ID}" \
                   -p /tmp/github-apps-private-key.pem \
