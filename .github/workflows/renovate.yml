@@ -28,10 +28,32 @@ jobs:
     if: contains(fromJson(needs.precheck.outputs.files_changes), 'WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') == false
 
     steps:
+    - uses: Cyberbeni/install-swift-tool@v2
+      with:
+        url: https://github.com/nnsnodnb/github-apps-token-swift
+        version: '*'
+
+    - name: Configure Access Token for GitHub Apps
+      env:
+        APP_ID: ${{ secrets.APP_ID }}
+        PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
+      run: |
+        cat << "EOF" > /tmp/github-apps-private-key.pem
+        ${PRIVATE_KEY}
+        EOF
+        token=$(github-apps-token create \
+                  -a "${APP_ID}" \
+                  -p /tmp/github-apps-private-key.pem \
+                  --owner nnsnodnb \
+                  -r websocket-client-ios \
+                  --contents write)
+        echo "GITHUB_APPS_TOKEN=${token}" >> "${GITHUB_ENV}"
+        rm /tmp/github-apps-private-key.pem
+
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
-        token: ${{ secrets.FINE_GRAINED_PAT }}
+        token: ${GITHUB_APPS_TOKEN}
 
     - name: Select Xcode
       run: |
@@ -50,15 +72,19 @@ jobs:
 
     - name: Git Config
       run: |
-        git config --global user.email "nnsnodnb@users.noreply.github.com"
-        git config --global user.name "nnsnodnb"
+        git config --global user.email "aoi-chan-bot[bot]@users.noreply.github.com"
+        git config --global user.name "aoi-chan-bot[bot]"
 
     - name: Commit & Push
       env:
         HEAD_REF: ${{ github.head_ref }}
-        GITHUB_TOKEN: ${{ secrets.FINE_GRAINED_PAT }}
+        GITHUB_TOKEN: ${GITHUB_APPS_TOKEN}
       run: |
         git add WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
         if git commit -m "Resolve Swift Package"; then
           git push origin "HEAD:${HEAD_REF}"
         fi
+
+    - name: Revoke Access Token for GitHub Apps
+      if: success() || failure()
+      run: github-apps-token revoke --token "${GITHUB_APPS_TOKEN}"
