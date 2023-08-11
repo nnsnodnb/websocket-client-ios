@@ -45,12 +45,13 @@ jobs:
                   -p /tmp/github-apps-private-key.pem \
                   --owner nnsnodnb \
                   -r websocket-client-ios \
-                  --contents read)
+                  --contents write)
         echo "token=${token}" >> "${GITHUB_OUTPUT}"
         rm /tmp/github-apps-private-key.pem
 
     - uses: actions/checkout@v3
       with:
+        fetch-depth: 0
         token: ${{ steps.get-github-app.outputs.token }}
 
     - name: Select Xcode
