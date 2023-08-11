@@ -34,26 +34,24 @@ jobs:
         version: '*'
 
     - name: Configure Access Token for GitHub Apps
+      id: get-github-app
       env:
         APP_ID: ${{ secrets.APP_ID }}
         PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
       run: |
-        cat << "EOF" > /tmp/github-apps-private-key.pem
-        ${PRIVATE_KEY}
-        EOF
+        echo "${PRIVATE_KEY}" > /tmp/github-apps-private-key.pem
         token=$(github-apps-token create \
                   -a "${APP_ID}" \
                   -p /tmp/github-apps-private-key.pem \
                   --owner nnsnodnb \
                   -r websocket-client-ios \
-                  --contents write)
-        echo "GITHUB_APPS_TOKEN=${token}" >> "${GITHUB_ENV}"
+                  --contents read)
+        echo "token=${token}" >> "${GITHUB_OUTPUT}"
         rm /tmp/github-apps-private-key.pem
 
     - uses: actions/checkout@v3
       with:
-        fetch-depth: 0
-        token: ${GITHUB_APPS_TOKEN}
+        token: ${{ steps.get-github-app.outputs.token }}
 
     - name: Select Xcode
       run: |
@@ -62,7 +60,6 @@ jobs:
 
     - name: Cache Swift Packages
       uses: actions/cache@v3
-      timeout-minutes: 20
       with:
         path: .swiftpm
         key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
@@ -78,7 +75,6 @@ jobs:
     - name: Commit & Push
       env:
         HEAD_REF: ${{ github.head_ref }}
-        GITHUB_TOKEN: ${GITHUB_APPS_TOKEN}
       run: |
         git add WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
         if git commit -m "Resolve Swift Package"; then
@@ -87,4 +83,7 @@ jobs:
 
     - name: Revoke Access Token for GitHub Apps
       if: success() || failure()
-      run: github-apps-token revoke --token "${GITHUB_APPS_TOKEN}"
+      run: |
+        if [[ -n "${{ steps.get-github-app.outputs.token }}" ]]; then
+          github-apps-token revoke --token "${{ steps.get-github-app.outputs.token }}"
+        fi
