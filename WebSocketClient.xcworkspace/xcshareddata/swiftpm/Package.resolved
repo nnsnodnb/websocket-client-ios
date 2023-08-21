@@ -149,8 +149,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vsanthanam/SafariView.git",
       "state" : {
-        "revision" : "eec1b7d5fdb57650cb8f55d305a2aa85d658d753",
-        "version" : "2.1.1"
+        "revision" : "762aeca190e3992e98f7c8fc75a08295a4c18352",
+        "version" : "3.0.0"
       }
     },
     {
