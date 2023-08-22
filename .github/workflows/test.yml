@@ -55,13 +55,15 @@ jobs:
       working-directory: WebSocketClientPackage
       run: |
         sleep 2
-        rm -rf TestResults.xctest
+
         set -o pipefail && env NSUnbufferedIO=YES xcodebuild test clean \
           -scheme WebSocketClientPackage \
           -sdk iphonesimulator \
           -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4" \
           -disableAutomaticPackageResolution \
-          -resultBundlePath TestResults.xcresult | bundle exec xcpretty
+          -derivedDataPath "${RUNNER_TEMP}/derivedData" \
+          -resultBundlePath "${RUNNER_TEMP}/TestResults.xcresult" | bundle exec xcpretty
+        cp "${RUNNER_TEMP}/TestResults.xcresult" ./
 
     - name: Publish unit test results
       uses: kishikawakatsumi/xcresulttool@v1
