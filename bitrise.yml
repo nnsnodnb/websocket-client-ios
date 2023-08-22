@@ -2,42 +2,30 @@
 format_version: '11'
 default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
 project_type: ios
+
 meta:
   bitrise.io:
     stack: osx-xcode-14.3.x-ventura
     machine_type_id: g2-m1.4core
+
 trigger_map:
 - push_branch: main
   workflow: tests
 - pull_request_source_branch: "*"
   workflow: tests
+
 workflows:
   tests:
     steps:
     - git-clone@8: {}
-    - restore-cache@1:
-        title: Restore rubygems
-        inputs:
-        - key: |-
-            gems-{{ .Arch }}-{{ checksum "Gemfile.lock" }}
-            gems-{{ .Arch }}-
-    - script@1:
-        title: Install bundler
-        inputs:
-        - content: |-
-            gem install bundler -v "$(tail -n 1 Gemfile.lock | sed -r 's/ //g')" -N
-            bundle config set path './vendor/bundle'
-            bundle install --jobs 20 --retry 3
-    - save-cache@1:
-        title: Save rubygems
-        inputs:
-        - key: gems-{{ .Arch }}-{{ checksum "Gemfile.lock" }}
-        - paths: vendor/bundle
     - script@1:
         title: Copy Package.resolved
         inputs:
-        - content: cp WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
-            WebSocketClientPackage/
+        - content: cp WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved WebSocketClientPackage/
+    - change-workdir@1:
+        inputs:
+        - is_create_path: 'false'
+        - path: "${BITRISE_SOURCE_DIR}/WebSocketClientPackage"
     - script@1:
         title: Xcodebuild test
         inputs:
@@ -47,4 +35,4 @@ workflows:
               -sdk iphonesimulator \
               -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4" \
               -disableAutomaticPackageResolution \
-              -resultBundlePath TestResults.xcresult | bundle exec xcpretty
+              -resultBundlePath TestResults.xcresult | xcpretty
