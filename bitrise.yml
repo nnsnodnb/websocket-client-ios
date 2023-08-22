@@ -30,6 +30,7 @@ workflows:
         title: Xcodebuild test
         inputs:
         - content: |-
+            defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
             set -o pipefail && env NSUnbufferedIO=YES xcodebuild test clean \
               -scheme WebSocketClientPackage \
               -sdk iphonesimulator \
