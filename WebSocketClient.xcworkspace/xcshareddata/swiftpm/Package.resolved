@@ -145,12 +145,12 @@
       }
     },
     {
-      "identity" : "safariview",
+      "identity" : "safariui",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/vsanthanam/SafariView.git",
+      "location" : "https://github.com/vsanthanam/SafariUI.git",
       "state" : {
-        "revision" : "eec1b7d5fdb57650cb8f55d305a2aa85d658d753",
-        "version" : "2.1.1"
+        "revision" : "be3f52371451699f1aea17f98174b1447b5da87b",
+        "version" : "3.0.0"
       }
     },
     {
