@@ -60,6 +60,7 @@ jobs:
           -scheme WebSocketClientPackage \
           -sdk iphonesimulator \
           -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4" \
+          -disableAutomaticPackageResolution \
           -resultBundlePath TestResults.xcresult | bundle exec xcpretty
 
     - name: Publish unit test results
