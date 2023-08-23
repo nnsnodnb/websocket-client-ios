@@ -1,0 +1,45 @@
+---
+format_version: '11'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+
+meta:
+  bitrise.io:
+    stack: osx-xcode-14.3.x-ventura
+    machine_type_id: g2-m1.4core
+
+trigger_map:
+- push_branch: main
+  workflow: tests
+- pull_request_source_branch: "*"
+  workflow: tests
+
+workflows:
+  tests:
+    steps:
+    - git-clone@8: {}
+    - script@1:
+        title: Copy Package.resolved
+        inputs:
+        - content: cp WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved WebSocketClientPackage/
+    - change-workdir@1:
+        inputs:
+        - is_create_path: 'false'
+        - path: "${BITRISE_SOURCE_DIR}/WebSocketClientPackage"
+    - xcode-test@5:
+        inputs:
+        - scheme: WebSocketClientPackage
+        - xcodebuild_options: "-disableAutomaticPackageResolution"
+        - project_path: "$BITRISE_PROJECT_PATH/WebSocketClientPackage"
+    - deploy-to-bitrise-io@2: {}
+    # - script@1:
+    #     title: Xcodebuild test
+    #     inputs:
+    #     - content: |-
+    #         defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+    #         set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
+    #           -scheme WebSocketClientPackage \
+    #           -sdk iphonesimulator \
+    #           -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4" \
+    #           -disableAutomaticPackageResolution \
+    #           -resultBundlePath TestResults.xcresult 2>&1 | xcpretty
