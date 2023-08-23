@@ -37,7 +37,7 @@ platform :ios do
     )
 
     upload_symbols_to_crashlytics(
-      gsp_path: "WebSocketClient/Resources/GoogleService-Info.plist",
+      gsp_path: "App/WebSocketClient/Resources/GoogleService-Info.plist",
       binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
     )
 
@@ -59,7 +59,7 @@ platform :ios do
     )
 
     upload_symbols_to_crashlytics(
-      gsp_path: "WebSocketClient/Resources/GoogleService-Info.plist",
+      gsp_path: "App/WebSocketClient/Resources/GoogleService-Info.plist",
       binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
     )
 
@@ -75,7 +75,7 @@ platform :ios do
   desc "Generate version name"
   private_lane :generate_version_name do
     version = get_xcconfig_value(
-      path: "Configurations/App/App.base.xcconfig",
+      path: "App/Configurations/App/App.base.xcconfig",
       name: "MARKETING_VERSION",
     )
     short_hash = last_git_commit[:abbreviated_commit_hash]
