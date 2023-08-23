@@ -36,4 +36,5 @@ workflows:
               -sdk iphonesimulator \
               -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4" \
               -disableAutomaticPackageResolution \
+              -derivedDataPath .DerivedDataPath \
               -resultBundlePath TestResults.xcresult | xcpretty
