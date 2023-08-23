@@ -26,14 +26,20 @@ workflows:
         inputs:
         - is_create_path: 'false'
         - path: "${BITRISE_SOURCE_DIR}/WebSocketClientPackage"
-    - script@1:
-        title: Xcodebuild test
+    - xcode-test@5:
         inputs:
-        - content: |-
-            defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
-            set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
-              -scheme WebSocketClientPackage \
-              -sdk iphonesimulator \
-              -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4" \
-              -disableAutomaticPackageResolution \
-              -resultBundlePath TestResults.xcresult 2>&1 | xcpretty
+        - scheme: WebSocketClientPackage
+        - xcodebuild_options: "-disableAutomaticPackageResolution"
+        - project_path: "$BITRISE_PROJECT_PATH/WebSocketClientPackage"
+    - deploy-to-bitrise-io@2: {}
+    # - script@1:
+    #     title: Xcodebuild test
+    #     inputs:
+    #     - content: |-
+    #         defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+    #         set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
+    #           -scheme WebSocketClientPackage \
+    #           -sdk iphonesimulator \
+    #           -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4" \
+    #           -disableAutomaticPackageResolution \
+    #           -resultBundlePath TestResults.xcresult 2>&1 | xcpretty
