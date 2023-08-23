@@ -31,7 +31,7 @@ workflows:
         inputs:
         - content: |-
             defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
-            set -o pipefail && env NSUnbufferedIO=YES xcodebuild test clean \
+            set -o pipefail && env NSUnbufferedIO=YES xcodebuild test \
               -scheme WebSocketClientPackage \
               -sdk iphonesimulator \
               -destination "platform=iOS Simulator,name=iPhone 14 Pro,OS=16.4" \
