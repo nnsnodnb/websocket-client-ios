@@ -18,37 +18,37 @@ public struct AppIconListReducer: Reducer {
             // MARK: - Properties
             static let `default`: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.default,
-                image: Asset.icDefaultIcon.swiftUIImage,
+                image: Image(.icDefaultIcon),
                 name: nil
             )
             static let yellow: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.yellow,
-                image: Asset.icYellowIcon.swiftUIImage,
+                image: Image(.icYellowIcon),
                 name: "AppIcon-Yellow"
             )
             static let red: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.red,
-                image: Asset.icRedIcon.swiftUIImage,
+                image: Image(.icRedIcon),
                 name: "AppIcon-Red"
             )
             static let blue: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.blue,
-                image: Asset.icBlueIcon.swiftUIImage,
+                image: Image(.icBlueIcon),
                 name: "AppIcon-Blue"
             )
             static let purple: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.purple,
-                image: Asset.icPurpleIcon.swiftUIImage,
+                image: Image(.icPurpleIcon),
                 name: "AppIcon-Purple"
             )
             static let black: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.black,
-                image: Asset.icBlackIcon.swiftUIImage,
+                image: Image(.icBlackIcon),
                 name: "AppIcon-Black"
             )
             static let white: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.white,
-                image: Asset.icWhiteIcon.swiftUIImage,
+                image: Image(.icWhiteIcon),
                 name: "AppIcon-White"
             )
 

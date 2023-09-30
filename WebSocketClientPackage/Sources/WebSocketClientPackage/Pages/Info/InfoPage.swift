@@ -53,7 +53,7 @@ struct InfoPage: View {
                 viewStore,
                 url: URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!,
                 icon: {
-                    Asset.icGithub.swiftUIImage
+                    Image(.icGithub)
                         .resizable()
                 },
                 text: L10n.Info.Section.First.Title.sourceCodes,
@@ -65,7 +65,7 @@ struct InfoPage: View {
                 viewStore,
                 url: URL(string: "https://twitter.com/nnsnodnb")!,
                 icon: {
-                    Asset.icTwitter.swiftUIImage
+                    Image(.icTwitter)
                         .resizable()
                 },
                 text: L10n.Info.Section.First.Title.contactDeveloper,
@@ -102,7 +102,7 @@ struct InfoPage: View {
                 },
                 label: {
                     HStack(spacing: 12) {
-                        Asset.icDefaultIcon.swiftUIImage
+                        Image(.icDefaultIcon)
                             .resizable()
                             .frame(width: 18, height: 18)
                             .cornerRadius(4)
