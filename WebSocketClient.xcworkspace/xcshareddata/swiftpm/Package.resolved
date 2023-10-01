@@ -167,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vsanthanam/SafariUI.git",
       "state" : {
-        "revision" : "be3f52371451699f1aea17f98174b1447b5da87b",
-        "version" : "3.0.0"
+        "revision" : "15d664c79e4a1ff7e715c73392847749285ab3ad",
+        "version" : "3.0.1"
       }
     },
     {
