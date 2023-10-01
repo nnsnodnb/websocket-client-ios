@@ -122,7 +122,8 @@ public struct ConnectionReducer: Reducer {
             case .sendResponse(.success):
                 state.message = ""
                 return .none
-            case .sendResponse(.failure):
+            case let .sendResponse(.failure(error)):
+                Logger.error("Failed sening: \(error)")
                 return .none
             case .receivedSocketMessage(.failure):
                 state.alert = AlertState {
@@ -149,17 +150,19 @@ public struct ConnectionReducer: Reducer {
                 return .none
             case .addHistoryResponse(.success):
                 return .none
-            case .addHistoryResponse(.failure):
+            case let .addHistoryResponse(.failure(error)):
                 state.alert = AlertState {
                     TextState("Could not update history.")
                 }
+                Logger.error("Failed adding history: \(error)")
                 return .none
             case .updateHistoryResponse(.success):
                 return .none
-            case .updateHistoryResponse(.failure):
+            case let .updateHistoryResponse(.failure(error)):
                 state.alert = AlertState {
                     TextState("Could not update history.")
                 }
+                Logger.error("Failed updaing history: \(error)")
                 return .none
             case .showCustomHeaderList:
                 state.isShowCustomHeaderList = true
@@ -201,6 +204,7 @@ public struct ConnectionReducer: Reducer {
                             }
                         }
                     case .didClose:
+                        Logger.debug("Closed WebSocket connection")
                         return
                     }
                 }

@@ -33,6 +33,7 @@ public extension DatabaseClient {
         private init(inMemory: Bool = false) {
             guard let coreDataModelURL = Bundle.module.url(forResource: "Model", withExtension: "momd"),
                   let model = NSManagedObjectModel(contentsOf: coreDataModelURL) else {
+                Logger.fault("Wront Swift Package's manifest for CoreData.")
                 fatalError("Wrong Swift Package's manifest for CoreData.")
             }
             self.container = NSPersistentContainer(name: "Model", managedObjectModel: model)
@@ -41,11 +42,14 @@ public extension DatabaseClient {
             }
             container.loadPersistentStores { storeDescription, error in
                 guard let error else {
-                    #if Debug
-                    print("CoreData sqlite location: \(storeDescription.url?.path(percentEncoded: false) ?? "")")
+                    #if DEBUG
+                    if let path = storeDescription.url?.path(percentEncoded: false) {
+                        Logger.debug("CoreData sqlite location: \(path)")
+                    }
                     #endif
                     return
                 }
+                Logger.fault("\(error)")
                 fatalError("\(error)")
             }
             container.viewContext.automaticallyMergesChangesFromParent = true
@@ -63,6 +67,7 @@ public extension DatabaseClient {
             container.viewContext.insert(convertToCDHistory(with: history))
             guard container.viewContext.hasChanges else { return }
             try container.viewContext.save()
+            Logger.info("Saved history")
         }
 
         func updateHistory(_ history: HistoryEntity) throws {
@@ -84,6 +89,7 @@ public extension DatabaseClient {
             entity.isConnectionSuccess = history.isConnectionSuccess
             guard container.viewContext.hasChanges else { return }
             try container.viewContext.save()
+            Logger.info("Updated history")
         }
 
         func deleteHistory(_ history: HistoryEntity) throws {
@@ -91,6 +97,7 @@ public extension DatabaseClient {
             container.viewContext.delete(entity)
             guard container.viewContext.hasChanges else { return }
             try container.viewContext.save()
+            Logger.info("Deleted history")
         }
 
         func deleteAllData() throws {
@@ -100,6 +107,7 @@ public extension DatabaseClient {
             histories.forEach(container.viewContext.delete)
             guard container.viewContext.hasChanges else { return }
             try container.viewContext.save()
+            Logger.info("Deleted all data")
         }
 
         // MARK: - Private method

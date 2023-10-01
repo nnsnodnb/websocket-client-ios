@@ -1,0 +1,34 @@
+---
+format_version: '11'
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+project_type: ios
+
+meta:
+  bitrise.io:
+    stack: osx-xcode-15.0.x
+    machine_type_id: g2-m1.4core
+
+trigger_map:
+- push_branch: main
+  workflow: tests
+- pull_request_source_branch: "*"
+  workflow: tests
+
+workflows:
+  tests:
+    steps:
+    - git-clone@8: {}
+    - script@1:
+        title: Copy Package.resolved
+        inputs:
+        - content: cp WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
+            WebSocketClientPackage/
+    - xcode-test@5:
+        inputs:
+        - scheme: WebSocketClientPackage
+        - xcodebuild_options: "-disableAutomaticPackageResolution -skipPackagePluginValidation"
+        - project_path: "${BITRISE_SOURCE_DIR}/WebSocketClientPackage/Package.swift"
+    - deploy-to-bitrise-io@2: {}
+
+app:
+  envs: []

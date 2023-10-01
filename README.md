@@ -10,15 +10,15 @@ WebSocket Client for iOS
 
 ```command
 $ xcodebuild -verison
-Xcode 14.3.1
-Build version 14E300c
+Xcode 15.0
+Build version 15A240d
 ```
 
 ### Ruby
 
 ```command
 $ ruby -v
-ruby 3.2.0 (2022-12-25 revision a528908271) [arm64-darwin21]
+ruby 3.2.2 (2023-03-30 revision e51014f9c0) [arm64-darwin22]
 ```
 
 ## Setup
@@ -27,17 +27,6 @@ ruby 3.2.0 (2022-12-25 revision a528908271) [arm64-darwin21]
 $ git clone git@github.com:nnsnodnb/websocket-client-ios.git
 $ cd websocket-client-ios
 $ xed .
-```
-
-## Tests
-
-This project needs fastlane.
-
-```command
-$ gem install bunder -v "$(tail -n 1 Gemfile.lock | sed -r 's/ //g')"
-$ bundle config set './vendor/bundle'
-$ bundle install --jobs 3
-$ bundle exec fastlane ios test
 ```
 
 ## License

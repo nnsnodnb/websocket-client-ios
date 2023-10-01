@@ -1,9 +1,6 @@
 included:
   - WebSocketClient/Sources
-  - WebSocketClientTests
-
-excluded:
-  - WebSocketClient/Generated
+  - WebSocketClientPackage
 
 opt_in_rules:
   - array_init
