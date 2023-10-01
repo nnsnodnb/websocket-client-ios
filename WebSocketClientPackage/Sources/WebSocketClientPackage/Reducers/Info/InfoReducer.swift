@@ -96,10 +96,11 @@ public struct InfoReducer: Reducer {
                 return .none
             case .deleteAllDataResponse(.success):
                 return .none
-            case .deleteAllDataResponse(.failure):
+            case let .deleteAllDataResponse(.failure(error)):
                 state.alert = AlertState {
                     TextState(L10n.Info.Alert.DeletionFailed.Title.message)
                 }
+                Logger.error("Failed deleting all data: \(error)")
                 return .none
             case .alert(.presented(.deleteAllData)):
                 return .run(

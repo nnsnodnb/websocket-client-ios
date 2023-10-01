@@ -53,7 +53,8 @@ public struct HistoryListReducer: Reducer {
             case let .fetchResponse(.success(histories)):
                 state.histories = .init(uniqueElements: histories)
                 return .none
-            case .fetchResponse(.failure):
+            case let .fetchResponse(.failure(error)):
+                Logger.error("Failed fetching: \(error)")
                 return .none
             case let .setNavigation(.some(history)):
                 state.paths.append(.historyDetail)
@@ -85,7 +86,8 @@ public struct HistoryListReducer: Reducer {
             case let .deleteHistoryResponse(.success(history)):
                 state.histories.removeAll(where: { $0.id == history.id })
                 return .none
-            case .deleteHistoryResponse(.failure):
+            case let .deleteHistoryResponse(.failure(error)):
+                Logger.error("Failed deleting history: \(error)")
                 return .none
             case .historyDetail:
                 return .none

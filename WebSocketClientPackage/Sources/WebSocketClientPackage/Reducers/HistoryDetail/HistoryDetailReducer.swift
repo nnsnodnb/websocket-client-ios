@@ -74,10 +74,11 @@ public struct HistoryDetailReducer: Reducer {
                 return .none
             case .deleteResponse(.success):
                 return .send(.deleted)
-            case .deleteResponse(.failure):
+            case let .deleteResponse(.failure(error)):
                 state.alert = AlertState {
                     TextState(L10n.HistoryDetail.Alert.DeletionFailed.Title.message)
                 }
+                Logger.error("Failed deleting: \(error)")
                 return .none
             case .deleted:
                 return .none
