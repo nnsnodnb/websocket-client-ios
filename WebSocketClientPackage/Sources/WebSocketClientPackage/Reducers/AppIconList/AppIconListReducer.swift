@@ -82,8 +82,10 @@ public struct AppIconListReducer: Reducer {
                     await send(.setAlternateIconNameResponse(.success(true)))
                 }
             case .setAlternateIconNameResponse(.success):
+                Logger.debug("Changed app icon")
                 return .none
-            case .setAlternateIconNameResponse(.failure):
+            case let .setAlternateIconNameResponse(.failure(error)):
+                Logger.error("Failed changing app icon: \(error)")
                 return .none
             }
         }

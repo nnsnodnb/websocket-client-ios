@@ -134,12 +134,15 @@ public extension WebSocketClient {
 
         func sendPing(id: AnyHashable) async throws {
             let socket = try socket(id: id)
+            Logger.debug("Ping WebSocket")
             return try await withCheckedThrowingContinuation { continuation in
                 socket.sendPing { error in
                     if let error {
                         continuation.resume(throwing: error)
+                        Logger.error("Failed ping: \(error)")
                     } else {
                         continuation.resume()
+                        Logger.debug("Pong WebSocket")
                     }
                 }
             }
