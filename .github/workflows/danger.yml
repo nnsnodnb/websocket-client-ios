@@ -5,7 +5,7 @@ on:
 
 jobs:
   danger:
-    runs-on: macos-13
+    runs-on: macos-13-xlarge
 
     permissions:
       pull-requests: write

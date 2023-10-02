@@ -7,7 +7,7 @@ on:
 
 jobs:
   adhoc:
-    runs-on: macos-13
+    runs-on: macos-13-xlarge
 
     env:
       FASTLANE_SKIP_UPDATE_CHECK: 1

@@ -23,7 +23,7 @@ jobs:
       id: files_changes
 
   resolve-swift-packages:
-    runs-on: macos-13
+    runs-on: macos-13-xlarge
     needs: precheck
     if: contains(fromJson(needs.precheck.outputs.files_changes), 'WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') == false
 
