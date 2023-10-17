@@ -43,4 +43,4 @@ jobs:
       - uses: kishikawakatsumi/xcresulttool@v1
         if: success() || failure()
         with:
-          path: Test-WebSocketClientPackageTests
+          path: Test-WebSocketClientPackageTests.xcresult
