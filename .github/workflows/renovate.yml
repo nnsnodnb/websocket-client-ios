@@ -27,6 +27,9 @@ jobs:
     needs: precheck
     if: contains(fromJson(needs.precheck.outputs.files_changes), 'WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') == false
 
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.0.app/Contents/Developer
+
     steps:
     - uses: Cyberbeni/install-swift-tool@v2
       with:
@@ -53,11 +56,6 @@ jobs:
       with:
         fetch-depth: 0
         token: ${{ steps.get-github-app.outputs.token }}
-
-    - name: Select Xcode
-      run: |
-        sudo xcode-select -s /Applications/Xcode_15.0.0.app/Contents/Developer
-        xcodebuild -version
 
     - name: Cache Swift Packages
       uses: actions/cache@v3
