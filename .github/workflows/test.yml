@@ -1,0 +1,46 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    runs-on: macos-13
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_15.0.app/Contents/Developer
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Swift Packages
+        uses: actions/cache@v3
+        id: cache-swiftpm
+        with:
+          path: .swiftpm
+          key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+
+      - name: Write IDESkipPackagePluginFingerprintValidatation
+        run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+
+      - name: Make test-result folder
+        run: mkdir -p test-results
+
+      - name: Xcode test
+        run: |
+          set -o pipefail && \
+            xcodebuild test \
+              -scheme WebSocketClientPackageTests \
+              -workspace WebSocketClient.xcworkspace \
+              -parallel-testing-enabled=YES \
+              -destination "platform=iOS Simulator,name=iPhone 15 Pro" \
+              -resultBundlePath "Test-WebSocketClientPackageTests.xcresult" \
+              -disableAutomaticPackageResolution | xcpretty
+
+      - uses: kishikawakatsumi/xcresulttool@v1
+        if: success() || failure()
+        with:
+          path: Test-WebSocketClientPackageTests.xcresult
