@@ -64,7 +64,13 @@ jobs:
         key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
 
     - name: Resolve Swift Packages
-      run: xcodebuild -resolvePackageDependencies -scheme WebSocketClient -workspace WebSocketClient.xcworkspace -clonedSourcePackagesDirPath .swiftpm
+      run: |
+        xcodebuild \
+          -sdk iphoneos17.0 \
+          -resolvePackageDependencies \
+          -scheme WebSocketClient \
+          -workspace WebSocketClient.xcworkspace \
+          -clonedSourcePackagesDirPath .swiftpm
 
     - name: Git Config
       run: |

@@ -33,6 +33,7 @@ jobs:
         run: |
           set -o pipefail && \
             xcodebuild test \
+              -sdk iphoneos17.0 \
               -scheme WebSocketClientPackageTests \
               -workspace WebSocketClient.xcworkspace \
               -parallel-testing-enabled=YES \
