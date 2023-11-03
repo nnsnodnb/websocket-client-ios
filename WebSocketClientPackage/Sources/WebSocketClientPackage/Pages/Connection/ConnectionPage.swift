@@ -6,7 +6,7 @@
 //
 
 import ComposableArchitecture
-import FirebaseAnalyticsSwift
+import FirebaseAnalytics
 import SwiftUI
 
 struct ConnectionPage: View {

@@ -7,7 +7,6 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
-import FirebaseAnalyticsSwift
 import SafariView
 import SFSafeSymbols
 import SwiftUI
