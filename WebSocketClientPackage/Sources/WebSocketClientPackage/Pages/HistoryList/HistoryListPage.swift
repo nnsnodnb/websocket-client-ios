@@ -6,7 +6,7 @@
 //
 
 import ComposableArchitecture
-import FirebaseAnalyticsSwift
+import FirebaseAnalytics
 import SFSafeSymbols
 import SwiftUI
 

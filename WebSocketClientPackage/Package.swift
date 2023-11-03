@@ -33,7 +33,7 @@ let package = Package(
                     package: "swift-composable-architecture"
                 ),
                 .product(
-                    name: "FirebaseAnalyticsSwift",
+                    name: "FirebaseAnalytics",
                     package: "firebase-ios-sdk"
                 ),
                 .product(
