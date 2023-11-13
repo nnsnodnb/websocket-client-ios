@@ -131,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mono0926/LicensePlist.git",
       "state" : {
-        "revision" : "3562b6049f41fd99b0f76d6ae389bfea9243456c",
-        "version" : "3.25.0"
+        "revision" : "f3f802009c9f71ad46356adb453fcb57b8931ff9",
+        "version" : "3.25.1"
       }
     },
     {
