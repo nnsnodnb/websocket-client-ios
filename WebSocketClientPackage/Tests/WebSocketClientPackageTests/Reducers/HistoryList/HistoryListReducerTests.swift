@@ -36,7 +36,7 @@ final class HistoryListReducerTests: XCTestCase {
         )
 
         await store.send(.fetch)
-        await store.receive(.fetchResponse(.success([history]))) {
+        await store.receive(\.fetchResponse.success) {
             $0.histories = .init(uniqueElements: [history])
         }
 
@@ -78,13 +78,13 @@ final class HistoryListReducerTests: XCTestCase {
         )
 
         await store.send(.fetch)
-        await store.receive(.fetchResponse(.success([history]))) {
+        await store.receive(\.fetchResponse.success) {
             $0.histories = .init(uniqueElements: [history])
         }
 
         // delete success
         await store.send(.deleteHistory(.init(integer: 0)))
-        await store.receive(.deleteHistoryResponse(.success(history))) {
+        await store.receive(\.deleteHistoryResponse.success) {
             $0.histories = .init(uniqueElements: [])
         }
     }
@@ -118,13 +118,13 @@ final class HistoryListReducerTests: XCTestCase {
         )
 
         await store.send(.fetch)
-        await store.receive(.fetchResponse(.success([history]))) {
+        await store.receive(\.fetchResponse.success) {
             $0.histories = .init(uniqueElements: [history])
         }
 
         // delete failure
         await store.send(.deleteHistory(.init(integer: 0)))
-        await store.receive(.deleteHistoryResponse(.failure(Error.delete)))
+        await store.receive(\.deleteHistoryResponse.failure)
     }
 
     func testHistoryDetailDeleted() async throws {
@@ -152,7 +152,7 @@ final class HistoryListReducerTests: XCTestCase {
         )
 
         await store.send(.fetch)
-        await store.receive(.fetchResponse(.success([history]))) {
+        await store.receive(\.fetchResponse.success) {
             $0.histories = .init(uniqueElements: [history])
         }
 
@@ -165,7 +165,7 @@ final class HistoryListReducerTests: XCTestCase {
         await store.send(.historyDetail(.deleted)) {
             $0.histories = .init(uniqueElements: [])
         }
-        await store.receive(.setNavigation(nil)) {
+        await store.receive(\.setNavigation) {
             $0.paths = []
             $0.selectionHistory = nil
         }
