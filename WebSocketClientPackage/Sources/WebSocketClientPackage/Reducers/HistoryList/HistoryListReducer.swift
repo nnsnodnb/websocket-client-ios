@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import Foundation
 
-public struct HistoryListReducer: Reducer {
+@Reducer
+public struct HistoryListReducer {
     // MARK: - State
     public struct State: Equatable {
         var histories: IdentifiedArrayOf<HistoryEntity> = []
@@ -35,7 +36,7 @@ public struct HistoryListReducer: Reducer {
     @Dependency(\.databaseClient)
     var databaseClient
 
-    public var body: some Reducer<State, Action> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .fetch:
@@ -93,7 +94,7 @@ public struct HistoryListReducer: Reducer {
                 return .none
             }
         }
-        .ifLet(\.selectionHistory, action: /Action.historyDetail) {
+        .ifLet(\.selectionHistory, action: \.historyDetail) {
             EmptyReducer()
                 .ifLet(\.value, action: .self) {
                     HistoryDetailReducer()

@@ -9,7 +9,8 @@ import ComposableArchitecture
 import Foundation
 import UIKit
 
-public struct InfoReducer: Reducer {
+@Reducer
+public struct InfoReducer {
     // MARK: - State
     public struct State: Equatable {
         var isShowSafari = false
@@ -45,7 +46,7 @@ public struct InfoReducer: Reducer {
     @Dependency(\.bundle)
     var bundle
 
-    public var body: some Reducer<State, Action> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .start:
@@ -116,8 +117,8 @@ public struct InfoReducer: Reducer {
                 return .none
             }
         }
-        .ifLet(\.$alert, action: /Action.alert)
-        Scope(state: \.appIconList, action: /Action.appIconList) {
+        .ifLet(\.$alert, action: \.alert)
+        Scope(state: \.appIconList, action: \.appIconList) {
             AppIconListReducer()
         }
     }

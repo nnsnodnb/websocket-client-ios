@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import Foundation
 
-public struct ConnectionReducer: Reducer {
+@Reducer
+public struct ConnectionReducer {
     // MARK: - State
     public struct State: Equatable {
         let url: URL
@@ -73,7 +74,7 @@ public struct ConnectionReducer: Reducer {
         case websocket
     }
 
-    public var body: some Reducer<State, Action> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .start:
@@ -172,7 +173,7 @@ public struct ConnectionReducer: Reducer {
                 return .none
             }
         }
-        .ifLet(\.$alert, action: /Action.alert)
+        .ifLet(\.$alert, action: \.alert)
     }
 
     private func runConnection(state: inout State) -> Effect<Action> {

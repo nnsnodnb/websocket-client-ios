@@ -9,7 +9,8 @@ import Combine
 import ComposableArchitecture
 import Foundation
 
-public struct HistoryDetailReducer: Reducer {
+@Reducer
+public struct HistoryDetailReducer {
     // MARK: - State
     public struct State: Equatable {
         let history: HistoryEntity
@@ -35,7 +36,7 @@ public struct HistoryDetailReducer: Reducer {
     @Dependency(\.databaseClient)
     var databaseClient
 
-    public var body: some Reducer<State, Action> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .checkDelete:
@@ -90,6 +91,6 @@ public struct HistoryDetailReducer: Reducer {
                 return .none
             }
         }
-        .ifLet(\.$alert, action: /Action.alert)
+        .ifLet(\.$alert, action: \.alert)
     }
 }

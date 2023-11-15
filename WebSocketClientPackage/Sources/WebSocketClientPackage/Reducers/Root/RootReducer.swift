@@ -8,7 +8,8 @@
 import ComposableArchitecture
 import Foundation
 
-public struct RootReducer: Reducer {
+@Reducer
+public struct RootReducer {
     // MARK: - State
     public struct State: Equatable {
         // MARK: - Initialize
@@ -20,7 +21,7 @@ public struct RootReducer: Reducer {
     public struct Action: Equatable {
     }
 
-    public var body: some Reducer<State, Action> {
+    public var body: some ReducerOf<Self> {
         Reduce { _, _ in
             return .none
         }
