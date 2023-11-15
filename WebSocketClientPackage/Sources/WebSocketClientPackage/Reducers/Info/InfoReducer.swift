@@ -5,11 +5,13 @@
 //  Created by Yuya Oka on 2023/04/16.
 //
 
+import CasePaths
 import ComposableArchitecture
 import Foundation
 import UIKit
 
-public struct InfoReducer: Reducer {
+@Reducer
+public struct InfoReducer {
     // MARK: - State
     public struct State: Equatable {
         var isShowSafari = false
@@ -26,14 +28,22 @@ public struct InfoReducer: Reducer {
         case safariOpen
         case safariDismiss
         case browserOpen(URL)
-        case browserOpenResponse(TaskResult<Bool>)
+        case browserOpenResponse
         case appIconList(AppIconListReducer.Action)
         case checkDeleteAllData
-        case deleteAllDataResponse(TaskResult<Bool>)
+        case deleteAllDataResponse
         case alert(PresentationAction<Alert>)
+        case error(Error)
 
         // MARK: - Alert
         public enum Alert: Equatable {
+            case deleteAllData
+        }
+
+        // MARK: - Error
+        @CasePathable
+        public enum Error: Swift.Error {
+            case browserOpen
             case deleteAllData
         }
     }
@@ -45,7 +55,7 @@ public struct InfoReducer: Reducer {
     @Dependency(\.bundle)
     var bundle
 
-    public var body: some Reducer<State, Action> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .start:
@@ -65,8 +75,8 @@ public struct InfoReducer: Reducer {
             case let .browserOpen(url):
                 guard application.canOpenURL(url) else { return .none }
                 return .run { send in
-                    let success = await application.open(url)
-                    await send(.browserOpenResponse(.success(success)))
+                    _ = await application.open(url)
+                    await send(.browserOpenResponse)
                 }
             case .browserOpenResponse:
                 return .none
@@ -94,30 +104,32 @@ public struct InfoReducer: Reducer {
                     }
                 )
                 return .none
-            case .deleteAllDataResponse(.success):
-                return .none
-            case let .deleteAllDataResponse(.failure(error)):
-                state.alert = AlertState {
-                    TextState(L10n.Info.Alert.DeletionFailed.Title.message)
-                }
-                Logger.error("Failed deleting all data: \(error)")
+            case .deleteAllDataResponse:
                 return .none
             case .alert(.presented(.deleteAllData)):
                 return .run(
                     operation: { send in
                         try await databaseClient.deleteAllData()
-                        await send(.deleteAllDataResponse(.success(true)))
+                        await send(.deleteAllDataResponse)
                     },
                     catch: { error, send in
-                        await send(.deleteAllDataResponse(.failure(error)))
+                        await send(.error(.deleteAllData))
+                        Logger.error("Failed deleting all data: \(error)")
                     }
                 )
             case .alert:
                 return .none
+            case .error(.deleteAllData):
+                state.alert = AlertState {
+                    TextState(L10n.Info.Alert.DeletionFailed.Title.message)
+                }
+                return .none
+            case .error:
+                return .none
             }
         }
-        .ifLet(\.$alert, action: /Action.alert)
-        Scope(state: \.appIconList, action: /Action.appIconList) {
+        .ifLet(\.$alert, action: \.alert)
+        Scope(state: \.appIconList, action: \.appIconList) {
             AppIconListReducer()
         }
     }

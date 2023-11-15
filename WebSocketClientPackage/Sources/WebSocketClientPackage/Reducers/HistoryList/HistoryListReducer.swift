@@ -5,10 +5,12 @@
 //  Created by Yuya Oka on 2023/04/20.
 //
 
+import CasePaths
 import ComposableArchitecture
 import Foundation
 
-public struct HistoryListReducer: Reducer {
+@Reducer
+public struct HistoryListReducer {
     // MARK: - State
     public struct State: Equatable {
         var histories: IdentifiedArrayOf<HistoryEntity> = []
@@ -24,18 +26,26 @@ public struct HistoryListReducer: Reducer {
     // MARK: - Action
     public enum Action: Equatable {
         case fetch
-        case fetchResponse(TaskResult<[HistoryEntity]>)
+        case fetchResponse([HistoryEntity])
         case setNavigation(HistoryEntity?)
         case navigationPathChanged([State.Destination])
         case deleteHistory(IndexSet)
-        case deleteHistoryResponse(TaskResult<HistoryEntity>)
+        case deleteHistoryResponse(HistoryEntity)
         case historyDetail(HistoryDetailReducer.Action)
+        case error(Error)
+
+        // MARK: - Error
+        @CasePathable
+        public enum Error: Swift.Error {
+            case fetch
+            case deleteHistory
+        }
     }
 
     @Dependency(\.databaseClient)
     var databaseClient
 
-    public var body: some Reducer<State, Action> {
+    public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
             case .fetch:
@@ -44,17 +54,15 @@ public struct HistoryListReducer: Reducer {
                         let histories = try await databaseClient.fetchHistories(
                             NSPredicate(format: "isConnectionSuccess == %d", true)
                         )
-                        await send(.fetchResponse(.success(histories)))
+                        await send(.fetchResponse(histories))
                     },
                     catch: { error, send in
-                        await send(.fetchResponse(.failure(error)))
+                        await send(.error(.fetch))
+                        Logger.error("Failed fetching: \(error)")
                     }
                 )
-            case let .fetchResponse(.success(histories)):
+            case let .fetchResponse(histories):
                 state.histories = .init(uniqueElements: histories)
-                return .none
-            case let .fetchResponse(.failure(error)):
-                Logger.error("Failed fetching: \(error)")
                 return .none
             case let .setNavigation(.some(history)):
                 state.paths.append(.historyDetail)
@@ -77,23 +85,23 @@ public struct HistoryListReducer: Reducer {
                 return .run(
                     operation: { send in
                         try await databaseClient.deleteHistory(history)
-                        await send(.deleteHistoryResponse(.success(history)))
+                        await send(.deleteHistoryResponse(history))
                     },
                     catch: { error, send in
-                        await send(.deleteHistoryResponse(.failure(error)))
+                        await send(.error(.deleteHistory))
+                        Logger.error("Failed deleting history: \(error)")
                     }
                 )
-            case let .deleteHistoryResponse(.success(history)):
+            case let .deleteHistoryResponse(history):
                 state.histories.removeAll(where: { $0.id == history.id })
-                return .none
-            case let .deleteHistoryResponse(.failure(error)):
-                Logger.error("Failed deleting history: \(error)")
                 return .none
             case .historyDetail:
                 return .none
+            case .error:
+                return .none
             }
         }
-        .ifLet(\.selectionHistory, action: /Action.historyDetail) {
+        .ifLet(\.selectionHistory, action: \.historyDetail) {
             EmptyReducer()
                 .ifLet(\.value, action: .self) {
                     HistoryDetailReducer()

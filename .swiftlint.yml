@@ -78,7 +78,3 @@ line_length: 130
 
 disabled_rules:
   - nesting
-
-trailing_comma:
-  excluded:
-    - WebSocketClientPackage/Package.swift

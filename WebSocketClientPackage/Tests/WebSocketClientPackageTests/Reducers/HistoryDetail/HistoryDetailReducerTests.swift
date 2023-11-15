@@ -101,8 +101,8 @@ final class HistoryDetailReducerTests: XCTestCase {
         await store.send(.alert(.presented(.confirm))) {
             $0.alert = nil
         }
-        await store.receive(.deleteResponse(.success(true)))
-        await store.receive(.deleted)
+        await store.receive(\.deleteResponse)
+        await store.receive(\.deleted)
     }
 
     func testConfirmFailure() async throws {
@@ -149,7 +149,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         await store.send(.alert(.presented(.confirm))) {
             $0.alert = nil
         }
-        await store.receive(.deleteResponse(.failure(Error.delete))) {
+        await store.receive(\.error.delete) {
             $0.alert = AlertState {
                 TextState(L10n.HistoryDetail.Alert.DeletionFailed.Title.message)
             }
