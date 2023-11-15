@@ -5,18 +5,21 @@
 //  Created by Yuya Oka on 2023/04/18.
 //
 
+import CasePaths
 import ComposableArchitecture
 import Foundation
 import XCTestDynamicOverlay
 
 public struct WebSocketClient {
     // MARK: - Action
+    @CasePathable
     public enum Action: Equatable {
         case didOpen(protocol: String?)
         case didClose(code: URLSessionWebSocketTask.CloseCode, reason: Data?)
     }
 
     // MARK: - Message
+    @CasePathable
     public enum Message: Equatable {
         case data(Data)
         case string(String)
@@ -41,7 +44,7 @@ public struct WebSocketClient {
 
     // MARK: - Properties
     public var open: @Sendable (AnyHashable, URLRequest) async -> AsyncStream<Action>
-    public var receive: @Sendable (AnyHashable) async throws -> AsyncStream<TaskResult<Message>>
+    public var receive: @Sendable (AnyHashable) async throws -> AsyncStream<Result<Message, Error>>
     public var send: @Sendable (AnyHashable, URLSessionWebSocketTask.Message) async throws -> Void
     public var sendPing: @Sendable (AnyHashable) async throws -> Void
 }
@@ -109,15 +112,17 @@ public extension WebSocketClient {
             try socket(id: id).cancel(with: closeCode, reason: reason)
         }
 
-        func receive(id: AnyHashable) throws -> AsyncStream<TaskResult<Message>> {
+        func receive(id: AnyHashable) throws -> AsyncStream<Result<Message, Error>> {
             let socket = try self.socket(id: id)
             return AsyncStream { continuation in
                 let task = Task {
                     while !Task.isCancelled {
                         continuation.yield(
-                            await TaskResult {
-                                try await Message(socket.receive())
-                            }
+                            await Result(
+                                catching: {
+                                    try await Message(socket.receive())
+                                }
+                            )
                         )
                     }
                     continuation.finish()

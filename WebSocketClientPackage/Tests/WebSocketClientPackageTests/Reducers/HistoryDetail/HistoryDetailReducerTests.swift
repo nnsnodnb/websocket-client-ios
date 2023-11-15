@@ -101,7 +101,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         await store.send(.alert(.presented(.confirm))) {
             $0.alert = nil
         }
-        await store.receive(\.deleteResponse.success)
+        await store.receive(\.deleteResponse)
         await store.receive(\.deleted)
     }
 
@@ -149,7 +149,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         await store.send(.alert(.presented(.confirm))) {
             $0.alert = nil
         }
-        await store.receive(\.deleteResponse.failure) {
+        await store.receive(\.error.delete) {
             $0.alert = AlertState {
                 TextState(L10n.HistoryDetail.Alert.DeletionFailed.Title.message)
             }

@@ -86,7 +86,7 @@ final class InfoReducerTests: XCTestCase {
         store.dependencies.application.open = { _ in true }
 
         await store.send(.browserOpen(URL(string: "https://example.com")!))
-        await store.receive(\.browserOpenResponse.success)
+        await store.receive(\.browserOpenResponse)
     }
 
     func testCheckDeleteAllData() async {
@@ -163,7 +163,7 @@ final class InfoReducerTests: XCTestCase {
         await store.send(.alert(.presented(.deleteAllData))) {
             $0.alert = nil
         }
-        await store.receive(\.deleteAllDataResponse.success)
+        await store.receive(\.deleteAllDataResponse)
     }
 
     func testDeleteAllDataFailure() async {
@@ -210,7 +210,7 @@ final class InfoReducerTests: XCTestCase {
         await store.send(.alert(.presented(.deleteAllData))) {
             $0.alert = nil
         }
-        await store.receive(\.deleteAllDataResponse.failure) {
+        await store.receive(\.error.deleteAllData) {
             $0.alert = AlertState {
                 TextState(L10n.Info.Alert.DeletionFailed.Title.message)
             }

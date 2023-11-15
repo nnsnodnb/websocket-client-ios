@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2023/04/20.
 //
 
+import CasePaths
 import ComposableArchitecture
 import Foundation
 
@@ -25,12 +26,20 @@ public struct HistoryListReducer {
     // MARK: - Action
     public enum Action: Equatable {
         case fetch
-        case fetchResponse(TaskResult<[HistoryEntity]>)
+        case fetchResponse([HistoryEntity])
         case setNavigation(HistoryEntity?)
         case navigationPathChanged([State.Destination])
         case deleteHistory(IndexSet)
-        case deleteHistoryResponse(TaskResult<HistoryEntity>)
+        case deleteHistoryResponse(HistoryEntity)
         case historyDetail(HistoryDetailReducer.Action)
+        case error(Error)
+
+        // MARK: - Error
+        @CasePathable
+        public enum Error: Swift.Error {
+            case fetch
+            case deleteHistory
+        }
     }
 
     @Dependency(\.databaseClient)
@@ -45,17 +54,15 @@ public struct HistoryListReducer {
                         let histories = try await databaseClient.fetchHistories(
                             NSPredicate(format: "isConnectionSuccess == %d", true)
                         )
-                        await send(.fetchResponse(.success(histories)))
+                        await send(.fetchResponse(histories))
                     },
                     catch: { error, send in
-                        await send(.fetchResponse(.failure(error)))
+                        await send(.error(.fetch))
+                        Logger.error("Failed fetching: \(error)")
                     }
                 )
-            case let .fetchResponse(.success(histories)):
+            case let .fetchResponse(histories):
                 state.histories = .init(uniqueElements: histories)
-                return .none
-            case let .fetchResponse(.failure(error)):
-                Logger.error("Failed fetching: \(error)")
                 return .none
             case let .setNavigation(.some(history)):
                 state.paths.append(.historyDetail)
@@ -78,19 +85,19 @@ public struct HistoryListReducer {
                 return .run(
                     operation: { send in
                         try await databaseClient.deleteHistory(history)
-                        await send(.deleteHistoryResponse(.success(history)))
+                        await send(.deleteHistoryResponse(history))
                     },
                     catch: { error, send in
-                        await send(.deleteHistoryResponse(.failure(error)))
+                        await send(.error(.deleteHistory))
+                        Logger.error("Failed deleting history: \(error)")
                     }
                 )
-            case let .deleteHistoryResponse(.success(history)):
+            case let .deleteHistoryResponse(history):
                 state.histories.removeAll(where: { $0.id == history.id })
                 return .none
-            case let .deleteHistoryResponse(.failure(error)):
-                Logger.error("Failed deleting history: \(error)")
-                return .none
             case .historyDetail:
+                return .none
+            case .error:
                 return .none
             }
         }

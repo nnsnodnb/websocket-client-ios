@@ -36,7 +36,7 @@ final class HistoryListReducerTests: XCTestCase {
         )
 
         await store.send(.fetch)
-        await store.receive(\.fetchResponse.success) {
+        await store.receive(\.fetchResponse) {
             $0.histories = .init(uniqueElements: [history])
         }
 
@@ -78,13 +78,13 @@ final class HistoryListReducerTests: XCTestCase {
         )
 
         await store.send(.fetch)
-        await store.receive(\.fetchResponse.success) {
+        await store.receive(\.fetchResponse) {
             $0.histories = .init(uniqueElements: [history])
         }
 
         // delete success
         await store.send(.deleteHistory(.init(integer: 0)))
-        await store.receive(\.deleteHistoryResponse.success) {
+        await store.receive(\.deleteHistoryResponse) {
             $0.histories = .init(uniqueElements: [])
         }
     }
@@ -118,13 +118,13 @@ final class HistoryListReducerTests: XCTestCase {
         )
 
         await store.send(.fetch)
-        await store.receive(\.fetchResponse.success) {
+        await store.receive(\.fetchResponse) {
             $0.histories = .init(uniqueElements: [history])
         }
 
         // delete failure
         await store.send(.deleteHistory(.init(integer: 0)))
-        await store.receive(\.deleteHistoryResponse.failure)
+        await store.receive(\.error.deleteHistory)
     }
 
     func testHistoryDetailDeleted() async throws {
@@ -152,7 +152,7 @@ final class HistoryListReducerTests: XCTestCase {
         )
 
         await store.send(.fetch)
-        await store.receive(\.fetchResponse.success) {
+        await store.receive(\.fetchResponse) {
             $0.histories = .init(uniqueElements: [history])
         }
 
