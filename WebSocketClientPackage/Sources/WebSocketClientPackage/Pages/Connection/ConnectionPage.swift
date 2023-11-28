@@ -20,7 +20,7 @@ struct ConnectionPage: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar(viewStore)
             }
-            .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
+            .alert(store: store.scope(state: \.$alert, action: \.alert))
             .sheet(
                 isPresented: viewStore.binding(
                     get: \.isShowCustomHeaderList,

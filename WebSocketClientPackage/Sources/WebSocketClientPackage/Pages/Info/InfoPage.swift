@@ -30,7 +30,7 @@ struct InfoPage: View {
                     )
                     .safariDismissButtonStyle(.close)
             }
-            .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
+            .alert(store: store.scope(state: \.$alert, action: \.alert))
             .task {
                 viewStore.send(.start)
             }
@@ -95,7 +95,7 @@ struct InfoPage: View {
                     AppIconListPage(
                         store: store.scope(
                             state: \.appIconList,
-                            action: InfoReducer.Action.appIconList
+                            action: \.appIconList
                         )
                     )
                 },

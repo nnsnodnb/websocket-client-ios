@@ -89,7 +89,7 @@ struct HistoryListPage: View {
                     IfLetStore(
                         store.scope(
                             state: \.selectionHistory?.value,
-                            action: HistoryListReducer.Action.historyDetail
+                            action: \.historyDetail
                         ),
                         then: { store in
                             HistoryDetailPage(store: store)
