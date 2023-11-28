@@ -8,8 +8,8 @@
 import CasePaths
 import ComposableArchitecture
 import Foundation
-import XCTestDynamicOverlay
 
+@DependencyClient
 public struct WebSocketClient {
     // MARK: - Action
     @CasePathable
@@ -43,7 +43,7 @@ public struct WebSocketClient {
     }
 
     // MARK: - Properties
-    public var open: @Sendable (AnyHashable, URLRequest) async -> AsyncStream<Action>
+    public var open: @Sendable (AnyHashable, URLRequest) async throws -> AsyncStream<Action>
     public var receive: @Sendable (AnyHashable) async throws -> AsyncStream<Result<Message, Error>>
     public var send: @Sendable (AnyHashable, URLSessionWebSocketTask.Message) async throws -> Void
     public var sendPing: @Sendable (AnyHashable) async throws -> Void
@@ -178,19 +178,7 @@ extension WebSocketClient: DependencyKey {
         )
     }
 
-    public static var previewValue: WebSocketClient {
-        return Self(
-            open: { _, _  in .never },
-            receive: { _ in .never },
-            send: { _, _ in },
-            sendPing: { _ in }
-        )
-    }
+    public static var previewValue: Self = .init()
 
-    public static var testValue = Self(
-        open: unimplemented("\(Self.self).open", placeholder: AsyncStream.never),
-        receive: unimplemented("\(Self.self).receive"),
-        send: unimplemented("\(Self.self).send"),
-        sendPing: unimplemented("\(Self.self).sendPing")
-    )
+    public static var testValue: Self = .init()
 }

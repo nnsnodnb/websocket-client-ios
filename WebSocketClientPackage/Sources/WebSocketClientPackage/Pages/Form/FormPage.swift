@@ -27,7 +27,7 @@ struct FormPage: View {
                     send: { $0 ? .connectionOpen : .connectionDismiss }
                 ),
                 content: {
-                    IfLetStore(store.scope(state: \.connection, action: FormReducer.Action.connection)) { store in
+                    IfLetStore(store.scope(state: \.connection, action: \.connection)) { store in
                         ConnectionPage(store: store)
                     }
                 }
