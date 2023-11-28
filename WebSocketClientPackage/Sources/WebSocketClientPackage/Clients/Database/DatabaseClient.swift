@@ -8,8 +8,8 @@
 import ComposableArchitecture
 import CoreData
 import Foundation
-import XCTestDynamicOverlay
 
+@DependencyClient
 public struct DatabaseClient {
     // MARK: - Properties
     public var fetchHistories: @Sendable (NSPredicate?) async throws -> [HistoryEntity]
@@ -181,19 +181,7 @@ extension DatabaseClient: DependencyKey {
         deleteAllData: { try await DatabaseActor.shared.deleteAllData() }
     )
 
-    public static var previewValue = Self(
-        fetchHistories: { _ in [] },
-        addHistory: { _ in },
-        updateHistory: { _ in },
-        deleteHistory: { _ in },
-        deleteAllData: {}
-    )
+    public static var previewValue = Self()
 
-    public static var testValue = Self(
-        fetchHistories: unimplemented("\(Self.self).fetchHistories"),
-        addHistory: unimplemented("\(Self.self).addHistory"),
-        updateHistory: unimplemented("\(Self.self).updateHistory"),
-        deleteHistory: unimplemented("\(Self.self).deleteHistory"),
-        deleteAllData: unimplemented("\(Self.self).deleteAllData")
-    )
+    public static var testValue = Self()
 }

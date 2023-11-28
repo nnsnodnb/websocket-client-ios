@@ -208,7 +208,7 @@ public struct ConnectionReducer {
             state.customHeaders.forEach {
                 urlRequest.addValue($0.value, forHTTPHeaderField: $0.name)
             }
-            let actions = await webSocketClient.open(CancelID.websocket, urlRequest)
+            let actions = try await webSocketClient.open(CancelID.websocket, urlRequest)
             await withThrowingTaskGroup(of: Void.self) { group in
                 for await action in actions {
                     group.addTask {

@@ -7,10 +7,10 @@
 
 import ComposableArchitecture
 import Foundation
-import XCTestDynamicOverlay
 
+@DependencyClient
 public struct BundleClient {
-    var shortVersionString: () -> String
+    var shortVersionString: () -> String = { "" }
 }
 
 // MARK: - DependencyKey
@@ -23,7 +23,5 @@ extension BundleClient: DependencyKey {
         )
     }
 
-    public static var testValue = Self(
-        shortVersionString: unimplemented("\(Self.self).shortVersionString")
-    )
+    public static var testValue = Self()
 }

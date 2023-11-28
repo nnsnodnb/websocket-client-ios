@@ -7,23 +7,12 @@
 
 import ComposableArchitecture
 import UIKit
-import XCTestDynamicOverlay
 
+@DependencyClient
 public struct ApplicationClient {
-    public var canOpenURL: (URL) -> Bool
-    public var open: @Sendable (URL) async -> Bool
+    public var canOpenURL: (URL) -> Bool = { _ in false }
+    public var open: @Sendable (URL) async -> Bool = { _ in false }
     public var setAlternateIconName: @Sendable (String?) async throws -> Void
-
-    // MARK: - Initialize
-    public init(
-        canOpenURL: @escaping (URL) -> Bool,
-        open: @escaping @Sendable (URL) async -> Bool,
-        setAlternateIconName: @escaping @Sendable (String?) async throws -> Void
-    ) {
-        self.canOpenURL = canOpenURL
-        self.open = open
-        self.setAlternateIconName = setAlternateIconName
-    }
 }
 
 // MARK: - DependencyKey
@@ -36,11 +25,5 @@ extension ApplicationClient: DependencyKey {
         )
     }
 
-    public static var testValue: Self {
-        return Self(
-            canOpenURL: unimplemented("\(Self.self).canOpenURL"),
-            open: unimplemented("\(Self.self).open"),
-            setAlternateIconName: unimplemented("\(Self.self).setAlternateIconName")
-        )
-    }
+    public static var testValue: Self = .init()
 }
