@@ -58,7 +58,7 @@ jobs:
         bundle exec fastlane release
 
     - name: Upload Products
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: websocket-client-appstore
         path: Products
