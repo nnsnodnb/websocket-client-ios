@@ -31,7 +31,7 @@ jobs:
       id: parse
       env:
         MODIFIED_FILES: ${{ steps.files_changes.outputs.modified_files }}
-      run:
+      run: |
         import json
         import os
 
