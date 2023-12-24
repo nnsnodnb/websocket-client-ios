@@ -40,7 +40,7 @@ jobs:
         import os
 
 
-        plain = os.getnev("MODIFIED_FILES", "[]")
+        plain = os.getenv("MODIFIED_FILES", "[]")
         plain = plain.replace("\\\"", "\"")
         modified_files = json.loads(plain)
         resolved_files_path = "WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved"
