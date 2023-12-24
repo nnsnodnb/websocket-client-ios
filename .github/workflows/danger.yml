@@ -3,6 +3,10 @@ name: Lint
 on:
   pull_request:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   danger:
     runs-on: macos-13

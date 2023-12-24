@@ -5,6 +5,10 @@ on:
     paths:
       - WebSocketClientPackage/Package.swift
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   precheck:
     runs-on: ubuntu-latest
