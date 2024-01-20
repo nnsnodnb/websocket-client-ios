@@ -23,7 +23,7 @@ jobs:
         fetch-depth: 0
 
     - name: Cache SwiftLint
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       id: cache-swiftlint
       with:
         path: swiftlint
