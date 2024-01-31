@@ -7,11 +7,12 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
+import Perception
 import SFSafeSymbols
 import SwiftUI
 
 struct FormPage: View {
-    let store: StoreOf<FormReducer>
+    @Perception.Bindable var store: StoreOf<FormReducer>
 
     @FocusState private var isFocused: Bool
 
@@ -22,14 +23,9 @@ struct FormPage: View {
                     .navigationTitle("WebSocket Client")
             }
             .fullScreenCover(
-                isPresented: .init(
-                    get: { store.connection != nil },
-                    set: { store.send($0 ? .connectionOpen : .connectionDismiss, animation: .default) }
-                ),
-                content: {
-                    IfLetStore(store.scope(state: \.connection, action: \.connection)) { store in
-                        ConnectionPage(store: store)
-                    }
+                item: $store.scope(state: \.connection, action: \.connection),
+                content: { store in
+                    ConnectionPage(store: store)
                 }
             )
         }

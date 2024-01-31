@@ -16,7 +16,7 @@ public struct FormReducer {
         var url: URL?
         var customHeaders: [CustomHeaderEntity] = []
         var isConnectButtonDisable = true
-        var connection: ConnectionReducer.State?
+        @Presents var connection: ConnectionReducer.State?
     }
 
     // MARK: - Action
@@ -29,7 +29,7 @@ public struct FormReducer {
         case connect
         case connectionOpen
         case connectionDismiss
-        case connection(ConnectionReducer.Action)
+        case connection(PresentationAction<ConnectionReducer.Action>)
     }
 
     @Dependency(\.date)
@@ -85,14 +85,14 @@ public struct FormReducer {
             case .connectionDismiss:
                 state.connection = nil
                 return .none
-            case .connection(.close):
+            case .connection(.presented(.close)):
                 state.connection = nil
                 return .none
             case .connection:
                 return .none
             }
         }
-        .ifLet(\.connection, action: \.connection) {
+        .ifLet(\.$connection, action: \.connection) {
             ConnectionReducer()
         }
     }
