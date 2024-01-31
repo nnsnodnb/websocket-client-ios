@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   danger:
-    runs-on: macos-13
+    runs-on: macos-14
 
     permissions:
       pull-requests: write
