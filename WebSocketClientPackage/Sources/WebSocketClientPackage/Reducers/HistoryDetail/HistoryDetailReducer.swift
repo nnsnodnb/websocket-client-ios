@@ -13,9 +13,10 @@ import Foundation
 @Reducer
 public struct HistoryDetailReducer {
     // MARK: - State
+    @ObservableState
     public struct State: Equatable {
         let history: HistoryEntity
-        @PresentationState var alert: AlertState<Action.Alert>?
+        @Presents var alert: AlertState<Action.Alert>?
         var isShowCustomHeaderList = false
     }
 

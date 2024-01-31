@@ -11,6 +11,7 @@ import Foundation
 @Reducer
 public struct FormReducer {
     // MARK: - State
+    @ObservableState
     public struct State: Equatable {
         var url: URL?
         var customHeaders: [CustomHeaderEntity] = []

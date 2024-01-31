@@ -12,6 +12,7 @@ import Foundation
 @Reducer
 public struct HistoryListReducer {
     // MARK: - State
+    @ObservableState
     public struct State: Equatable {
         var histories: IdentifiedArrayOf<HistoryEntity> = []
         var selectionHistory: Identified<HistoryEntity, HistoryDetailReducer.State?>?

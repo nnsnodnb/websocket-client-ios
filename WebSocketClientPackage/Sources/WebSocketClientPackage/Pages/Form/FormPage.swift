@@ -16,15 +16,15 @@ struct FormPage: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
+        WithPerceptionTracking {
             NavigationStack {
-                form(viewStore)
+                form
                     .navigationTitle("WebSocket Client")
             }
             .fullScreenCover(
-                isPresented: viewStore.binding(
-                    get: { $0.connection != nil },
-                    send: { $0 ? .connectionOpen : .connectionDismiss }
+                isPresented: .init(
+                    get: { store.connection != nil },
+                    set: { store.send($0 ? .connectionOpen : .connectionDismiss, animation: .default) }
                 ),
                 content: {
                     IfLetStore(store.scope(state: \.connection, action: \.connection)) { store in
@@ -32,25 +32,25 @@ struct FormPage: View {
                     }
                 }
             )
-        })
+        }
         .analyticsScreen(name: "form-page")
     }
 
-    private func form(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+    private var form: some View {
         Form {
-            firstSection(viewStore)
-            secondSection(viewStore)
-            thirdSection(viewStore)
+            firstSection
+            secondSection
+            thirdSection
         }
         .keyboardToolbar {
             isFocused = false
         }
     }
 
-    private func firstSection(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+    private var firstSection: some View {
         Section(
             content: {
-                urlTextField(viewStore)
+                urlTextField
             },
             header: {
                 Text(L10n.Form.Section.First.Title.header)
@@ -58,15 +58,19 @@ struct FormPage: View {
         )
     }
 
-    private func urlTextField(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+    private var urlTextField: some View {
         HStack {
             Image(systemSymbol: .link)
                 .foregroundColor(Color.blue)
             TextField(
                 "wss://echo.websocket.events",
-                text: viewStore.binding(
-                    get: { $0.url?.absoluteString ?? "" },
-                    send: FormReducer.Action.urlChanged
+                text: .init(
+                    get: {
+                        store.url?.absoluteString ?? ""
+                    },
+                    set: {
+                        store.send(.urlChanged($0))
+                    }
                 )
             )
             .focused($isFocused)
@@ -74,10 +78,10 @@ struct FormPage: View {
         }
     }
 
-    private func secondSection(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+    private var secondSection: some View {
         Section(
             content: {
-                customHeaders(viewStore)
+                customHeaders
             },
             header: {
                 Text(L10n.Form.Section.Second.Title.header)
@@ -85,28 +89,32 @@ struct FormPage: View {
         )
     }
 
-    private func customHeaders(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+    private var customHeaders: some View {
         Group {
-            ForEach(0..<viewStore.customHeaders.count, id: \.self) { index in
-                customHeaderTextField(viewStore, index: index)
+            ForEach(0..<store.customHeaders.count, id: \.self) { index in
+                customHeaderTextField(index: index)
             }
             .onDelete(
                 perform: {
-                    viewStore.send(.removeCustomHeader($0), animation: .default)
+                    store.send(.removeCustomHeader($0), animation: .default)
                 }
             )
-            addCustomHeaderButton(viewStore)
+            addCustomHeaderButton
         }
     }
 
-    private func customHeaderTextField(_ viewStore: ViewStoreOf<FormReducer>, index: Int) -> some View {
+    private func customHeaderTextField(index: Int) -> some View {
         GeometryReader { proxy in
             HStack {
                 TextField(
                     L10n.Form.Section.Second.Title.name,
-                    text: viewStore.binding(
-                        get: { $0.customHeaders[safe: index]?.name ?? "" },
-                        send: { .customHeaderNameChanged(index, $0) }
+                    text: .init(
+                        get: {
+                            store.customHeaders[safe: index]?.name ?? ""
+                        },
+                        set: {
+                            store.send(.customHeaderNameChanged(index, $0))
+                        }
                     )
                 )
                 .focused($isFocused)
@@ -114,9 +122,13 @@ struct FormPage: View {
                 Divider()
                 TextField(
                     L10n.Form.Section.Second.Title.value,
-                    text: viewStore.binding(
-                        get: { $0.customHeaders[safe: index]?.value ?? "" },
-                        send: { .customHeaderValueChanged(index, $0) }
+                    text: .init(
+                        get: {
+                            store.customHeaders[safe: index]?.value ?? ""
+                        },
+                        set: {
+                            store.send(.customHeaderValueChanged(index, $0))
+                        }
                     )
                 )
                 .focused($isFocused)
@@ -125,10 +137,10 @@ struct FormPage: View {
         }
     }
 
-    private func addCustomHeaderButton(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+    private var addCustomHeaderButton: some View {
         Button(
             action: {
-                viewStore.send(.addCustomHeader, animation: .default)
+                store.send(.addCustomHeader, animation: .default)
             },
             label: {
                 Label(
@@ -145,25 +157,25 @@ struct FormPage: View {
         .frame(maxWidth: .infinity)
     }
 
-    private func thirdSection(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+    private var thirdSection: some View {
         Section(
             content: {
-                connectButton(viewStore)
+                connectButton
             }
         )
     }
 
-    private func connectButton(_ viewStore: ViewStoreOf<FormReducer>) -> some View {
+    private var connectButton: some View {
         Button(
             action: {
-                viewStore.send(.connect, animation: .default)
+                store.send(.connect, animation: .default)
             },
             label: {
                 Text(L10n.Form.Section.Third.Title.connectButton)
                     .frame(maxWidth: .infinity)
             }
         )
-        .disabled(viewStore.isConnectButtonDisable)
+        .disabled(store.isConnectButtonDisable)
     }
 }
 

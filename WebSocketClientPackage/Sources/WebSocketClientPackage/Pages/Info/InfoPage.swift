@@ -7,22 +7,23 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
+import Perception
 import SafariView
 import SFSafeSymbols
 import SwiftUI
 
 struct InfoPage: View {
-    let store: StoreOf<InfoReducer>
+    @Perception.Bindable var store: StoreOf<InfoReducer>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
+        WithPerceptionTracking {
             NavigationStack {
-                form(viewStore)
+                form
                     .navigationTitle(L10n.Info.Navibar.title)
                     .safari(
-                        url: viewStore.binding(
-                            get: \.url,
-                            send: { $0 != nil ? .safariOpen : .safariDismiss }
+                        url: .init(
+                            get: { store.url },
+                            set: { store.send($0 != nil ? .safariOpen : .safariDismiss, animation: .default) }
                         ),
                         safariView: {
                             SafariView(url: $0)
@@ -32,24 +33,23 @@ struct InfoPage: View {
             }
             .alert(store: store.scope(state: \.$alert, action: \.alert))
             .task {
-                viewStore.send(.start)
+                store.send(.start)
             }
-        })
+        }
         .analyticsScreen(name: "info-page")
     }
 
-    private func form(_ viewStore: ViewStoreOf<InfoReducer>) -> some View {
+    private var form: some View {
         Form {
-            firstSection(viewStore)
-            secondSection(viewStore)
-            thirdSection(viewStore)
+            firstSection
+            secondSection
+            thirdSection
         }
     }
 
-    private func firstSection(_ viewStore: ViewStoreOf<InfoReducer>) -> some View {
+    private var firstSection: some View {
         Section {
             urlRow(
-                viewStore,
                 url: URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!,
                 icon: {
                     Image(.icGithub)
@@ -57,11 +57,10 @@ struct InfoPage: View {
                 },
                 text: L10n.Info.Section.First.Title.sourceCodes,
                 action: {
-                    viewStore.send(.urlSelected($0))
+                    store.send(.urlSelected($0))
                 }
             )
             urlRow(
-                viewStore,
                 url: URL(string: "https://twitter.com/nnsnodnb")!,
                 icon: {
                     Image(.icTwitter)
@@ -69,16 +68,15 @@ struct InfoPage: View {
                 },
                 text: L10n.Info.Section.First.Title.contactDeveloper,
                 action: {
-                    viewStore.send(.urlSelected($0))
+                    store.send(.urlSelected($0))
                 }
             )
         }
     }
 
-    private func secondSection(_ viewStore: ViewStoreOf<InfoReducer>) -> some View {
+    private var secondSection: some View {
         Section {
             urlRow(
-                viewStore,
                 url: URL(string: "https://itunes.apple.com/jp/app/id6448638174?mt=8&action=write-review")!,
                 icon: {
                     Image(systemSymbol: .starBubble)
@@ -87,7 +85,7 @@ struct InfoPage: View {
                 },
                 text: L10n.Info.Section.Second.Title.appReview,
                 action: {
-                    viewStore.send(.browserOpen($0))
+                    store.send(.browserOpen($0))
                 }
             )
             NavigationLink(
@@ -111,7 +109,7 @@ struct InfoPage: View {
             )
             buttonRow(
                 action: {
-                    viewStore.send(.checkDeleteAllData)
+                    store.send(.checkDeleteAllData)
                 },
                 image: {
                     Image(systemSymbol: .trashSquare)
@@ -123,7 +121,7 @@ struct InfoPage: View {
         }
     }
 
-    private func thirdSection(_ viewStore: ViewStoreOf<InfoReducer>) -> some View {
+    private var thirdSection: some View {
         Section {
             HStack {
                 HStack(spacing: 12) {
@@ -135,7 +133,7 @@ struct InfoPage: View {
                         .foregroundColor(.primary)
                 }
                 Spacer()
-                Text("v\(viewStore.version)")
+                Text("v\(store.version)")
                     .foregroundColor(.secondary)
             }
             HStack(spacing: 12) {
@@ -149,7 +147,6 @@ struct InfoPage: View {
     }
 
     private func urlRow(
-        _ viewStore: ViewStoreOf<InfoReducer>,
         url: URL,
         icon: () -> some View,
         text: String,

@@ -12,6 +12,7 @@ import Foundation
 @Reducer
 public struct ConnectionReducer {
     // MARK: - State
+    @ObservableState
     public struct State: Equatable {
         let url: URL
         let customHeaders: [CustomHeaderEntity]
@@ -20,7 +21,7 @@ public struct ConnectionReducer {
         var isSendButtonDisabled = true
         var receivedMessages: [String] = []
         var history: HistoryEntity
-        @PresentationState var alert: AlertState<Action.Alert>?
+        @Presents var alert: AlertState<Action.Alert>?
         var isShowCustomHeaderList = false
 
         // MARK: - ConnectivityState

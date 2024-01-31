@@ -11,6 +11,7 @@ import Foundation
 @Reducer
 public struct RootReducer {
     // MARK: - State
+    @ObservableState
     public struct State: Equatable {
         // MARK: - Initialize
         public init() {

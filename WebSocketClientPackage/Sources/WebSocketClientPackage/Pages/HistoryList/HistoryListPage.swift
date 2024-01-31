@@ -7,37 +7,34 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
+import Perception
 import SFSafeSymbols
 import SwiftUI
 
 struct HistoryListPage: View {
-    let store: StoreOf<HistoryListReducer>
+    @Perception.Bindable var store: StoreOf<HistoryListReducer>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
+        WithPerceptionTracking {
             NavigationStack(
-                path: viewStore.binding(
-                    get: \.paths,
-                    send: HistoryListReducer.Action.navigationPathChanged
-                )
+                path: $store.paths.sending(\.navigationPathChanged)
             ) {
-                content(viewStore)
+                content
                     .navigationTitle(L10n.HistoryList.Navibar.title)
                     .navigationBarTitleDisplayMode(.inline)
             }
             .task {
-                viewStore.send(.fetch)
+                store.send(.fetch)
             }
-        })
+        }
         .analyticsScreen(name: "history-list-page")
     }
 
-    @ViewBuilder
-    private func content(_ viewStore: ViewStoreOf<HistoryListReducer>) -> some View {
-        if viewStore.histories.isEmpty {
+    @ViewBuilder private var content: some View {
+        if store.histories.isEmpty {
             emptyView
         } else {
-            list(viewStore)
+            list
         }
     }
 
@@ -53,22 +50,22 @@ struct HistoryListPage: View {
         .foregroundColor(.orange)
     }
 
-    private func list(_ viewStore: ViewStoreOf<HistoryListReducer>) -> some View {
+    private var list: some View {
         List {
-            ForEach(viewStore.histories) { history in
-                row(viewStore, for: history)
+            ForEach(store.histories) { history in
+                row(history: history)
             }
             .onDelete {
-                viewStore.send(.deleteHistory($0), animation: .default)
+                store.send(.deleteHistory($0), animation: .default)
             }
         }
     }
 
-    private func row(_ viewStore: ViewStoreOf<HistoryListReducer>, for history: HistoryEntity) -> some View {
+    private func row(history: HistoryEntity) -> some View {
         HStack {
             Button(
                 action: {
-                    viewStore.send(.setNavigation(history))
+                    store.send(.setNavigation(history))
                 },
                 label: {
                     Text(history.url.absoluteString)
