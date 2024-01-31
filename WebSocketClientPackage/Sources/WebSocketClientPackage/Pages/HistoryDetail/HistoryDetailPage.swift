@@ -21,14 +21,14 @@ struct HistoryDetailPage: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar(store: store)
                 .sheet(
-                    isPresented: .init(
-                        get: { store.isShowCustomHeaderList },
-                        set: { store.send($0 ? .showCustomHeaderList : .dismissCustomHeaderList, animation: .default) }
-                    )
-                ) {
-                    CustomHeaderListPage(customHeaders: store.history.customHeaders)
-                        .presentationDetents([.fraction(0.2), .large])
-                }
+                    isPresented: $store.isShowCustomHeaderList.sending(
+                        \.showedCustomHeaderList
+                    ),
+                    content: {
+                        CustomHeaderListPage(customHeaders: store.history.customHeaders)
+                            .presentationDetents([.fraction(0.2), .large])
+                    }
+                )
                 .alert($store.scope(state: \.alert, action: \.alert))
         }
         .analyticsScreen(name: "history-detail-page")
@@ -44,7 +44,7 @@ private extension View {
                         if !store.history.customHeaders.isEmpty {
                             Button(
                                 action: {
-                                    store.send(.showCustomHeaderList, animation: .default)
+                                    store.send(.showedCustomHeaderList(true), animation: .default)
                                 },
                                 label: {
                                     HStack {

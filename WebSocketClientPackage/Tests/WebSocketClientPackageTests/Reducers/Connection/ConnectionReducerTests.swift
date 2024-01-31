@@ -41,7 +41,7 @@ final class ConnectionReducerTests: XCTestCase {
         }
 
         // show
-        await store.send(.showCustomHeaderList) {
+        await store.send(.showedCustomHeaderList(true)) {
             $0.isShowCustomHeaderList = true
         }
     }
@@ -57,13 +57,13 @@ final class ConnectionReducerTests: XCTestCase {
         }
 
         // already dismiss
-        await store.send(.dismissCustomHeaderList)
+        await store.send(.showedCustomHeaderList(false))
 
         // dismiss
-        await store.send(.showCustomHeaderList) {
+        await store.send(.showedCustomHeaderList(true)) {
             $0.isShowCustomHeaderList = true
         }
-        await store.send(.dismissCustomHeaderList) {
+        await store.send(.showedCustomHeaderList(false)) {
             $0.isShowCustomHeaderList = false
         }
     }

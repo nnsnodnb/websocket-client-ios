@@ -26,8 +26,7 @@ public struct HistoryDetailReducer {
         case alert(PresentationAction<Alert>)
         case deleteResponse
         case deleted
-        case showCustomHeaderList
-        case dismissCustomHeaderList
+        case showedCustomHeaderList(Bool)
         case error(Error)
 
         // MARK: - Alert
@@ -88,11 +87,8 @@ public struct HistoryDetailReducer {
                 return .send(.deleted)
             case .deleted:
                 return .none
-            case .showCustomHeaderList:
-                state.isShowCustomHeaderList = true
-                return .none
-            case .dismissCustomHeaderList:
-                state.isShowCustomHeaderList = false
+            case let .showedCustomHeaderList(isOpened):
+                state.isShowCustomHeaderList = isOpened
                 return .none
             case .error(.delete):
                 state.alert = AlertState {

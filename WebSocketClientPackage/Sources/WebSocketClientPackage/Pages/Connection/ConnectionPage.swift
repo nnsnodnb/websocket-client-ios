@@ -23,14 +23,12 @@ struct ConnectionPage: View {
             }
             .alert($store.scope(state: \.alert, action: \.alert))
             .sheet(
-                isPresented: .init(
-                    get: { store.isShowCustomHeaderList },
-                    set: { store.send($0 ? .showCustomHeaderList : .dismissCustomHeaderList, animation: .default) }
-                )
-            ) {
-                CustomHeaderListPage(customHeaders: store.customHeaders)
-                    .presentationDetents([.fraction(0.2), .large])
-            }
+                isPresented: $store.isShowCustomHeaderList.sending(\.showedCustomHeaderList),
+                content: {
+                    CustomHeaderListPage(customHeaders: store.customHeaders)
+                        .presentationDetents([.fraction(0.2), .large])
+                }
+            )
             .task {
                 store.send(.start)
             }
@@ -75,6 +73,7 @@ struct ConnectionPage: View {
     }
 }
 
+@MainActor
 private extension View {
     func toolbar(store: StoreOf<ConnectionReducer>) -> some View {
         toolbar {
@@ -97,7 +96,7 @@ private extension View {
                         content: {
                             Button(
                                 action: {
-                                    store.send(.showCustomHeaderList, animation: .default)
+                                    store.send(.showedCustomHeaderList(true), animation: .default)
                                 },
                                 label: {
                                     HStack {

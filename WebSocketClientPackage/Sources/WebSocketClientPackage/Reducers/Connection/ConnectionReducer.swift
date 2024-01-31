@@ -51,8 +51,7 @@ public struct ConnectionReducer {
         case addHistoryResponse
         case updateHistoryResponse
         case alert(PresentationAction<Alert>)
-        case showCustomHeaderList
-        case dismissCustomHeaderList
+        case showedCustomHeaderList(Bool)
         case error(Error)
 
         // MARK: - Alert
@@ -175,11 +174,8 @@ public struct ConnectionReducer {
                 return .none
             case .updateHistoryResponse:
                 return .none
-            case .showCustomHeaderList:
-                state.isShowCustomHeaderList = true
-                return .none
-            case .dismissCustomHeaderList:
-                state.isShowCustomHeaderList = false
+            case let .showedCustomHeaderList(isOpened):
+                state.isShowCustomHeaderList = isOpened
                 return .none
             case .error(.receivedSocketMessage):
                 state.alert = AlertState {
