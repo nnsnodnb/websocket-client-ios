@@ -70,6 +70,9 @@ public struct HistoryDetailReducer {
                     }
                 )
                 return .none
+            case .alert(.dismiss):
+                state.alert = nil
+                return .none
             case .alert(.presented(.confirm)):
                 return .run(
                     operation: { [history = state.history] send in
@@ -81,8 +84,6 @@ public struct HistoryDetailReducer {
                         Logger.error("Failed deleting: \(error)")
                     }
                 )
-            case .alert:
-                return .none
             case .deleteResponse:
                 return .send(.deleted)
             case .deleted:
@@ -100,6 +101,5 @@ public struct HistoryDetailReducer {
                 return .none
             }
         }
-        .ifLet(\.$alert, action: \.alert)
     }
 }

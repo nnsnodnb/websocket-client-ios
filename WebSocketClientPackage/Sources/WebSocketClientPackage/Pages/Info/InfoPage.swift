@@ -31,7 +31,7 @@ struct InfoPage: View {
                     )
                     .safariDismissButtonStyle(.close)
             }
-            .alert(store: store.scope(state: \.$alert, action: \.alert))
+            .alert($store.scope(state: \.alert, action: \.alert))
             .task {
                 store.send(.start)
             }

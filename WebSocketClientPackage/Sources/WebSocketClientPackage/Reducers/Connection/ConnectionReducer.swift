@@ -166,6 +166,9 @@ public struct ConnectionReducer {
             case .webSocket(.didClose):
                 state.connectivityState = .disconnected
                 return .cancel(id: CancelID.websocket)
+            case .alert(.dismiss):
+                state.alert = nil
+                return .none
             case .alert:
                 return .none
             case .addHistoryResponse:
@@ -197,7 +200,6 @@ public struct ConnectionReducer {
                 return .none
             }
         }
-        .ifLet(\.$alert, action: \.alert)
     }
 
     private func runConnection(state: inout State) -> Effect<Action> {
