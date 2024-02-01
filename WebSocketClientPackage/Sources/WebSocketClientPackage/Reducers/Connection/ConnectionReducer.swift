@@ -12,6 +12,7 @@ import Foundation
 @Reducer
 public struct ConnectionReducer {
     // MARK: - State
+    @ObservableState
     public struct State: Equatable {
         let url: URL
         let customHeaders: [CustomHeaderEntity]
@@ -20,7 +21,7 @@ public struct ConnectionReducer {
         var isSendButtonDisabled = true
         var receivedMessages: [String] = []
         var history: HistoryEntity
-        @PresentationState var alert: AlertState<Action.Alert>?
+        @Presents var alert: AlertState<Action.Alert>?
         var isShowCustomHeaderList = false
 
         // MARK: - ConnectivityState
@@ -50,8 +51,7 @@ public struct ConnectionReducer {
         case addHistoryResponse
         case updateHistoryResponse
         case alert(PresentationAction<Alert>)
-        case showCustomHeaderList
-        case dismissCustomHeaderList
+        case showedCustomHeaderList(Bool)
         case error(Error)
 
         // MARK: - Alert
@@ -165,17 +165,17 @@ public struct ConnectionReducer {
             case .webSocket(.didClose):
                 state.connectivityState = .disconnected
                 return .cancel(id: CancelID.websocket)
+            case .alert(.dismiss):
+                state.alert = nil
+                return .none
             case .alert:
                 return .none
             case .addHistoryResponse:
                 return .none
             case .updateHistoryResponse:
                 return .none
-            case .showCustomHeaderList:
-                state.isShowCustomHeaderList = true
-                return .none
-            case .dismissCustomHeaderList:
-                state.isShowCustomHeaderList = false
+            case let .showedCustomHeaderList(isOpened):
+                state.isShowCustomHeaderList = isOpened
                 return .none
             case .error(.receivedSocketMessage):
                 state.alert = AlertState {
@@ -196,7 +196,6 @@ public struct ConnectionReducer {
                 return .none
             }
         }
-        .ifLet(\.$alert, action: \.alert)
     }
 
     private func runConnection(state: inout State) -> Effect<Action> {

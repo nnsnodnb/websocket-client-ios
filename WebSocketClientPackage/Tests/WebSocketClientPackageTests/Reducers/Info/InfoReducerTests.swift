@@ -160,9 +160,7 @@ final class InfoReducerTests: XCTestCase {
                 }
             )
         }
-        await store.send(.alert(.presented(.deleteAllData))) {
-            $0.alert = nil
-        }
+        await store.send(.alert(.presented(.deleteAllData)))
         await store.receive(\.deleteAllDataResponse)
     }
 
@@ -207,13 +205,53 @@ final class InfoReducerTests: XCTestCase {
                 }
             )
         }
-        await store.send(.alert(.presented(.deleteAllData))) {
-            $0.alert = nil
-        }
+        await store.send(.alert(.presented(.deleteAllData)))
         await store.receive(\.error.deleteAllData) {
             $0.alert = AlertState {
                 TextState(L10n.Info.Alert.DeletionFailed.Title.message)
             }
+        }
+        await store.send(.alert(.dismiss)) {
+            $0.alert = nil
+        }
+    }
+
+    func testDeleteAllDataCancel() async {
+        let store = TestStore(
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+        }
+
+        store.dependencies.databaseClient = .init(
+            fetchHistories: { _ in [] },
+            addHistory: { _ in },
+            updateHistory: { _ in },
+            deleteHistory: { _ in },
+            deleteAllData: {}
+        )
+
+        await store.send(.checkDeleteAllData) {
+            $0.alert = AlertState(
+                title: {
+                    TextState(L10n.Info.Alert.Confirm.Title.message)
+                },
+                actions: {
+                    ButtonState(
+                        role: .cancel,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.cancel)
+                        }
+                    )
+                    ButtonState(
+                        role: .destructive,
+                        action: .deleteAllData,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.delete)
+                        }
+                    )
+                }
+            )
         }
         await store.send(.alert(.dismiss)) {
             $0.alert = nil

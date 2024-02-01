@@ -98,9 +98,7 @@ final class HistoryDetailReducerTests: XCTestCase {
                 }
             )
         }
-        await store.send(.alert(.presented(.confirm))) {
-            $0.alert = nil
-        }
+        await store.send(.alert(.presented(.confirm)))
         await store.receive(\.deleteResponse)
         await store.receive(\.deleted)
     }
@@ -146,13 +144,53 @@ final class HistoryDetailReducerTests: XCTestCase {
                 }
             )
         }
-        await store.send(.alert(.presented(.confirm))) {
-            $0.alert = nil
-        }
+        await store.send(.alert(.presented(.confirm)))
         await store.receive(\.error.delete) {
             $0.alert = AlertState {
                 TextState(L10n.HistoryDetail.Alert.DeletionFailed.Title.message)
             }
+        }
+        await store.send(.alert(.dismiss)) {
+            $0.alert = nil
+        }
+    }
+
+    func testConfirmCancel() async throws {
+        let store = TestStore(
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+        }
+
+        store.dependencies.databaseClient = .init(
+            fetchHistories: { _ in [] },
+            addHistory: { _ in },
+            updateHistory: { _ in },
+            deleteHistory: { _ in },
+            deleteAllData: {}
+        )
+
+        await store.send(.checkDelete) {
+            $0.alert = AlertState(
+                title: {
+                    TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
+                },
+                actions: {
+                    ButtonState(
+                        role: .cancel,
+                        label: {
+                            TextState(L10n.Alert.Button.Title.cancel)
+                        }
+                    )
+                    ButtonState(
+                        role: .destructive,
+                        action: .send(.confirm),
+                        label: {
+                            TextState(L10n.Alert.Button.Title.delete)
+                        }
+                    )
+                }
+            )
         }
         await store.send(.alert(.dismiss)) {
             $0.alert = nil
@@ -166,7 +204,7 @@ final class HistoryDetailReducerTests: XCTestCase {
             HistoryDetailReducer()
         }
 
-        await store.send(.showCustomHeaderList) {
+        await store.send(.showedCustomHeaderList(true)) {
             $0.isShowCustomHeaderList = true
         }
     }
@@ -179,13 +217,13 @@ final class HistoryDetailReducerTests: XCTestCase {
         }
 
         // already dismiss
-        await store.send(.dismissCustomHeaderList)
+        await store.send(.showedCustomHeaderList(false))
 
         // dismiss
-        await store.send(.showCustomHeaderList) {
+        await store.send(.showedCustomHeaderList(true)) {
             $0.isShowCustomHeaderList = true
         }
-        await store.send(.dismissCustomHeaderList) {
+        await store.send(.showedCustomHeaderList(false)) {
             $0.isShowCustomHeaderList = false
         }
     }

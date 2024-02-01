@@ -7,43 +7,44 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
+import Perception
 import SFSafeSymbols
 import SwiftUI
 
 struct HistoryDetailPage: View {
-    let store: StoreOf<HistoryDetailReducer>
+    @Perception.Bindable var store: StoreOf<HistoryDetailReducer>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            MessageListView(messages: viewStore.history.messages.map { $0.text })
-                .navigationTitle(viewStore.history.url.absoluteString)
+        WithPerceptionTracking {
+            MessageListView(messages: store.history.messages.map { $0.text })
+                .navigationTitle(store.history.url.absoluteString)
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar(viewStore)
+                .toolbar(store: store)
                 .sheet(
-                    isPresented: viewStore.binding(
-                        get: \.isShowCustomHeaderList,
-                        send: { $0 ? .showCustomHeaderList : .dismissCustomHeaderList }
-                    )
-                ) {
-                    CustomHeaderListPage(customHeaders: viewStore.history.customHeaders)
-                        .presentationDetents([.fraction(0.2), .large])
-                }
-                .alert(store: store.scope(state: \.$alert, action: \.alert))
-        })
+                    isPresented: $store.isShowCustomHeaderList.sending(
+                        \.showedCustomHeaderList
+                    ),
+                    content: {
+                        CustomHeaderListPage(customHeaders: store.history.customHeaders)
+                            .presentationDetents([.fraction(0.2), .large])
+                    }
+                )
+                .alert($store.scope(state: \.alert, action: \.alert))
+        }
         .analyticsScreen(name: "history-detail-page")
     }
 }
 
 private extension View {
-    func toolbar(_ viewStore: ViewStoreOf<HistoryDetailReducer>) -> some View {
+    func toolbar(store: StoreOf<HistoryDetailReducer>) -> some View {
         toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Menu(
                     content: {
-                        if !viewStore.history.customHeaders.isEmpty {
+                        if !store.history.customHeaders.isEmpty {
                             Button(
                                 action: {
-                                    viewStore.send(.showCustomHeaderList, animation: .default)
+                                    store.send(.showedCustomHeaderList(true), animation: .default)
                                 },
                                 label: {
                                     HStack {
@@ -56,7 +57,7 @@ private extension View {
                         Button(
                             role: .destructive,
                             action: {
-                                viewStore.send(.checkDelete)
+                                store.send(.checkDelete)
                             },
                             label: {
                                 HStack {
