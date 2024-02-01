@@ -13,12 +13,13 @@ import UIKit
 @Reducer
 public struct InfoReducer {
     // MARK: - State
+    @ObservableState
     public struct State: Equatable {
         var isShowSafari = false
         var url: URL?
         var version: String = ""
         var appIconList: AppIconListReducer.State = .init()
-        @PresentationState var alert: AlertState<Action.Alert>?
+        @Presents var alert: AlertState<Action.Alert>?
     }
 
     // MARK: - Action
@@ -106,6 +107,9 @@ public struct InfoReducer {
                 return .none
             case .deleteAllDataResponse:
                 return .none
+            case .alert(.dismiss):
+                state.alert = nil
+                return .none
             case .alert(.presented(.deleteAllData)):
                 return .run(
                     operation: { send in
@@ -128,7 +132,6 @@ public struct InfoReducer {
                 return .none
             }
         }
-        .ifLet(\.$alert, action: \.alert)
         Scope(state: \.appIconList, action: \.appIconList) {
             AppIconListReducer()
         }

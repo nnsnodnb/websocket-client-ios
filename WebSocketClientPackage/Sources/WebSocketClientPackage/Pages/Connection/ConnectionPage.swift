@@ -7,56 +7,52 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
+import Perception
 import SwiftUI
 
 struct ConnectionPage: View {
-    let store: StoreOf<ConnectionReducer>
+    @Perception.Bindable var store: StoreOf<ConnectionReducer>
 
     var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
+        WithPerceptionTracking {
             NavigationStack {
-                content(viewStore)
-                    .navigationTitle(viewStore.url.absoluteString)
+                content
+                    .navigationTitle(store.url.absoluteString)
                     .navigationBarTitleDisplayMode(.inline)
-                    .toolbar(viewStore)
+                    .toolbar(store: store)
             }
-            .alert(store: store.scope(state: \.$alert, action: \.alert))
+            .alert($store.scope(state: \.alert, action: \.alert))
             .sheet(
-                isPresented: viewStore.binding(
-                    get: \.isShowCustomHeaderList,
-                    send: { $0 ? .showCustomHeaderList : .dismissCustomHeaderList }
-                )
-            ) {
-                CustomHeaderListPage(customHeaders: viewStore.customHeaders)
-                    .presentationDetents([.fraction(0.2), .large])
-            }
+                isPresented: $store.isShowCustomHeaderList.sending(\.showedCustomHeaderList),
+                content: {
+                    CustomHeaderListPage(customHeaders: store.customHeaders)
+                        .presentationDetents([.fraction(0.2), .large])
+                }
+            )
             .task {
-                viewStore.send(.start)
+                store.send(.start)
             }
-        })
+        }
         .analyticsScreen(name: "connection-page")
     }
 
-    private func content(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
+    private var content: some View {
         VStack(spacing: 0) {
-            messageTextField(viewStore)
-            receivedMessageList(viewStore)
+            messageTextField
+            receivedMessageList
         }
     }
 
-    private func messageTextField(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
+    private var messageTextField: some View {
         HStack {
             TextField(
                 L10n.Connection.TextField.placeholder,
-                text: viewStore.binding(
-                    get: \.message,
-                    send: ConnectionReducer.Action.messageChanged
-                )
+                text: $store.message.sending(\.messageChanged)
             )
             .frame(height: 44)
             Button(
                 action: {
-                    viewStore.send(.sendMessage)
+                    store.send(.sendMessage)
                 },
                 label: {
                     Text(L10n.Connection.Title.sendButton)
@@ -64,7 +60,7 @@ struct ConnectionPage: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             )
-            .disabled(viewStore.isSendButtonDisabled)
+            .disabled(store.isSendButtonDisabled)
             .frame(width: 80)
         }
         .padding(.horizontal)
@@ -72,18 +68,19 @@ struct ConnectionPage: View {
         .backgroundStyle(Color.clear)
     }
 
-    private func receivedMessageList(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
-        MessageListView(messages: viewStore.receivedMessages)
+    private var receivedMessageList: some View {
+        MessageListView(messages: store.receivedMessages)
     }
 }
 
+@MainActor
 private extension View {
-    func toolbar(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
+    func toolbar(store: StoreOf<ConnectionReducer>) -> some View {
         toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(
                     action: {
-                        viewStore.send(.close, animation: .default)
+                        store.send(.close, animation: .default)
                     },
                     label: {
                         Image(systemSymbol: .xmark)
@@ -93,13 +90,13 @@ private extension View {
                     }
                 )
             }
-            if !viewStore.customHeaders.isEmpty {
+            if !store.customHeaders.isEmpty {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Menu(
                         content: {
                             Button(
                                 action: {
-                                    viewStore.send(.showCustomHeaderList, animation: .default)
+                                    store.send(.showedCustomHeaderList(true), animation: .default)
                                 },
                                 label: {
                                     HStack {

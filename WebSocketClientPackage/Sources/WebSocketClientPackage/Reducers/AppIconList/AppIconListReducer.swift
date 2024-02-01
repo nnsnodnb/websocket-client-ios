@@ -11,6 +11,7 @@ import SwiftUI
 @Reducer
 public struct AppIconListReducer {
     // MARK: - State
+    @ObservableState
     public struct State: Equatable {
         let appIcons: [AppIcon] = AppIcon.allCases
 

@@ -13,13 +13,13 @@ public struct RootPage: View {
     let store: StoreOf<RootReducer>
 
     public var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { _ in
+        WithPerceptionTracking {
             TabView {
                 formPage()
                 historyPage()
                 infoPage()
             }
-        })
+        }
     }
 
     private func formPage() -> some View {
