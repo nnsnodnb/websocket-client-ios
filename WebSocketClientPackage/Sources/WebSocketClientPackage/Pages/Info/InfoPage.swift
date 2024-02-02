@@ -20,16 +20,7 @@ struct InfoPage: View {
             NavigationStack {
                 form
                     .navigationTitle(L10n.Info.Navibar.title)
-                    .safari(
-                        url: .init(
-                            get: { store.url },
-                            set: { store.send($0 != nil ? .safariOpen : .safariDismiss, animation: .default) }
-                        ),
-                        safariView: {
-                            SafariView(url: $0)
-                        }
-                    )
-                    .safariDismissButtonStyle(.close)
+                    .safari(store: $store)
             }
             .alert($store.scope(state: \.alert, action: \.alert))
             .task {
@@ -190,6 +181,19 @@ struct InfoPage: View {
                 }
             }
         )
+    }
+}
+
+@MainActor
+private extension View {
+    func safari(store: Perception.Bindable<StoreOf<InfoReducer>>) -> some View {
+        safari(
+            url: store.url.sending(\.urlSelected),
+            safariView: {
+                SafariView(url: $0)
+            }
+        )
+        .safariDismissButtonStyle(.close)
     }
 }
 
