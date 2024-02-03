@@ -52,9 +52,9 @@ struct InfoPage: View {
                 }
             )
             urlRow(
-                url: URL(string: "https://twitter.com/nnsnodnb")!,
+                url: URL(string: "https://x.com/nnsnodnb")!,
                 icon: {
-                    Image(.icTwitter)
+                    Image(.icXTwitetr)
                         .resizable()
                 },
                 text: L10n.Info.Section.First.Title.contactDeveloper,
