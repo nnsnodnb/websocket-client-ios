@@ -15,7 +15,6 @@ public struct InfoReducer {
     // MARK: - State
     @ObservableState
     public struct State: Equatable {
-        var isShowSafari = false
         var url: URL?
         var version: String = ""
         var appIconList: AppIconListReducer.State = .init()
@@ -25,9 +24,7 @@ public struct InfoReducer {
     // MARK: - Action
     public enum Action: Equatable {
         case start
-        case urlSelected(URL)
-        case safariOpen
-        case safariDismiss
+        case urlSelected(URL?)
         case browserOpen(URL)
         case browserOpenResponse
         case appIconList(AppIconListReducer.Action)
@@ -62,16 +59,11 @@ public struct InfoReducer {
             case .start:
                 state.version = bundle.shortVersionString()
                 return .none
-            case let .urlSelected(url):
-                state.url = url
-                return .none
-            case .safariOpen:
-                guard state.url != nil else { return .none }
-                state.isShowSafari = true
-                return .none
-            case .safariDismiss:
+            case .urlSelected(.none):
                 state.url = nil
-                state.isShowSafari = false
+                return .none
+            case let .urlSelected(.some(url)):
+                state.url = url
                 return .none
             case let .browserOpen(url):
                 guard application.canOpenURL(url) else { return .none }

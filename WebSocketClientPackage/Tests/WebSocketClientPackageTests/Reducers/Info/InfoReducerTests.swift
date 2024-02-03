@@ -35,43 +35,8 @@ final class InfoReducerTests: XCTestCase {
         await store.send(.urlSelected(URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!)) {
             $0.url = URL(string: "https://github.com/nnsnodnb/websocket-client-ios")
         }
-    }
-
-    func testSafariOpen() async {
-        let store = TestStore(
-            initialState: InfoReducer.State()
-        ) {
-            InfoReducer()
-        }
-
-        // no exist url
-        await store.send(.safariOpen)
-
-        // exist url
-        await store.send(.urlSelected(URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!)) {
-            $0.url = URL(string: "https://github.com/nnsnodnb/websocket-client-ios")
-        }
-        await store.send(.safariOpen) {
-            $0.isShowSafari = true
-        }
-    }
-
-    func testSafariDismiss() async {
-        let store = TestStore(
-            initialState: InfoReducer.State()
-        ) {
-            InfoReducer()
-        }
-
-        await store.send(.urlSelected(URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!)) {
-            $0.url = URL(string: "https://github.com/nnsnodnb/websocket-client-ios")
-        }
-        await store.send(.safariOpen) {
-            $0.isShowSafari = true
-        }
-        await store.send(.safariDismiss) {
+        await store.send(.urlSelected(nil)) {
             $0.url = nil
-            $0.isShowSafari = false
         }
     }
 
