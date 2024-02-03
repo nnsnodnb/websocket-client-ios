@@ -216,6 +216,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		CFFF49292B05DD440037AA85 /* Copy Acknowledgements */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
