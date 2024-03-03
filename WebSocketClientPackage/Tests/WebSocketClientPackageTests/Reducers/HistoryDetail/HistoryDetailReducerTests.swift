@@ -107,7 +107,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         enum Error: Swift.Error {
             case delete
         }
-        
+
         let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
             addHistory: { _ in },
