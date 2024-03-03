@@ -12,12 +12,6 @@ import XCTest
 @MainActor
 final class HistoryListReducerTests: XCTestCase {
     func testSetNavigation() async throws {
-        let store = TestStore(
-            initialState: HistoryListReducer.State()
-        ) {
-            HistoryListReducer()
-        }
-
         let history = HistoryEntity(
             id: .init(0),
             url: URL(string: "wss://echo.websocket.events")!,
@@ -26,14 +20,19 @@ final class HistoryListReducerTests: XCTestCase {
             isConnectionSuccess: true,
             createdAt: .init()
         )
-
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [history] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: HistoryListReducer.State()
+        ) {
+            HistoryListReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.fetch)
         await store.receive(\.fetchResponse, [history]) {
@@ -54,12 +53,6 @@ final class HistoryListReducerTests: XCTestCase {
     }
 
     func testDeleteHistorySuccess() async throws {
-        let store = TestStore(
-            initialState: HistoryListReducer.State()
-        ) {
-            HistoryListReducer()
-        }
-
         let history = HistoryEntity(
             id: .init(0),
             url: URL(string: "wss://echo.websocket.events")!,
@@ -68,14 +61,19 @@ final class HistoryListReducerTests: XCTestCase {
             isConnectionSuccess: true,
             createdAt: .init()
         )
-
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [history] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: HistoryListReducer.State()
+        ) {
+            HistoryListReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.fetch)
         await store.receive(\.fetchResponse, [history]) {
@@ -94,12 +92,6 @@ final class HistoryListReducerTests: XCTestCase {
             case delete
         }
 
-        let store = TestStore(
-            initialState: HistoryListReducer.State()
-        ) {
-            HistoryListReducer()
-        }
-
         let history = HistoryEntity(
             id: .init(0),
             url: URL(string: "wss://echo.websocket.events")!,
@@ -108,14 +100,19 @@ final class HistoryListReducerTests: XCTestCase {
             isConnectionSuccess: true,
             createdAt: .init()
         )
-
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [history] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in throw Error.delete },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: HistoryListReducer.State()
+        ) {
+            HistoryListReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.fetch)
         await store.receive(\.fetchResponse, [history]) {
@@ -128,12 +125,6 @@ final class HistoryListReducerTests: XCTestCase {
     }
 
     func testHistoryDetailDeleted() async throws {
-        let store = TestStore(
-            initialState: HistoryListReducer.State()
-        ) {
-            HistoryListReducer()
-        }
-
         let history = HistoryEntity(
             id: .init(0),
             url: URL(string: "wss://echo.websocket.events")!,
@@ -142,14 +133,19 @@ final class HistoryListReducerTests: XCTestCase {
             isConnectionSuccess: true,
             createdAt: .init()
         )
-
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [history] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: HistoryListReducer.State()
+        ) {
+            HistoryListReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.fetch)
         await store.receive(\.fetchResponse, [history]) {

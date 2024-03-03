@@ -71,11 +71,11 @@ public struct ConnectionReducer {
 
     @Dependency(\.continuousClock)
     var clock
-    @Dependency(\.databaseClient)
+    @Dependency(DatabaseClient.self)
     var databaseClient
     @Dependency(\.date)
     var date
-    @Dependency(\.webSocketClient)
+    @Dependency(WebSocketClient.self)
     var webSocketClient
     @Dependency(\.uuid)
     var uuid

@@ -12,13 +12,15 @@ import XCTest
 @MainActor
 final class InfoReducerTests: XCTestCase {
     func testStart() async {
+        let bundle = BundleClient(
+            shortVersionString: { "1.0.0" }
+        )
         let store = TestStore(
             initialState: InfoReducer.State()
         ) {
             InfoReducer()
+                .dependency(bundle)
         }
-
-        store.dependencies.bundle.shortVersionString = { "1.0.0" }
 
         await store.send(.start) {
             $0.version = "1.0.0"
@@ -41,14 +43,17 @@ final class InfoReducerTests: XCTestCase {
     }
 
     func testBrowserOpen() async {
+        let application = ApplicationClient(
+            canOpenURL: { _ in true },
+            open: { _ in true },
+            setAlternateIconName: { _ in }
+        )
         let store = TestStore(
             initialState: InfoReducer.State()
         ) {
             InfoReducer()
+                .dependency(application)
         }
-
-        store.dependencies.application.canOpenURL = { _ in true }
-        store.dependencies.application.open = { _ in true }
 
         await store.send(.browserOpen(URL(string: "https://example.com")!))
         await store.receive(\.browserOpenResponse)
@@ -89,19 +94,19 @@ final class InfoReducerTests: XCTestCase {
     }
 
     func testDeleteAllDataSuccess() async {
-        let store = TestStore(
-            initialState: InfoReducer.State()
-        ) {
-            InfoReducer()
-        }
-
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.checkDeleteAllData) {
             $0.alert = AlertState(
@@ -130,23 +135,23 @@ final class InfoReducerTests: XCTestCase {
     }
 
     func testDeleteAllDataFailure() async {
-        let store = TestStore(
-            initialState: InfoReducer.State()
-        ) {
-            InfoReducer()
-        }
-
         enum Error: Swift.Error {
             case delete
         }
 
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
             deleteAllData: { throw Error.delete }
         )
+        let store = TestStore(
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.checkDeleteAllData) {
             $0.alert = AlertState(
@@ -182,19 +187,19 @@ final class InfoReducerTests: XCTestCase {
     }
 
     func testDeleteAllDataCancel() async {
-        let store = TestStore(
-            initialState: InfoReducer.State()
-        ) {
-            InfoReducer()
-        }
-
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: InfoReducer.State()
+        ) {
+            InfoReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.checkDeleteAllData) {
             $0.alert = AlertState(

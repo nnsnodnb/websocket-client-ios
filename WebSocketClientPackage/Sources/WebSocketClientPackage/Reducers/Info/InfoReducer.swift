@@ -46,11 +46,11 @@ public struct InfoReducer {
         }
     }
 
-    @Dependency(\.application)
+    @Dependency(ApplicationClient.self)
     var application
-    @Dependency(\.databaseClient)
+    @Dependency(DatabaseClient.self)
     var databaseClient
-    @Dependency(\.bundle)
+    @Dependency(BundleClient.self)
     var bundle
 
     public var body: some ReducerOf<Self> {

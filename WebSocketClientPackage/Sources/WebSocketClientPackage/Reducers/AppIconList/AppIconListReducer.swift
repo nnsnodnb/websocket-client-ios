@@ -73,7 +73,7 @@ public struct AppIconListReducer {
         case error
     }
 
-    @Dependency(\.application)
+    @Dependency(ApplicationClient.self)
     var application
 
     public var body: some ReducerOf<Self> {
