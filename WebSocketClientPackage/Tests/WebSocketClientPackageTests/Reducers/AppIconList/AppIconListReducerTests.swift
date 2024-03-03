@@ -12,17 +12,17 @@ import XCTest
 @MainActor
 final class AppIconListReducerTests: XCTestCase {
     func testAppIconChanged() async throws {
-        let store = TestStore(
-            initialState: AppIconListReducer.State()
-        ) {
-            AppIconListReducer()
-        }
-
-        store.dependencies.application = .init(
+        let application = ApplicationClient(
             canOpenURL: { _ in true },
             open: { _ in true },
             setAlternateIconName: { _ in }
         )
+        let store = TestStore(
+            initialState: AppIconListReducer.State()
+        ) {
+            AppIconListReducer()
+                .dependency(application)
+        }
 
         // default
         await store.send(.appIconChanged(.default))

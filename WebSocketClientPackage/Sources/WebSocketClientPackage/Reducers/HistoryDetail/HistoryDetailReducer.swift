@@ -41,7 +41,7 @@ public struct HistoryDetailReducer {
         }
     }
 
-    @Dependency(\.databaseClient)
+    @Dependency(DatabaseClient.self)
     var databaseClient
 
     public var body: some ReducerOf<Self> {

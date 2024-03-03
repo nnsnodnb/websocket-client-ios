@@ -62,19 +62,19 @@ final class HistoryDetailReducerTests: XCTestCase {
     }
 
     func testConfirmSuccess() async throws {
-        let store = TestStore(
-            initialState: HistoryDetailReducer.State(history: history)
-        ) {
-            HistoryDetailReducer()
-        }
-
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.checkDelete) {
             $0.alert = AlertState(
@@ -104,23 +104,23 @@ final class HistoryDetailReducerTests: XCTestCase {
     }
 
     func testConfirmFailure() async throws {
-        let store = TestStore(
-            initialState: HistoryDetailReducer.State(history: history)
-        ) {
-            HistoryDetailReducer()
-        }
-
         enum Error: Swift.Error {
             case delete
         }
-
-        store.dependencies.databaseClient = .init(
+        
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in throw Error.delete },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.checkDelete) {
             $0.alert = AlertState(
@@ -156,19 +156,19 @@ final class HistoryDetailReducerTests: XCTestCase {
     }
 
     func testConfirmCancel() async throws {
-        let store = TestStore(
-            initialState: HistoryDetailReducer.State(history: history)
-        ) {
-            HistoryDetailReducer()
-        }
-
-        store.dependencies.databaseClient = .init(
+        let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
             addHistory: { _ in },
             updateHistory: { _ in },
             deleteHistory: { _ in },
             deleteAllData: {}
         )
+        let store = TestStore(
+            initialState: HistoryDetailReducer.State(history: history)
+        ) {
+            HistoryDetailReducer()
+                .dependency(databaseClient)
+        }
 
         await store.send(.checkDelete) {
             $0.alert = AlertState(
