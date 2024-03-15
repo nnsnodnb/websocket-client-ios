@@ -4,6 +4,7 @@
 
 import PackageDescription
 
+// swiftlint:disable line_length
 // MARK: - SwiftSetting extension
 extension PackageDescription.SwiftSetting {
     /// Forward-scan matching for trailing closures
@@ -52,6 +53,7 @@ extension PackageDescription.SwiftSetting {
     /// - SeeAlso: [SE-0412: Strict concurrency for global variables](https://github.com/apple/swift-evolution/blob/main/proposals/0412-strict-concurrency-for-global-variables.md)
     static let globalConcurrency: Self = .enableUpcomingFeature("GlobalConcurrency")
 }
+// swiftlint:enable line_length
 
 let package = Package(
     name: "WebSocketClientPackage",
