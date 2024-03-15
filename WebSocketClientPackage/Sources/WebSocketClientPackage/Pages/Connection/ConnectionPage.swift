@@ -10,6 +10,7 @@ import FirebaseAnalytics
 import Perception
 import SwiftUI
 
+@MainActor
 struct ConnectionPage: View {
     @Perception.Bindable var store: StoreOf<ConnectionReducer>
 

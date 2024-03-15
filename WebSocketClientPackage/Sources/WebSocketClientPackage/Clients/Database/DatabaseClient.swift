@@ -10,7 +10,7 @@ import CoreData
 import Foundation
 
 @DependencyClient
-public struct DatabaseClient {
+public struct DatabaseClient: Sendable {
     // MARK: - Properties
     public var fetchHistories: @Sendable (NSPredicate?) async throws -> [HistoryEntity]
     public var addHistory: @Sendable (HistoryEntity) async throws -> Void
@@ -20,7 +20,7 @@ public struct DatabaseClient {
 }
 
 public extension DatabaseClient {
-    final actor DatabaseActor: GlobalActor {
+    final actor DatabaseActor: GlobalActor, Sendable {
         // MARK: - Properties
         public static let shared = DatabaseActor()
 
@@ -173,7 +173,7 @@ public extension DatabaseClient {
 
 // MARK: - DependencyKey
 extension DatabaseClient: DependencyKey {
-    public static var liveValue = Self(
+    public static let liveValue: Self = .init(
         fetchHistories: { try await DatabaseActor.shared.fetchHistories($0) },
         addHistory: { try await DatabaseActor.shared.addHistory($0) },
         updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
@@ -181,7 +181,5 @@ extension DatabaseClient: DependencyKey {
         deleteAllData: { try await DatabaseActor.shared.deleteAllData() }
     )
 
-    public static var previewValue = Self()
-
-    public static var testValue = Self()
+    public static let testValue: Self = .init()
 }

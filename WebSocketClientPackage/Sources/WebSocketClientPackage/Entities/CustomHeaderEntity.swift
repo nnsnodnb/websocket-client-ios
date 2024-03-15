@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CustomHeaderEntity: Hashable, Identifiable {
+public struct CustomHeaderEntity: Sendable, Hashable, Identifiable {
     // MARK: - Properties
     public let id: UUID
     private(set) var name: String

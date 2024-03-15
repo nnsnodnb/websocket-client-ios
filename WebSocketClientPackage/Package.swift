@@ -124,7 +124,7 @@ let debugOtherSwiftFlags = [
 ]
 let upcomingFeatures: [PackageDescription.SwiftSetting] = [
     .forwardTrailingClosures,
-    .existentialAny,
+//    .existentialAny,
     .bareSlashRegexLiterals,
     .conciseMagicFile,
     .importObjcForwardDeclarations,

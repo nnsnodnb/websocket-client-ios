@@ -11,6 +11,7 @@ import Perception
 import SFSafeSymbols
 import SwiftUI
 
+@MainActor
 struct HistoryListPage: View {
     @Perception.Bindable var store: StoreOf<HistoryListReducer>
 
