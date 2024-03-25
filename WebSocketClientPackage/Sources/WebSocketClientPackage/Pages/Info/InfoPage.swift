@@ -8,10 +8,11 @@
 import ComposableArchitecture
 import FirebaseAnalytics
 import Perception
-import SafariView
+import SafariUI
 import SFSafeSymbols
 import SwiftUI
 
+@MainActor
 struct InfoPage: View {
     @Perception.Bindable var store: StoreOf<InfoReducer>
 

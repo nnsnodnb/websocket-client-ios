@@ -42,7 +42,7 @@ let package = Package(
                     package: "firebase-ios-sdk"
                 ),
                 .product(
-                    name: "SafariView",
+                    name: "SafariUI",
                     package: "SafariUI"
                 ),
                 .product(
