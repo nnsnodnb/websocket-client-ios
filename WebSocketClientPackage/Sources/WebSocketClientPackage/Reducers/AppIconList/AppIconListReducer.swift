@@ -9,14 +9,14 @@ import ComposableArchitecture
 import SwiftUI
 
 @Reducer
-public struct AppIconListReducer {
+public struct AppIconListReducer: Sendable {
     // MARK: - State
     @ObservableState
     public struct State: Equatable {
         let appIcons: [AppIcon] = AppIcon.allCases
 
         // MARK: - AppIcon
-        public struct AppIcon: Equatable, CaseIterable {
+        public struct AppIcon: Sendable, Equatable, CaseIterable {
             // MARK: - Properties
             static let `default`: Self = .init(
                 displayName: L10n.AppIconList.Content.Title.default,
@@ -67,7 +67,7 @@ public struct AppIconListReducer {
     }
 
     // MARK: - Action
-    public enum Action: Equatable {
+    public enum Action: Sendable, Equatable {
         case appIconChanged(State.AppIcon)
         case setAlternateIconNameResponse
         case error

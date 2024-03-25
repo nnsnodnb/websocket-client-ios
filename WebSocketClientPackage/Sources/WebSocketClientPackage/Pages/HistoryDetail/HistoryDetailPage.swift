@@ -11,6 +11,7 @@ import Perception
 import SFSafeSymbols
 import SwiftUI
 
+@MainActor
 struct HistoryDetailPage: View {
     @Perception.Bindable var store: StoreOf<HistoryDetailReducer>
 
@@ -35,6 +36,7 @@ struct HistoryDetailPage: View {
     }
 }
 
+@MainActor
 private extension View {
     func toolbar(store: StoreOf<HistoryDetailReducer>) -> some View {
         toolbar {

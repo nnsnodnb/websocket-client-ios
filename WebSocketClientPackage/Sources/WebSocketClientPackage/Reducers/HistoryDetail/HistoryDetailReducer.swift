@@ -11,7 +11,7 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-public struct HistoryDetailReducer {
+public struct HistoryDetailReducer: Sendable {
     // MARK: - State
     @ObservableState
     public struct State: Equatable {
@@ -21,7 +21,7 @@ public struct HistoryDetailReducer {
     }
 
     // MARK: - Action
-    public enum Action: Equatable {
+    public enum Action: Sendable, Equatable {
         case checkDelete
         case alert(PresentationAction<Alert>)
         case deleteResponse
@@ -30,7 +30,7 @@ public struct HistoryDetailReducer {
         case error(Error)
 
         // MARK: - Alert
-        public enum Alert: Equatable {
+        public enum Alert: Sendable, Equatable {
             case confirm
         }
 

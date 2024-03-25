@@ -9,19 +9,17 @@ import ComposableArchitecture
 import Foundation
 
 @DependencyClient
-public struct BundleClient {
-    var shortVersionString: () -> String = { "" }
+public struct BundleClient: Sendable {
+    var shortVersionString: @Sendable () -> String = { "" }
 }
 
 // MARK: - DependencyKey
 extension BundleClient: DependencyKey {
-    public static var liveValue: Self {
-        return Self(
-            shortVersionString: {
-                Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-            }
-        )
-    }
+    public static let liveValue: Self = .init(
+        shortVersionString: {
+            Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
+        }
+    )
 
-    public static var testValue = Self()
+    public static let testValue = Self()
 }

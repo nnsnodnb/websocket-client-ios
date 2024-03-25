@@ -8,7 +8,7 @@
 import Foundation
 import os
 
-final class Logger {
+final actor Logger {
     // MARK: - Properties
     private static let _logger = os.Logger(subsystem: "moe.nnsnodnb.WebSocketClient", category: "Package")
 

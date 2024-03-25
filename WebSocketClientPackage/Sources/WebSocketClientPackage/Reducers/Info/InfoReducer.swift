@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 
 @Reducer
-public struct InfoReducer {
+public struct InfoReducer: Sendable {
     // MARK: - State
     @ObservableState
     public struct State: Equatable {
@@ -22,7 +22,7 @@ public struct InfoReducer {
     }
 
     // MARK: - Action
-    public enum Action: Equatable {
+    public enum Action: Sendable, Equatable {
         case start
         case urlSelected(URL?)
         case browserOpen(URL)
@@ -34,7 +34,7 @@ public struct InfoReducer {
         case error(Error)
 
         // MARK: - Alert
-        public enum Alert: Equatable {
+        public enum Alert: Sendable, Equatable {
             case deleteAllData
         }
 
@@ -66,9 +66,9 @@ public struct InfoReducer {
                 state.url = url
                 return .none
             case let .browserOpen(url):
-                guard application.canOpenURL(url) else { return .none }
                 return .run { send in
-                    _ = await application.open(url)
+                    guard await application.canOpenURL(url) else { return }
+                    _ = try await application.open(url)
                     await send(.browserOpenResponse)
                 }
             case .browserOpenResponse:

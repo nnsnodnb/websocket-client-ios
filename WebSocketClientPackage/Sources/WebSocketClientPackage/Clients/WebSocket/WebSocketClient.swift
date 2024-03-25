@@ -10,17 +10,34 @@ import ComposableArchitecture
 import Foundation
 
 @DependencyClient
-public struct WebSocketClient {
+public struct WebSocketClient: Sendable {
+    // MARK: - ID
+    public struct CancelID: Hashable, @unchecked Sendable {
+        // MARK: - Properties
+        public let rawValue: AnyHashable
+
+        // MARK: - Initialize
+        init<RawValue: Hashable & Sendable>(_ rawValue: RawValue) {
+            self.rawValue = rawValue
+        }
+
+        public init() {
+            struct RawValue: Hashable, Sendable {
+            }
+            self.rawValue = RawValue()
+        }
+    }
+
     // MARK: - Action
     @CasePathable
-    public enum Action: Equatable {
+    public enum Action: Sendable, Equatable {
         case didOpen(protocol: String?)
         case didClose(code: URLSessionWebSocketTask.CloseCode, reason: Data?)
     }
 
     // MARK: - Message
     @CasePathable
-    public enum Message: Equatable {
+    public enum Message: Sendable, Equatable {
         case data(Data)
         case string(String)
 
@@ -43,10 +60,10 @@ public struct WebSocketClient {
     }
 
     // MARK: - Properties
-    public var open: @Sendable (AnyHashable, URLRequest) async throws -> AsyncStream<Action>
-    public var receive: @Sendable (AnyHashable) async throws -> AsyncStream<Result<Message, Error>>
-    public var send: @Sendable (AnyHashable, URLSessionWebSocketTask.Message) async throws -> Void
-    public var sendPing: @Sendable (AnyHashable) async throws -> Void
+    public var open: @Sendable (CancelID, URLRequest) async throws -> AsyncStream<Action>
+    public var receive: @Sendable (CancelID) async throws -> AsyncStream<Result<Message, Error>>
+    public var send: @Sendable (CancelID, URLSessionWebSocketTask.Message) async throws -> Void
+    public var sendPing: @Sendable (CancelID) async throws -> Void
 }
 
 // MARK: - WebSocketActor
@@ -83,9 +100,9 @@ public extension WebSocketClient {
         // MARK: - Properties
         public static let shared = WebSocketActor()
 
-        var dependencies: [AnyHashable: Dependencies] = [:]
+        var dependencies: [CancelID: Dependencies] = [:]
 
-        func open(id: AnyHashable, urlRequest: URLRequest) -> AsyncStream<Action> {
+        func open(id: CancelID, urlRequest: URLRequest) -> AsyncStream<Action> {
             let delegate = Delegate()
             let session = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
             let socket = session.webSocketTask(with: urlRequest)
@@ -106,13 +123,15 @@ public extension WebSocketClient {
         }
 
         func close(
-            id: AnyHashable, with closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?
+            id: CancelID,
+            with closeCode: URLSessionWebSocketTask.CloseCode,
+            reason: Data?
         ) async throws {
             defer { dependencies[id] = nil }
             try socket(id: id).cancel(with: closeCode, reason: reason)
         }
 
-        func receive(id: AnyHashable) throws -> AsyncStream<Result<Message, Error>> {
+        func receive(id: CancelID) throws -> AsyncStream<Result<Message, Error>> {
             let socket = try self.socket(id: id)
             return AsyncStream { continuation in
                 let task = Task {
@@ -133,11 +152,11 @@ public extension WebSocketClient {
             }
         }
 
-        func send(id: AnyHashable, message: URLSessionWebSocketTask.Message) async throws {
+        func send(id: CancelID, message: URLSessionWebSocketTask.Message) async throws {
             try await socket(id: id).send(message)
         }
 
-        func sendPing(id: AnyHashable) async throws {
+        func sendPing(id: CancelID) async throws {
             let socket = try socket(id: id)
             Logger.debug("Ping WebSocket")
             return try await withCheckedThrowingContinuation { continuation in
@@ -153,7 +172,7 @@ public extension WebSocketClient {
             }
         }
 
-        private func socket(id: AnyHashable) throws -> URLSessionWebSocketTask {
+        private func socket(id: CancelID) throws -> URLSessionWebSocketTask {
             guard let dependencies = dependencies[id]?.socket else {
                 struct Closed: Error {}
                 throw Closed()
@@ -161,7 +180,7 @@ public extension WebSocketClient {
             return dependencies
         }
 
-        private func removeDependencies(id: AnyHashable) {
+        private func removeDependencies(id: CancelID) {
             dependencies[id] = nil
         }
     }
@@ -169,16 +188,12 @@ public extension WebSocketClient {
 
 // MARK: - DependencyKey
 extension WebSocketClient: DependencyKey {
-    public static var liveValue: Self {
-        return Self(
-            open: { await WebSocketActor.shared.open(id: $0, urlRequest: $1) },
-            receive: { try await WebSocketActor.shared.receive(id: $0) },
-            send: { try await WebSocketActor.shared.send(id: $0, message: $1) },
-            sendPing: { try await WebSocketActor.shared.sendPing(id: $0) }
-        )
-    }
+    public static let liveValue: Self = .init(
+        open: { await WebSocketActor.shared.open(id: $0, urlRequest: $1) },
+        receive: { try await WebSocketActor.shared.receive(id: $0) },
+        send: { try await WebSocketActor.shared.send(id: $0, message: $1) },
+        sendPing: { try await WebSocketActor.shared.sendPing(id: $0) }
+    )
 
-    public static var previewValue: Self = .init()
-
-    public static var testValue: Self = .init()
+    public static let testValue: Self = .init()
 }

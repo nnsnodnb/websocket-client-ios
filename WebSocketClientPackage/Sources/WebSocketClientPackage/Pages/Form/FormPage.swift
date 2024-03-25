@@ -11,6 +11,7 @@ import Perception
 import SFSafeSymbols
 import SwiftUI
 
+@MainActor
 struct FormPage: View {
     @Perception.Bindable var store: StoreOf<FormReducer>
 
@@ -175,6 +176,7 @@ struct FormPage: View {
     }
 }
 
+@MainActor
 private extension View {
     func keyboardToolbar(closeAction: @escaping () -> Void) -> some View {
         toolbar {
