@@ -148,7 +148,7 @@ struct InfoPage: View {
             action: {
                 action(url)
                 Analytics.logEvent(
-                    "url-tapped",
+                    "url_tapped",
                     parameters: [
                         "url": url.absoluteString
                     ]
