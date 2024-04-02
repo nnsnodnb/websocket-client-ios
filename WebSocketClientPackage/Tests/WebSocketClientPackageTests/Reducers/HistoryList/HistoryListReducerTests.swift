@@ -9,8 +9,8 @@ import ComposableArchitecture
 @testable import WebSocketClientPackage
 import XCTest
 
-@MainActor
 final class HistoryListReducerTests: XCTestCase {
+    @MainActor
     func testSetNavigation() async throws {
         let history = HistoryEntity(
             id: .init(0),
@@ -52,6 +52,7 @@ final class HistoryListReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testDeleteHistorySuccess() async throws {
         let history = HistoryEntity(
             id: .init(0),
@@ -87,6 +88,7 @@ final class HistoryListReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testDeleteHistoryFailure() async throws {
         enum Error: Swift.Error {
             case delete
@@ -124,6 +126,7 @@ final class HistoryListReducerTests: XCTestCase {
         await store.receive(\.error.deleteHistory)
     }
 
+    @MainActor
     func testHistoryDetailDeleted() async throws {
         let history = HistoryEntity(
             id: .init(0),

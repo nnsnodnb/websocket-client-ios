@@ -9,8 +9,8 @@ import ComposableArchitecture
 @testable import WebSocketClientPackage
 import XCTest
 
-@MainActor
 final class InfoReducerTests: XCTestCase {
+    @MainActor
     func testStart() async {
         let bundle = BundleClient(
             shortVersionString: { "1.0.0" }
@@ -27,6 +27,7 @@ final class InfoReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testURLSelected() async {
         let store = TestStore(
             initialState: InfoReducer.State()
@@ -42,6 +43,7 @@ final class InfoReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testBrowserOpen() async {
         let application = ApplicationClient(
             canOpenURL: { _ in true },
@@ -59,6 +61,7 @@ final class InfoReducerTests: XCTestCase {
         await store.receive(\.browserOpenResponse)
     }
 
+    @MainActor
     func testCheckDeleteAllData() async {
         let store = TestStore(
             initialState: InfoReducer.State()
@@ -93,6 +96,7 @@ final class InfoReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testDeleteAllDataSuccess() async {
         let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
@@ -134,6 +138,7 @@ final class InfoReducerTests: XCTestCase {
         await store.receive(\.deleteAllDataResponse)
     }
 
+    @MainActor
     func testDeleteAllDataFailure() async {
         enum Error: Swift.Error {
             case delete
@@ -186,6 +191,7 @@ final class InfoReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testDeleteAllDataCancel() async {
         let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },

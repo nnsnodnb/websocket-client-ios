@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct HistoryEntity: Hashable, Identifiable {
+public struct HistoryEntity: Sendable, Hashable, Identifiable {
     // MARK: - Properties
     public let id: UUID
     private(set) var url: URL

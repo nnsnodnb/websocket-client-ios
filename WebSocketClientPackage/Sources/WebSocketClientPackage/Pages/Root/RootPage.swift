@@ -9,6 +9,7 @@ import ComposableArchitecture
 import SFSafeSymbols
 import SwiftUI
 
+@MainActor
 public struct RootPage: View {
     let store: StoreOf<RootReducer>
 
@@ -55,6 +56,7 @@ public struct RootPage: View {
     }
 }
 
+@MainActor
 private extension View {
     func tabItem(systemSymbol: SFSymbol, text: String) -> some View {
         tabItem {

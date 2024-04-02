@@ -10,7 +10,7 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-public struct HistoryListReducer {
+public struct HistoryListReducer: Sendable {
     // MARK: - State
     @ObservableState
     public struct State: Equatable {
@@ -19,13 +19,13 @@ public struct HistoryListReducer {
         var paths: [Destination] = []
 
         // MARK: - Destination
-        public enum Destination {
+        public enum Destination: Sendable {
             case historyDetail
         }
     }
 
     // MARK: - Action
-    public enum Action: Equatable {
+    public enum Action: Sendable, Equatable {
         case fetch
         case fetchResponse([HistoryEntity])
         case setNavigation(HistoryEntity?)

@@ -9,8 +9,8 @@ import ComposableArchitecture
 @testable import WebSocketClientPackage
 import XCTest
 
-@MainActor
 final class FormReducerTests: XCTestCase {
+    @MainActor
     func testURLChanged() async {
         let store = TestStore(
             initialState: FormReducer.State()
@@ -25,6 +25,7 @@ final class FormReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testAddCustomHeader() async {
         let store = TestStore(
             initialState: FormReducer.State()
@@ -48,6 +49,7 @@ final class FormReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testRemoveCustomHeader() async {
         let store = TestStore(
             initialState: FormReducer.State()
@@ -76,6 +78,7 @@ final class FormReducerTests: XCTestCase {
         await store.send(.removeCustomHeader(.init(integer: 1)))
     }
 
+    @MainActor
     func testCustomHeaderNameChanged() async {
         let store = TestStore(
             initialState: FormReducer.State()
@@ -106,6 +109,7 @@ final class FormReducerTests: XCTestCase {
         await store.send(.customHeaderNameChanged(1, "Content-Type"))
     }
 
+    @MainActor
     func testCustomHeaderValueChanged() async {
         let store = TestStore(
             initialState: FormReducer.State()
@@ -136,6 +140,7 @@ final class FormReducerTests: XCTestCase {
         await store.send(.customHeaderNameChanged(1, "no-cache"))
     }
 
+    @MainActor
     func testConnect() async {
         let store = TestStore(
             initialState: FormReducer.State()

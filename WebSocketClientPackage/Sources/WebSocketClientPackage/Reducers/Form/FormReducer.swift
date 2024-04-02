@@ -12,7 +12,7 @@ import Foundation
 public struct FormReducer {
     // MARK: - State
     @ObservableState
-    public struct State: Equatable {
+    public struct State: Sendable, Equatable {
         var url: URL?
         var customHeaders: [CustomHeaderEntity] = []
         var isConnectButtonDisable = true
@@ -20,7 +20,7 @@ public struct FormReducer {
     }
 
     // MARK: - Action
-    public enum Action: Equatable {
+    public enum Action: Sendable, Equatable {
         case urlChanged(String)
         case addCustomHeader
         case removeCustomHeader(IndexSet)

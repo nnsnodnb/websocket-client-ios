@@ -8,6 +8,7 @@
 import ComposableArchitecture
 import SwiftUI
 
+@MainActor
 struct AppIconListPage: View {
     let store: StoreOf<AppIconListReducer>
 

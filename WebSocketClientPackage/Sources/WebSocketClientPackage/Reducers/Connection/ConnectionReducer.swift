@@ -10,10 +10,10 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-public struct ConnectionReducer {
+public struct ConnectionReducer: Sendable {
     // MARK: - State
     @ObservableState
-    public struct State: Equatable {
+    public struct State: Sendable, Equatable {
         let url: URL
         let customHeaders: [CustomHeaderEntity]
         var connectivityState: ConnectivityState = .disconnected
@@ -25,7 +25,7 @@ public struct ConnectionReducer {
         var isShowCustomHeaderList = false
 
         // MARK: - ConnectivityState
-        public enum ConnectivityState: String {
+        public enum ConnectivityState: String, Sendable {
             case connected
             case connecting
             case disconnected
@@ -40,7 +40,7 @@ public struct ConnectionReducer {
     }
 
     // MARK: - Action
-    public enum Action: Equatable {
+    public enum Action: Sendable, Equatable {
         case start
         case close
         case messageChanged(String)
@@ -55,7 +55,7 @@ public struct ConnectionReducer {
         case error(Error)
 
         // MARK: - Alert
-        public enum Alert: Equatable {
+        public enum Alert: Sendable, Equatable {
             case dismiss
         }
 
@@ -80,11 +80,6 @@ public struct ConnectionReducer {
     @Dependency(\.uuid)
     var uuid
 
-    // MARK: - WebSocketID
-    enum CancelID {
-        case websocket
-    }
-
     public var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
@@ -104,7 +99,7 @@ public struct ConnectionReducer {
                     )
             case .close:
                 state.connectivityState = .disconnected
-                return .cancel(id: CancelID.websocket)
+                return .cancel(id: WebSocketClient.CancelID())
             case let .messageChanged(string):
                 state.message = string
                 switch state.connectivityState {
@@ -117,7 +112,7 @@ public struct ConnectionReducer {
             case .sendMessage:
                 return .run(
                     operation: { [message = state.message] send in
-                        try await webSocketClient.send(CancelID.websocket, .string(message))
+                        try await webSocketClient.send(WebSocketClient.CancelID(), .string(message))
                         await send(.sendResponse)
                     },
                     catch: { error, send in
@@ -125,7 +120,7 @@ public struct ConnectionReducer {
                         Logger.error("Failed sening: \(error)")
                     }
                 )
-                .cancellable(id: CancelID.websocket)
+                .cancellable(id: WebSocketClient.CancelID())
             case let .receivedSocketMessage(message):
                 guard case let .string(string) = message else { return .none }
                 state.receivedMessages.append(string)
@@ -164,7 +159,7 @@ public struct ConnectionReducer {
                 )
             case .webSocket(.didClose):
                 state.connectivityState = .disconnected
-                return .cancel(id: CancelID.websocket)
+                return .cancel(id: WebSocketClient.CancelID())
             case .alert(.dismiss):
                 state.alert = nil
                 return .none
@@ -207,7 +202,7 @@ public struct ConnectionReducer {
             state.customHeaders.forEach {
                 urlRequest.addValue($0.value, forHTTPHeaderField: $0.name)
             }
-            let actions = try await webSocketClient.open(CancelID.websocket, urlRequest)
+            let actions = try await webSocketClient.open(WebSocketClient.CancelID(), urlRequest)
             await withThrowingTaskGroup(of: Void.self) { group in
                 for await action in actions {
                     group.addTask {
@@ -218,11 +213,11 @@ public struct ConnectionReducer {
                         group.addTask {
                             while !Task.isCancelled {
                                 try await clock.sleep(for: .seconds(10))
-                                try? await webSocketClient.sendPing(CancelID.websocket)
+                                try? await webSocketClient.sendPing(WebSocketClient.CancelID())
                             }
                         }
                         group.addTask {
-                            for await result in try await webSocketClient.receive(CancelID.websocket) {
+                            for await result in try await webSocketClient.receive(WebSocketClient.CancelID()) {
                                 switch result {
                                 case let .success(message):
                                     await send(.receivedSocketMessage(message))
@@ -239,6 +234,6 @@ public struct ConnectionReducer {
                 }
             }
         }
-        .cancellable(id: CancelID.websocket)
+        .cancellable(id: WebSocketClient.CancelID())
     }
 }

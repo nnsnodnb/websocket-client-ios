@@ -9,7 +9,6 @@ import ComposableArchitecture
 @testable import WebSocketClientPackage
 import XCTest
 
-@MainActor
 final class ConnectionReducerTests: XCTestCase {
     private var history: HistoryEntity!
 
@@ -30,6 +29,7 @@ final class ConnectionReducerTests: XCTestCase {
         history = nil
     }
 
+    @MainActor
     func testShowCustomHeaderList() async throws {
         let store = TestStore(
             initialState: ConnectionReducer.State(
@@ -46,6 +46,7 @@ final class ConnectionReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testDismissCustomHeaderList() async throws {
         let store = TestStore(
             initialState: ConnectionReducer.State(
