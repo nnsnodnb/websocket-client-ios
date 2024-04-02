@@ -9,7 +9,6 @@ import ComposableArchitecture
 @testable import WebSocketClientPackage
 import XCTest
 
-@MainActor
 final class HistoryDetailReducerTests: XCTestCase {
     private var history: HistoryEntity!
 
@@ -30,6 +29,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         history = nil
     }
 
+    @MainActor
     func testCheckDelete() async throws {
         let store = TestStore(
             initialState: HistoryDetailReducer.State(history: history)
@@ -61,6 +61,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testConfirmSuccess() async throws {
         let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
@@ -103,6 +104,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         await store.receive(\.deleted)
     }
 
+    @MainActor
     func testConfirmFailure() async throws {
         enum Error: Swift.Error {
             case delete
@@ -155,6 +157,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testConfirmCancel() async throws {
         let databaseClient = DatabaseClient(
             fetchHistories: { _ in [] },
@@ -197,6 +200,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testShowCustomHeaderList() async throws {
         let store = TestStore(
             initialState: HistoryDetailReducer.State(history: history)
@@ -209,6 +213,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         }
     }
 
+    @MainActor
     func testDismissCustomHeaderList() async throws {
         let store = TestStore(
             initialState: HistoryDetailReducer.State(history: history)

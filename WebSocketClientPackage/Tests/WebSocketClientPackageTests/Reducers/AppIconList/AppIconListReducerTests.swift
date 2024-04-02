@@ -9,8 +9,8 @@ import ComposableArchitecture
 @testable import WebSocketClientPackage
 import XCTest
 
-@MainActor
 final class AppIconListReducerTests: XCTestCase {
+    @MainActor
     func testAppIconChanged() async throws {
         let application = ApplicationClient(
             canOpenURL: { _ in true },
