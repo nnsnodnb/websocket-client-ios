@@ -188,13 +188,8 @@ struct InfoPage: View {
 @MainActor
 private extension View {
     func safari(store: Perception.Bindable<StoreOf<InfoReducer>>) -> some View {
-        safari(
-            url: store.url.sending(\.urlSelected),
-            safariView: {
-                SafariView(url: $0)
-            }
-        )
-        .safariDismissButtonStyle(.close)
+        safari(url: store.url.sending(\.urlSelected))
+            .safariDismissButtonStyle(.close)
     }
 }
 
