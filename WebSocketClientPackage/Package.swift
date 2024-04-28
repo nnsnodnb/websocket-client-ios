@@ -17,7 +17,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.23.1")),
+        .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "10.24.0")),
         .package(url: "https://github.com/mono0926/LicensePlist.git", .upToNextMajor(from: "3.25.1")),
         .package(url: "https://github.com/vsanthanam/SafariUI.git", .upToNextMajor(from: "4.0.0")),
         .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "5.2.0")),
