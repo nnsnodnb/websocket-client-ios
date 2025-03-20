@@ -189,8 +189,8 @@ public extension WebSocketClient {
 // MARK: - DependencyKey
 extension WebSocketClient: DependencyKey {
     public static let liveValue: Self = .init(
-        open: { await WebSocketActor.shared.open(id: $0, urlRequest: $1) },
-        receive: { try await WebSocketActor.shared.receive(id: $0) },
+        open: { WebSocketActor.shared.open(id: $0, urlRequest: $1) },
+        receive: { try WebSocketActor.shared.receive(id: $0) },
         send: { try await WebSocketActor.shared.send(id: $0, message: $1) },
         sendPing: { try await WebSocketActor.shared.sendPing(id: $0) }
     )
