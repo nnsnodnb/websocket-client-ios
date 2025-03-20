@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 
+gem "abbrev", "~> 0.1.2"
 gem "fastlane", "~> 2.227.0"
 gem "fastlane-plugin-firebase_app_distribution", "~> 0.10.0"
 gem "fastlane-plugin-xcconfig", "~> 2.1.0"

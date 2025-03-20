@@ -5,6 +5,7 @@ GEM
       base64
       nkf
       rexml
+    abbrev (0.1.2)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     artifactory (3.0.17)
@@ -270,6 +271,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  abbrev (~> 0.1.2)
   danger (~> 9.5.0)
   danger-swiftlint (~> 0.37.0)
   fastlane (~> 2.227.0)
