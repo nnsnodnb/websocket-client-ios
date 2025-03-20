@@ -18,16 +18,16 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
     - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@1a615958ad9d422dd932dc1d5823942ee002799f # v1.227.0
       with:
         ruby-version: "3.4.2"
         bundler-cache: true
 
     - name: Cache Swift Packages
-      uses: actions/cache@v4
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
       id: cache-swiftpm
       timeout-minutes: 20
       with:
@@ -59,7 +59,7 @@ jobs:
         bundle exec fastlane adhoc
 
     - name: Upload Products
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       with:
         name: websocket-client-adhoc
         path: Products
