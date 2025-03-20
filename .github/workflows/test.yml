@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-14
 
     env:
-      DEVELOPER_DIR: /Applications/Xcode_15.4.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
 
     steps:
       - uses: actions/checkout@v4
@@ -43,12 +43,7 @@ jobs:
               -scheme WebSocketClientPackageTests \
               -workspace WebSocketClient.xcworkspace \
               -parallel-testing-enabled=YES \
-              -destination "platform=iOS Simulator,name=iPhone 15 Pro" \
+              -destination "platform=iOS Simulator,name=iPhone 16 Pro" \
               -resultBundlePath "Test-WebSocketClientPackageTests.xcresult" \
               -clonedSourcePackagesDirPath .swiftpm \
               -disableAutomaticPackageResolution | xcpretty
-
-      - uses: kishikawakatsumi/xcresulttool@v1
-        if: success() || failure()
-        with:
-          path: Test-WebSocketClientPackageTests.xcresult
