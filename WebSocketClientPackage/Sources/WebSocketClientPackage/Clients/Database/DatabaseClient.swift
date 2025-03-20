@@ -20,7 +20,7 @@ public struct DatabaseClient: Sendable {
 }
 
 public extension DatabaseClient {
-    final actor DatabaseActor: GlobalActor, Sendable {
+    final actor DatabaseActor: GlobalActor {
         // MARK: - Properties
         public static let shared = DatabaseActor()
 
