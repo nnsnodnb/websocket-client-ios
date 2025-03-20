@@ -21,9 +21,9 @@ jobs:
       result: ${{ steps.parse.outputs.result }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-    - uses: tj-actions/changed-files@v46
+    - uses: tj-actions/changed-files@2f7c5bfce28377bc069a65ba478de0a74aa0ca32 # v46.0.1
       id: files_changes
       with:
         json: "true"
@@ -60,7 +60,7 @@ jobs:
       DEVELOPER_DIR: /Applications/Xcode_16.2.app/Contents/Developer
 
     steps:
-    - uses: Cyberbeni/install-swift-tool@v2
+    - uses: Cyberbeni/install-swift-tool@7c9856955bf5135f4d953c141fd3fb7573c04396 # v3.1.1
       with:
         url: https://github.com/nnsnodnb/github-apps-token-swift
         version: '*'
@@ -81,13 +81,13 @@ jobs:
         echo "token=${token}" >> "${GITHUB_OUTPUT}"
         rm /tmp/github-apps-private-key.pem
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       with:
         fetch-depth: 0
         token: ${{ steps.get-github-app.outputs.token }}
 
     - name: Cache Swift Packages
-      uses: actions/cache@v4
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
       with:
         path: .swiftpm
         key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
