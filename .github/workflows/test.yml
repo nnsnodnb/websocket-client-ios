@@ -47,8 +47,3 @@ jobs:
               -resultBundlePath "Test-WebSocketClientPackageTests.xcresult" \
               -clonedSourcePackagesDirPath .swiftpm \
               -disableAutomaticPackageResolution | xcpretty
-
-      - uses: kishikawakatsumi/xcresulttool@v1
-        if: success() || failure()
-        with:
-          path: Test-WebSocketClientPackageTests.xcresult

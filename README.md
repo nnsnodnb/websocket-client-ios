@@ -18,7 +18,7 @@ Build version 15F31d
 
 ```command
 $ ruby -v
-ruby 3.2.2 (2023-03-30 revision e51014f9c0) [arm64-darwin22]
+ruby 3.4.2 (2025-02-15 revision d2930f8e7a) +PRISM [arm64-darwin23]
 ```
 
 ## Setup
