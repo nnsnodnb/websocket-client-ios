@@ -17,9 +17,9 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(url: "https://github.com/stleamist/BetterSafariView.git", .upToNextMajor(from: "2.4.2")),
         .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "11.10.0")),
         .package(url: "https://github.com/mono0926/LicensePlist.git", .upToNextMajor(from: "3.27.2")),
-        .package(url: "https://github.com/vsanthanam/SafariUI.git", .upToNextMajor(from: "4.0.0")),
         .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "6.2.0")),
         .package(url: "https://github.com/SwiftGen/SwiftGenPlugin.git", .upToNextMajor(from: "6.6.2")),
         .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.59.0")),
@@ -29,6 +29,10 @@ let package = Package(
         .target(
             name: "WebSocketClientPackage",
             dependencies: [
+                .product(
+                    name: "BetterSafariView",
+                    package: "BetterSafariView"
+                ),
                 .product(
                     name: "ComposableArchitecture",
                     package: "swift-composable-architecture"
@@ -40,10 +44,6 @@ let package = Package(
                 .product(
                     name: "FirebaseCrashlytics",
                     package: "firebase-ios-sdk"
-                ),
-                .product(
-                    name: "SafariUI",
-                    package: "SafariUI"
                 ),
                 .product(
                     name: "SFSafeSymbols",
