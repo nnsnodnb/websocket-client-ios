@@ -10,15 +10,15 @@ WebSocket Client for iOS
 
 ```command
 $ xcodebuild -version
-Xcode 16.2
-Build version 16C5032a
+Xcode 26.2
+Build version 17C52
 ```
 
 ### Ruby
 
 ```command
 $ ruby -v
-ruby 3.4.2 (2025-02-15 revision d2930f8e7a) +PRISM [arm64-darwin23]
+ruby 3.4.8 (2025-12-17 revision 995b59f666) +PRISM [arm64-darwin25]
 ```
 
 ## Setup
