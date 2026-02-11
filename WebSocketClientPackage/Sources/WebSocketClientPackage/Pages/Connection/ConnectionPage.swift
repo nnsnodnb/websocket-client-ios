@@ -123,10 +123,10 @@ struct ConnectionPage_Previews: PreviewProvider {
             ConnectionPage(
                 store: .init(
                     initialState: ConnectionReducer.State(
-                        url: URL(string: "wss://echo.websocket.events")!,
+                        url: URL(string: "wss://echo.websocket.org")!,
                         history: .init(
                             id: .init(0),
-                            url: URL(string: "wss://echo.websocket.events")!,
+                            url: URL(string: "wss://echo.websocket.org")!,
                             customHeaders: [],
                             messages: [],
                             isConnectionSuccess: false,
@@ -141,14 +141,14 @@ struct ConnectionPage_Previews: PreviewProvider {
             ConnectionPage(
                 store: .init(
                     initialState: ConnectionReducer.State(
-                        url: URL(string: "wss://echo.websocket.events")!,
+                        url: URL(string: "wss://echo.websocket.org")!,
                         history: {
                             var customHeader = CustomHeaderEntity(id: .init(1))
                             customHeader.setName("name")
                             customHeader.setValue("value")
                             return .init(
                                 id: .init(1),
-                                url: URL(string: "wss://echo.websocket.events")!,
+                                url: URL(string: "wss://echo.websocket.org")!,
                                 customHeaders: [customHeader],
                                 messages: [],
                                 isConnectionSuccess: false,

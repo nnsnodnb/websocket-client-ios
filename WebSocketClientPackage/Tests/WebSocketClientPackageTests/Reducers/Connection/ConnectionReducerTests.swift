@@ -16,7 +16,7 @@ final class ConnectionReducerTests: XCTestCase {
         super.setUp()
         history = .init(
             id: .init(0),
-            url: URL(string: "wss://echo.websocket.events")!,
+            url: URL(string: "wss://echo.websocket.org")!,
             customHeaders: [],
             messages: [],
             isConnectionSuccess: false,
@@ -33,7 +33,7 @@ final class ConnectionReducerTests: XCTestCase {
     func testShowCustomHeaderList() async throws {
         let store = TestStore(
             initialState: ConnectionReducer.State(
-                url: URL(string: "wss://echo.websocket.events")!,
+                url: URL(string: "wss://echo.websocket.org")!,
                 history: history
             )
         ) {
@@ -50,7 +50,7 @@ final class ConnectionReducerTests: XCTestCase {
     func testDismissCustomHeaderList() async throws {
         let store = TestStore(
             initialState: ConnectionReducer.State(
-                url: URL(string: "wss://echo.websocket.events")!,
+                url: URL(string: "wss://echo.websocket.org")!,
                 history: history
             )
         ) {

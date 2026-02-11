@@ -18,8 +18,8 @@ final class FormReducerTests: XCTestCase {
             FormReducer()
         }
 
-        await store.send(.urlChanged("wss://echo.websocket.events")) {
-            $0.url = URL(string: "wss://echo.websocket.events")
+        await store.send(.urlChanged("wss://echo.websocket.org")) {
+            $0.url = URL(string: "wss://echo.websocket.org")
             $0.customHeaders = []
             $0.isConnectButtonDisable = false
         }
@@ -148,8 +148,8 @@ final class FormReducerTests: XCTestCase {
             FormReducer()
         }
 
-        await store.send(.urlChanged("wss://echo.websocket.events")) {
-            $0.url = URL(string: "wss://echo.websocket.events")
+        await store.send(.urlChanged("wss://echo.websocket.org")) {
+            $0.url = URL(string: "wss://echo.websocket.org")
             $0.customHeaders = []
             $0.isConnectButtonDisable = false
         }
@@ -161,14 +161,14 @@ final class FormReducerTests: XCTestCase {
         await store.send(.connect) {
             let history = HistoryEntity(
                 id: .init(0),
-                url: URL(string: "wss://echo.websocket.events")!,
+                url: URL(string: "wss://echo.websocket.org")!,
                 customHeaders: [],
                 messages: [],
                 isConnectionSuccess: false,
                 createdAt: now
             )
             $0.connection = .init(
-                url: URL(string: "wss://echo.websocket.events")!,
+                url: URL(string: "wss://echo.websocket.org")!,
                 history: history
             )
         }

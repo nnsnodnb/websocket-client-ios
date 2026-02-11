@@ -97,7 +97,7 @@ struct HistoryListPage_Previews: PreviewProvider {
     static var history: HistoryEntity {
         return .init(
             id: .init(0),
-            url: URL(string: "wss://echo.websocket.events")!,
+            url: URL(string: "wss://echo.websocket.org")!,
             customHeaders: [],
             messages: [],
             isConnectionSuccess: false,

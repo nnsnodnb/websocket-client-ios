@@ -60,7 +60,7 @@ struct FormPage: View {
             Image(systemSymbol: .link)
                 .foregroundColor(Color.blue)
             TextField(
-                "wss://echo.websocket.events",
+                "wss://echo.websocket.org",
                 text: .init(
                     get: {
                         store.url?.absoluteString ?? ""
@@ -193,7 +193,7 @@ struct FormPage_Previews: PreviewProvider {
         FormPage(
             store: Store(
                 initialState: FormReducer.State(
-                    url: URL(string: "wss://echo.websocket.events")!,
+                    url: URL(string: "wss://echo.websocket.org")!,
                     isConnectButtonDisable: false
                 )
             ) {
