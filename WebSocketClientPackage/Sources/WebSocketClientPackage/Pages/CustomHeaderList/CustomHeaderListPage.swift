@@ -9,7 +9,6 @@ import ComposableArchitecture
 import FirebaseAnalytics
 import SwiftUI
 
-@MainActor
 struct CustomHeaderListPage: View {
     let customHeaders: [CustomHeaderEntity]
 

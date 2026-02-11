@@ -7,29 +7,25 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
-import Perception
 import SFSafeSymbols
 import SwiftUI
 
-@MainActor
 struct FormPage: View {
-    @Perception.Bindable var store: StoreOf<FormReducer>
+    @Bindable var store: StoreOf<FormReducer>
 
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        WithPerceptionTracking {
-            NavigationStack {
-                form
-                    .navigationTitle("WebSocket Client")
-            }
-            .fullScreenCover(
-                item: $store.scope(state: \.connection, action: \.connection),
-                content: { store in
-                    ConnectionPage(store: store)
-                }
-            )
+        NavigationStack {
+            form
+                .navigationTitle("WebSocket Client")
         }
+        .fullScreenCover(
+            item: $store.scope(state: \.connection, action: \.connection),
+            content: { store in
+                ConnectionPage(store: store)
+            }
+        )
         .analyticsScreen(name: "form-page")
     }
 

@@ -9,17 +9,14 @@ import ComposableArchitecture
 import SFSafeSymbols
 import SwiftUI
 
-@MainActor
 public struct RootPage: View {
     let store: StoreOf<RootReducer>
 
     public var body: some View {
-        WithPerceptionTracking {
-            TabView {
-                formPage()
-                historyPage()
-                infoPage()
-            }
+        TabView {
+            formPage()
+            historyPage()
+            infoPage()
         }
     }
 

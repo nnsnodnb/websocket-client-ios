@@ -8,18 +8,15 @@
 import ComposableArchitecture
 import SwiftUI
 
-@MainActor
 struct AppIconListPage: View {
     let store: StoreOf<AppIconListReducer>
 
     var body: some View {
-        WithPerceptionTracking {
-            List(store.appIcons, id: \.displayName) {
-                appRow(appIcon: $0)
-            }
-            .navigationTitle(L10n.AppIconList.Navibar.title)
-            .navigationBarTitleDisplayMode(.inline)
+        List(store.appIcons, id: \.displayName) {
+            appRow(appIcon: $0)
         }
+        .navigationTitle(L10n.AppIconList.Navibar.title)
+        .navigationBarTitleDisplayMode(.inline)
     }
 
     private func appRow(appIcon: AppIconListReducer.State.AppIcon) -> some View {

@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 // swiftlint:disable trailing_comma
 
@@ -8,7 +8,7 @@ let package = Package(
     name: "WebSocketClientPackage",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v16),
+        .iOS(.v18),
     ],
     products: [
         .library(
@@ -64,7 +64,10 @@ let package = Package(
                 "WebSocketClientPackage",
             ]
         ),
-    ]
+    ],
+    swiftLanguageModes: [
+        .v5,
+    ],
 )
 
 // swiftlint:disable line_length

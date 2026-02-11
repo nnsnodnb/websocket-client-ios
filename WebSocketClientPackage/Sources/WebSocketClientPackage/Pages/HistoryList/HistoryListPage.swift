@@ -7,26 +7,22 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
-import Perception
 import SFSafeSymbols
 import SwiftUI
 
-@MainActor
 struct HistoryListPage: View {
-    @Perception.Bindable var store: StoreOf<HistoryListReducer>
+    @Bindable var store: StoreOf<HistoryListReducer>
 
     var body: some View {
-        WithPerceptionTracking {
-            NavigationStack(
-                path: $store.paths.sending(\.navigationPathChanged)
-            ) {
-                content
-                    .navigationTitle(L10n.HistoryList.Navibar.title)
-                    .navigationBarTitleDisplayMode(.inline)
-            }
-            .task {
-                store.send(.fetch)
-            }
+        NavigationStack(
+            path: $store.paths.sending(\.navigationPathChanged)
+        ) {
+            content
+                .navigationTitle(L10n.HistoryList.Navibar.title)
+                .navigationBarTitleDisplayMode(.inline)
+        }
+        .task {
+            store.send(.fetch)
         }
         .analyticsScreen(name: "history-list-page")
     }
