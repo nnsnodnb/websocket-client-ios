@@ -8,25 +8,21 @@
 import BetterSafariView
 import ComposableArchitecture
 import FirebaseAnalytics
-import Perception
 import SFSafeSymbols
 import SwiftUI
 
-@MainActor
 struct InfoPage: View {
-    @Perception.Bindable var store: StoreOf<InfoReducer>
+    @Bindable var store: StoreOf<InfoReducer>
 
     var body: some View {
-        WithPerceptionTracking {
-            NavigationStack {
-                form
-                    .navigationTitle(L10n.Info.Navibar.title)
-                    .safari(store: $store)
-            }
-            .alert($store.scope(state: \.alert, action: \.alert))
-            .task {
-                store.send(.start)
-            }
+        NavigationStack {
+            form
+                .navigationTitle(L10n.Info.Navibar.title)
+                .safari(store: $store)
+        }
+        .alert($store.scope(state: \.alert, action: \.alert))
+        .task {
+            store.send(.start)
         }
         .analyticsScreen(name: "info-page")
     }
@@ -187,7 +183,7 @@ struct InfoPage: View {
 
 @MainActor
 private extension View {
-    func safari(store: Perception.Bindable<StoreOf<InfoReducer>>) -> some View {
+    func safari(store: Bindable<StoreOf<InfoReducer>>) -> some View {
         safariView(
             item: store.url.sending(\.urlSelected),
             content: { url in

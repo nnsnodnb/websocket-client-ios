@@ -7,32 +7,28 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
-import Perception
 import SFSafeSymbols
 import SwiftUI
 
-@MainActor
 struct HistoryDetailPage: View {
-    @Perception.Bindable var store: StoreOf<HistoryDetailReducer>
+    @Bindable var store: StoreOf<HistoryDetailReducer>
 
     var body: some View {
-        WithPerceptionTracking {
-            MessageListView(messages: store.history.messages.map { $0.text })
-                .navigationTitle(store.history.url.absoluteString)
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar(store: store)
-                .sheet(
-                    isPresented: $store.isShowCustomHeaderList.sending(
-                        \.showedCustomHeaderList
-                    ),
-                    content: {
-                        CustomHeaderListPage(customHeaders: store.history.customHeaders)
-                            .presentationDetents([.fraction(0.2), .large])
-                    }
-                )
-                .alert($store.scope(state: \.alert, action: \.alert))
-        }
-        .analyticsScreen(name: "history-detail-page")
+        MessageListView(messages: store.history.messages.map { $0.text })
+            .navigationTitle(store.history.url.absoluteString)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(store: store)
+            .sheet(
+                isPresented: $store.isShowCustomHeaderList.sending(
+                    \.showedCustomHeaderList
+                ),
+                content: {
+                    CustomHeaderListPage(customHeaders: store.history.customHeaders)
+                        .presentationDetents([.fraction(0.2), .large])
+                }
+            )
+            .alert($store.scope(state: \.alert, action: \.alert))
+            .analyticsScreen(name: "history-detail-page")
     }
 }
 

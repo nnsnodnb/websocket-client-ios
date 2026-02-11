@@ -7,32 +7,28 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
-import Perception
 import SwiftUI
 
-@MainActor
 struct ConnectionPage: View {
-    @Perception.Bindable var store: StoreOf<ConnectionReducer>
+    @Bindable var store: StoreOf<ConnectionReducer>
 
     var body: some View {
-        WithPerceptionTracking {
-            NavigationStack {
-                content
-                    .navigationTitle(store.url.absoluteString)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar(store: store)
+        NavigationStack {
+            content
+                .navigationTitle(store.url.absoluteString)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar(store: store)
+        }
+        .alert($store.scope(state: \.alert, action: \.alert))
+        .sheet(
+            isPresented: $store.isShowCustomHeaderList.sending(\.showedCustomHeaderList),
+            content: {
+                CustomHeaderListPage(customHeaders: store.customHeaders)
+                    .presentationDetents([.fraction(0.2), .large])
             }
-            .alert($store.scope(state: \.alert, action: \.alert))
-            .sheet(
-                isPresented: $store.isShowCustomHeaderList.sending(\.showedCustomHeaderList),
-                content: {
-                    CustomHeaderListPage(customHeaders: store.customHeaders)
-                        .presentationDetents([.fraction(0.2), .large])
-                }
-            )
-            .task {
-                store.send(.start)
-            }
+        )
+        .task {
+            store.send(.start)
         }
         .analyticsScreen(name: "connection-page")
     }
