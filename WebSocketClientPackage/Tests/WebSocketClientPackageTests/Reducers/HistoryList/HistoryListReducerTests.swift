@@ -14,7 +14,7 @@ final class HistoryListReducerTests: XCTestCase {
     func testSetNavigation() async throws {
         let history = HistoryEntity(
             id: .init(0),
-            url: URL(string: "wss://echo.websocket.events")!,
+            url: URL(string: "wss://echo.websocket.org")!,
             customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
@@ -56,7 +56,7 @@ final class HistoryListReducerTests: XCTestCase {
     func testDeleteHistorySuccess() async throws {
         let history = HistoryEntity(
             id: .init(0),
-            url: URL(string: "wss://echo.websocket.events")!,
+            url: URL(string: "wss://echo.websocket.org")!,
             customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
@@ -96,7 +96,7 @@ final class HistoryListReducerTests: XCTestCase {
 
         let history = HistoryEntity(
             id: .init(0),
-            url: URL(string: "wss://echo.websocket.events")!,
+            url: URL(string: "wss://echo.websocket.org")!,
             customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
@@ -130,7 +130,7 @@ final class HistoryListReducerTests: XCTestCase {
     func testHistoryDetailDeleted() async throws {
         let history = HistoryEntity(
             id: .init(0),
-            url: URL(string: "wss://echo.websocket.events")!,
+            url: URL(string: "wss://echo.websocket.org")!,
             customHeaders: [],
             messages: [],
             isConnectionSuccess: true,

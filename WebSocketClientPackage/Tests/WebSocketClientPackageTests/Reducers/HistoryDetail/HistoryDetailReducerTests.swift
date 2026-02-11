@@ -16,7 +16,7 @@ final class HistoryDetailReducerTests: XCTestCase {
         super.setUp()
         history = .init(
             id: .init(0),
-            url: URL(string: "wss://echo.websocket.events")!,
+            url: URL(string: "wss://echo.websocket.org")!,
             customHeaders: [],
             messages: [],
             isConnectionSuccess: true,
