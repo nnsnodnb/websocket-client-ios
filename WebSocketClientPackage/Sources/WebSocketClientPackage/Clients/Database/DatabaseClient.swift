@@ -174,11 +174,11 @@ public extension DatabaseClient {
 // MARK: - DependencyKey
 extension DatabaseClient: DependencyKey {
     public static let liveValue: Self = .init(
-        fetchHistories: { try DatabaseActor.shared.fetchHistories($0) },
-        addHistory: { try DatabaseActor.shared.addHistory($0) },
-        updateHistory: { try DatabaseActor.shared.updateHistory($0) },
-        deleteHistory: { try DatabaseActor.shared.deleteHistory($0) },
-        deleteAllData: { try DatabaseActor.shared.deleteAllData() }
+        fetchHistories: { try await DatabaseActor.shared.fetchHistories($0) },
+        addHistory: { try await DatabaseActor.shared.addHistory($0) },
+        updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
+        deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) },
+        deleteAllData: { try await DatabaseActor.shared.deleteAllData() }
     )
 
     public static let testValue: Self = .init()

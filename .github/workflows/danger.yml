@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   danger:
-    runs-on: macos-14
+    runs-on: macos-15
 
     permissions:
       pull-requests: write
@@ -42,7 +42,7 @@ jobs:
     - name: Setup Ruby
       uses: ruby/setup-ruby@09a7688d3b55cf0e976497ff046b70949eeaccfd # v1.288.0
       with:
-        ruby-version: "3.4.2"
+        ruby-version: "3.4.8"
         bundler-cache: true
 
     - name: Danger
