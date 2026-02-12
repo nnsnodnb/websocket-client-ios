@@ -56,6 +56,17 @@ struct HistoryListPage: View {
                 store.send(.deleteHistory($0), animation: .default)
             }
         }
+        .navigationDestination(
+            for: HistoryListReducer.State.Destination.self,
+            destination: { destination in
+                switch destination {
+                case .historyDetail:
+                    if let store = store.scope(state: \.selectionHistory?.value, action: \.historyDetail) {
+                        HistoryDetailPage(store: store)
+                    }
+                }
+            }
+        )
     }
 
     private func row(history: HistoryEntity) -> some View {
@@ -75,17 +86,6 @@ struct HistoryListPage: View {
                 .foregroundColor(.secondary)
                 .opacity(0.5)
         }
-        .navigationDestination(
-            for: HistoryListReducer.State.Destination.self,
-            destination: { destination in
-                switch destination {
-                case .historyDetail:
-                    if let store = store.scope(state: \.selectionHistory?.value, action: \.historyDetail) {
-                        HistoryDetailPage(store: store)
-                    }
-                }
-            }
-        )
     }
 }
 
