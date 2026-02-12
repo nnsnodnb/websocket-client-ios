@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct MessageListView: View {
-    let messages: [String]
+  let messages: [String]
 
-    var body: some View {
-        List(messages.reversed(), id: \.self) { message in
-            Text(message)
-        }
+  var body: some View {
+    List(messages.reversed(), id: \.self) { message in
+      Text(message)
     }
+  }
 }
 
 struct MessageListView_Previews: PreviewProvider {
-    static var previews: some View {
-        MessageListView(messages: (1...10).map { "Message: \($0)" })
-    }
+  static var previews: some View {
+    MessageListView(messages: (1...10).map { "Message: \($0)" })
+  }
 }

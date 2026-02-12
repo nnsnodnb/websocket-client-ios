@@ -8,7 +8,7 @@
 import IdentifiedCollections
 
 extension IdentifiedArrayOf where Element: Identifiable {
-    subscript (safe index: Index) -> Element? {
-        return indices.contains(index) ? self[index] : nil
-    }
+  subscript (safe index: Index) -> Element? {
+    return indices.contains(index) ? self[index] : nil
+  }
 }

@@ -10,62 +10,62 @@ import ComposableArchitecture
 import XCTest
 
 final class ConnectionReducerTests: XCTestCase {
-    private var history: HistoryEntity!
+  private var history: HistoryEntity!
 
-    override func setUp() {
-        super.setUp()
-        history = .init(
-            id: .init(0),
-            url: URL(string: "wss://echo.websocket.org")!,
-            customHeaders: [],
-            messages: [],
-            isConnectionSuccess: false,
-            createdAt: .init()
-        )
+  override func setUp() {
+    super.setUp()
+    history = .init(
+      id: .init(0),
+      url: URL(string: "wss://echo.websocket.org")!,
+      customHeaders: [],
+      messages: [],
+      isConnectionSuccess: false,
+      createdAt: .init()
+    )
+  }
+
+  override func tearDown() {
+    super.tearDown()
+    history = nil
+  }
+
+  @MainActor
+  func testShowCustomHeaderList() async throws {
+    let store = TestStore(
+      initialState: ConnectionReducer.State(
+        url: URL(string: "wss://echo.websocket.org")!,
+        history: history
+      )
+    ) {
+      ConnectionReducer()
     }
 
-    override func tearDown() {
-        super.tearDown()
-        history = nil
+    // show
+    await store.send(.showedCustomHeaderList(true)) {
+      $0.isShowCustomHeaderList = true
+    }
+  }
+
+  @MainActor
+  func testDismissCustomHeaderList() async throws {
+    let store = TestStore(
+      initialState: ConnectionReducer.State(
+        url: URL(string: "wss://echo.websocket.org")!,
+        history: history
+      )
+    ) {
+      ConnectionReducer()
     }
 
-    @MainActor
-    func testShowCustomHeaderList() async throws {
-        let store = TestStore(
-            initialState: ConnectionReducer.State(
-                url: URL(string: "wss://echo.websocket.org")!,
-                history: history
-            )
-        ) {
-            ConnectionReducer()
-        }
+    // already dismiss
+    await store.send(.showedCustomHeaderList(false))
 
-        // show
-        await store.send(.showedCustomHeaderList(true)) {
-            $0.isShowCustomHeaderList = true
-        }
+    // dismiss
+    await store.send(.showedCustomHeaderList(true)) {
+      $0.isShowCustomHeaderList = true
     }
-
-    @MainActor
-    func testDismissCustomHeaderList() async throws {
-        let store = TestStore(
-            initialState: ConnectionReducer.State(
-                url: URL(string: "wss://echo.websocket.org")!,
-                history: history
-            )
-        ) {
-            ConnectionReducer()
-        }
-
-        // already dismiss
-        await store.send(.showedCustomHeaderList(false))
-
-        // dismiss
-        await store.send(.showedCustomHeaderList(true)) {
-            $0.isShowCustomHeaderList = true
-        }
-        await store.send(.showedCustomHeaderList(false)) {
-            $0.isShowCustomHeaderList = false
-        }
+    await store.send(.showedCustomHeaderList(false)) {
+      $0.isShowCustomHeaderList = false
     }
+  }
 }
