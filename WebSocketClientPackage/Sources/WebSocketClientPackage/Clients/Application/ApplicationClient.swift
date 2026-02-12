@@ -22,6 +22,16 @@ extension ApplicationClient: DependencyKey {
         open: { @MainActor in await UIApplication.shared.open($0) },
         setAlternateIconName: { @MainActor in try await UIApplication.shared.setAlternateIconName($0) }
     )
+}
 
-    public static let testValue: Self = .init()
+// MARK: - DependencyValues
+public extension DependencyValues {
+    var application: ApplicationClient {
+        get {
+            self[ApplicationClient.self]
+        }
+        set {
+            self[ApplicationClient.self] = newValue
+        }
+    }
 }

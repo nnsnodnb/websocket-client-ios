@@ -180,6 +180,16 @@ extension DatabaseClient: DependencyKey {
         deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) },
         deleteAllData: { try await DatabaseActor.shared.deleteAllData() }
     )
+}
 
-    public static let testValue: Self = .init()
+// MARK: - DependencyValues
+public extension DependencyValues {
+    var database: DatabaseClient {
+        get {
+            self[DatabaseClient.self]
+        }
+        set {
+            self[DatabaseClient.self] = newValue
+        }
+    }
 }
