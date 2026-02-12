@@ -104,7 +104,7 @@ public struct HistoryListReducer: Sendable {
         }
         .ifLet(\.selectionHistory, action: \.historyDetail) {
             EmptyReducer()
-                .ifLet(\.value, action: .self) {
+                .ifLet(\.value, action: \.self) {
                     HistoryDetailReducer()
                 }
         }
