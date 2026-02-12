@@ -118,6 +118,11 @@ extension PackageDescription.SwiftSetting {
     /// - Since: SwiftPM 5.10
     /// - SeeAlso: [SE-0412: Strict concurrency for global variables](https://github.com/apple/swift-evolution/blob/main/proposals/0412-strict-concurrency-for-global-variables.md)
     static let globalConcurrency: Self = .enableUpcomingFeature("GlobalConcurrency")
+    /// Inferring Sendable for methods and key path literals
+    /// - Version: Swift 6.0
+    /// - Since: SwiftPM 6.0
+    /// - SeeAlso: [SE-0418: Inferring Sendable for methods and key path literals](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0418-inferring-sendable-for-methods.md)
+    static let inferSendableFromCaptures: Self = .enableUpcomingFeature("InferSendableFromCaptures")
 }
 // swiftlint:enable line_length
 
@@ -137,6 +142,7 @@ let upcomingFeatures: [PackageDescription.SwiftSetting] = [
     .deprecateApplicationMain,
     .isolatedDefaultValues,
     .globalConcurrency,
+    .inferSendableFromCaptures,
 ]
 
 for target in package.targets {

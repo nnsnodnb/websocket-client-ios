@@ -43,7 +43,7 @@ public struct HistoryListReducer: Sendable {
         }
     }
 
-    @Dependency(DatabaseClient.self)
+    @Dependency(\.database)
     var databaseClient
 
     public var body: some ReducerOf<Self> {

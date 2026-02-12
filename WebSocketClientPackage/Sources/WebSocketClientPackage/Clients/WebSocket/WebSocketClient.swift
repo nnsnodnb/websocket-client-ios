@@ -194,6 +194,16 @@ extension WebSocketClient: DependencyKey {
         send: { try await WebSocketActor.shared.send(id: $0, message: $1) },
         sendPing: { try await WebSocketActor.shared.sendPing(id: $0) }
     )
+}
 
-    public static let testValue: Self = .init()
+// MARK: - DependencyValues
+public extension DependencyValues {
+    var webSocket: WebSocketClient {
+        get {
+            self[WebSocketClient.self]
+        }
+        set {
+            self[WebSocketClient.self] = newValue
+        }
+    }
 }
