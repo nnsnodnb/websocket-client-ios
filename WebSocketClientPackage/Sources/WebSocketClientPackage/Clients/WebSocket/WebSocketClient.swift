@@ -72,7 +72,7 @@ public extension WebSocketClient {
         // MARK: - Delegate
         public final class Delegate: NSObject, URLSessionWebSocketDelegate {
             // MARK: - Properties
-            var continuation: AsyncStream<Action>.Continuation?
+            let continuation: LockIsolated<AsyncStream<Action>.Continuation?> = .init(nil)
 
             // MARK: - URLSessionWebSocketDelegate
             public func urlSession(
@@ -80,7 +80,9 @@ public extension WebSocketClient {
                 webSocketTask _: URLSessionWebSocketTask,
                 didOpenWithProtocol protocol: String?
             ) {
-                continuation?.yield(.didOpen(protocol: `protocol`))
+                continuation.withValue { continuation in
+                    _ = continuation?.yield(.didOpen(protocol: `protocol`))
+                }
             }
 
             public func urlSession(
@@ -89,8 +91,10 @@ public extension WebSocketClient {
                 didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
                 reason: Data?
             ) {
-                continuation?.yield(.didClose(code: closeCode, reason: reason))
-                continuation?.finish()
+                continuation.withValue { continuation in
+                    continuation?.yield(.didClose(code: closeCode, reason: reason))
+                    continuation?.finish()
+                }
             }
         }
 
@@ -107,17 +111,15 @@ public extension WebSocketClient {
             let session = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
             let socket = session.webSocketTask(with: urlRequest)
             defer { socket.resume() }
-            var continuation: AsyncStream<Action>.Continuation!
-            let stream = AsyncStream<Action> {
-                $0.onTermination = { _ in
+            let stream = AsyncStream<Action> { continuation in
+                continuation.onTermination = { _ in
                     socket.cancel()
                     Task {
                         await self.removeDependencies(id: id)
                     }
                 }
-                continuation = $0
+                delegate.continuation.setValue(continuation)
             }
-            delegate.continuation = continuation
             dependencies[id] = (socket, delegate)
             return stream
         }
