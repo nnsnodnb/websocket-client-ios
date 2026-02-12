@@ -29,7 +29,7 @@ jobs:
     - name: Get SwiftPM originHash
       id: get-swiftpm-origin-hash
       run: |
-        ORIGIN_HASH="$(cat WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved | jq -c -r '.originHash')"
+        ORIGIN_HASH="$(jq -c -r '.originHash' WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved)"
         echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
 
     - name: Cache Swift Packages
