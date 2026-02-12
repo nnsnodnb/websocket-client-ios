@@ -20,12 +20,19 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
+      - name: Get SwiftPM originHash
+        id: get-swiftpm-origin-hash
+        run: |
+          ORIGIN_HASH="$(jq -c -r '.originHash' WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved)"
+          echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
+
       - name: Cache Swift Packages
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         id: cache-swiftpm
+        timeout-minutes: 20
         with:
           path: .swiftpm
-          key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+          key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
 
       - name: Write IDESkipPackagePluginFingerprintValidatation
         run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
