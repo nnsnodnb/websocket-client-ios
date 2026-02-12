@@ -14,17 +14,17 @@ public struct WebSocketClient: Sendable {
     // MARK: - ID
     public struct CancelID: Hashable, @unchecked Sendable {
         // MARK: - Properties
-        public let rawValue: AnyHashable
+        public let rawValue: AnyHashableSendable
 
         // MARK: - Initialize
         init<RawValue: Hashable & Sendable>(_ rawValue: RawValue) {
-            self.rawValue = rawValue
+            self.rawValue = .init(rawValue)
         }
 
         public init() {
             struct RawValue: Hashable, Sendable {
             }
-            self.rawValue = RawValue()
+            self.rawValue = .init(RawValue())
         }
     }
 
