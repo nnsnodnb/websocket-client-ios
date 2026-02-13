@@ -15,7 +15,7 @@ struct CustomHeaderListPage: View {
   var body: some View {
     NavigationStack {
       list
-        .navigationTitle(L10n.CustomHeaderList.Navibar.title)
+        .navigationTitle(.customHeaderListNavibarTitle)
         .navigationBarTitleDisplayMode(.inline)
     }
     .analyticsScreen(name: "custom-header-list-page")

@@ -17,7 +17,7 @@ struct InfoPage: View {
   var body: some View {
     NavigationStack {
       form
-        .navigationTitle(L10n.Info.Navibar.title)
+        .navigationTitle(.infoNavibarTitle)
         .safari(store: $store)
     }
     .alert($store.scope(state: \.alert, action: \.alert))
@@ -43,7 +43,7 @@ struct InfoPage: View {
           Image(.icGithub)
             .resizable()
         },
-        text: L10n.Info.Section.First.Title.sourceCodes,
+        text: .infoSectionFirstTitleSourceCodes,
         action: {
           store.send(.urlSelected($0))
         }
@@ -54,7 +54,7 @@ struct InfoPage: View {
           Image(.icXTwitetr)
             .resizable()
         },
-        text: L10n.Info.Section.First.Title.contactDeveloper,
+        text: .infoSectionFirstTitleContactDeveloper,
         action: {
           store.send(.urlSelected($0))
         }
@@ -71,7 +71,7 @@ struct InfoPage: View {
             .resizable()
             .foregroundColor(.purple)
         },
-        text: L10n.Info.Section.Second.Title.appReview,
+        text: .infoSectionSecondTitleAppReview,
         action: {
           store.send(.browserOpen($0))
         }
@@ -91,7 +91,7 @@ struct InfoPage: View {
               .resizable()
               .frame(width: 18, height: 18)
               .cornerRadius(4)
-            Text(L10n.Info.Section.Second.Title.changeAppIcon)
+            Text(.infoSectionSecondTitleChangeAppIcon)
           }
         }
       )
@@ -104,7 +104,7 @@ struct InfoPage: View {
             .resizable()
             .foregroundColor(.red)
         },
-        title: L10n.Info.Section.Second.Title.deleteAllHistoryData
+        title: .infoSectionSecondTitleDeleteAllHistoryData
       )
     }
   }
@@ -117,7 +117,7 @@ struct InfoPage: View {
             .resizable()
             .foregroundColor(.yellow)
             .frame(width: 18, height: 18)
-          Text(L10n.Info.Section.Third.Title.version)
+          Text(.infoSectionThirdTitleVersion)
             .foregroundColor(.primary)
         }
         Spacer()
@@ -129,7 +129,7 @@ struct InfoPage: View {
           .resizable()
           .foregroundColor(.orange)
           .frame(width: 18, height: 18)
-        Text(L10n.Info.Section.Third.Title.developed)
+        Text(.infoSectionThirdTitleDeveloped)
       }
     }
   }
@@ -137,7 +137,7 @@ struct InfoPage: View {
   private func urlRow(
     url: URL,
     icon: () -> some View,
-    text: String,
+    text: LocalizedStringResource,
     action: @escaping (URL) -> Void
   ) -> some View {
     buttonRow(
@@ -158,7 +158,7 @@ struct InfoPage: View {
   private func buttonRow(
     action: @escaping () -> Void,
     image: () -> some View,
-    title: String
+    title: LocalizedStringResource,
   ) -> some View {
     Button(
       action: action,

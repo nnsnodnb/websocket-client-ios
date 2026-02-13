@@ -40,20 +40,20 @@ final class HistoryDetailReducerTests: XCTestCase {
     await store.send(.checkDelete) {
       $0.alert = AlertState(
         title: {
-          TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
+          TextState(.historyDetailAlertConfirmTitleMessage)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState(L10n.Alert.Button.Title.cancel)
+              TextState(.alertButtonTitleCancel)
             }
           )
           ButtonState(
             role: .destructive,
             action: .send(.confirm),
             label: {
-              TextState(L10n.Alert.Button.Title.delete)
+              TextState(.alertButtonTitleDelete)
             }
           )
         }
@@ -80,20 +80,20 @@ final class HistoryDetailReducerTests: XCTestCase {
     await store.send(.checkDelete) {
       $0.alert = AlertState(
         title: {
-          TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
+          TextState(.historyDetailAlertConfirmTitleMessage)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState(L10n.Alert.Button.Title.cancel)
+              TextState(.alertButtonTitleCancel)
             }
           )
           ButtonState(
             role: .destructive,
             action: .send(.confirm),
             label: {
-              TextState(L10n.Alert.Button.Title.delete)
+              TextState(.alertButtonTitleDelete)
             }
           )
         }
@@ -127,20 +127,20 @@ final class HistoryDetailReducerTests: XCTestCase {
     await store.send(.checkDelete) {
       $0.alert = AlertState(
         title: {
-          TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
+          TextState(.historyDetailAlertConfirmTitleMessage)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState(L10n.Alert.Button.Title.cancel)
+              TextState(.alertButtonTitleCancel)
             }
           )
           ButtonState(
             role: .destructive,
             action: .send(.confirm),
             label: {
-              TextState(L10n.Alert.Button.Title.delete)
+              TextState(.alertButtonTitleDelete)
             }
           )
         }
@@ -149,7 +149,7 @@ final class HistoryDetailReducerTests: XCTestCase {
     await store.send(.alert(.presented(.confirm)))
     await store.receive(\.error.delete) {
       $0.alert = AlertState {
-        TextState(L10n.HistoryDetail.Alert.DeletionFailed.Title.message)
+        TextState(.historyDetailAlertDeletionFailedTitleMessage)
       }
     }
     await store.send(.alert(.dismiss)) {
@@ -176,20 +176,20 @@ final class HistoryDetailReducerTests: XCTestCase {
     await store.send(.checkDelete) {
       $0.alert = AlertState(
         title: {
-          TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
+          TextState(.historyDetailAlertConfirmTitleMessage)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState(L10n.Alert.Button.Title.cancel)
+              TextState(.alertButtonTitleCancel)
             }
           )
           ButtonState(
             role: .destructive,
             action: .send(.confirm),
             label: {
-              TextState(L10n.Alert.Button.Title.delete)
+              TextState(.alertButtonTitleDelete)
             }
           )
         }

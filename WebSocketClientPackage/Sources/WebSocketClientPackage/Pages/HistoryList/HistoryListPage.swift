@@ -18,7 +18,7 @@ struct HistoryListPage: View {
       path: $store.paths.sending(\.navigationPathChanged)
     ) {
       content
-        .navigationTitle(L10n.HistoryList.Navibar.title)
+        .navigationTitle(.historyListNavibarTitle)
         .navigationBarTitleDisplayMode(.inline)
     }
     .task {
@@ -40,7 +40,7 @@ struct HistoryListPage: View {
       Image(systemSymbol: .noteText)
         .resizable()
         .frame(width: 56, height: 56)
-      Text(L10n.HistoryList.Content.Title.empty)
+      Text(.historyListContentTitleEmpty)
         .font(.title2)
         .fontWeight(.bold)
     }

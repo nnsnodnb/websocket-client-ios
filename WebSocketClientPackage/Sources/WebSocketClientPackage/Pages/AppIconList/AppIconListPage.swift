@@ -15,7 +15,7 @@ struct AppIconListPage: View {
     List(store.appIcons, id: \.displayName) {
       appRow(appIcon: $0)
     }
-    .navigationTitle(L10n.AppIconList.Navibar.title)
+    .navigationTitle(.appIconListNavibarTitle)
     .navigationBarTitleDisplayMode(.inline)
   }
 

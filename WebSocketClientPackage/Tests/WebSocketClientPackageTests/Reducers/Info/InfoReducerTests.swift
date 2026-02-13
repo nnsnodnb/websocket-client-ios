@@ -72,20 +72,20 @@ final class InfoReducerTests: XCTestCase {
     await store.send(.checkDeleteAllData) {
       $0.alert = AlertState(
         title: {
-          TextState(L10n.Info.Alert.Confirm.Title.message)
+          TextState(.infoAlertConfirmTitleMessage)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState(L10n.Alert.Button.Title.cancel)
+              TextState(.alertButtonTitleCancel)
             }
           )
           ButtonState(
             role: .destructive,
             action: .send(.deleteAllData),
             label: {
-              TextState(L10n.Alert.Button.Title.delete)
+              TextState(.alertButtonTitleDelete)
             }
           )
         }
@@ -115,20 +115,20 @@ final class InfoReducerTests: XCTestCase {
     await store.send(.checkDeleteAllData) {
       $0.alert = AlertState(
         title: {
-          TextState(L10n.Info.Alert.Confirm.Title.message)
+          TextState(.infoAlertConfirmTitleMessage)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState(L10n.Alert.Button.Title.cancel)
+              TextState(.alertButtonTitleCancel)
             }
           )
           ButtonState(
             role: .destructive,
             action: .deleteAllData,
             label: {
-              TextState(L10n.Alert.Button.Title.delete)
+              TextState(.alertButtonTitleDelete)
             }
           )
         }
@@ -161,20 +161,20 @@ final class InfoReducerTests: XCTestCase {
     await store.send(.checkDeleteAllData) {
       $0.alert = AlertState(
         title: {
-          TextState(L10n.Info.Alert.Confirm.Title.message)
+          TextState(.infoAlertConfirmTitleMessage)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState(L10n.Alert.Button.Title.cancel)
+              TextState(.alertButtonTitleCancel)
             }
           )
           ButtonState(
             role: .destructive,
             action: .deleteAllData,
             label: {
-              TextState(L10n.Alert.Button.Title.delete)
+              TextState(.alertButtonTitleDelete)
             }
           )
         }
@@ -183,7 +183,7 @@ final class InfoReducerTests: XCTestCase {
     await store.send(.alert(.presented(.deleteAllData)))
     await store.receive(\.error.deleteAllData) {
       $0.alert = AlertState {
-        TextState(L10n.Info.Alert.DeletionFailed.Title.message)
+        TextState(.infoAlertDeletionFailedTitleMessage)
       }
     }
     await store.send(.alert(.dismiss)) {
@@ -210,20 +210,20 @@ final class InfoReducerTests: XCTestCase {
     await store.send(.checkDeleteAllData) {
       $0.alert = AlertState(
         title: {
-          TextState(L10n.Info.Alert.Confirm.Title.message)
+          TextState(.infoAlertConfirmTitleMessage)
         },
         actions: {
           ButtonState(
             role: .cancel,
             label: {
-              TextState(L10n.Alert.Button.Title.cancel)
+              TextState(.alertButtonTitleCancel)
             }
           )
           ButtonState(
             role: .destructive,
             action: .deleteAllData,
             label: {
-              TextState(L10n.Alert.Button.Title.delete)
+              TextState(.alertButtonTitleDelete)
             }
           )
         }
