@@ -66,8 +66,7 @@ private extension View {
             )
           },
           label: {
-            Image(systemSymbol: .ellipsisCircle)
-              .foregroundColor(.blue)
+            Image(systemSymbol: UIDevice.current.isLiquidEffectEnabled ? .ellipsis : .ellipsisCircle)
           }
         )
       }

@@ -74,18 +74,24 @@ struct ConnectionPage: View {
 private extension View {
   func toolbar(store: StoreOf<ConnectionReducer>) -> some View {
     toolbar {
-      ToolbarItem(placement: .navigationBarLeading) {
-        Button(
-          action: {
+      ToolbarItem(placement: .cancellationAction) {
+        if #available(iOS 26.0, *) {
+          Button(role: .cancel) {
             store.send(.close, animation: .default)
-          },
-          label: {
-            Image(systemSymbol: .xmark)
-              .resizable()
-              .frame(maxWidth: 44, maxHeight: 44)
-              .fontWeight(.medium)
           }
-        )
+        } else {
+          Button(
+            action: {
+              store.send(.close, animation: .default)
+            },
+            label: {
+              Image(systemSymbol: .xmark)
+                .resizable()
+                .frame(maxWidth: 44, maxHeight: 44)
+                .fontWeight(.medium)
+            }
+          )
+        }
       }
       if !store.customHeaders.isEmpty {
         ToolbarItem(placement: .navigationBarTrailing) {
