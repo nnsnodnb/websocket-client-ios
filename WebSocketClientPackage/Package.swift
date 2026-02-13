@@ -21,7 +21,6 @@ let package = Package(
         .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "11.15.0")),
         .package(url: "https://github.com/mono0926/LicensePlist.git", .upToNextMajor(from: "3.27.2")),
         .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0")),
-        .package(url: "https://github.com/SwiftGen/SwiftGenPlugin.git", .upToNextMajor(from: "6.6.2")),
         .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.63.2")),
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .upToNextMajor(from: "1.23.1")),
     ],
@@ -54,7 +53,6 @@ let package = Package(
                 .process("Model.xcdatamodeld")
             ],
             plugins: [
-                .plugin(name: "SwiftGenPlugin", package: "SwiftGenPlugin"),
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins"),
             ]
         ),
