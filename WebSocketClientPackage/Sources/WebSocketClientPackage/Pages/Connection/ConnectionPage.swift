@@ -43,7 +43,7 @@ struct ConnectionPage: View {
   private var messageTextField: some View {
     HStack {
       TextField(
-        L10n.Connection.TextField.placeholder,
+        String(localized: .connectionTextFieldPlaceholder),
         text: $store.message.sending(\.messageChanged)
       )
       .frame(height: 44)
@@ -52,7 +52,7 @@ struct ConnectionPage: View {
           store.send(.sendMessage)
         },
         label: {
-          Text(L10n.Connection.Title.sendButton)
+          Text(.connectionTitleSendButton)
             .bold()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -103,7 +103,7 @@ private extension View {
                 },
                 label: {
                   HStack {
-                    Text(L10n.Connection.Navibar.Menu.Title.checkCustomHeaders)
+                    Text(.connectionNavibarMenuTitleCheckCustomHeaders)
                     Image(systemSymbol: .checkmarkMessageFill)
                   }
                 }

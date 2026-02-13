@@ -19,37 +19,37 @@ public struct AppIconListReducer: Sendable {
     public struct AppIcon: Sendable, Equatable, CaseIterable {
       // MARK: - Properties
       static let `default`: Self = .init(
-        displayName: L10n.AppIconList.Content.Title.default,
+        displayName: String(localized: .appIconListContentTitleDefault),
         image: Image(.icDefaultIcon),
         name: nil
       )
       static let yellow: Self = .init(
-        displayName: L10n.AppIconList.Content.Title.yellow,
+        displayName: String(localized: .appIconListContentTitleYellow),
         image: Image(.icYellowIcon),
         name: "AppIcon-Yellow"
       )
       static let red: Self = .init(
-        displayName: L10n.AppIconList.Content.Title.red,
+        displayName: String(localized: .appIconListContentTitleRed),
         image: Image(.icRedIcon),
         name: "AppIcon-Red"
       )
       static let blue: Self = .init(
-        displayName: L10n.AppIconList.Content.Title.blue,
+        displayName: String(localized: .appIconListContentTitleBlue),
         image: Image(.icBlueIcon),
         name: "AppIcon-Blue"
       )
       static let purple: Self = .init(
-        displayName: L10n.AppIconList.Content.Title.purple,
+        displayName: String(localized: .appIconListContentTitlePurple),
         image: Image(.icPurpleIcon),
         name: "AppIcon-Purple"
       )
       static let black: Self = .init(
-        displayName: L10n.AppIconList.Content.Title.black,
+        displayName: String(localized: .appIconListContentTitleBlack),
         image: Image(.icBlackIcon),
         name: "AppIcon-Black"
       )
       static let white: Self = .init(
-        displayName: L10n.AppIconList.Content.Title.white,
+        displayName: String(localized: .appIconListContentTitleWhite),
         image: Image(.icWhiteIcon),
         name: "AppIcon-White"
       )

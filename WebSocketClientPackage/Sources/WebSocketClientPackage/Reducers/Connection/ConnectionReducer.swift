@@ -174,19 +174,19 @@ public struct ConnectionReducer: Sendable {
         return .none
       case .error(.receivedSocketMessage):
         state.alert = AlertState {
-          TextState("Could not send socket message. Connect to the server first, and try again.")
+          TextState(.connectionAlertSendTitle)
         }
         return .none
       case .error(.send):
         return .none
       case .error(.addHistory):
         state.alert = AlertState {
-          TextState("Could not update history.")
+          TextState(.connectionAlertUpdateTitle)
         }
         return .none
       case .error(.updateHistory):
         state.alert = AlertState {
-          TextState("Could not update history.")
+          TextState(.connectionAlertUpdateTitle)
         }
         return .none
       }

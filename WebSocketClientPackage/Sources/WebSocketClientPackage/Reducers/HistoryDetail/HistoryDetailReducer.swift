@@ -50,20 +50,20 @@ public struct HistoryDetailReducer: Sendable {
       case .checkDelete:
         state.alert = AlertState(
           title: {
-            TextState(L10n.HistoryDetail.Alert.Confirm.Title.message)
+            TextState(.historyDetailAlertConfirmTitleMessage)
           },
           actions: {
             ButtonState(
               role: .cancel,
               label: {
-                TextState(L10n.Alert.Button.Title.cancel)
+                TextState(.alertButtonTitleCancel)
               }
             )
             ButtonState(
               role: .destructive,
               action: .confirm,
               label: {
-                TextState(L10n.Alert.Button.Title.delete)
+                TextState(.alertButtonTitleDelete)
               }
             )
           }
@@ -92,7 +92,7 @@ public struct HistoryDetailReducer: Sendable {
         return .none
       case .error(.delete):
         state.alert = AlertState {
-          TextState(L10n.HistoryDetail.Alert.DeletionFailed.Title.message)
+          TextState(.historyDetailAlertDeletionFailedTitleMessage)
         }
         return .none
       }

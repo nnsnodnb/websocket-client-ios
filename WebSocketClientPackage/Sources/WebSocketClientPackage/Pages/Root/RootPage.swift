@@ -26,7 +26,7 @@ public struct RootPage: View {
         FormReducer()
       }
     )
-    .tabItem(systemSymbol: .squareAndPencil, text: L10n.TabBar.Title.connection)
+    .tabItem(systemSymbol: .squareAndPencil, text: .tabBarTitleConnection)
   }
 
   private func historyPage() -> some View {
@@ -35,7 +35,7 @@ public struct RootPage: View {
         HistoryListReducer()
       }
     )
-    .tabItem(systemSymbol: .trayFullFill, text: L10n.TabBar.Title.histories)
+    .tabItem(systemSymbol: .trayFullFill, text: .tabBarTitleHistories)
   }
 
   private func infoPage() -> some View {
@@ -44,7 +44,7 @@ public struct RootPage: View {
         InfoReducer()
       }
     )
-    .tabItem(systemSymbol: .infoCircleFill, text: L10n.TabBar.Title.info)
+    .tabItem(systemSymbol: .infoCircleFill, text: .tabBarTitleInfo)
   }
 
   // MARK: - Initialize
@@ -55,7 +55,7 @@ public struct RootPage: View {
 
 @MainActor
 private extension View {
-  func tabItem(systemSymbol: SFSymbol, text: String) -> some View {
+  func tabItem(systemSymbol: SFSymbol, text: LocalizedStringResource) -> some View {
     tabItem {
       VStack {
         Image(systemSymbol: systemSymbol)

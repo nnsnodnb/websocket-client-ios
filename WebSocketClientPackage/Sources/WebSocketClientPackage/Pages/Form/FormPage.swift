@@ -46,7 +46,7 @@ struct FormPage: View {
         urlTextField
       },
       header: {
-        Text(L10n.Form.Section.First.Title.header)
+        Text(.formSectionFirstTitleHeader)
       }
     )
   }
@@ -77,7 +77,7 @@ struct FormPage: View {
         customHeaders
       },
       header: {
-        Text(L10n.Form.Section.Second.Title.header)
+        Text(.formSectionSecondTitleHeader)
       }
     )
   }
@@ -100,7 +100,7 @@ struct FormPage: View {
     GeometryReader { proxy in
       HStack {
         TextField(
-          L10n.Form.Section.Second.Title.name,
+          String(localized: .formSectionSecondTitleName),
           text: .init(
             get: {
               store.customHeaders[safe: index]?.name ?? ""
@@ -114,7 +114,7 @@ struct FormPage: View {
         .frame(maxWidth: proxy.frame(in: .local).width / 3, maxHeight: .infinity)
         Divider()
         TextField(
-          L10n.Form.Section.Second.Title.value,
+          String(localized: .formSectionSecondTitleValue),
           text: .init(
             get: {
               store.customHeaders[safe: index]?.value ?? ""
@@ -138,7 +138,7 @@ struct FormPage: View {
       label: {
         Label(
           title: {
-            Text(L10n.Form.Section.Second.Title.addButton)
+            Text(.formSectionSecondTitleAddButton)
               .offset(x: -12)
           },
           icon: {
@@ -164,7 +164,7 @@ struct FormPage: View {
         store.send(.connect, animation: .default)
       },
       label: {
-        Text(L10n.Form.Section.Third.Title.connectButton)
+        Text(.formSectionThirdTitleConnectButton)
           .frame(maxWidth: .infinity)
       }
     )
@@ -177,7 +177,7 @@ private extension View {
   func keyboardToolbar(closeAction: @escaping () -> Void) -> some View {
     toolbar {
       ToolbarItemGroup(placement: .keyboard) {
-        Button(L10n.Form.Keyboard.Title.closeButton, action: closeAction)
+        Button(.formKeyboardTitleCloseButton, action: closeAction)
           .frame(maxWidth: .infinity, alignment: .trailing)
       }
     }

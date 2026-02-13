@@ -78,20 +78,20 @@ public struct InfoReducer: Sendable {
       case .checkDeleteAllData:
         state.alert = AlertState(
           title: {
-            TextState(L10n.Info.Alert.Confirm.Title.message)
+            TextState(.infoAlertConfirmTitleMessage)
           },
           actions: {
             ButtonState(
               role: .cancel,
               label: {
-                TextState(L10n.Alert.Button.Title.cancel)
+                TextState(.alertButtonTitleCancel)
               }
             )
             ButtonState(
               role: .destructive,
               action: .deleteAllData,
               label: {
-                TextState(L10n.Alert.Button.Title.delete)
+                TextState(.alertButtonTitleDelete)
               }
             )
           }
@@ -117,7 +117,7 @@ public struct InfoReducer: Sendable {
         return .none
       case .error(.deleteAllData):
         state.alert = AlertState {
-          TextState(L10n.Info.Alert.DeletionFailed.Title.message)
+          TextState(.infoAlertDeletionFailedTitleMessage)
         }
         return .none
       case .error:
