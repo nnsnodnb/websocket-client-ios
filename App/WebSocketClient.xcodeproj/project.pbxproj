@@ -80,7 +80,9 @@
 				CFFF581629E98D3B0037AA85 /* Products */,
 				CFD5AB9329F526F700765E48 /* Frameworks */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		CFFF581629E98D3B0037AA85 /* Products */ = {
 			isa = PBXGroup;

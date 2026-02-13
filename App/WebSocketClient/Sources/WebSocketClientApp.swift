@@ -12,18 +12,18 @@ import XCTestDynamicOverlay
 
 @main
 struct WebSocketClientApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self)
-    var appDelegate
+  @UIApplicationDelegateAdaptor(AppDelegate.self)
+  var appDelegate
 
-    var body: some Scene {
-        WindowGroup {
-            if !_XCTIsTesting {
-                RootPage(
-                    store: Store(initialState: RootReducer.State()) {
-                        RootReducer()
-                    }
-                )
-            }
-        }
+  var body: some Scene {
+    WindowGroup {
+      if !_XCTIsTesting {
+        RootPage(
+          store: Store(initialState: RootReducer.State()) {
+            RootReducer()
+          }
+        )
+      }
     }
+  }
 }

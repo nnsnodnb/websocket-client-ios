@@ -10,163 +10,163 @@ import ComposableArchitecture
 import XCTest
 
 final class HistoryListReducerTests: XCTestCase {
-    @MainActor
-    func testSetNavigation() async throws {
-        let history = HistoryEntity(
-            id: .init(0),
-            url: URL(string: "wss://echo.websocket.org")!,
-            customHeaders: [],
-            messages: [],
-            isConnectionSuccess: true,
-            createdAt: .init()
-        )
-        let databaseClient = DatabaseClient(
-            fetchHistories: { _ in [history] },
-            addHistory: { _ in },
-            updateHistory: { _ in },
-            deleteHistory: { _ in },
-            deleteAllData: {}
-        )
-        let store = TestStore(
-            initialState: HistoryListReducer.State()
-        ) {
-            HistoryListReducer()
-                .dependency(databaseClient)
-        }
-
-        await store.send(.fetch)
-        await store.receive(\.fetchResponse, [history]) {
-            $0.histories = .init(uniqueElements: [history])
-        }
-
-        // some
-        await store.send(.setNavigation(history)) {
-            $0.paths = [.historyDetail]
-            $0.selectionHistory = .init(.init(history: history), id: history)
-        }
-
-        // none
-        await store.send(.setNavigation(nil)) {
-            $0.paths = []
-            $0.selectionHistory = nil
-        }
+  @MainActor
+  func testSetNavigation() async throws {
+    let history = HistoryEntity(
+      id: .init(0),
+      url: URL(string: "wss://echo.websocket.org")!,
+      customHeaders: [],
+      messages: [],
+      isConnectionSuccess: true,
+      createdAt: .init()
+    )
+    let databaseClient = DatabaseClient(
+      fetchHistories: { _ in [history] },
+      addHistory: { _ in },
+      updateHistory: { _ in },
+      deleteHistory: { _ in },
+      deleteAllData: {}
+    )
+    let store = TestStore(
+      initialState: HistoryListReducer.State()
+    ) {
+      HistoryListReducer()
+        .dependency(databaseClient)
     }
 
-    @MainActor
-    func testDeleteHistorySuccess() async throws {
-        let history = HistoryEntity(
-            id: .init(0),
-            url: URL(string: "wss://echo.websocket.org")!,
-            customHeaders: [],
-            messages: [],
-            isConnectionSuccess: true,
-            createdAt: .init()
-        )
-        let databaseClient = DatabaseClient(
-            fetchHistories: { _ in [history] },
-            addHistory: { _ in },
-            updateHistory: { _ in },
-            deleteHistory: { _ in },
-            deleteAllData: {}
-        )
-        let store = TestStore(
-            initialState: HistoryListReducer.State()
-        ) {
-            HistoryListReducer()
-                .dependency(databaseClient)
-        }
-
-        await store.send(.fetch)
-        await store.receive(\.fetchResponse, [history]) {
-            $0.histories = .init(uniqueElements: [history])
-        }
-
-        // delete success
-        await store.send(.deleteHistory(.init(integer: 0)))
-        await store.receive(\.deleteHistoryResponse, history) {
-            $0.histories = .init(uniqueElements: [])
-        }
+    await store.send(.fetch)
+    await store.receive(\.fetchResponse, [history]) {
+      $0.histories = .init(uniqueElements: [history])
     }
 
-    @MainActor
-    func testDeleteHistoryFailure() async throws {
-        enum Error: Swift.Error {
-            case delete
-        }
-
-        let history = HistoryEntity(
-            id: .init(0),
-            url: URL(string: "wss://echo.websocket.org")!,
-            customHeaders: [],
-            messages: [],
-            isConnectionSuccess: true,
-            createdAt: .init()
-        )
-        let databaseClient = DatabaseClient(
-            fetchHistories: { _ in [history] },
-            addHistory: { _ in },
-            updateHistory: { _ in },
-            deleteHistory: { _ in throw Error.delete },
-            deleteAllData: {}
-        )
-        let store = TestStore(
-            initialState: HistoryListReducer.State()
-        ) {
-            HistoryListReducer()
-                .dependency(databaseClient)
-        }
-
-        await store.send(.fetch)
-        await store.receive(\.fetchResponse, [history]) {
-            $0.histories = .init(uniqueElements: [history])
-        }
-
-        // delete failure
-        await store.send(.deleteHistory(.init(integer: 0)))
-        await store.receive(\.error.deleteHistory)
+    // some
+    await store.send(.setNavigation(history)) {
+      $0.paths = [.historyDetail]
+      $0.selectionHistory = .init(.init(history: history), id: history)
     }
 
-    @MainActor
-    func testHistoryDetailDeleted() async throws {
-        let history = HistoryEntity(
-            id: .init(0),
-            url: URL(string: "wss://echo.websocket.org")!,
-            customHeaders: [],
-            messages: [],
-            isConnectionSuccess: true,
-            createdAt: .init()
-        )
-        let databaseClient = DatabaseClient(
-            fetchHistories: { _ in [history] },
-            addHistory: { _ in },
-            updateHistory: { _ in },
-            deleteHistory: { _ in },
-            deleteAllData: {}
-        )
-        let store = TestStore(
-            initialState: HistoryListReducer.State()
-        ) {
-            HistoryListReducer()
-                .dependency(databaseClient)
-        }
-
-        await store.send(.fetch)
-        await store.receive(\.fetchResponse, [history]) {
-            $0.histories = .init(uniqueElements: [history])
-        }
-
-        await store.send(.setNavigation(history)) {
-            $0.paths = [.historyDetail]
-            $0.selectionHistory = .init(.init(history: history), id: history)
-        }
-
-        // deleted
-        await store.send(.historyDetail(.deleted)) {
-            $0.histories = .init(uniqueElements: [])
-        }
-        await store.receive(\.setNavigation, nil) {
-            $0.paths = []
-            $0.selectionHistory = nil
-        }
+    // none
+    await store.send(.setNavigation(nil)) {
+      $0.paths = []
+      $0.selectionHistory = nil
     }
+  }
+
+  @MainActor
+  func testDeleteHistorySuccess() async throws {
+    let history = HistoryEntity(
+      id: .init(0),
+      url: URL(string: "wss://echo.websocket.org")!,
+      customHeaders: [],
+      messages: [],
+      isConnectionSuccess: true,
+      createdAt: .init()
+    )
+    let databaseClient = DatabaseClient(
+      fetchHistories: { _ in [history] },
+      addHistory: { _ in },
+      updateHistory: { _ in },
+      deleteHistory: { _ in },
+      deleteAllData: {}
+    )
+    let store = TestStore(
+      initialState: HistoryListReducer.State()
+    ) {
+      HistoryListReducer()
+        .dependency(databaseClient)
+    }
+
+    await store.send(.fetch)
+    await store.receive(\.fetchResponse, [history]) {
+      $0.histories = .init(uniqueElements: [history])
+    }
+
+    // delete success
+    await store.send(.deleteHistory(.init(integer: 0)))
+    await store.receive(\.deleteHistoryResponse, history) {
+      $0.histories = .init(uniqueElements: [])
+    }
+  }
+
+  @MainActor
+  func testDeleteHistoryFailure() async throws {
+    enum Error: Swift.Error {
+      case delete
+    }
+
+    let history = HistoryEntity(
+      id: .init(0),
+      url: URL(string: "wss://echo.websocket.org")!,
+      customHeaders: [],
+      messages: [],
+      isConnectionSuccess: true,
+      createdAt: .init()
+    )
+    let databaseClient = DatabaseClient(
+      fetchHistories: { _ in [history] },
+      addHistory: { _ in },
+      updateHistory: { _ in },
+      deleteHistory: { _ in throw Error.delete },
+      deleteAllData: {}
+    )
+    let store = TestStore(
+      initialState: HistoryListReducer.State()
+    ) {
+      HistoryListReducer()
+        .dependency(databaseClient)
+    }
+
+    await store.send(.fetch)
+    await store.receive(\.fetchResponse, [history]) {
+      $0.histories = .init(uniqueElements: [history])
+    }
+
+    // delete failure
+    await store.send(.deleteHistory(.init(integer: 0)))
+    await store.receive(\.error.deleteHistory)
+  }
+
+  @MainActor
+  func testHistoryDetailDeleted() async throws {
+    let history = HistoryEntity(
+      id: .init(0),
+      url: URL(string: "wss://echo.websocket.org")!,
+      customHeaders: [],
+      messages: [],
+      isConnectionSuccess: true,
+      createdAt: .init()
+    )
+    let databaseClient = DatabaseClient(
+      fetchHistories: { _ in [history] },
+      addHistory: { _ in },
+      updateHistory: { _ in },
+      deleteHistory: { _ in },
+      deleteAllData: {}
+    )
+    let store = TestStore(
+      initialState: HistoryListReducer.State()
+    ) {
+      HistoryListReducer()
+        .dependency(databaseClient)
+    }
+
+    await store.send(.fetch)
+    await store.receive(\.fetchResponse, [history]) {
+      $0.histories = .init(uniqueElements: [history])
+    }
+
+    await store.send(.setNavigation(history)) {
+      $0.paths = [.historyDetail]
+      $0.selectionHistory = .init(.init(history: history), id: history)
+    }
+
+    // deleted
+    await store.send(.historyDetail(.deleted)) {
+      $0.histories = .init(uniqueElements: [])
+    }
+    await store.receive(\.setNavigation, nil) {
+      $0.paths = []
+      $0.selectionHistory = nil
+    }
+  }
 }
