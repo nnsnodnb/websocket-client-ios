@@ -8,7 +8,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  danger:
+  swiftlint:
     runs-on: ubuntu-latest
 
     permissions:
