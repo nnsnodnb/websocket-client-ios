@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   danger:
-    runs-on: macos-15
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
