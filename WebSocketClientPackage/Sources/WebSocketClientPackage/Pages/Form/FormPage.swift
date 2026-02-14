@@ -177,8 +177,12 @@ private extension View {
   func keyboardToolbar(closeAction: @escaping () -> Void) -> some View {
     toolbar {
       ToolbarItemGroup(placement: .keyboard) {
-        Button(.formKeyboardTitleCloseButton, action: closeAction)
-          .frame(maxWidth: .infinity, alignment: .trailing)
+        Spacer()
+        Button(action: closeAction) {
+          Text(.formKeyboardTitleCloseButton)
+            .bold()
+        }
+        .padding(.trailing, 8)
       }
     }
   }
