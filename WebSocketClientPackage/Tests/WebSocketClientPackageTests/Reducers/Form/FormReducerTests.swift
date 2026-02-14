@@ -90,7 +90,7 @@ final class FormReducerTests: XCTestCase {
 
     // empty index
     await store.send(.customHeaderNameChanged(0, "Authorization"))
-    
+
     // add & update
     await store.send(.addCustomHeader) {
       $0.customHeaders = [
