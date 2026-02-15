@@ -6,6 +6,8 @@
 //
 
 import ComposableArchitecture
+import Dependencies
+import SwiftData
 import SwiftUI
 import WebSocketClientPackage
 import XCTestDynamicOverlay
@@ -15,6 +17,9 @@ struct WebSocketClientApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self)
   var appDelegate
 
+  @Dependency(\.modelContext.make)
+  private var modelContext
+
   var body: some Scene {
     WindowGroup {
       if !_XCTIsTesting {
@@ -23,6 +28,7 @@ struct WebSocketClientApp: App {
             RootReducer()
           }
         )
+        .modelContext(modelContext())
       }
     }
   }

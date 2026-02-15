@@ -9,21 +9,21 @@ import Foundation
 import SwiftData
 
 @Model
-package class HistoryModel: Hashable {
+public class HistoryModel: Hashable {
   // MARK: - Properties
   @Attribute(.unique)
-  package var id: UUID
-  package var urlString: String
-  package var isConnectionSuccess: Bool
-  package var createdAt: Date
+  public var id: UUID
+  public var urlString: String
+  public var isConnectionSuccess: Bool
+  public var createdAt: Date
 
-  @Relationship(deleteRule: .cascade, inverse: \CustomHeaderModel.id)
-  package var customHeaders: [CustomHeaderModel] = []
-  @Relationship(deleteRule: .cascade, inverse: \MessageModel.id)
-  package var messages: [MessageModel] = []
+  @Relationship(deleteRule: .cascade, inverse: \CustomHeaderModel.history)
+  public var customHeaders: [CustomHeaderModel]
+  @Relationship(deleteRule: .cascade, inverse: \MessageModel.history)
+  public var messages: [MessageModel]
 
   // MARK: - Initialize
-  package init(
+  public init(
     id: UUID,
     urlString: String,
     isConnectionSuccess: Bool = false,

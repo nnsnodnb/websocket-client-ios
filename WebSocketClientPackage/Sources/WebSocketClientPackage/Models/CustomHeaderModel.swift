@@ -9,20 +9,20 @@ import Foundation
 import SwiftData
 
 @Model
-package class CustomHeaderModel: Hashable {
+public class CustomHeaderModel: Hashable {
   // MARK: - Properties
   @Attribute(.unique)
-  package var id: UUID
-  package var name: String
-  package var value: String
+  public var id: UUID
+  public var name: String
+  public var value: String
 
-  @Relationship(deleteRule: .cascade, inverse: \HistoryModel.id)
-  package var history: HistoryModel?
+  @Relationship public var history: HistoryModel
 
   // MARK: - Initialize
-  package init(id: UUID, name: String, value: String) {
+  public init(id: UUID, name: String, value: String, history: HistoryModel) {
     self.id = id
     self.name = name
     self.value = value
+    self.history = history
   }
 }

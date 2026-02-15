@@ -9,22 +9,21 @@ import Foundation
 import SwiftData
 
 @Model
-package class MessageModel: Hashable {
+public class MessageModel: Hashable {
   // MARK: - Properties
   @Attribute(.unique)
-  package var id: UUID
-  package var text: String
-  package var createdAt: Date
+  public var id: UUID
+  public var text: String
+  public var createdAt: Date
 
-  @Relationship(deleteRule: .cascade, inverse: \HistoryModel.id)
-  package var history: HistoryModel?
+  @Relationship public var history: HistoryModel
 
   // MARK: - Initialize
-  package init(
+  public init(
     id: UUID,
     text: String,
     createdAt: Date = .init(),
-    history: HistoryModel? = nil,
+    history: HistoryModel,
   ) {
     self.id = id
     self.text = text
