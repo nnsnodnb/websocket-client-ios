@@ -6,23 +6,24 @@
 //
 
 import ComposableArchitecture
+import DependenciesTestSupport
 @testable import WebSocketClientPackage
-import XCTest
+import Testing
 
 @MainActor
-final class AppIconListReducerTests: XCTestCase {
-  func testAppIconChanged() async throws {
-    let application = ApplicationClient(
-      canOpenURL: { _ in true },
-      open: { _ in true },
-      setAlternateIconName: { _ in }
-    )
-    let store = TestStore(
-      initialState: AppIconListReducer.State()
-    ) {
-      AppIconListReducer()
-        .dependency(application)
+struct AppIconListReducerTests {
+  @Test(
+    .dependencies {
+      $0.application.setAlternateIconName = { _ in }
     }
+  )
+  func testAppIconChanged() async throws {
+    let store = TestStore(
+      initialState: AppIconListReducer.State(),
+      reducer: {
+        AppIconListReducer()
+      }
+    )
 
     // default
     await store.send(.appIconChanged(.default))

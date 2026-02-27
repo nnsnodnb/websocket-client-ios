@@ -6,11 +6,14 @@
 //
 
 import ComposableArchitecture
+import Foundation
+import DependenciesTestSupport
 @testable import WebSocketClientPackage
-import XCTest
+import Testing
 
-final class HistoryListReducerTests: XCTestCase {
-  @MainActor
+@MainActor
+struct HistoryListReducerTests {
+  @Test
   func testSetNavigation() async throws {
     let history = HistoryEntity(
       id: .init(0),
@@ -20,39 +23,37 @@ final class HistoryListReducerTests: XCTestCase {
       isConnectionSuccess: true,
       createdAt: .init()
     )
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [history] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in },
-      deleteAllData: {}
-    )
-    let store = TestStore(
-      initialState: HistoryListReducer.State()
-    ) {
-      HistoryListReducer()
-        .dependency(databaseClient)
-    }
 
-    await store.send(.fetch)
-    await store.receive(\.fetchResponse, [history]) {
-      $0.histories = .init(uniqueElements: [history])
-    }
+    await withDependencies {
+      $0.database.fetchHistories = { _ in [history] }
+    } operation: {
+      let store = TestStore(
+        initialState: HistoryListReducer.State(),
+        reducer: {
+          HistoryListReducer()
+        },
+      )
 
-    // some
-    await store.send(.setNavigation(history)) {
-      $0.paths = [.historyDetail]
-      $0.selectionHistory = .init(.init(history: history), id: history)
-    }
+      await store.send(.fetch)
+      await store.receive(\.fetchResponse, [history]) {
+        $0.histories = .init(uniqueElements: [history])
+      }
 
-    // none
-    await store.send(.setNavigation(nil)) {
-      $0.paths = []
-      $0.selectionHistory = nil
+      // some
+      await store.send(.setNavigation(history)) {
+        $0.paths = [.historyDetail]
+        $0.selectionHistory = .init(.init(history: history), id: history)
+      }
+
+      // none
+      await store.send(.setNavigation(nil)) {
+        $0.paths = []
+        $0.selectionHistory = nil
+      }
     }
   }
 
-  @MainActor
+  @Test
   func testDeleteHistorySuccess() async throws {
     let history = HistoryEntity(
       id: .init(0),
@@ -62,33 +63,31 @@ final class HistoryListReducerTests: XCTestCase {
       isConnectionSuccess: true,
       createdAt: .init()
     )
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [history] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in },
-      deleteAllData: {}
-    )
-    let store = TestStore(
-      initialState: HistoryListReducer.State()
-    ) {
-      HistoryListReducer()
-        .dependency(databaseClient)
-    }
 
-    await store.send(.fetch)
-    await store.receive(\.fetchResponse, [history]) {
-      $0.histories = .init(uniqueElements: [history])
-    }
+    await withDependencies {
+      $0.database.fetchHistories = { _ in [history] }
+    } operation: {
+      let store = TestStore(
+        initialState: HistoryListReducer.State(),
+        reducer: {
+          HistoryListReducer()
+        },
+      )
 
-    // delete success
-    await store.send(.deleteHistory(.init(integer: 0)))
-    await store.receive(\.deleteHistoryResponse, history) {
-      $0.histories = .init(uniqueElements: [])
+      await store.send(.fetch)
+      await store.receive(\.fetchResponse, [history]) {
+        $0.histories = .init(uniqueElements: [history])
+      }
+
+      // delete success
+      await store.send(.deleteHistory(.init(integer: 0)))
+      await store.receive(\.deleteHistoryResponse, history) {
+        $0.histories = .init(uniqueElements: [])
+      }
     }
   }
 
-  @MainActor
+  @Test
   func testDeleteHistoryFailure() async throws {
     enum Error: Swift.Error {
       case delete
@@ -102,31 +101,30 @@ final class HistoryListReducerTests: XCTestCase {
       isConnectionSuccess: true,
       createdAt: .init()
     )
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [history] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in throw Error.delete },
-      deleteAllData: {}
-    )
-    let store = TestStore(
-      initialState: HistoryListReducer.State()
-    ) {
-      HistoryListReducer()
-        .dependency(databaseClient)
-    }
 
-    await store.send(.fetch)
-    await store.receive(\.fetchResponse, [history]) {
-      $0.histories = .init(uniqueElements: [history])
-    }
+    await withDependencies {
+      $0.database.fetchHistories = { _ in [history] }
+      $0.database.deleteHistory = { _ in throw Error.delete }
+    } operation: {
+      let store = TestStore(
+        initialState: HistoryListReducer.State(),
+        reducer: {
+          HistoryListReducer()
+        },
+      )
 
-    // delete failure
-    await store.send(.deleteHistory(.init(integer: 0)))
-    await store.receive(\.error.deleteHistory)
+      await store.send(.fetch)
+      await store.receive(\.fetchResponse, [history]) {
+        $0.histories = .init(uniqueElements: [history])
+      }
+
+      // delete failure
+      await store.send(.deleteHistory(.init(integer: 0)))
+      await store.receive(\.error.deleteHistory)
+    }
   }
 
-  @MainActor
+  @Test
   func testHistoryDetailDeleted() async throws {
     let history = HistoryEntity(
       id: .init(0),
@@ -136,37 +134,35 @@ final class HistoryListReducerTests: XCTestCase {
       isConnectionSuccess: true,
       createdAt: .init()
     )
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [history] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in },
-      deleteAllData: {}
-    )
-    let store = TestStore(
-      initialState: HistoryListReducer.State()
-    ) {
-      HistoryListReducer()
-        .dependency(databaseClient)
-    }
 
-    await store.send(.fetch)
-    await store.receive(\.fetchResponse, [history]) {
-      $0.histories = .init(uniqueElements: [history])
-    }
+    await withDependencies {
+      $0.database.fetchHistories = { _ in [history] }
+    } operation: {
+      let store = TestStore(
+        initialState: HistoryListReducer.State(),
+        reducer: {
+          HistoryListReducer()
+        },
+      )
 
-    await store.send(.setNavigation(history)) {
-      $0.paths = [.historyDetail]
-      $0.selectionHistory = .init(.init(history: history), id: history)
-    }
+      await store.send(.fetch)
+      await store.receive(\.fetchResponse, [history]) {
+        $0.histories = .init(uniqueElements: [history])
+      }
 
-    // deleted
-    await store.send(.historyDetail(.deleted)) {
-      $0.histories = .init(uniqueElements: [])
-    }
-    await store.receive(\.setNavigation, nil) {
-      $0.paths = []
-      $0.selectionHistory = nil
+      await store.send(.setNavigation(history)) {
+        $0.paths = [.historyDetail]
+        $0.selectionHistory = .init(.init(history: history), id: history)
+      }
+
+      // deleted
+      await store.send(.historyDetail(.deleted)) {
+        $0.histories = .init(uniqueElements: [])
+      }
+      await store.receive(\.setNavigation, nil) {
+        $0.paths = []
+        $0.selectionHistory = nil
+      }
     }
   }
 }

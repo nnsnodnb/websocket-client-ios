@@ -6,34 +6,39 @@
 //
 
 import ComposableArchitecture
+import DependenciesTestSupport
+import Foundation
 @testable import WebSocketClientPackage
-import XCTest
+import Testing
 
-final class InfoReducerTests: XCTestCase {
-  @MainActor
-  func testStart() async {
-    let bundle = BundleClient(
-      shortVersionString: { "1.0.0" }
-    )
-    let store = TestStore(
-      initialState: InfoReducer.State()
-    ) {
-      InfoReducer()
-        .dependency(bundle)
+@MainActor
+struct InfoReducerTests {
+  @Test(
+    .dependencies {
+      $0.bundle.shortVersionString = { "1.0.0" }
     }
+  )
+  func testStart() async {
+    let store = TestStore(
+      initialState: InfoReducer.State(),
+      reducer: {
+        InfoReducer()
+      },
+    )
 
     await store.send(.start) {
       $0.version = "1.0.0"
     }
   }
 
-  @MainActor
+  @Test
   func testURLSelected() async {
     let store = TestStore(
-      initialState: InfoReducer.State()
-    ) {
-      InfoReducer()
-    }
+      initialState: InfoReducer.State(),
+      reducer: {
+        InfoReducer()
+      },
+    )
 
     await store.send(.urlSelected(URL(string: "https://github.com/nnsnodnb/websocket-client-ios")!)) {
       $0.url = URL(string: "https://github.com/nnsnodnb/websocket-client-ios")
@@ -43,31 +48,32 @@ final class InfoReducerTests: XCTestCase {
     }
   }
 
-  @MainActor
-  func testBrowserOpen() async {
-    let application = ApplicationClient(
-      canOpenURL: { _ in true },
-      open: { _ in true },
-      setAlternateIconName: { _ in }
-    )
-    let store = TestStore(
-      initialState: InfoReducer.State()
-    ) {
-      InfoReducer()
-        .dependency(application)
+  @Test(
+    .dependencies {
+      $0.application.canOpenURL = { _ in true }
+      $0.application.open = { _ in true }
     }
+  )
+  func testBrowserOpen() async {
+    let store = TestStore(
+      initialState: InfoReducer.State(),
+      reducer: {
+        InfoReducer()
+      },
+    )
 
     await store.send(.browserOpen(URL(string: "https://example.com")!))
     await store.receive(\.browserOpenResponse)
   }
 
-  @MainActor
+  @Test
   func testCheckDeleteAllData() async {
     let store = TestStore(
-      initialState: InfoReducer.State()
-    ) {
-      InfoReducer()
-    }
+      initialState: InfoReducer.State(),
+      reducer: {
+        InfoReducer()
+      },
+    )
 
     await store.send(.checkDeleteAllData) {
       $0.alert = AlertState(
@@ -96,21 +102,18 @@ final class InfoReducerTests: XCTestCase {
     }
   }
 
-  @MainActor
-  func testDeleteAllDataSuccess() async {
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in },
-      deleteAllData: {}
-    )
-    let store = TestStore(
-      initialState: InfoReducer.State()
-    ) {
-      InfoReducer()
-        .dependency(databaseClient)
+  @Test(
+    .dependencies {
+      $0.database.deleteAllData = {}
     }
+  )
+  func testDeleteAllDataSuccess() async {
+    let store = TestStore(
+      initialState: InfoReducer.State(),
+      reducer: {
+        InfoReducer()
+      },
+    )
 
     await store.send(.checkDeleteAllData) {
       $0.alert = AlertState(
@@ -138,74 +141,68 @@ final class InfoReducerTests: XCTestCase {
     await store.receive(\.deleteAllDataResponse)
   }
 
-  @MainActor
+  @Test
   func testDeleteAllDataFailure() async {
     enum Error: Swift.Error {
       case delete
     }
 
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in },
-      deleteAllData: { throw Error.delete }
-    )
-    let store = TestStore(
-      initialState: InfoReducer.State()
-    ) {
-      InfoReducer()
-        .dependency(databaseClient)
-    }
-
-    await store.send(.checkDeleteAllData) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.infoAlertConfirmTitleMessage)
+    await withDependencies {
+      $0.database.deleteAllData = { throw Error.delete }
+    } operation: {
+      let store = TestStore(
+        initialState: InfoReducer.State(),
+        reducer: {
+          InfoReducer()
         },
-        actions: {
-          ButtonState(
-            role: .cancel,
-            label: {
-              TextState(.alertButtonTitleCancel)
-            }
-          )
-          ButtonState(
-            role: .destructive,
-            action: .deleteAllData,
-            label: {
-              TextState(.alertButtonTitleDelete)
-            }
-          )
-        }
       )
-    }
-    await store.send(.alert(.presented(.deleteAllData)))
-    await store.receive(\.error.deleteAllData) {
-      $0.alert = AlertState {
-        TextState(.infoAlertDeletionFailedTitleMessage)
+
+      await store.send(.checkDeleteAllData) {
+        $0.alert = AlertState(
+          title: {
+            TextState(.infoAlertConfirmTitleMessage)
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState(.alertButtonTitleCancel)
+              }
+            )
+            ButtonState(
+              role: .destructive,
+              action: .deleteAllData,
+              label: {
+                TextState(.alertButtonTitleDelete)
+              }
+            )
+          }
+        )
       }
-    }
-    await store.send(.alert(.dismiss)) {
-      $0.alert = nil
+      await store.send(.alert(.presented(.deleteAllData)))
+      await store.receive(\.error.deleteAllData) {
+        $0.alert = AlertState {
+          TextState(.infoAlertDeletionFailedTitleMessage)
+        }
+      }
+      await store.send(.alert(.dismiss)) {
+        $0.alert = nil
+      }
     }
   }
 
-  @MainActor
-  func testDeleteAllDataCancel() async {
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in },
-      deleteAllData: {}
-    )
-    let store = TestStore(
-      initialState: InfoReducer.State()
-    ) {
-      InfoReducer()
-        .dependency(databaseClient)
+  @Test(
+    .dependencies {
+      $0.database.deleteAllData = {}
     }
+  )
+  func testDeleteAllDataCancel() async {
+    let store = TestStore(
+      initialState: InfoReducer.State(),
+      reducer: {
+        InfoReducer()
+      },
+    )
 
     await store.send(.checkDeleteAllData) {
       $0.alert = AlertState(
