@@ -36,15 +36,22 @@ struct HistoryListPage: View {
   }
 
   private var emptyView: some View {
-    VStack(spacing: 16) {
-      Image(systemSymbol: .noteText)
-        .resizable()
-        .frame(width: 56, height: 56)
-      Text(.historyListContentTitleEmpty)
-        .font(.title2)
-        .fontWeight(.bold)
+    ContentUnavailableView(
+      label: {
+        VStack(spacing: 16) {
+          Image(systemSymbol: .noteText)
+            .resizable()
+            .frame(width: 56, height: 56)
+          Text(.historyListContentTitleEmpty)
+            .font(.title2)
+            .fontWeight(.bold)
+        }
+        .foregroundStyle(.orange)
+      }
+    )
+    .background {
+      Color(UIColor.systemGroupedBackground)
     }
-    .foregroundColor(.orange)
   }
 
   private var list: some View {
