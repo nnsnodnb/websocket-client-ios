@@ -13,36 +13,54 @@ public struct RootPage: View {
   let store: StoreOf<RootReducer>
 
   public var body: some View {
-    TabView {
-      formPage()
-      historyPage()
-      infoPage()
+    if store.migratedToSwiftData {
+      TabView {
+        formPage()
+        historyPage()
+        infoPage()
+      }
+    } else {
+      ProgressView()
+        .progressViewStyle(.circular)
+        .scaleEffect(2)
+        .onAppear {
+          store.send(.migrateDatabase)
+        }
     }
   }
 
   private func formPage() -> some View {
     FormPage(
-      store: Store(initialState: FormReducer.State()) {
-        FormReducer()
-      }
+      store: Store(
+        initialState: FormReducer.State(),
+        reducer: {
+          FormReducer()
+        },
+      )
     )
     .tabItem(systemSymbol: .squareAndPencil, text: .tabBarTitleConnection)
   }
 
   private func historyPage() -> some View {
     HistoryListPage(
-      store: Store(initialState: HistoryListReducer.State()) {
-        HistoryListReducer()
-      }
+      store: Store(
+        initialState: HistoryListReducer.State(),
+        reducer: {
+          HistoryListReducer()
+        },
+      )
     )
     .tabItem(systemSymbol: .trayFullFill, text: .tabBarTitleHistories)
   }
 
   private func infoPage() -> some View {
     InfoPage(
-      store: Store(initialState: InfoReducer.State()) {
-        InfoReducer()
-      }
+      store: Store(
+        initialState: InfoReducer.State(),
+        reducer: {
+          InfoReducer()
+        },
+      )
     )
     .tabItem(systemSymbol: .infoCircleFill, text: .tabBarTitleInfo)
   }
@@ -68,9 +86,12 @@ private extension View {
 struct RootPage_Previews: PreviewProvider {
   static var previews: some View {
     RootPage(
-      store: Store(initialState: RootReducer.State()) {
-        RootReducer()
-      }
+      store: Store(
+        initialState: RootReducer.State(migratedToSwiftData: true),
+        reducer: {
+          RootReducer()
+        },
+      )
     )
   }
 }

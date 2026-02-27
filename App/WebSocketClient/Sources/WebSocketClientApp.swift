@@ -24,9 +24,14 @@ struct WebSocketClientApp: App {
     WindowGroup {
       if !_XCTIsTesting {
         RootPage(
-          store: Store(initialState: RootReducer.State()) {
-            RootReducer()
-          }
+          store: Store(
+            initialState: RootReducer.State(
+              migratedToSwiftData: UserDefaults.standard.bool(forKey: "key_migrated_to_swift_data"),
+            ),
+            reducer: {
+              RootReducer()
+            },
+          )
         )
         .modelContext(modelContext())
       }

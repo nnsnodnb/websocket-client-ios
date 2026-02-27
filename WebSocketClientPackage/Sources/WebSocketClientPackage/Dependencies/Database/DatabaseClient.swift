@@ -26,15 +26,12 @@ public extension DatabaseClient {
     // MARK: - Properties
     public static let shared = DatabaseActor()
 
-    fileprivate static let preview = DatabaseActor(inMemory: true)
-    fileprivate static let test = DatabaseActor(inMemory: true)
-
     fileprivate let container: NSPersistentContainer
 
     @Dependency(\.modelContext.make)
     private var modelContext
-    @Shared(.appStorage("key_migrated_to_swift_data"))
-    private var migratedToSwiftData = false
+    @Dependency(\.uuid)
+    private var uuid
 
     // MARK: - Initialize
     private init(inMemory: Bool = false) {
@@ -62,56 +59,57 @@ public extension DatabaseClient {
       container.viewContext.automaticallyMergesChangesFromParent = true
     }
 
-    func migrateCoreDataToSwiftData() throws {
-      guard !migratedToSwiftData else { return }
+    func migrateCoreDataToSwiftData() throws { // swiftlint:disable:this cyclomatic_complexity
+      guard !UserDefaults.standard.bool(forKey: "key_migrated_to_swift_data") else { return }
       let request = CDHistory.fetchRequest()
       request.sortDescriptors = [.init(key: "createdAt", ascending: true)]
       let histories = try container.viewContext.fetch(request)
       guard !histories.isEmpty else {
-        $migratedToSwiftData.withLock { $0 = true }
+        UserDefaults.standard.set(true, forKey: "key_migrated_to_swift_data")
         return
       }
 
       let context = modelContext()
       for oldHistory in histories {
-        guard let id = oldHistory.id,
-              let urlString = oldHistory.urlString,
+        guard let urlString = oldHistory.urlString,
               let createdAt = oldHistory.createdAt else { continue }
         // CDHistory → HistoryModel
         let newHistory = HistoryModel(
-          id: id,
+          id: uuid.callAsFunction(),
           urlString: urlString,
           isConnectionSuccess: oldHistory.isConnectionSuccess,
           createdAt: createdAt,
         )
 
+        context.insert(newHistory)
+
         // CDMessage → MessageModel
         if let messages = oldHistory.messages as? Set<CDMessage> {
           for oldMessage in messages {
-            guard let id = oldMessage.id,
-                  let text = oldMessage.text,
+            guard let text = oldMessage.text,
                   let createdAt = oldMessage.createdAt else { continue }
             let newMessage = MessageModel(
-              id: id,
+              id: uuid.callAsFunction(),
               text: text,
               createdAt: createdAt,
               history: newHistory,
             )
+            context.insert(newMessage)
           }
         }
 
         // CDCustomHeader → CustomHeaderModel
         if let customHeaders = oldHistory.customHeaders as? Set<CDCustomHeader> {
           for oldCustomHeader in customHeaders {
-            guard let id = oldCustomHeader.id,
-                  let name = oldCustomHeader.name,
+            guard let name = oldCustomHeader.name,
                   let value = oldCustomHeader.value else { continue }
             let newCustomHeader = CustomHeaderModel(
-              id: id,
+              id: uuid.callAsFunction(),
               name: name,
               value: value,
               history: newHistory,
             )
+            context.insert(newCustomHeader)
           }
         }
       }
@@ -119,7 +117,12 @@ public extension DatabaseClient {
       if context.hasChanges {
         try context.save()
       }
-      $migratedToSwiftData.withLock { $0 = true }
+      UserDefaults.standard.set(true, forKey: "key_migrated_to_swift_data")
+
+      guard !histories.isEmpty else { return }
+      histories.forEach(container.viewContext.delete)
+      guard container.viewContext.hasChanges else { return }
+      try container.viewContext.save()
     }
 
     func fetchHistories(_ predicate: Predicate<HistoryModel>? = nil) throws -> [HistoryEntity] {
