@@ -19,10 +19,7 @@ struct TestRootReducerMigrateDatabase {
   )
   func testYetMigrate() async throws {
     let store = TestStore(
-      initialState: RootReducer.State(
-        formAboveBannerAdUnitID: "ca-app-pub-3940256099942544/2435281174",
-        migratedToSwiftData: false,
-      ),
+      initialState: RootReducer.State(migratedToSwiftData: false),
       reducer: {
         RootReducer()
       },
@@ -37,10 +34,7 @@ struct TestRootReducerMigrateDatabase {
   @Test
   func testAlreadyMigrated() async throws {
     let store = TestStore(
-      initialState: RootReducer.State(
-        formAboveBannerAdUnitID: "ca-app-pub-3940256099942544/2435281174",
-        migratedToSwiftData: true
-      ),
+      initialState: RootReducer.State(migratedToSwiftData: true),
       reducer: {
         RootReducer()
       },

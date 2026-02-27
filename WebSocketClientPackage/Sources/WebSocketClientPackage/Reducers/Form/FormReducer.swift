@@ -13,6 +13,7 @@ public struct FormReducer {
   // MARK: - State
   @ObservableState
   public struct State: Sendable, Equatable {
+    var adUnitID: String?
     var url: URL?
     var customHeaders: [CustomHeaderEntity] = []
     var isConnectButtonDisable = true
@@ -21,6 +22,7 @@ public struct FormReducer {
 
   // MARK: - Action
   public enum Action: Sendable, Equatable {
+    case onAppear
     case urlChanged(String)
     case addCustomHeader
     case removeCustomHeader(IndexSet)
@@ -32,6 +34,8 @@ public struct FormReducer {
     case connection(PresentationAction<ConnectionReducer.Action>)
   }
 
+  @Dependency(\.adUnitID)
+  var adUnitID
   @Dependency(\.date)
   var date
   @Dependency(\.uuid)
@@ -40,6 +44,9 @@ public struct FormReducer {
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
+      case .onAppear:
+        state.adUnitID = try? adUnitID.formAboveBannerAdUnitID()
+        return .none
       case let .urlChanged(text):
         guard let url = URL(string: text) else {
           state.url = nil

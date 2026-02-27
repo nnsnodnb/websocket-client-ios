@@ -14,15 +14,13 @@ public struct RootReducer: Sendable {
   @ObservableState
   public struct State: Equatable {
     // MARK: - Properties
-    public let formAboveBannerAdUnitID: String
+    public var form: FormReducer.State = .init()
+    public var historyList: HistoryListReducer.State = .init()
+    public var info: InfoReducer.State = .init()
     public var migratedToSwiftData = false
 
     // MARK: - Initialize
-    public init(
-      formAboveBannerAdUnitID: String,
-      migratedToSwiftData: Bool = false
-    ) {
-      self.formAboveBannerAdUnitID = formAboveBannerAdUnitID
+    public init(migratedToSwiftData: Bool = false) {
       self.migratedToSwiftData = migratedToSwiftData
     }
   }
@@ -31,12 +29,24 @@ public struct RootReducer: Sendable {
   public enum Action: Equatable {
     case migrateDatabase
     case migratedDatabase
+    case form(FormReducer.Action)
+    case historyList(HistoryListReducer.Action)
+    case info(InfoReducer.Action)
   }
 
   @Dependency(\.database)
   private var database
 
   public var body: some ReducerOf<Self> {
+    Scope(state: \.form, action: \.form) {
+      FormReducer()
+    }
+    Scope(state: \.historyList, action: \.historyList) {
+      HistoryListReducer()
+    }
+    Scope(state: \.info, action: \.info) {
+      InfoReducer()
+    }
     Reduce { state, action in
       switch action {
       case .migrateDatabase:
@@ -47,6 +57,12 @@ public struct RootReducer: Sendable {
         }
       case .migratedDatabase:
         state.migratedToSwiftData = true
+        return .none
+      case .form:
+        return .none
+      case .historyList:
+        return .none
+      case .info:
         return .none
       }
     }
