@@ -15,11 +15,6 @@ public struct RootReducer: Sendable {
   public struct State: Equatable {
     // MARK: - Properties
     public var migratedToSwiftData = false
-
-    // MARK: - Initialize
-    public init(migratedToSwiftData: Bool = false) {
-      self.migratedToSwiftData = migratedToSwiftData
-    }
   }
 
   // MARK: - Action

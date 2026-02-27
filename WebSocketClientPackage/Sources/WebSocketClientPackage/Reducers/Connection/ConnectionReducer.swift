@@ -32,10 +32,11 @@ public struct ConnectionReducer: Sendable {
     }
 
     // MARK: - Initialize
-    public init(url: URL, history: HistoryEntity) {
+    public init(url: URL, history: HistoryEntity, isShowCustomHeaderList: Bool = false) {
       self.url = url
       self.customHeaders = history.customHeaders
       self.history = history
+      self.isShowCustomHeaderList = isShowCustomHeaderList
     }
   }
 
