@@ -6,17 +6,21 @@
 //
 
 import ComposableArchitecture
+import DependenciesTestSupport
+import Foundation
 @testable import WebSocketClientPackage
-import XCTest
+import Testing
 
-final class FormReducerTests: XCTestCase {
-  @MainActor
+@MainActor
+struct FormReducerTests {
+  @Test
   func testURLChanged() async {
     let store = TestStore(
-      initialState: FormReducer.State()
-    ) {
-      FormReducer()
-    }
+      initialState: FormReducer.State(),
+      reducer: {
+        FormReducer()
+      },
+    )
 
     await store.send(.urlChanged("wss://echo.websocket.org")) {
       $0.url = URL(string: "wss://echo.websocket.org")
@@ -25,15 +29,14 @@ final class FormReducerTests: XCTestCase {
     }
   }
 
-  @MainActor
+  @Test(.dependency(\.uuid, .incrementing))
   func testAddCustomHeader() async {
     let store = TestStore(
-      initialState: FormReducer.State()
-    ) {
-      FormReducer()
-    }
-
-    store.dependencies.uuid = .incrementing
+      initialState: FormReducer.State(),
+      reducer: {
+        FormReducer()
+      },
+    )
 
     await store.send(.addCustomHeader) {
       $0.customHeaders = [
@@ -49,15 +52,14 @@ final class FormReducerTests: XCTestCase {
     }
   }
 
-  @MainActor
+  @Test(.dependency(\.uuid, .incrementing))
   func testRemoveCustomHeader() async {
     let store = TestStore(
-      initialState: FormReducer.State()
-    ) {
-      FormReducer()
-    }
-
-    store.dependencies.uuid = .incrementing
+      initialState: FormReducer.State(),
+      reducer: {
+        FormReducer()
+      },
+    )
 
     // remove exist index
     await store.send(.addCustomHeader) {
@@ -78,13 +80,14 @@ final class FormReducerTests: XCTestCase {
     await store.send(.removeCustomHeader(.init(integer: 1)))
   }
 
-  @MainActor
+  @Test(.dependency(\.uuid, .incrementing))
   func testCustomHeaderNameChanged() async {
     let store = TestStore(
-      initialState: FormReducer.State()
-    ) {
-      FormReducer()
-    }
+      initialState: FormReducer.State(),
+      reducer: {
+        FormReducer()
+      },
+    )
 
     store.dependencies.uuid = .incrementing
 
@@ -109,15 +112,14 @@ final class FormReducerTests: XCTestCase {
     await store.send(.customHeaderNameChanged(1, "Content-Type"))
   }
 
-  @MainActor
+  @Test(.dependency(\.uuid, .incrementing))
   func testCustomHeaderValueChanged() async {
     let store = TestStore(
-      initialState: FormReducer.State()
-    ) {
-      FormReducer()
-    }
-
-    store.dependencies.uuid = .incrementing
+      initialState: FormReducer.State(),
+      reducer: {
+        FormReducer()
+      },
+    )
 
     // empty index
     await store.send(.customHeaderValueChanged(0, "application/json"))
@@ -140,37 +142,40 @@ final class FormReducerTests: XCTestCase {
     await store.send(.customHeaderNameChanged(1, "no-cache"))
   }
 
-  @MainActor
+  @Test
   func testConnect() async {
-    let store = TestStore(
-      initialState: FormReducer.State()
-    ) {
-      FormReducer()
-    }
-
-    await store.send(.urlChanged("wss://echo.websocket.org")) {
-      $0.url = URL(string: "wss://echo.websocket.org")
-      $0.customHeaders = []
-      $0.isConnectButtonDisable = false
-    }
-
-    store.dependencies.uuid = .incrementing
     let now = Date()
-    store.dependencies.date = .constant(now)
 
-    await store.send(.connect) {
-      let history = HistoryEntity(
-        id: .init(0),
-        url: URL(string: "wss://echo.websocket.org")!,
-        customHeaders: [],
-        messages: [],
-        isConnectionSuccess: false,
-        createdAt: now
+    await withDependencies {
+      $0.uuid = .incrementing
+      $0.date = .constant(now)
+    } operation: {
+      let store = TestStore(
+        initialState: FormReducer.State(),
+        reducer: {
+          FormReducer()
+        },
       )
-      $0.connection = .init(
-        url: URL(string: "wss://echo.websocket.org")!,
-        history: history
-      )
+
+      await store.send(.urlChanged("wss://echo.websocket.org")) {
+        $0.url = URL(string: "wss://echo.websocket.org")
+        $0.customHeaders = []
+        $0.isConnectButtonDisable = false
+      }
+      await store.send(.connect) {
+        let history = HistoryEntity(
+          id: .init(0),
+          url: URL(string: "wss://echo.websocket.org")!,
+          customHeaders: [],
+          messages: [],
+          isConnectionSuccess: false,
+          createdAt: now
+        )
+        $0.connection = .init(
+          url: URL(string: "wss://echo.websocket.org")!,
+          history: history
+        )
+      }
     }
   }
 }

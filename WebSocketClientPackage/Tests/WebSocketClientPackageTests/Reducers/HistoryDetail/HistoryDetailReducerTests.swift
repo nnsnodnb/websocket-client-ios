@@ -6,14 +6,15 @@
 //
 
 import ComposableArchitecture
+import Foundation
 @testable import WebSocketClientPackage
-import XCTest
+import Testing
 
-final class HistoryDetailReducerTests: XCTestCase {
+@MainActor
+final class HistoryDetailReducerTests {
   private var history: HistoryEntity!
 
-  override func setUp() {
-    super.setUp()
+  init() {
     history = .init(
       id: .init(0),
       url: URL(string: "wss://echo.websocket.org")!,
@@ -24,18 +25,18 @@ final class HistoryDetailReducerTests: XCTestCase {
     )
   }
 
-  override func tearDown() {
-    super.tearDown()
+  deinit {
     history = nil
   }
 
-  @MainActor
+  @Test
   func testCheckDelete() async throws {
     let store = TestStore(
-      initialState: HistoryDetailReducer.State(history: history)
-    ) {
-      HistoryDetailReducer()
-    }
+      initialState: HistoryDetailReducer.State(history: history),
+      reducer: {
+        HistoryDetailReducer()
+      },
+    )
 
     await store.send(.checkDelete) {
       $0.alert = AlertState(
@@ -61,21 +62,18 @@ final class HistoryDetailReducerTests: XCTestCase {
     }
   }
 
-  @MainActor
-  func testConfirmSuccess() async throws {
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in },
-      deleteAllData: {}
-    )
-    let store = TestStore(
-      initialState: HistoryDetailReducer.State(history: history)
-    ) {
-      HistoryDetailReducer()
-        .dependency(databaseClient)
+  @Test(
+    .dependencies {
+      $0.database.deleteHistory = { _ in }
     }
+  )
+  func testConfirmSuccess() async throws {
+    let store = TestStore(
+      initialState: HistoryDetailReducer.State(history: history),
+      reducer: {
+        HistoryDetailReducer()
+      },
+    )
 
     await store.send(.checkDelete) {
       $0.alert = AlertState(
@@ -104,74 +102,64 @@ final class HistoryDetailReducerTests: XCTestCase {
     await store.receive(\.deleted)
   }
 
-  @MainActor
+  @Test
   func testConfirmFailure() async throws {
     enum Error: Swift.Error {
       case delete
     }
 
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in throw Error.delete },
-      deleteAllData: {}
-    )
-    let store = TestStore(
-      initialState: HistoryDetailReducer.State(history: history)
-    ) {
-      HistoryDetailReducer()
-        .dependency(databaseClient)
-    }
-
-    await store.send(.checkDelete) {
-      $0.alert = AlertState(
-        title: {
-          TextState(.historyDetailAlertConfirmTitleMessage)
+    await withDependencies {
+      $0.database.deleteHistory = { _ in throw Error.delete }
+    } operation: {
+      let store = TestStore(
+        initialState: HistoryDetailReducer.State(history: history),
+        reducer: {
+          HistoryDetailReducer()
         },
-        actions: {
-          ButtonState(
-            role: .cancel,
-            label: {
-              TextState(.alertButtonTitleCancel)
-            }
-          )
-          ButtonState(
-            role: .destructive,
-            action: .send(.confirm),
-            label: {
-              TextState(.alertButtonTitleDelete)
-            }
-          )
-        }
       )
-    }
-    await store.send(.alert(.presented(.confirm)))
-    await store.receive(\.error.delete) {
-      $0.alert = AlertState {
-        TextState(.historyDetailAlertDeletionFailedTitleMessage)
+
+      await store.send(.checkDelete) {
+        $0.alert = AlertState(
+          title: {
+            TextState(.historyDetailAlertConfirmTitleMessage)
+          },
+          actions: {
+            ButtonState(
+              role: .cancel,
+              label: {
+                TextState(.alertButtonTitleCancel)
+              }
+            )
+            ButtonState(
+              role: .destructive,
+              action: .send(.confirm),
+              label: {
+                TextState(.alertButtonTitleDelete)
+              }
+            )
+          }
+        )
+      }
+      await store.send(.alert(.presented(.confirm)))
+      await store.receive(\.error.delete) {
+        $0.alert = AlertState {
+          TextState(.historyDetailAlertDeletionFailedTitleMessage)
+        }
+      }
+      await store.send(.alert(.dismiss)) {
+        $0.alert = nil
       }
     }
-    await store.send(.alert(.dismiss)) {
-      $0.alert = nil
-    }
   }
 
-  @MainActor
+  @Test
   func testConfirmCancel() async throws {
-    let databaseClient = DatabaseClient(
-      fetchHistories: { _ in [] },
-      addHistory: { _ in },
-      updateHistory: { _ in },
-      deleteHistory: { _ in },
-      deleteAllData: {}
-    )
     let store = TestStore(
-      initialState: HistoryDetailReducer.State(history: history)
-    ) {
-      HistoryDetailReducer()
-        .dependency(databaseClient)
-    }
+      initialState: HistoryDetailReducer.State(history: history),
+      reducer: {
+        HistoryDetailReducer()
+      },
+    )
 
     await store.send(.checkDelete) {
       $0.alert = AlertState(
@@ -200,26 +188,28 @@ final class HistoryDetailReducerTests: XCTestCase {
     }
   }
 
-  @MainActor
+  @Test
   func testShowCustomHeaderList() async throws {
     let store = TestStore(
-      initialState: HistoryDetailReducer.State(history: history)
-    ) {
-      HistoryDetailReducer()
-    }
+      initialState: HistoryDetailReducer.State(history: history),
+      reducer: {
+        HistoryDetailReducer()
+      },
+    )
 
     await store.send(.showedCustomHeaderList(true)) {
       $0.isShowCustomHeaderList = true
     }
   }
 
-  @MainActor
+  @Test
   func testDismissCustomHeaderList() async throws {
     let store = TestStore(
-      initialState: HistoryDetailReducer.State(history: history)
-    ) {
-      HistoryDetailReducer()
-    }
+      initialState: HistoryDetailReducer.State(history: history),
+      reducer: {
+        HistoryDetailReducer()
+      },
+    )
 
     // already dismiss
     await store.send(.showedCustomHeaderList(false))

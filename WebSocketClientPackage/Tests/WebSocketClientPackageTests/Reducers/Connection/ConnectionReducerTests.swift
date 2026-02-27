@@ -6,15 +6,16 @@
 //
 
 import ComposableArchitecture
+import Foundation
 @testable import WebSocketClientPackage
-import XCTest
+import Testing
 
-final class ConnectionReducerTests: XCTestCase {
+@MainActor
+final class ConnectionReducerTests {
   private var history: HistoryEntity!
 
-  override func setUp() {
-    super.setUp()
-    history = .init(
+  init() {
+    self.history = .init(
       id: .init(0),
       url: URL(string: "wss://echo.websocket.org")!,
       customHeaders: [],
@@ -24,21 +25,21 @@ final class ConnectionReducerTests: XCTestCase {
     )
   }
 
-  override func tearDown() {
-    super.tearDown()
+  deinit {
     history = nil
   }
 
-  @MainActor
+  @Test
   func testShowCustomHeaderList() async throws {
     let store = TestStore(
       initialState: ConnectionReducer.State(
         url: URL(string: "wss://echo.websocket.org")!,
-        history: history
-      )
-    ) {
-      ConnectionReducer()
-    }
+        history: history,
+      ),
+      reducer: {
+        ConnectionReducer()
+      },
+    )
 
     // show
     await store.send(.showedCustomHeaderList(true)) {
@@ -46,16 +47,17 @@ final class ConnectionReducerTests: XCTestCase {
     }
   }
 
-  @MainActor
+  @Test
   func testDismissCustomHeaderList() async throws {
     let store = TestStore(
       initialState: ConnectionReducer.State(
         url: URL(string: "wss://echo.websocket.org")!,
-        history: history
-      )
-    ) {
-      ConnectionReducer()
-    }
+        history: history,
+      ),
+      reducer: {
+        ConnectionReducer()
+      },
+    )
 
     // already dismiss
     await store.send(.showedCustomHeaderList(false))
