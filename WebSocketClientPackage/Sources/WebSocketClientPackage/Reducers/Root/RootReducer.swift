@@ -14,10 +14,15 @@ public struct RootReducer: Sendable {
   @ObservableState
   public struct State: Equatable {
     // MARK: - Properties
+    public let formAboveBannerAdUnitID: String
     public var migratedToSwiftData = false
 
     // MARK: - Initialize
-    public init(migratedToSwiftData: Bool = false) {
+    public init(
+      formAboveBannerAdUnitID: String,
+      migratedToSwiftData: Bool = false
+    ) {
+      self.formAboveBannerAdUnitID = formAboveBannerAdUnitID
       self.migratedToSwiftData = migratedToSwiftData
     }
   }

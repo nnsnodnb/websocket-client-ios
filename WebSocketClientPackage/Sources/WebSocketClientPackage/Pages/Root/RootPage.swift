@@ -87,7 +87,10 @@ struct RootPage_Previews: PreviewProvider {
   static var previews: some View {
     RootPage(
       store: Store(
-        initialState: RootReducer.State(migratedToSwiftData: true),
+        initialState: RootReducer.State(
+          formAboveBannerAdUnitID: "ca-app-pub-3940256099942544/2435281174",
+          migratedToSwiftData: true,
+        ),
         reducer: {
           RootReducer()
         },

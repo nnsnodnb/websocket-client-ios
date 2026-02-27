@@ -6,6 +6,7 @@
 //
 
 import FirebaseCore
+import GoogleMobileAds
 import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -14,6 +15,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
     FirebaseApp.configure()
+    Task {
+      _ = await MobileAds.shared.start()
+      MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [
+      ]
+    }
     return true
   }
 }
