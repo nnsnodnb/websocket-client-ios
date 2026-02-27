@@ -1,8 +1,8 @@
 //
-//  ConnectionReducerTests.swift
-//  WebSocketClientTests
+//  TestConnectionReducerShowedCustomHeaderList.swift
+//  WebSocketClientPackage
 //
-//  Created by Yuya Oka on 2023/05/02.
+//  Created by Yuya Oka on 2026/02/28.
 //
 
 import ComposableArchitecture
@@ -11,11 +11,10 @@ import Foundation
 import Testing
 
 @MainActor
-final class ConnectionReducerTests {
-  private var history: HistoryEntity!
-
-  init() {
-    self.history = .init(
+struct TestConnectionReducerShowedCustomHeaderList {
+  @Test
+  func testShow() async throws {
+    let history = HistoryEntity(
       id: .init(0),
       url: URL(string: "wss://echo.websocket.org")!,
       customHeaders: [],
@@ -23,14 +22,6 @@ final class ConnectionReducerTests {
       isConnectionSuccess: false,
       createdAt: .init()
     )
-  }
-
-  deinit {
-    history = nil
-  }
-
-  @Test
-  func testShowCustomHeaderList() async throws {
     let store = TestStore(
       initialState: ConnectionReducer.State(
         url: URL(string: "wss://echo.websocket.org")!,
@@ -48,24 +39,26 @@ final class ConnectionReducerTests {
   }
 
   @Test
-  func testDismissCustomHeaderList() async throws {
+  func testHide() async throws {
+    let history = HistoryEntity(
+      id: .init(0),
+      url: URL(string: "wss://echo.websocket.org")!,
+      customHeaders: [],
+      messages: [],
+      isConnectionSuccess: false,
+      createdAt: .init()
+    )
     let store = TestStore(
       initialState: ConnectionReducer.State(
         url: URL(string: "wss://echo.websocket.org")!,
         history: history,
+        isShowCustomHeaderList: true,
       ),
       reducer: {
         ConnectionReducer()
       },
     )
 
-    // already dismiss
-    await store.send(.showedCustomHeaderList(false))
-
-    // dismiss
-    await store.send(.showedCustomHeaderList(true)) {
-      $0.isShowCustomHeaderList = true
-    }
     await store.send(.showedCustomHeaderList(false)) {
       $0.isShowCustomHeaderList = false
     }

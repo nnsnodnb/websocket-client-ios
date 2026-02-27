@@ -53,7 +53,7 @@ public struct HistoryListReducer: Sendable {
         return .run(
           operation: { send in
             let histories = try await databaseClient.fetchHistories(
-              NSPredicate(format: "isConnectionSuccess == %d", true)
+              #Predicate<HistoryModel> { $0.isConnectionSuccess }
             )
             await send(.fetchResponse(histories))
           },
