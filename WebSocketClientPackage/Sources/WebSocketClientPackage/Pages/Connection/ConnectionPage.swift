@@ -110,7 +110,11 @@ private extension View {
               )
             },
             label: {
-              Image(systemSymbol: .ellipsisCircle)
+              if #available(iOS 26.0, *) {
+                Image(systemSymbol: .ellipsis)
+              } else {
+                Image(systemSymbol: .ellipsisCircle)
+              }
             }
           )
         }
