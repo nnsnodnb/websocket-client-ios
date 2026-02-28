@@ -238,5 +238,10 @@
 	</array>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3417597686353524~3621089613</string>
+	<key>LSEnvironment</key>
+	<dict>
+		<key>FORM_ABOVE_BANNER_AD_UNIT_ID</key>
+		<string>$(FORM_ABOVE_BANNER_AD_UNIT_ID)</string>
+	</dict>
 </dict>
 </plist>
