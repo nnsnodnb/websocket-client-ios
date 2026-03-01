@@ -18,6 +18,7 @@ public struct RewardInterstitialAdClient: Sendable {
   // MARK: - Error
   public enum Error: Swift.Error {
     case notReady
+    case interruption
   }
 }
 
@@ -49,6 +50,7 @@ private extension RewardInterstitialAdClient {
 
     private let delegate: LockIsolated<Delegate?> = .init(nil)
     private let state: LockIsolated<State> = .init(.idle)
+    private let earnedReward: LockIsolated<Bool> = .init(false)
 
     @Dependency(\.adUnitID.webSocketConnectionRewardInterstitialAdUnitID)
     private var adUnitID
@@ -102,16 +104,23 @@ private extension RewardInterstitialAdClient {
 
     @MainActor
     func show() async throws -> Int {
+      earnedReward.setValue(false)
       if case let .ready(rewardedInterstitialAd) = state.value {
         try rewardedInterstitialAd.canPresent()
-        return await withUnsafeContinuation { [weak self] continuation in
+        return try await withCheckedThrowingContinuation { [weak self] continuation in
           let delegate = Delegate { [weak self] amount in
-            continuation.resume(returning: amount)
+            if self?.earnedReward.value == true {
+              continuation.resume(returning: amount)
+            } else {
+              self?.state.setValue(.idle)
+              continuation.resume(throwing: Error.interruption)
+            }
             self?.delegate.setValue(nil)
           }
           self?.delegate.setValue(delegate)
           rewardedInterstitialAd.present(delegate: delegate) { [weak self] in
             self?.state.setValue(.idle)
+            self?.earnedReward.setValue(true)
           }
         }
       }

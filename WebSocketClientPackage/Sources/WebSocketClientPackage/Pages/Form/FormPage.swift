@@ -177,7 +177,7 @@ struct FormPage: View {
   private var connectButton: some View {
     Button(
       action: {
-        store.send(.connect, animation: .default)
+        store.send(.openAds)
       },
       label: {
         Text(.formSectionThirdTitleConnectButton)

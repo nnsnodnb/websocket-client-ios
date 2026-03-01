@@ -9,7 +9,7 @@ import ComposableArchitecture
 import Foundation
 
 @Reducer
-public struct FormReducer {
+public struct FormReducer: Sendable {
   // MARK: - State
   @ObservableState
   public struct State: Sendable, Equatable {
@@ -23,14 +23,14 @@ public struct FormReducer {
   // MARK: - Action
   public enum Action: Sendable, Equatable {
     case onAppear
+    case preloadRewardedInterstitialAd
     case urlChanged(String)
     case addCustomHeader
     case removeCustomHeader(IndexSet)
     case customHeaderNameChanged(Int, String)
     case customHeaderValueChanged(Int, String)
+    case openAds
     case connect
-    case connectionOpen
-    case connectionDismiss
     case connection(PresentationAction<ConnectionReducer.Action>)
   }
 
@@ -38,6 +38,8 @@ public struct FormReducer {
   var adUnitID
   @Dependency(\.date)
   var date
+  @Dependency(\.rewardInterstitialAd)
+  var rewardInterstitialAd
   @Dependency(\.uuid)
   var uuid
 
@@ -46,7 +48,14 @@ public struct FormReducer {
       switch action {
       case .onAppear:
         state.adUnitID = try? adUnitID.formAboveBannerAdUnitID()
-        return .none
+        return .send(.preloadRewardedInterstitialAd)
+      case .preloadRewardedInterstitialAd:
+        return .run(
+          priority: .background,
+          operation: { _ in
+            try await rewardInterstitialAd.load()
+          },
+        )
       case let .urlChanged(text):
         guard let url = URL(string: text) else {
           state.url = nil
@@ -75,6 +84,19 @@ public struct FormReducer {
         customHeader.setValue(value)
         state.customHeaders[index] = customHeader
         return .none
+      case .openAds:
+        return .run(
+          operation: { send in
+            let result = try await rewardInterstitialAd.show()
+            if result > 0 {
+              await send(.connect)
+            }
+            await send(.preloadRewardedInterstitialAd)
+          },
+          catch: { _, send in
+            await send(.preloadRewardedInterstitialAd)
+          },
+        )
       case .connect:
         guard let url = state.url else { return .none }
         let history = HistoryEntity(
@@ -86,11 +108,6 @@ public struct FormReducer {
           createdAt: date.callAsFunction()
         )
         state.connection = .init(url: url, history: history)
-        return .none
-      case .connectionOpen:
-        return .none
-      case .connectionDismiss:
-        state.connection = nil
         return .none
       case .connection(.presented(.close)):
         state.connection = nil
