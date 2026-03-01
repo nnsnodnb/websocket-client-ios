@@ -12,6 +12,7 @@ import Foundation
 public struct BundleClient: Sendable {
   public var shortVersionString: @Sendable () -> String = { "" }
   public var formAboveBannerADUnitID: @Sendable () -> String = { "" }
+  public var webSocketConnectionRewardInterstitialAdUnitID: @Sendable () -> String = { "" }
 }
 
 // MARK: - DependencyKey
@@ -22,6 +23,9 @@ extension BundleClient: DependencyKey {
     },
     formAboveBannerADUnitID: {
       Bundle.main.getEnvironmentValue(.formAboveBannerAdUnitID) ?? ""
+    },
+    webSocketConnectionRewardInterstitialAdUnitID: {
+      Bundle.main.getEnvironmentValue(.webSocketConnectionRewardInterstitialAdUnitID) ?? ""
     },
   )
 }

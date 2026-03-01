@@ -242,6 +242,8 @@
 	<dict>
 		<key>FORM_ABOVE_BANNER_AD_UNIT_ID</key>
 		<string>$(FORM_ABOVE_BANNER_AD_UNIT_ID)</string>
+		<key>WEBSOCKET_CONNECTION_REWARD_INTERSTITIAL_AD_UNIT_ID</key>
+		<string>$(WEBSOCKET_CONNECTION_REWARD_INTERSTITIAL_AD_UNIT_ID)</string>
 	</dict>
 </dict>
 </plist>

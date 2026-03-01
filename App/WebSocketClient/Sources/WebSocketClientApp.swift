@@ -35,6 +35,7 @@ struct WebSocketClientApp: App {
             },
             withDependencies: {
               $0.adUnitID.formAboveBannerAdUnitID = bundle.formAboveBannerADUnitID
+              $0.adUnitID.webSocketConnectionRewardInterstitialAdUnitID = bundle.webSocketConnectionRewardInterstitialAdUnitID
             },
           )
         )

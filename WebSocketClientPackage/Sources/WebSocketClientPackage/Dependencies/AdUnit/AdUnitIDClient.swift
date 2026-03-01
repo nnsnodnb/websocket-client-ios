@@ -13,12 +13,15 @@ import Foundation
 public struct AdUnitIDClient: Sendable {
   // MARK: - Properties
   public var formAboveBannerAdUnitID: @Sendable () throws -> String
+  // swiftlint:disable:next identifier_name
+  public var webSocketConnectionRewardInterstitialAdUnitID: @Sendable () throws -> String
 }
 
 // MARK: - DependencyKey
 extension AdUnitIDClient: DependencyKey {
   public static let liveValue: Self = .init(
     formAboveBannerAdUnitID: { throw Error.mustSetAdIDFromRootPage },
+    webSocketConnectionRewardInterstitialAdUnitID: { throw Error.mustSetAdIDFromRootPage },
   )
 }
 

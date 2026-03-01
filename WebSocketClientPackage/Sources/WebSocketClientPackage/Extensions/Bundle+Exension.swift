@@ -21,5 +21,6 @@ public extension Bundle {
 public extension Bundle {
   enum EnvironmentKey: String {
     case formAboveBannerAdUnitID = "FORM_ABOVE_BANNER_AD_UNIT_ID"
+    case webSocketConnectionRewardInterstitialAdUnitID = "WEBSOCKET_CONNECTION_REWARD_INTERSTITIAL_AD_UNIT_ID"
   }
 }
