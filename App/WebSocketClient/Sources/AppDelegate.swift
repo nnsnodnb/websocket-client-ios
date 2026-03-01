@@ -18,6 +18,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     Task {
       _ = await MobileAds.shared.start()
       MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [
+        "d174e9a2371e6297c61a872fb5fa9d6a",
       ]
     }
     return true
