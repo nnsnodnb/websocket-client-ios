@@ -456,7 +456,7 @@
 			repositoryURL = "https://github.com/mono0926/LicensePlist.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 3.25.1;
+				minimumVersion = 3.27.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
