@@ -29,7 +29,7 @@ extension RewardInterstitialAdClient: DependencyKey {
       try await Implementation.shared.load()
     },
     show: {
-      return try await Implementation.shared.show()
+      try await Implementation.shared.show()
     },
   )
 }
