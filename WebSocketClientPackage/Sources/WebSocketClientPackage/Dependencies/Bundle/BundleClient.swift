@@ -12,6 +12,7 @@ import Foundation
 public struct BundleClient: Sendable {
   public var shortVersionString: @Sendable () -> String = { "" }
   public var formAboveBannerADUnitID: @Sendable () -> String = { "" }
+  // swiftlint:disable:next identifier_name
   public var webSocketConnectionRewardInterstitialAdUnitID: @Sendable () -> String = { "" }
 }
 
