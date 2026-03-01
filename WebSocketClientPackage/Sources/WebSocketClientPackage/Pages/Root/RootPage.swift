@@ -14,10 +14,14 @@ public struct RootPage: View {
 
   public var body: some View {
     if store.migratedToSwiftData {
-      TabView {
-        formPage()
-        historyPage()
-        infoPage()
+      if let store = store.scope(state: \.consent, action: \.consent) {
+        ConsentPage(store: store)
+      } else {
+        TabView {
+          formPage()
+          historyPage()
+          infoPage()
+        }
       }
     } else {
       ProgressView()

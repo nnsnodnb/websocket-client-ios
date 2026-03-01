@@ -14,6 +14,7 @@ public struct RootReducer: Sendable {
   @ObservableState
   public struct State: Equatable {
     // MARK: - Properties
+    public var consent: ConsentReducer.State? = .init()
     public var form: FormReducer.State = .init()
     public var historyList: HistoryListReducer.State = .init()
     public var info: InfoReducer.State = .init()
@@ -26,9 +27,10 @@ public struct RootReducer: Sendable {
   }
 
   // MARK: - Action
-  public enum Action: Equatable {
+  public enum Action {
     case migrateDatabase
-    case migratedDatabase
+    case showConsent
+    case consent(ConsentReducer.Action)
     case form(FormReducer.Action)
     case historyList(HistoryListReducer.Action)
     case info(InfoReducer.Action)
@@ -53,10 +55,16 @@ public struct RootReducer: Sendable {
         guard !state.migratedToSwiftData else { return .none }
         return .run { send in
           try await database.migrateCoreDataToSwiftData()
-          await send(.migratedDatabase)
+          await send(.showConsent)
         }
-      case .migratedDatabase:
+      case .showConsent:
+        state.consent = .init()
         state.migratedToSwiftData = true
+        return .none
+      case .consent(.delegate(.completedConsent)):
+        state.consent = nil
+        return .none
+      case .consent:
         return .none
       case .form:
         return .none
@@ -65,6 +73,9 @@ public struct RootReducer: Sendable {
       case .info:
         return .none
       }
+    }
+    .ifLet(\.consent, action: \.consent) {
+      ConsentReducer()
     }
   }
 
