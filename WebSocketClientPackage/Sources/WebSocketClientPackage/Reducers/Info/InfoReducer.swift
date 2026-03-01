@@ -17,6 +17,8 @@ public struct InfoReducer: Sendable {
   public struct State: Equatable {
     var url: URL?
     var version: String = ""
+    var visiblePrivacyOptionsRequirements = false
+    var isLoadingConsentForm = false
     var appIconList: AppIconListReducer.State = .init()
     @Presents var alert: AlertState<Action.Alert>?
   }
@@ -30,6 +32,9 @@ public struct InfoReducer: Sendable {
     case appIconList(AppIconListReducer.Action)
     case checkDeleteAllData
     case deleteAllDataResponse
+    case loadConsentForm
+    case loadedConsentForm
+    case showPresentPrivacyOptions
     case alert(PresentationAction<Alert>)
     case error(Error)
 
@@ -48,6 +53,8 @@ public struct InfoReducer: Sendable {
 
   @Dependency(\.application)
   var application
+  @Dependency(\.consentInformation)
+  var consentInformation
   @Dependency(\.database)
   var databaseClient
   @Dependency(\.bundle)
@@ -58,7 +65,8 @@ public struct InfoReducer: Sendable {
       switch action {
       case .start:
         state.version = bundle.shortVersionString()
-        return .none
+        state.visiblePrivacyOptionsRequirements = consentInformation.visiblePrivacyOptionsRequirements()
+        return state.visiblePrivacyOptionsRequirements ? .send(.loadConsentForm) : .none
       case .urlSelected(.none):
         state.url = nil
         return .none
@@ -99,10 +107,36 @@ public struct InfoReducer: Sendable {
         return .none
       case .deleteAllDataResponse:
         return .none
+      case .loadConsentForm:
+        guard state.visiblePrivacyOptionsRequirements else { return .none }
+        state.isLoadingConsentForm = true
+        return .run(
+          operation: { send in
+            try await consentInformation.load(true)
+            await send(.loadedConsentForm)
+          },
+        )
+      case .loadedConsentForm:
+        state.isLoadingConsentForm = false
+        return .none
+      case .showPresentPrivacyOptions:
+        guard state.visiblePrivacyOptionsRequirements && !state.isLoadingConsentForm else {
+          return .none
+        }
+        return .run(
+          operation: { send in
+            try await consentInformation.presentPrivacyOptions()
+            await send(.loadConsentForm)
+          },
+          catch: { _, send in
+            await send(.loadConsentForm)
+          },
+        )
       case .alert(.dismiss):
         state.alert = nil
         return .none
       case .alert(.presented(.deleteAllData)):
+        state.alert = nil
         return .run(
           operation: { send in
             try await databaseClient.deleteAllData()

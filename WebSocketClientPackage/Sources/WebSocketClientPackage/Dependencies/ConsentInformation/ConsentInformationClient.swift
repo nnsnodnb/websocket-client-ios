@@ -14,7 +14,7 @@ import UserMessagingPlatform
 public struct ConsentInformationClient: Sendable {
   public var requestConsent: @Sendable () async throws -> Bool
   public var load: @Sendable (Bool) async throws -> Void
-  public var visiblePrivacyOptionsRequirements: @Sendable () throws -> Bool
+  public var visiblePrivacyOptionsRequirements: @Sendable () -> Bool = { false }
   public var presentPrivacyOptions: @Sendable () async throws -> Void
 }
 

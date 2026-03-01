@@ -663,6 +663,23 @@
         }
       }
     },
+    "info.section.third.title.privacy-settings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Settings"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシー設定"
+          }
+        }
+      }
+    },
     "info.section.third.title.version" : {
       "extractionState" : "manual",
       "localizations" : {
