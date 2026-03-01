@@ -42,7 +42,7 @@ public struct ConsentReducer: Sendable {
               await send(.completed)
               return
             }
-            try await consentInformation.load()
+            try await consentInformation.load(false)
             await send(.completed)
           },
         )

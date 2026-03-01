@@ -13,7 +13,7 @@ import UserMessagingPlatform
 @DependencyClient
 public struct ConsentInformationClient: Sendable {
   public var requestConsent: @Sendable () async throws -> Bool
-  public var load: @Sendable () async throws -> Void
+  public var load: @Sendable (Bool) async throws -> Void
   public var visiblePrivacyOptionsRequirements: @Sendable () throws -> Bool
   public var presentPrivacyOptions: @Sendable () async throws -> Void
 }
@@ -34,13 +34,26 @@ extension ConsentInformationClient: DependencyKey {
       let status = ConsentInformation.shared.formStatus == .available
       return status
     },
-    load: { @MainActor in
-      try await ConsentForm.loadAndPresentIfRequired(from: nil)
+    load: { @MainActor isForce in
+      if isForce {
+        try await ConsentForm.load()
+      } else {
+        try await ConsentForm.loadAndPresentIfRequired(from: nil)
+      }
     },
     visiblePrivacyOptionsRequirements: {
       ConsentInformation.shared.privacyOptionsRequirementStatus == .required
     },
     presentPrivacyOptions: { @MainActor in
+      let parameters = RequestParameters()
+#if DEBUG
+      let debugSettings = DebugSettings()
+      debugSettings.geography = .EEA
+      parameters.debugSettings = debugSettings
+#endif
+
+      try await ConsentInformation.shared.requestConsentInfoUpdate(with: parameters)
+      guard ConsentInformation.shared.consentStatus == .obtained else { return }
       try await ConsentForm.presentPrivacyOptionsForm(from: nil)
     },
   )
