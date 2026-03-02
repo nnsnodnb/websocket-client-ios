@@ -1,5 +1,5 @@
 {
-  "originHash" : "db59bb0404b619cad2ecd0d7a9b3bf16742a5273da51609fb81a9349d35e3fd8",
+  "originHash" : "2b855bba9650bc3a93c6609fe3100db2ea42266dc559007093b39d8e5aea9151",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "bbe8b69694d7873315fd3a4ad41efe043e1c07c5",
         "version" : "1.2024072200.0"
-      }
-    },
-    {
-      "identity" : "apikit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ishkawa/APIKit.git",
-      "state" : {
-        "revision" : "b839e53b870104798035b279d2a6168b0a2227b1",
-        "version" : "5.4.0"
       }
     },
     {
@@ -110,15 +101,6 @@
       }
     },
     {
-      "identity" : "heliumlogger",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Kitura/HeliumLogger.git",
-      "state" : {
-        "revision" : "fc2a71597ae974da5282d751bcc11965964bccce",
-        "version" : "2.0.0"
-      }
-    },
-    {
       "identity" : "interop-ios-for-google-sdks",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/interop-ios-for-google-sdks.git",
@@ -137,21 +119,12 @@
       }
     },
     {
-      "identity" : "licenseplist",
+      "identity" : "licensesplugin",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mono0926/LicensePlist.git",
+      "location" : "https://github.com/maiyama18/LicensesPlugin.git",
       "state" : {
-        "revision" : "d66dd02655edf264aa0647897decab7f82a869ea",
-        "version" : "3.27.2"
-      }
-    },
-    {
-      "identity" : "loggerapi",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Kitura/LoggerAPI.git",
-      "state" : {
-        "revision" : "4e6b45e850ffa275e8e26a24c6454fd709d5b6ac",
-        "version" : "2.0.0"
+        "revision" : "3061787a7eca7ba801d7a3abccfc077053e79d73",
+        "version" : "0.2.0"
       }
     },
     {
@@ -179,15 +152,6 @@
       "state" : {
         "revision" : "e01b3d4f861412f8dcee8d93c417d2c2b0cdfd77",
         "version" : "7.0.0"
-      }
-    },
-    {
-      "identity" : "swift-argument-parser",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-argument-parser.git",
-      "state" : {
-        "revision" : "8f4d2753f0e4778c76d5f05ad16c74f707390531",
-        "version" : "1.2.3"
       }
     },
     {
@@ -254,30 +218,12 @@
       }
     },
     {
-      "identity" : "swift-html-entities",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Kitura/swift-html-entities.git",
-      "state" : {
-        "revision" : "d8ca73197f59ce260c71bd6d7f6eb8bbdccf508b",
-        "version" : "4.0.1"
-      }
-    },
-    {
       "identity" : "swift-identified-collections",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-identified-collections",
       "state" : {
         "revision" : "322d9ffeeba85c9f7c4984b39422ec7cc3c56597",
         "version" : "1.1.1"
-      }
-    },
-    {
-      "identity" : "swift-log",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-log.git",
-      "state" : {
-        "revision" : "e97a6fcb1ab07462881ac165fdbb37f067e205d5",
-        "version" : "1.5.4"
       }
     },
     {
@@ -344,30 +290,12 @@
       }
     },
     {
-      "identity" : "xcodeedit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/tomlokhorst/XcodeEdit.git",
-      "state" : {
-        "revision" : "b6b67389a0f1a6fdd9c6457a8ab5b02eaab13c5c",
-        "version" : "2.9.2"
-      }
-    },
-    {
       "identity" : "xctest-dynamic-overlay",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
         "revision" : "34e463e98ab8541c604af706c99bed7160f5ec70",
         "version" : "1.8.1"
-      }
-    },
-    {
-      "identity" : "yams",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/jpsim/Yams.git",
-      "state" : {
-        "revision" : "0d9ee7ea8c4ebd4a489ad7a73d5c6cad55d6fed3",
-        "version" : "5.0.6"
       }
     }
   ],
