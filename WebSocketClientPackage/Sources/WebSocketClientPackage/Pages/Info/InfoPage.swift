@@ -126,7 +126,7 @@ struct InfoPage: View {
             } else {
               Image(systemSymbol: .handRaisedSquareFill)
                 .resizable()
-                .foregroundColor(.red)
+                .foregroundStyle(.white, .red.opacity(0.9))
             }
           },
           title: .infoSectionThirdTitlePrivacySettings,
