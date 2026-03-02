@@ -1,5 +1,4 @@
 workspace("WebSocketClient.xcworkspace")
-scheme("WebSocketClient")
 clean(true)
 cloned_source_packages_path(".swiftpm")
 disable_package_automatic_updates(true)

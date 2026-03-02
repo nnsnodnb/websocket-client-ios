@@ -10,68 +10,81 @@ import SFSafeSymbols
 import SwiftUI
 
 public struct RootPage: View {
-    let store: StoreOf<RootReducer>
+  let store: StoreOf<RootReducer>
 
-    public var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { _ in
-            TabView {
-                formPage()
-                historyPage()
-                infoPage()
-            }
-        })
-    }
-
-    private func formPage() -> some View {
-        FormPage(
-            store: Store(initialState: FormReducer.State()) {
-                FormReducer()
-            }
-        )
-        .tabItem(systemSymbol: .squareAndPencil, text: L10n.TabBar.Title.connection)
-    }
-
-    private func historyPage() -> some View {
-        HistoryListPage(
-            store: Store(initialState: HistoryListReducer.State()) {
-                HistoryListReducer()
-            }
-        )
-        .tabItem(systemSymbol: .trayFullFill, text: L10n.TabBar.Title.histories)
-    }
-
-    private func infoPage() -> some View {
-        InfoPage(
-            store: Store(initialState: InfoReducer.State()) {
-                InfoReducer()
-            }
-        )
-        .tabItem(systemSymbol: .infoCircleFill, text: L10n.TabBar.Title.info)
-    }
-
-    // MARK: - Initialize
-    public init(store: StoreOf<RootReducer>) {
-        self.store = store
-    }
-}
-
-private extension View {
-    func tabItem(systemSymbol: SFSymbol, text: String) -> some View {
-        tabItem {
-            VStack {
-                Image(systemSymbol: systemSymbol)
-                Text(text)
-            }
+  public var body: some View {
+    if store.migratedToSwiftData {
+      if let store = store.scope(state: \.consent, action: \.consent) {
+        ConsentPage(store: store)
+      } else {
+        TabView {
+          formPage()
+          historyPage()
+          infoPage()
+        }
+      }
+    } else {
+      ProgressView()
+        .progressViewStyle(.circular)
+        .scaleEffect(2)
+        .onAppear {
+          store.send(.migrateDatabase)
         }
     }
+  }
+
+  private func formPage() -> some View {
+    FormPage(
+      store: store.scope(state: \.form, action: \.form),
+    )
+    .tabItem(systemSymbol: .squareAndPencil, text: .tabBarTitleConnection)
+  }
+
+  private func historyPage() -> some View {
+    HistoryListPage(
+      store: store.scope(state: \.historyList, action: \.historyList),
+    )
+    .tabItem(systemSymbol: .trayFullFill, text: .tabBarTitleHistories)
+  }
+
+  private func infoPage() -> some View {
+    InfoPage(
+      store: store.scope(state: \.info, action: \.info),
+    )
+    .tabItem(systemSymbol: .infoCircleFill, text: .tabBarTitleInfo)
+  }
+
+  // MARK: - Initialize
+  public init(store: StoreOf<RootReducer>) {
+    self.store = store
+  }
 }
 
-struct RootPage_Previews: PreviewProvider {
-    static var previews: some View {
-        RootPage(
-            store: Store(initialState: RootReducer.State()) {
-                RootReducer()
-            }
-        )
+@MainActor
+private extension View {
+  func tabItem(systemSymbol: SFSymbol, text: LocalizedStringResource) -> some View {
+    tabItem {
+      VStack {
+        Image(systemSymbol: systemSymbol)
+        Text(text)
+      }
     }
+  }
+}
+
+#Preview {
+  RootPage(
+    store: Store(
+      initialState: RootReducer.State(
+        migratedToSwiftData: true,
+      ),
+      reducer: {
+        RootReducer()
+      },
+      withDependencies: {
+        $0.adUnitID.formAboveBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
+        $0.adUnitID.webSocketConnectionRewardInterstitialAdUnitID = { "ca-app-pub-3940256099942544/6978759866" }
+      },
+    )
+  )
 }

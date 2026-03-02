@@ -7,4 +7,4 @@
 
 import Foundation
 
-extension NSPredicate: @unchecked Sendable {}
+extension NSPredicate: @unchecked @retroactive Sendable {}

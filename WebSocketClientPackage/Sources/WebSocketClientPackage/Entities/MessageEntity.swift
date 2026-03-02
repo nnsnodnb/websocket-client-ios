@@ -7,9 +7,9 @@
 
 import Foundation
 
-public struct MessageEntity: Hashable, Identifiable {
-    // MARK: - Properties
-    public let id: UUID
-    public let text: String
-    public let createdAt: Date
+public struct MessageEntity: Sendable, Hashable, Identifiable {
+  // MARK: - Properties
+  public let id: UUID
+  public let text: String
+  public let createdAt: Date
 }

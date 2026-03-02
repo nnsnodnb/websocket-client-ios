@@ -9,16 +9,16 @@ WebSocket Client for iOS
 ### Xcode
 
 ```command
-$ xcodebuild -verison
-Xcode 15.0
-Build version 15A240d
+$ xcodebuild -version
+Xcode 26.2
+Build version 17C52
 ```
 
 ### Ruby
 
 ```command
 $ ruby -v
-ruby 3.2.2 (2023-03-30 revision e51014f9c0) [arm64-darwin22]
+ruby 3.4.8 (2025-12-17 revision 995b59f666) +PRISM [arm64-darwin25]
 ```
 
 ## Setup
@@ -27,6 +27,16 @@ ruby 3.2.2 (2023-03-30 revision e51014f9c0) [arm64-darwin22]
 $ git clone git@github.com:nnsnodnb/websocket-client-ios.git
 $ cd websocket-client-ios
 $ xed .
+```
+
+## Bump version
+
+Please edit MARKETING_VERSION of `update_app_version` in `fastlane/Fastfile`.
+
+and
+
+```bash
+$ bundle exec fastlane update_app_version
 ```
 
 ## License

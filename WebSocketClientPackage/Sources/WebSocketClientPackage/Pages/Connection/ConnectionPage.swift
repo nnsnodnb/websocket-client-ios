@@ -6,163 +6,167 @@
 //
 
 import ComposableArchitecture
-import FirebaseAnalyticsSwift
+import FirebaseAnalytics
 import SwiftUI
 
 struct ConnectionPage: View {
-    let store: StoreOf<ConnectionReducer>
+  @Bindable var store: StoreOf<ConnectionReducer>
 
-    var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            NavigationStack {
-                content(viewStore)
-                    .navigationTitle(viewStore.url.absoluteString)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar(viewStore)
-            }
-            .alert(store: store.scope(state: \.$alert, action: { .alert($0) }))
-            .sheet(
-                isPresented: viewStore.binding(
-                    get: \.isShowCustomHeaderList,
-                    send: { $0 ? .showCustomHeaderList : .dismissCustomHeaderList }
-                )
-            ) {
-                CustomHeaderListPage(customHeaders: viewStore.customHeaders)
-                    .presentationDetents([.fraction(0.2), .large])
-            }
-            .task {
-                viewStore.send(.start)
-            }
-        })
-        .analyticsScreen(name: "connection-page")
+  var body: some View {
+    NavigationStack {
+      content
+        .navigationTitle(store.url.absoluteString)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(store: store)
     }
+    .alert($store.scope(state: \.alert, action: \.alert))
+    .sheet(
+      isPresented: $store.isShowCustomHeaderList.sending(\.showedCustomHeaderList),
+      content: {
+        CustomHeaderListPage(customHeaders: store.customHeaders)
+          .presentationDetents([.fraction(0.2), .large])
+      }
+    )
+    .task {
+      store.send(.start)
+    }
+    .analyticsScreen(name: "connection-page")
+  }
 
-    private func content(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
-        VStack(spacing: 0) {
-            messageTextField(viewStore)
-            receivedMessageList(viewStore)
+  private var content: some View {
+    VStack(spacing: 0) {
+      messageTextField
+      receivedMessageList
+    }
+  }
+
+  private var messageTextField: some View {
+    HStack {
+      TextField(
+        String(localized: .connectionTextFieldPlaceholder),
+        text: $store.message.sending(\.messageChanged)
+      )
+      .frame(height: 44)
+      Button(
+        action: {
+          store.send(.sendMessage)
+        },
+        label: {
+          Text(.connectionTitleSendButton)
+            .bold()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+      )
+      .disabled(store.isSendButtonDisabled)
+      .frame(width: 80)
     }
+    .padding(.horizontal)
+    .frame(height: 44)
+    .backgroundStyle(Color.clear)
+  }
 
-    private func messageTextField(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
-        HStack {
-            TextField(
-                L10n.Connection.TextField.placeholder,
-                text: viewStore.binding(
-                    get: \.message,
-                    send: ConnectionReducer.Action.messageChanged
-                )
-            )
-            .frame(height: 44)
-            Button(
-                action: {
-                    viewStore.send(.sendMessage)
-                },
-                label: {
-                    Text(L10n.Connection.Title.sendButton)
-                        .bold()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-            )
-            .disabled(viewStore.isSendButtonDisabled)
-            .frame(width: 80)
-        }
-        .padding(.horizontal)
-        .frame(height: 44)
-        .backgroundStyle(Color.clear)
-    }
-
-    private func receivedMessageList(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
-        MessageListView(messages: viewStore.receivedMessages)
-    }
+  private var receivedMessageList: some View {
+    MessageListView(messages: store.receivedMessages)
+  }
 }
 
+@MainActor
 private extension View {
-    func toolbar(_ viewStore: ViewStoreOf<ConnectionReducer>) -> some View {
-        toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(
-                    action: {
-                        viewStore.send(.close, animation: .default)
-                    },
-                    label: {
-                        Image(systemSymbol: .xmark)
-                            .resizable()
-                            .frame(maxWidth: 44, maxHeight: 44)
-                            .fontWeight(.medium)
-                    }
-                )
+  func toolbar(store: StoreOf<ConnectionReducer>) -> some View {
+    toolbar {
+      ToolbarItem(placement: .cancellationAction) {
+        if #available(iOS 26.0, *) {
+          Button(role: .cancel) {
+            store.send(.close, animation: .default)
+          }
+        } else {
+          Button(
+            action: {
+              store.send(.close, animation: .default)
+            },
+            label: {
+              Image(systemSymbol: .xmark)
+                .resizable()
+                .frame(maxWidth: 44, maxHeight: 44)
+                .fontWeight(.medium)
             }
-            if !viewStore.customHeaders.isEmpty {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Menu(
-                        content: {
-                            Button(
-                                action: {
-                                    viewStore.send(.showCustomHeaderList, animation: .default)
-                                },
-                                label: {
-                                    HStack {
-                                        Text(L10n.Connection.Navibar.Menu.Title.checkCustomHeaders)
-                                        Image(systemSymbol: .checkmarkMessageFill)
-                                    }
-                                }
-                            )
-                        },
-                        label: {
-                            Image(systemSymbol: .ellipsisCircle)
-                        }
-                    )
-                }
-            }
+          )
         }
+      }
+      if !store.customHeaders.isEmpty {
+        ToolbarItem(placement: .navigationBarTrailing) {
+          Menu(
+            content: {
+              Button(
+                action: {
+                  store.send(.showedCustomHeaderList(true), animation: .default)
+                },
+                label: {
+                  HStack {
+                    Text(.connectionNavibarMenuTitleCheckCustomHeaders)
+                    Image(systemSymbol: .checkmarkMessageFill)
+                  }
+                }
+              )
+            },
+            label: {
+              if #available(iOS 26.0, *) {
+                Image(systemSymbol: .ellipsis)
+              } else {
+                Image(systemSymbol: .ellipsisCircle)
+              }
+            }
+          )
+        }
+      }
     }
+  }
 }
 
 struct ConnectionPage_Previews: PreviewProvider {
-    static var previews: some View {
-        Group {
-            ConnectionPage(
-                store: .init(
-                    initialState: ConnectionReducer.State(
-                        url: URL(string: "wss://echo.websocket.events")!,
-                        history: .init(
-                            id: .init(0),
-                            url: URL(string: "wss://echo.websocket.events")!,
-                            customHeaders: [],
-                            messages: [],
-                            isConnectionSuccess: false,
-                            createdAt: .init()
-                        )
-                    )
-                ) {
-                    ConnectionReducer()
-                }
+  static var previews: some View {
+    Group {
+      ConnectionPage(
+        store: .init(
+          initialState: ConnectionReducer.State(
+            url: URL(string: "wss://echo.websocket.org")!,
+            history: .init(
+              id: .init(0),
+              url: URL(string: "wss://echo.websocket.org")!,
+              customHeaders: [],
+              messages: [],
+              isConnectionSuccess: false,
+              createdAt: .init()
             )
-            .previewDisplayName("Empty custom header")
-            ConnectionPage(
-                store: .init(
-                    initialState: ConnectionReducer.State(
-                        url: URL(string: "wss://echo.websocket.events")!,
-                        history: {
-                            var customHeader = CustomHeaderEntity(id: .init(1))
-                            customHeader.setName("name")
-                            customHeader.setValue("value")
-                            return .init(
-                                id: .init(1),
-                                url: URL(string: "wss://echo.websocket.events")!,
-                                customHeaders: [customHeader],
-                                messages: [],
-                                isConnectionSuccess: false,
-                                createdAt: .init()
-                            )
-                        }()
-                    )
-                ) {
-                    ConnectionReducer()
-                }
-            )
-            .previewDisplayName("Exist custom headers")
+          )
+        ) {
+          ConnectionReducer()
         }
+      )
+      .previewDisplayName("Empty custom header")
+      ConnectionPage(
+        store: .init(
+          initialState: ConnectionReducer.State(
+            url: URL(string: "wss://echo.websocket.org")!,
+            history: {
+              var customHeader = CustomHeaderEntity(id: .init(1))
+              customHeader.setName("name")
+              customHeader.setValue("value")
+              return .init(
+                id: .init(1),
+                url: URL(string: "wss://echo.websocket.org")!,
+                customHeaders: [customHeader],
+                messages: [],
+                isConnectionSuccess: false,
+                createdAt: .init()
+              )
+            }()
+          )
+        ) {
+          ConnectionReducer()
+        }
+      )
+      .previewDisplayName("Exist custom headers")
     }
+  }
 }

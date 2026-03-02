@@ -5,6 +5,10 @@ on:
     paths:
       - WebSocketClientPackage/Package.swift
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   precheck:
     runs-on: ubuntu-latest
@@ -14,21 +18,49 @@ jobs:
       pull-requests: read
 
     outputs:
-      files_changes: ${{ steps.files_changes.outputs.files }}
+      result: ${{ steps.parse.outputs.result }}
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-    - uses: trilom/file-changes-action@v1.2.4
+    - uses: tj-actions/changed-files@7dee1b0c1557f278e5c7dc244927139d78c0e22a # v47.0.4
       id: files_changes
+      with:
+        json: "true"
+        quotepath: "false"
+        escape_json: "false"
+
+    - name: Parse
+      shell: python
+      id: parse
+      env:
+        MODIFIED_FILES: ${{ steps.files_changes.outputs.modified_files }}
+      run: |
+        import json
+        import os
+
+
+        plain = os.getenv("MODIFIED_FILES", "[]")
+        plain = plain.replace("\\\"", "\"")
+        modified_files = json.loads(plain)
+        resolved_files_path = "WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved"
+        result = "resolve" if resolved_files_path not in modified_files else "skip"
+
+        with open(os.getenv("GITHUB_OUTPUT"), "a") as f:
+            output = f"result={result}"
+            print(output, file=f)
+
 
   resolve-swift-packages:
-    runs-on: macos-13
+    runs-on: macos-15
     needs: precheck
-    if: contains(fromJson(needs.precheck.outputs.files_changes), 'WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') == false
+    if: needs.precheck.outputs.result == 'resolve'
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
 
     steps:
-    - uses: Cyberbeni/install-swift-tool@v2
+    - uses: Cyberbeni/install-swift-tool@891fcd02f2f8df5f1604977182c358ed07130a16 # v3.1.6
       with:
         url: https://github.com/nnsnodnb/github-apps-token-swift
         version: '*'
@@ -49,21 +81,24 @@ jobs:
         echo "token=${token}" >> "${GITHUB_OUTPUT}"
         rm /tmp/github-apps-private-key.pem
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         fetch-depth: 0
         token: ${{ steps.get-github-app.outputs.token }}
 
-    - name: Select Xcode
+    - name: Get SwiftPM originHash
+      id: get-swiftpm-origin-hash
       run: |
-        sudo xcode-select -s /Applications/Xcode_15.0.0.app/Contents/Developer
-        xcodebuild -version
+        ORIGIN_HASH="$(jq -c -r '.originHash' WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved)"
+        echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
 
     - name: Cache Swift Packages
-      uses: actions/cache@v3
+      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+      id: cache-swiftpm
+      timeout-minutes: 20
       with:
         path: .swiftpm
-        key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+        key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
 
     - name: Resolve Swift Packages
       run: xcodebuild -resolvePackageDependencies -scheme WebSocketClient -workspace WebSocketClient.xcworkspace -clonedSourcePackagesDirPath .swiftpm

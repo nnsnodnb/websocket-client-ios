@@ -6,122 +6,117 @@
 //
 
 import ComposableArchitecture
-import FirebaseAnalyticsSwift
+import FirebaseAnalytics
 import SFSafeSymbols
 import SwiftUI
 
 struct HistoryListPage: View {
-    let store: StoreOf<HistoryListReducer>
+  @Bindable var store: StoreOf<HistoryListReducer>
 
-    var body: some View {
-        WithViewStore(store, observe: { $0 }, content: { viewStore in
-            NavigationStack(
-                path: viewStore.binding(
-                    get: \.paths,
-                    send: HistoryListReducer.Action.navigationPathChanged
-                )
-            ) {
-                content(viewStore)
-                    .navigationTitle(L10n.HistoryList.Navibar.title)
-                    .navigationBarTitleDisplayMode(.inline)
-            }
-            .task {
-                viewStore.send(.fetch)
-            }
-        })
-        .analyticsScreen(name: "history-list-page")
+  var body: some View {
+    NavigationStack(
+      path: $store.paths.sending(\.navigationPathChanged)
+    ) {
+      content
+        .navigationTitle(.historyListNavibarTitle)
+        .navigationBarTitleDisplayMode(.inline)
     }
-
-    @ViewBuilder
-    private func content(_ viewStore: ViewStoreOf<HistoryListReducer>) -> some View {
-        if viewStore.histories.isEmpty {
-            emptyView
-        } else {
-            list(viewStore)
-        }
+    .task {
+      store.send(.fetch)
     }
+    .analyticsScreen(name: "history-list-page")
+  }
 
-    private var emptyView: some View {
+  @ViewBuilder private var content: some View {
+    if store.histories.isEmpty {
+      emptyView
+    } else {
+      list
+    }
+  }
+
+  private var emptyView: some View {
+    ContentUnavailableView(
+      label: {
         VStack(spacing: 16) {
-            Image(systemSymbol: .noteText)
-                .resizable()
-                .frame(width: 56, height: 56)
-            Text(L10n.HistoryList.Content.Title.empty)
-                .font(.title2)
-                .fontWeight(.bold)
+          Image(systemSymbol: .noteText)
+            .resizable()
+            .frame(width: 56, height: 56)
+          Text(.historyListContentTitleEmpty)
+            .font(.title2)
+            .fontWeight(.bold)
         }
-        .foregroundColor(.orange)
+        .foregroundStyle(.orange)
+      }
+    )
+    .background {
+      Color(UIColor.systemGroupedBackground)
     }
+  }
 
-    private func list(_ viewStore: ViewStoreOf<HistoryListReducer>) -> some View {
-        List {
-            ForEach(viewStore.histories) { history in
-                row(viewStore, for: history)
-            }
-            .onDelete {
-                viewStore.send(.deleteHistory($0), animation: .default)
-            }
-        }
+  private var list: some View {
+    List {
+      ForEach(store.histories) { history in
+        row(history: history)
+      }
+      .onDelete {
+        store.send(.deleteHistory($0), animation: .default)
+      }
     }
+    .navigationDestination(
+      for: HistoryListReducer.State.Destination.self,
+      destination: { destination in
+        switch destination {
+        case .historyDetail:
+          if let store = store.scope(state: \.selectionHistory?.value, action: \.historyDetail) {
+            HistoryDetailPage(store: store)
+          }
+        }
+      }
+    )
+  }
 
-    private func row(_ viewStore: ViewStoreOf<HistoryListReducer>, for history: HistoryEntity) -> some View {
-        HStack {
-            Button(
-                action: {
-                    viewStore.send(.setNavigation(history))
-                },
-                label: {
-                    Text(history.url.absoluteString)
-                        .foregroundColor(.primary)
-                }
-            )
-            Spacer()
-            Image(systemSymbol: .chevronRight)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.secondary)
-                .opacity(0.5)
+  private func row(history: HistoryEntity) -> some View {
+    HStack {
+      Button(
+        action: {
+          store.send(.setNavigation(history))
+        },
+        label: {
+          Text(history.url.absoluteString)
+            .foregroundColor(.primary)
         }
-        .navigationDestination(
-            for: HistoryListReducer.State.Destination.self,
-            destination: { destination in
-                switch destination {
-                case .historyDetail:
-                    IfLetStore(
-                        store.scope(
-                            state: \.selectionHistory?.value,
-                            action: HistoryListReducer.Action.historyDetail
-                        ),
-                        then: { store in
-                            HistoryDetailPage(store: store)
-                        }
-                    )
-                }
-            }
-        )
+      )
+      Spacer()
+      Image(systemSymbol: .chevronRight)
+        .font(.system(size: 14, weight: .semibold))
+        .foregroundColor(.secondary)
+        .opacity(0.5)
     }
+  }
 }
 
 struct HistoryListPage_Previews: PreviewProvider {
-    static var history: HistoryEntity {
-        return .init(
-            id: .init(0),
-            url: URL(string: "wss://echo.websocket.events")!,
-            customHeaders: [],
-            messages: [],
-            isConnectionSuccess: false,
-            createdAt: .init()
-        )
-    }
+  static var history: HistoryEntity {
+    return .init(
+      id: .init(0),
+      url: URL(string: "wss://echo.websocket.org")!,
+      customHeaders: [],
+      messages: [],
+      isConnectionSuccess: false,
+      createdAt: .init()
+    )
+  }
 
-    static var previews: some View {
-        HistoryListPage(
-            store: Store(
-                initialState: HistoryListReducer.State(
-                    histories: [history]
-                )
-            ) {
-                HistoryListReducer()
-            }
+  static var previews: some View {
+    HistoryListPage(
+      store: Store(
+        initialState: HistoryListReducer.State(
+          histories: [history]
         )
-    }
+      ) {
+        HistoryListReducer()
+      }
+    )
+  }
 }

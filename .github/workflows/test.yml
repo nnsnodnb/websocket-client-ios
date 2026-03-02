@@ -1,0 +1,53 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-15
+
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Get SwiftPM originHash
+        id: get-swiftpm-origin-hash
+        run: |
+          ORIGIN_HASH="$(jq -c -r '.originHash' WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved)"
+          echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
+
+      - name: Cache Swift Packages
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+        id: cache-swiftpm
+        timeout-minutes: 20
+        with:
+          path: .swiftpm
+          key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
+
+      - name: Write IDESkipPackagePluginFingerprintValidatation
+        run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+
+      - name: Write IDESkipMacroFingerprintValidation
+        run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+
+      - name: Xcode test
+        run: |
+          set -o pipefail && \
+            xcodebuild test \
+              -scheme WebSocketClientPackageTests \
+              -workspace WebSocketClient.xcworkspace \
+              -parallel-testing-enabled=YES \
+              -destination "platform=iOS Simulator,name=iPhone 17 Pro" \
+              -resultBundlePath "$(mktemp -d)/Test-WebSocketClientPackageTests.xcresult" \
+              -clonedSourcePackagesDirPath .swiftpm \
+              -disableAutomaticPackageResolution | xcpretty

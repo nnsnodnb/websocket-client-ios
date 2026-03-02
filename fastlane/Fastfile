@@ -33,18 +33,19 @@ platform :ios do
 
     gym(
       export_method: "ad-hoc",
-      xcargs: "PROVISIONING_PROFILE_SPECIFIER='match AdHoc moe.nnsnodnb.WebSocketClient' MARKETING_VERSION='#{generate_version_name}'",
+      scheme: "AdHoc",
+      xcargs: "MARKETING_VERSION='#{generate_adhoc_marketing_version}'",
     )
 
     upload_symbols_to_crashlytics(
-      gsp_path: "App/WebSocketClient/Resources/GoogleService-Info.plist",
+      gsp_path: "App/AdHoc/AdHoc/Resources/GoogleService-Info.plist",
       binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
     )
 
     if is_ci
       firebase_app_distribution(
         app: "1:89035443908:ios:2b6115971af3118435c391",
-        ipa_path: "Products/WebSocketClient.ipa",
+        ipa_path: "Products/AdHoc.ipa",
         groups: "owner",
       )
     end
@@ -56,27 +57,45 @@ platform :ios do
 
     gym(
       export_method: "app-store",
+      scheme: "Production",
     )
 
     upload_symbols_to_crashlytics(
-      gsp_path: "App/WebSocketClient/Resources/GoogleService-Info.plist",
+      gsp_path: "App/Production/Production/Resources/GoogleService-Info.plist",
       binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
     )
 
     if is_ci
       deliver(
-        ipa: "Products/WebSocketClient.ipa",
+        ipa: "Products/Production.ipa",
         precheck_default_rule_level: :error,
         screenshots_path: "fastlane/screenshots",
       )
     end
   end
 
-  desc "Generate version name"
-  private_lane :generate_version_name do
-    version = get_xcconfig_value(
-      path: "App/Configurations/App/App.base.xcconfig",
-      name: "MARKETING_VERSION",
+  # Utility
+  desc "Update MARKETING_VERSION & CURRENT_PROJECT_VERSION"
+  lane :update_app_version do
+    ["App/AdHoc/AdHoc.xcodeproj", "App/Production/Production.xcodeproj", "App/Develop/Develop.xcodeproj"].each do |xcodeproj|
+      version = get_build_number(
+        xcodeproj: xcodeproj,
+      )
+      update_xcodeproj(
+        xcodeproj: xcodeproj,
+        options: {
+          "CURRENT_PROJECT_VERSION": version.to_i + 1,
+          "MARKETING_VERSION": "1.2.0",
+        }
+      )
+    end
+  end
+
+  desc "Generate MARKETING_VERSION for AdHoc"
+  private_lane :generate_adhoc_marketing_version do
+    version = get_version_number(
+      xcodeproj: "App/AdHoc/AdHoc.xcodeproj",
+      target: "AdHoc",
     )
     short_hash = last_git_commit[:abbreviated_commit_hash]
     "#{version}-#{short_hash}"

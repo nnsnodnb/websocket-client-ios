@@ -5,37 +5,46 @@ on:
     branches:
       - develop
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
 jobs:
   adhoc:
-    runs-on: macos-13
+    runs-on: macos-15
 
     env:
       FASTLANE_SKIP_UPDATE_CHECK: 1
+      DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
     - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@09a7688d3b55cf0e976497ff046b70949eeaccfd # v1.288.0
       with:
-        ruby-version: "3.2"
+        ruby-version: "3.4.8"
         bundler-cache: true
 
-    - name: Select Xcode
+    - name: Get SwiftPM originHash
+      id: get-swiftpm-origin-hash
       run: |
-        sudo xcode-select -s /Applications/Xcode_15.0.0.app/Contents/Developer
-        xcodebuild -version
+        ORIGIN_HASH="$(jq -c -r '.originHash' WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved)"
+        echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
 
     - name: Cache Swift Packages
-      uses: actions/cache@v3
+      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
       id: cache-swiftpm
       timeout-minutes: 20
       with:
         path: .swiftpm
-        key: ${{ runner.os }}-swiftpm-${{ hashFiles('WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved') }}
+        key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
 
     - name: Write IDESkipPackagePluginFingerprintValidatation
       run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
+
+    - name: Write IDESkipMacroFingerprintValidation
+      run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 
     - name: Setup app-distribution-key.json
       env:
@@ -56,7 +65,7 @@ jobs:
         bundle exec fastlane adhoc
 
     - name: Upload Products
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
       with:
         name: websocket-client-adhoc
         path: Products
