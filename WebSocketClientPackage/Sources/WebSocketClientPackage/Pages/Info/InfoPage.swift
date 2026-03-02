@@ -126,7 +126,7 @@ struct InfoPage: View {
             } else {
               Image(systemSymbol: .handRaisedSquareFill)
                 .resizable()
-                .foregroundColor(.red)
+                .foregroundStyle(.white, .red.opacity(0.9))
             }
           },
           title: .infoSectionThirdTitlePrivacySettings,
@@ -162,6 +162,25 @@ struct InfoPage: View {
 
   private var fourthSection: some View {
     Section {
+      NavigationLink(
+        destination: {
+          LicenseListPage(
+            store: store.scope(
+              state: \.licenseList,
+              action: \.licenseList,
+            )
+          )
+        },
+        label: {
+          HStack(spacing: 12) {
+            Image(systemSymbol: .listBulletRectangleFill)
+              .resizable()
+              .foregroundStyle(.green)
+              .frame(width: 18, height: 18)
+            Text(.infoSectionFourthTitleLicenses)
+          }
+        }
+      )
       HStack {
         HStack(spacing: 12) {
           Image(systemSymbol: .tagFill)
