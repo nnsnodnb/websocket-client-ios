@@ -595,6 +595,40 @@
         }
       }
     },
+    "info.section.fourth.title.developed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Developed by SwiftUI"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SwiftUIによって開発されました"
+          }
+        }
+      }
+    },
+    "info.section.fourth.title.version" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バージョン"
+          }
+        }
+      }
+    },
     "info.section.second.title.app-review" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -646,19 +680,36 @@
         }
       }
     },
-    "info.section.third.title.developed" : {
+    "info.section.third.title.about-userdata-external-transmission" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Developed by SwiftUI"
+            "value" : "About userdata external transmission"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SwiftUIによって開発されました"
+            "value" : "データの外部送信について"
+          }
+        }
+      }
+    },
+    "info.section.third.title.privacy-policy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシーポリシー"
           }
         }
       }
@@ -676,23 +727,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "プライバシー設定"
-          }
-        }
-      }
-    },
-    "info.section.third.title.version" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Version"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "バージョン"
           }
         }
       }

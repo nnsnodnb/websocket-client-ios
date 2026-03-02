@@ -1,5 +1,0 @@
-options:
-  outputPath: WebSocketClient/Resources/Settings.bundle
-  suppressOpeningDirectory: false
-  xcworkspacePath: WebSocketClient.xcworkspace
-  prefix: moe.nnsnodnb.WebSocketClient

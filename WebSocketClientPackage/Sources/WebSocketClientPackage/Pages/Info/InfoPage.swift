@@ -32,6 +32,7 @@ struct InfoPage: View {
       firstSection
       secondSection
       thirdSection
+      fourthSection
     }
   }
 
@@ -131,13 +132,43 @@ struct InfoPage: View {
           title: .infoSectionThirdTitlePrivacySettings,
         )
       }
+      buttonRow(
+        action: {
+          store.send(.urlSelected(URL(string: "https://github.com/nnsnodnb/websocket-client-ios/wiki/Privacy-Policy")))
+        },
+        image: {
+          Image(systemSymbol: .handRaisedFill)
+            .resizable()
+            .scaledToFit()
+        },
+        title: .infoSectionThirdTitlePrivacyPolicy,
+      )
+      buttonRow(
+        action: {
+          store.send(
+            .urlSelected(URL(string: "https://nnsnodnb.moe/userdata-external-transmission/?app=moe.nnsnodnb.WebSocketClient"))
+          )
+        },
+        image: {
+          Image(systemSymbol: .network)
+            .resizable()
+            .scaledToFit()
+            .foregroundStyle(Color(UIColor.systemCyan))
+        },
+        title: .infoSectionThirdTitleAboutUserdataExternalTransmission,
+      )
+    }
+  }
+
+  private var fourthSection: some View {
+    Section {
       HStack {
         HStack(spacing: 12) {
           Image(systemSymbol: .tagFill)
             .resizable()
             .foregroundColor(.yellow)
             .frame(width: 18, height: 18)
-          Text(.infoSectionThirdTitleVersion)
+          Text(.infoSectionFourthTitleVersion)
             .foregroundColor(.primary)
         }
         Spacer()
@@ -149,7 +180,7 @@ struct InfoPage: View {
           .resizable()
           .foregroundColor(.orange)
           .frame(width: 18, height: 18)
-        Text(.infoSectionThirdTitleDeveloped)
+        Text(.infoSectionFourthTitleDeveloped)
       }
     }
   }
