@@ -5,6 +5,12 @@
       location = "group:WebSocketClientPackage">
    </FileRef>
    <FileRef
-      location = "group:App/WebSocketClient.xcodeproj">
+      location = "group:App/Production/Production.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:App/AdHoc/AdHoc.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:App/Develop/Develop.xcodeproj">
    </FileRef>
 </Workspace>
