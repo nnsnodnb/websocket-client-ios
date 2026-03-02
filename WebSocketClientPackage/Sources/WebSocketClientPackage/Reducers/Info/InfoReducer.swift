@@ -20,6 +20,7 @@ public struct InfoReducer: Sendable {
     var visiblePrivacyOptionsRequirements = false
     var isLoadingConsentForm = false
     var appIconList: AppIconListReducer.State = .init()
+    var licenseList: LicenseListReducer.State = .init()
     @Presents var alert: AlertState<Action.Alert>?
   }
 
@@ -35,6 +36,7 @@ public struct InfoReducer: Sendable {
     case loadConsentForm
     case loadedConsentForm
     case showPresentPrivacyOptions
+    case licenseList(LicenseListReducer.Action)
     case alert(PresentationAction<Alert>)
     case error(Error)
 
@@ -132,6 +134,8 @@ public struct InfoReducer: Sendable {
             await send(.loadConsentForm)
           },
         )
+      case .licenseList:
+        return .none
       case .alert(.dismiss):
         state.alert = nil
         return .none
@@ -160,6 +164,9 @@ public struct InfoReducer: Sendable {
     }
     Scope(state: \.appIconList, action: \.appIconList) {
       AppIconListReducer()
+    }
+    Scope(state: \.licenseList, action: \.licenseList) {
+      LicenseListReducer()
     }
   }
 }

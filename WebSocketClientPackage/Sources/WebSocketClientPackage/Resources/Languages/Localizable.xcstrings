@@ -612,6 +612,23 @@
         }
       }
     },
+    "info.section.fourth.title.licenses" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Licenses"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ライセンス"
+          }
+        }
+      }
+    },
     "info.section.fourth.title.version" : {
       "extractionState" : "manual",
       "localizations" : {
