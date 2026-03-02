@@ -26,7 +26,7 @@ struct TestRootReducerMigrateDatabase {
     )
 
     await store.send(.migrateDatabase)
-    await store.receive(\.migratedDatabase) {
+    await store.receive(\.showConsent) {
       $0.migratedToSwiftData = true
     }
   }

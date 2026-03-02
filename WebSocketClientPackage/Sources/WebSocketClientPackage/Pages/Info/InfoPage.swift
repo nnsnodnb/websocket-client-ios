@@ -111,6 +111,26 @@ struct InfoPage: View {
 
   private var thirdSection: some View {
     Section {
+      if store.visiblePrivacyOptionsRequirements {
+        buttonRow(
+          action: {
+            if !store.isLoadingConsentForm {
+              store.send(.showPresentPrivacyOptions)
+            }
+          },
+          image: {
+            if store.isLoadingConsentForm {
+              ProgressView()
+                .progressViewStyle(.circular)
+            } else {
+              Image(systemSymbol: .handRaisedSquareFill)
+                .resizable()
+                .foregroundColor(.red)
+            }
+          },
+          title: .infoSectionThirdTitlePrivacySettings,
+        )
+      }
       HStack {
         HStack(spacing: 12) {
           Image(systemSymbol: .tagFill)
@@ -157,7 +177,7 @@ struct InfoPage: View {
 
   private func buttonRow(
     action: @escaping () -> Void,
-    image: () -> some View,
+    @ViewBuilder image: () -> some View,
     title: LocalizedStringResource,
   ) -> some View {
     Button(

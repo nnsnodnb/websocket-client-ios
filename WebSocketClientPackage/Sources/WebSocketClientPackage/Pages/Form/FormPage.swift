@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import FirebaseAnalytics
+import GoogleMobileAds
 import SFSafeSymbols
 import SwiftUI
 
@@ -19,6 +20,9 @@ struct FormPage: View {
     NavigationStack {
       form
         .navigationTitle("WebSocket Client")
+        .onAppear {
+          store.send(.onAppear)
+        }
     }
     .fullScreenCover(
       item: $store.scope(state: \.connection, action: \.connection),
@@ -31,12 +35,24 @@ struct FormPage: View {
 
   private var form: some View {
     Form {
+      adSection
       firstSection
       secondSection
       thirdSection
     }
     .keyboardToolbar {
       isFocused = false
+    }
+  }
+
+  @ViewBuilder private var adSection: some View {
+    if let adUnitID = store.adUnitID {
+      Section {
+        AdBanner(adSize: AdSizeLargeBanner, adUnitID: adUnitID)
+          .frame(width: AdSizeLargeBanner.size.width, height: AdSizeLargeBanner.size.height)
+      }
+      .listRowBackground(Color.clear)
+      .listRowSeparator(.hidden)
     }
   }
 
@@ -161,7 +177,7 @@ struct FormPage: View {
   private var connectButton: some View {
     Button(
       action: {
-        store.send(.connect, animation: .default)
+        store.send(.openAds)
       },
       label: {
         Text(.formSectionThirdTitleConnectButton)

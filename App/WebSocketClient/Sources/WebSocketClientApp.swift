@@ -17,6 +17,8 @@ struct WebSocketClientApp: App {
   @UIApplicationDelegateAdaptor(AppDelegate.self)
   var appDelegate
 
+  @Dependency(\.bundle)
+  private var bundle
   @Dependency(\.modelContext.make)
   private var modelContext
 
@@ -24,12 +26,16 @@ struct WebSocketClientApp: App {
     WindowGroup {
       if !_XCTIsTesting {
         RootPage(
-          store: Store(
+          store: .init(
             initialState: RootReducer.State(
               migratedToSwiftData: UserDefaults.standard.bool(forKey: "key_migrated_to_swift_data"),
             ),
             reducer: {
               RootReducer()
+            },
+            withDependencies: {
+              $0.adUnitID.formAboveBannerAdUnitID = bundle.formAboveBannerADUnitID
+              $0.adUnitID.webSocketConnectionRewardInterstitialAdUnitID = bundle.webSocketConnectionRewardInterstitialAdUnitID
             },
           )
         )

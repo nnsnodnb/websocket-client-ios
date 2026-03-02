@@ -14,10 +14,14 @@ public struct RootPage: View {
 
   public var body: some View {
     if store.migratedToSwiftData {
-      TabView {
-        formPage()
-        historyPage()
-        infoPage()
+      if let store = store.scope(state: \.consent, action: \.consent) {
+        ConsentPage(store: store)
+      } else {
+        TabView {
+          formPage()
+          historyPage()
+          infoPage()
+        }
       }
     } else {
       ProgressView()
@@ -31,36 +35,21 @@ public struct RootPage: View {
 
   private func formPage() -> some View {
     FormPage(
-      store: Store(
-        initialState: FormReducer.State(),
-        reducer: {
-          FormReducer()
-        },
-      )
+      store: store.scope(state: \.form, action: \.form),
     )
     .tabItem(systemSymbol: .squareAndPencil, text: .tabBarTitleConnection)
   }
 
   private func historyPage() -> some View {
     HistoryListPage(
-      store: Store(
-        initialState: HistoryListReducer.State(),
-        reducer: {
-          HistoryListReducer()
-        },
-      )
+      store: store.scope(state: \.historyList, action: \.historyList),
     )
     .tabItem(systemSymbol: .trayFullFill, text: .tabBarTitleHistories)
   }
 
   private func infoPage() -> some View {
     InfoPage(
-      store: Store(
-        initialState: InfoReducer.State(),
-        reducer: {
-          InfoReducer()
-        },
-      )
+      store: store.scope(state: \.info, action: \.info),
     )
     .tabItem(systemSymbol: .infoCircleFill, text: .tabBarTitleInfo)
   }
@@ -83,15 +72,19 @@ private extension View {
   }
 }
 
-struct RootPage_Previews: PreviewProvider {
-  static var previews: some View {
-    RootPage(
-      store: Store(
-        initialState: RootReducer.State(migratedToSwiftData: true),
-        reducer: {
-          RootReducer()
-        },
-      )
+#Preview {
+  RootPage(
+    store: Store(
+      initialState: RootReducer.State(
+        migratedToSwiftData: true,
+      ),
+      reducer: {
+        RootReducer()
+      },
+      withDependencies: {
+        $0.adUnitID.formAboveBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
+        $0.adUnitID.webSocketConnectionRewardInterstitialAdUnitID = { "ca-app-pub-3940256099942544/6978759866" }
+      },
     )
-  }
+  )
 }
