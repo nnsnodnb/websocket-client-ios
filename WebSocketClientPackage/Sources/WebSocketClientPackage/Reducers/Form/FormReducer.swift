@@ -30,7 +30,7 @@ public struct FormReducer: Sendable {
     case customHeaderNameChanged(Int, String)
     case customHeaderValueChanged(Int, String)
     case openAds
-    case connect
+    case connect(URL)
     case connection(PresentationAction<ConnectionReducer.Action>)
   }
 
@@ -85,11 +85,12 @@ public struct FormReducer: Sendable {
         state.customHeaders[index] = customHeader
         return .none
       case .openAds:
+        guard let url = state.url, !state.isConnectButtonDisable else { return .none }
         return .run(
           operation: { send in
             let result = try await rewardInterstitialAd.show()
             if result > 0 {
-              await send(.connect)
+              await send(.connect(url))
             }
             await send(.preloadRewardedInterstitialAd)
           },
@@ -97,8 +98,7 @@ public struct FormReducer: Sendable {
             await send(.preloadRewardedInterstitialAd)
           },
         )
-      case .connect:
-        guard let url = state.url else { return .none }
+      case let .connect(url):
         let history = HistoryEntity(
           id: uuid.callAsFunction(),
           url: url,
