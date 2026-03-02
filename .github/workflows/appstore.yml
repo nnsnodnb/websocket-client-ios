@@ -81,3 +81,4 @@ jobs:
           Products/WebSocketClient.ipa
           Products/WebSocketClient.app.dSYM.zip
         generate_release_notes: true
+        draft: true
