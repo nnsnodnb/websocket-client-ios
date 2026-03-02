@@ -29,6 +29,16 @@ $ cd websocket-client-ios
 $ xed .
 ```
 
+## Bump version
+
+Please edit MARKETING_VERSION of `update_app_version` in `fastlane/Fastfile`.
+
+and
+
+```bash
+$ bundle exec fastlane update_app_version
+```
+
 ## License
 
 This software is licensed under the MIT License (See [LICENSE](LICENSE)).
