@@ -25,7 +25,7 @@ struct FormPage: View {
         }
     }
     .fullScreenCover(
-      item: $store.scope(state: \.connection, action: \.connection),
+      item: $store.scope(state: \.$connection, action: \.connection),
       content: { store in
         ConnectionPage(store: store)
       }
@@ -105,7 +105,7 @@ struct FormPage: View {
       }
       .onDelete(
         perform: {
-          store.send(.removeCustomHeader($0), animation: .default)
+          store.send(.removeCustomHeader($0))
         }
       )
       addCustomHeaderButton
@@ -149,7 +149,7 @@ struct FormPage: View {
   private var addCustomHeaderButton: some View {
     Button(
       action: {
-        store.send(.addCustomHeader, animation: .default)
+        store.send(.addCustomHeader)
       },
       label: {
         Label(
