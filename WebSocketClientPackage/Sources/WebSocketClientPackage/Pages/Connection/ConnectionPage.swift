@@ -19,7 +19,7 @@ struct ConnectionPage: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(store: store)
     }
-    .alert($store.scope(state: \.alert, action: \.alert))
+    .alert($store.scope(state: \.$alert, action: \.alert))
     .sheet(
       isPresented: $store.isShowCustomHeaderList.sending(\.showedCustomHeaderList),
       content: {
@@ -77,12 +77,12 @@ private extension View {
       ToolbarItem(placement: .cancellationAction) {
         if #available(iOS 26.0, *) {
           Button(role: .cancel) {
-            store.send(.close, animation: .default)
+            store.send(.close)
           }
         } else {
           Button(
             action: {
-              store.send(.close, animation: .default)
+              store.send(.close)
             },
             label: {
               Image(systemSymbol: .xmark)
@@ -99,7 +99,7 @@ private extension View {
             content: {
               Button(
                 action: {
-                  store.send(.showedCustomHeaderList(true), animation: .default)
+                  store.send(.showedCustomHeaderList(true))
                 },
                 label: {
                   HStack {

@@ -27,7 +27,7 @@ struct HistoryDetailPage: View {
             .presentationDetents([.fraction(0.2), .large])
         }
       )
-      .alert($store.scope(state: \.alert, action: \.alert))
+      .alert($store.scope(state: \.$alert, action: \.alert))
       .analyticsScreen(name: "history-detail-page")
   }
 }
@@ -42,7 +42,7 @@ private extension View {
             if !store.history.customHeaders.isEmpty {
               Button(
                 action: {
-                  store.send(.showedCustomHeaderList(true), animation: .default)
+                  store.send(.showedCustomHeaderList(true))
                 },
                 label: {
                   HStack {

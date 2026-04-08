@@ -60,7 +60,7 @@ struct HistoryListPage: View {
         row(history: history)
       }
       .onDelete {
-        store.send(.deleteHistory($0), animation: .default)
+        store.send(.deleteHistory($0))
       }
     }
     .navigationDestination(
