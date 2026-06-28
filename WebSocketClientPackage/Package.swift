@@ -38,48 +38,26 @@ let package = Package(
     .target(
       name: "WebSocketClientPackage",
       dependencies: [
-        .product(
-          name: "BetterSafariView",
-          package: "BetterSafariView"
-        ),
-        .product(
-          name: "ComposableArchitecture",
-          package: "swift-composable-architecture"
-        ),
-        .product(
-          name: "FirebaseAnalytics",
-          package: "firebase-ios-sdk"
-        ),
-        .product(
-          name: "FirebaseCrashlytics",
-          package: "firebase-ios-sdk"
-        ),
-        .product(
-          name: "GoogleMobileAds",
-          package: "swift-package-manager-google-mobile-ads"
-        ),
-        .product(
-          name: "GoogleUserMessagingPlatform",
-          package: "swift-package-manager-google-user-messaging-platform",
-        ),
-        .product(
-          name: "SFSafeSymbols",
-          package: "SFSafeSymbols"
-        ),
+        .betterSafariView,
+        .composableArchitecture,
+        .firebaseAnalytics,
+        .firebaseCrashlytics,
+        .googleMobileAds,
+        .googleUserMessagingPlatform,
+        .sfSafeSymbols,
       ],
       resources: [
         .process("Model.xcdatamodeld")
       ],
       plugins: [
-        .plugin(name: "LicensesPlugin", package: "LicensesPlugin"),
-        .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins"),
-      ]
+        .licensesPlugin,
+      ],
     ),
     .testTarget(
       name: "WebSocketClientPackageTests",
       dependencies: [
         "WebSocketClientPackage",
-        .product(name: "DependenciesTestSupport", package: "swift-dependencies"),
+        .dependenciesTestSupport,
       ]
     ),
   ],
@@ -87,6 +65,82 @@ let package = Package(
     .v6,
   ],
 )
+
+// MARK: - Target.Dependency
+extension Target.Dependency {
+  static var betterSafariView: Self {
+    .product(
+      name: "BetterSafariView",
+      package: "BetterSafariView"
+    )
+  }
+
+  static var composableArchitecture: Self {
+    .product(
+      name: "ComposableArchitecture",
+      package: "swift-composable-architecture"
+    )
+  }
+
+  static var dependenciesTestSupport: Self {
+    .product(
+      name: "DependenciesTestSupport",
+      package: "swift-dependencies"
+    )
+  }
+
+  static var firebaseAnalytics: Self {
+    .product(
+      name: "FirebaseAnalytics",
+      package: "firebase-ios-sdk"
+    )
+  }
+
+  static var firebaseCrashlytics: Self {
+    .product(
+      name: "FirebaseCrashlytics",
+      package: "firebase-ios-sdk"
+    )
+  }
+
+  static var googleMobileAds: Self {
+    .product(
+      name: "GoogleMobileAds",
+      package: "swift-package-manager-google-mobile-ads"
+    )
+  }
+
+  static var googleUserMessagingPlatform: Self {
+    .product(
+      name: "GoogleUserMessagingPlatform",
+      package: "swift-package-manager-google-user-messaging-platform",
+    )
+  }
+
+  static var sfSafeSymbols: Self {
+    .product(
+      name: "SFSafeSymbols",
+      package: "SFSafeSymbols"
+    )
+  }
+}
+
+// MARK: - Target.PluginUsage
+extension Target.PluginUsage {
+  static var licensesPlugin: Self {
+    .plugin(
+      name: "LicensesPlugin",
+      package: "LicensesPlugin",
+    )
+  }
+
+  static var swiftLintBuildToolPlugin: Self {
+    .plugin(
+      name: "SwiftLintBuildToolPlugin",
+      package: "SwiftLintPlugins",
+    )
+  }
+}
 
 let debugOtherSwiftFlags = [
   "-Xfrontend", "-warn-long-expression-type-checking=500",
@@ -99,6 +153,10 @@ for target in package.targets {
   // swiftSettings
   target.swiftSettings = [
     .unsafeFlags(debugOtherSwiftFlags, .when(configuration: .debug)),
+  ]
+  // plugins
+  target.plugins = (target.plugins ?? []) + [
+    .swiftLintBuildToolPlugin,
   ]
 }
 // swiftlint:enable trailing_comma
