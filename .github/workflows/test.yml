@@ -50,4 +50,4 @@ jobs:
               -destination "platform=iOS Simulator,name=iPhone 17 Pro" \
               -resultBundlePath "$(mktemp -d)/Test-WebSocketClientPackageTests.xcresult" \
               -clonedSourcePackagesDirPath .swiftpm \
-              -disableAutomaticPackageResolution | xcpretty
+              -disableAutomaticPackageResolution | xcbeautify
