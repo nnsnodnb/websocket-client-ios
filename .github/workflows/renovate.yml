@@ -101,7 +101,7 @@ jobs:
         key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
 
     - name: Resolve Swift Packages
-      run: xcodebuild -resolvePackageDependencies -scheme WebSocketClient -workspace WebSocketClient.xcworkspace -clonedSourcePackagesDirPath .swiftpm
+      run: xcodebuild -resolvePackageDependencies -scheme WebSocketClientPackage -workspace WebSocketClient.xcworkspace -clonedSourcePackagesDirPath .swiftpm
 
     - name: Git Config
       run: |
