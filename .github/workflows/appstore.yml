@@ -11,22 +11,22 @@ concurrency:
 
 jobs:
   appstore:
-    runs-on: macos-15
+    runs-on: macos-26
 
     env:
       FASTLANE_SKIP_UPDATE_CHECK: 1
-      DEVELOPER_DIR: /Applications/Xcode_26.2.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
 
     permissions:
       contents: write
 
     steps:
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
     - name: Setup Ruby
-      uses: ruby/setup-ruby@09a7688d3b55cf0e976497ff046b70949eeaccfd # v1.288.0
+      uses: ruby/setup-ruby@6e5d382445ae5590b7449d8b3bc8cb1c2c27f617 # v1.317.0
       with:
-        ruby-version: "3.4.8"
+        ruby-version: "4.0.5"
         bundler-cache: true
 
     - name: Get SwiftPM originHash
@@ -36,7 +36,7 @@ jobs:
         echo "ORIGIN_HASH=${ORIGIN_HASH}" >> "${GITHUB_OUTPUT}"
 
     - name: Cache Swift Packages
-      uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
       id: cache-swiftpm
       timeout-minutes: 20
       with:
@@ -68,16 +68,17 @@ jobs:
         bundle exec fastlane release
 
     - name: Upload Products
-      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: websocket-client-appstore
         path: Products
 
     - name: Upload Release
-      uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+      uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
           Products/WebSocketClient.ipa
           Products/WebSocketClient.app.dSYM.zip
         generate_release_notes: true
+        draft: true

@@ -7,8 +7,8 @@
 
 import ComposableArchitecture
 import Foundation
-@testable import WebSocketClientPackage
 import Testing
+@testable import WebSocketClientPackage
 
 @MainActor
 struct TestFormReducerConnect {
@@ -39,9 +39,11 @@ struct TestFormReducerConnect {
           isConnectionSuccess: false,
           createdAt: now,
         )
-        $0.connection = .init(
-          url: URL(string: "wss://echo.websocket.org")!,
-          history: history
+        $0.destination = .connection(
+          .init(
+            url: URL(string: "wss://echo.websocket.org")!,
+            history: history
+          )
         )
       }
     }

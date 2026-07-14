@@ -1,5 +1,5 @@
 {
-  "originHash" : "2b855bba9650bc3a93c6609fe3100db2ea42266dc559007093b39d8e5aea9151",
+  "originHash" : "ac0c319423ca8c94331197bf2e2e37367ca9f90bfcf505cbe7a8428d4e8947ef",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/app-check.git",
       "state" : {
-        "revision" : "21fe1af9be463a359aaf8d96789ef73fc3760d09",
-        "version" : "11.0.1"
+        "revision" : "3e33dd27dd4c69bd81c7c81fe61d8ccf58846902",
+        "version" : "11.3.1"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk.git",
       "state" : {
-        "revision" : "85560b48b0ff099ad83fe53d67df3c67fbc2b7a6",
-        "version" : "12.10.0"
+        "revision" : "9ab4a7e6e5d6d3df2a2aa002a11d25e078c8d6e5",
+        "version" : "12.16.0"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/googleads/google-ads-on-device-conversion-ios-sdk",
       "state" : {
-        "revision" : "a5cd95c80e8efdd02155c6cea1cecf743bb683a5",
-        "version" : "3.3.0"
+        "revision" : "dc39082d8881109d35b94b1c122164c0e8d08a55",
+        "version" : "3.6.1"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleAppMeasurement.git",
       "state" : {
-        "revision" : "68ba955e540dcff5e0805970ef4b1fd0150be100",
-        "version" : "12.10.0"
+        "revision" : "ce606e3768abddff0510783e1a6d2f270b943b35",
+        "version" : "12.16.0"
       }
     },
     {
@@ -186,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-composable-architecture.git",
       "state" : {
-        "revision" : "74a5fa0d02b17ba5bbd9743dc49b4d7f3bbbed96",
-        "version" : "1.24.1"
+        "revision" : "e2fa1df6cd9eec6fa6314aa20513e47da576f24e",
+        "version" : "1.26.0"
       }
     },
     {
@@ -213,8 +213,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-dependencies",
       "state" : {
-        "revision" : "c79f72b3e67a1eb64f66f76704c22ed6a5c1ed84",
-        "version" : "1.11.0"
+        "revision" : "8dc1fbf2f6255a73dec53b4648164884898db4c5",
+        "version" : "1.14.1"
       }
     },
     {
@@ -231,8 +231,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-navigation",
       "state" : {
-        "revision" : "bf498690e1f6b4af790260f542e8428a4ba10d78",
-        "version" : "2.6.0"
+        "revision" : "32f35241b8be0719c4c7f00eb27713b1cadb6248",
+        "version" : "2.8.0"
       }
     },
     {
@@ -240,8 +240,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
       "state" : {
-        "revision" : "4458cfaeb502801c779dbb7fbd0121d198628f52",
-        "version" : "13.1.0"
+        "revision" : "7651abff585dc8dacd1744222d5f03bdd2a8532a",
+        "version" : "13.6.0"
       }
     },
     {
@@ -276,8 +276,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax",
       "state" : {
-        "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
-        "version" : "509.1.1"
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
       }
     },
     {
@@ -285,8 +285,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SimplyDanny/SwiftLintPlugins.git",
       "state" : {
-        "revision" : "8a4640d14777685ba8f14e832373160498fbab92",
-        "version" : "0.63.2"
+        "revision" : "3292bab28e6e92000161348003fdef8edc4e582d",
+        "version" : "0.65.0"
       }
     },
     {

@@ -20,7 +20,7 @@ struct InfoPage: View {
         .navigationTitle(.infoNavibarTitle)
         .safari(store: $store)
     }
-    .alert($store.scope(state: \.alert, action: \.alert))
+    .alert($store.scope(\.$alert, action: \.alert))
     .task {
       store.send(.start)
     }
@@ -79,12 +79,7 @@ struct InfoPage: View {
       )
       NavigationLink(
         destination: {
-          AppIconListPage(
-            store: store.scope(
-              state: \.appIconList,
-              action: \.appIconList
-            )
-          )
+          AppIconListPage(store: store.scope(\.appIconList, action: \.appIconList))
         },
         label: {
           HStack(spacing: 12) {
@@ -164,12 +159,7 @@ struct InfoPage: View {
     Section {
       NavigationLink(
         destination: {
-          LicenseListPage(
-            store: store.scope(
-              state: \.licenseList,
-              action: \.licenseList,
-            )
-          )
+          LicenseListPage(store: store.scope(\.licenseList, action: \.licenseList))
         },
         label: {
           HStack(spacing: 12) {

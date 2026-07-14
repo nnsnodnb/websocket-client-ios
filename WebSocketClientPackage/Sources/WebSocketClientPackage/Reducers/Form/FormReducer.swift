@@ -10,6 +10,19 @@ import Foundation
 
 @Reducer
 public struct FormReducer: Sendable {
+  // MARK: - Destination
+  @Reducer
+  public enum Destination {
+    case connection(ConnectionReducer)
+    case alert(AlertState<Alert>)
+
+    // MARK: - Alert
+    @CasePathable
+    public enum Alert: Equatable, Sendable {
+      case watch(URL)
+    }
+  }
+
   // MARK: - State
   @ObservableState
   public struct State: Sendable, Equatable {
@@ -17,11 +30,11 @@ public struct FormReducer: Sendable {
     var url: URL?
     var customHeaders: [CustomHeaderEntity] = []
     var isConnectButtonDisable = true
-    @Presents var connection: ConnectionReducer.State?
+    @Presents var destination: Destination.State?
   }
 
   // MARK: - Action
-  public enum Action: Sendable, Equatable {
+  public enum Action {
     case onAppear
     case preloadRewardedInterstitialAd
     case urlChanged(String)
@@ -29,9 +42,9 @@ public struct FormReducer: Sendable {
     case removeCustomHeader(IndexSet)
     case customHeaderNameChanged(Int, String)
     case customHeaderValueChanged(Int, String)
-    case openAds
+    case showBeforeAdsAlert
     case connect(URL)
-    case connection(PresentationAction<ConnectionReducer.Action>)
+    case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.adUnitID)
@@ -84,8 +97,29 @@ public struct FormReducer: Sendable {
         customHeader.setValue(value)
         state.customHeaders[index] = customHeader
         return .none
-      case .openAds:
+      case .showBeforeAdsAlert:
         guard let url = state.url, !state.isConnectButtonDisable else { return .none }
+        state.destination = .alert(
+          .init(
+            title: {
+              TextState(.formAlertWatchTitle)
+            },
+            actions: {
+              ButtonState(
+                role: .cancel,
+                label: {
+                  TextState(.alertButtonTitleCancel)
+                },
+              )
+              ButtonState(
+                action: .watch(url),
+                label: {
+                  TextState(.formAlertWatchTitleContinue)
+                },
+              )
+            },
+          )
+        )
         return .run(
           operation: { send in
             let result = try await rewardInterstitialAd.show()
@@ -107,17 +141,38 @@ public struct FormReducer: Sendable {
           isConnectionSuccess: false,
           createdAt: date.callAsFunction()
         )
-        state.connection = .init(url: url, history: history)
+        state.destination = .connection(.init(url: url, history: history))
         return .none
-      case .connection(.presented(.close)):
-        state.connection = nil
+      case .destination(.presented(.connection(.close))):
+        state.destination = nil
         return .none
-      case .connection:
+      case let .destination(.presented(.alert(.watch(url)))):
+        state.destination = nil
+        return .run(
+          operation: { send in
+            let result = try await rewardInterstitialAd.show()
+            if result > 0 {
+              await send(.connect(url))
+            }
+            await send(.preloadRewardedInterstitialAd)
+          },
+          catch: { _, send in
+            await send(.preloadRewardedInterstitialAd)
+          },
+        )
+      case .destination(.presented(.alert)):
+        state.destination = nil
+        return .none
+      case .destination:
         return .none
       }
     }
-    .ifLet(\.$connection, action: \.connection) {
-      ConnectionReducer()
-    }
+    .ifLet(\.$destination, action: \.destination)
   }
 }
+
+// MARK: - FormReducer.Destination.State Equatable
+extension FormReducer.Destination.State: Equatable {}
+
+// MARK: - FormReducer.Destination.State Sendable
+extension FormReducer.Destination.State: Sendable {}

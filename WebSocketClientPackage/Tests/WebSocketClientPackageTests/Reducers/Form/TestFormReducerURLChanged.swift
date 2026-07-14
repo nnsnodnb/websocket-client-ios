@@ -7,8 +7,8 @@
 
 import ComposableArchitecture
 import Foundation
-@testable import WebSocketClientPackage
 import Testing
+@testable import WebSocketClientPackage
 
 @MainActor
 struct TestFormReducerURLChanged {
