@@ -25,7 +25,7 @@ struct FormPage: View {
         }
     }
     .fullScreenCover(
-      item: $store.scope(state: \.$connection, action: \.connection),
+      item: $store.scope(\.connection, action: \.connection),
       content: { store in
         ConnectionPage(store: store)
       }

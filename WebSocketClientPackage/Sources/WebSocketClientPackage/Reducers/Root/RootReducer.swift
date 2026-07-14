@@ -40,13 +40,13 @@ public struct RootReducer: Sendable {
   private var database
 
   public var body: some ReducerOf<Self> {
-    Scope(state: \.form, action: \.form) {
+    Scope(\.form, action: \.form) {
       FormReducer()
     }
-    Scope(state: \.historyList, action: \.historyList) {
+    Scope(\.historyList, action: \.historyList) {
       HistoryListReducer()
     }
-    Scope(state: \.info, action: \.info) {
+    Scope(\.info, action: \.info) {
       InfoReducer()
     }
     Reduce { state, action in
