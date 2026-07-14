@@ -23,7 +23,7 @@ jobs:
     - name: Setup Ruby
       uses: ruby/setup-ruby@12fd324f1d0b43274fdc8130f6980590a667c455 # v1.312.0
       with:
-        ruby-version: "4.0.5"
+        ruby-version: "4.0.6"
         bundler-cache: true
 
     - name: Get SwiftPM originHash
