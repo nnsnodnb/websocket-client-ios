@@ -6,10 +6,10 @@
 //
 
 import ComposableArchitecture
-import Foundation
 import DependenciesTestSupport
-@testable import WebSocketClientPackage
+import Foundation
 import Testing
+@testable import WebSocketClientPackage
 
 @MainActor
 struct HistoryListReducerTests {
