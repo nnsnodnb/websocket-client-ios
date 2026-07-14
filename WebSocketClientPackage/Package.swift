@@ -21,7 +21,7 @@ let package = Package(
     .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "12.16.0")),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", .upToNextMajor(from: "0.2.0")),
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0")),
-    .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.63.2")),
+    .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.65.0")),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture.git",
       .upToNextMajor(from: "1.26.0"),
