@@ -44,9 +44,11 @@ struct TestFormReducerOpenAds {
           isConnectionSuccess: false,
           createdAt: now,
         )
-        $0.connection = .init(
-          url: URL(string: "wss://echo.websocket.org")!,
-          history: history
+        $0.destination = .connection(
+          .init(
+            url: URL(string: "wss://echo.websocket.org")!,
+            history: history
+          )
         )
       }
       await store.receive(\.preloadRewardedInterstitialAd)
