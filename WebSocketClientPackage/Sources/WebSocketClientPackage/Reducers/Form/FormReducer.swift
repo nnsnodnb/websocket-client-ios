@@ -10,6 +10,19 @@ import Foundation
 
 @Reducer
 public struct FormReducer: Sendable {
+  // MARK: - Destination
+  @Reducer
+  public enum Destination {
+    case connection(ConnectionReducer)
+    case alert(AlertState<Alert>)
+
+    // MARK: - Alert
+    @CasePathable
+    public enum Alert: Sendable {
+      case watch
+    }
+  }
+
   // MARK: - State
   @ObservableState
   public struct State: Sendable, Equatable {
@@ -17,11 +30,11 @@ public struct FormReducer: Sendable {
     var url: URL?
     var customHeaders: [CustomHeaderEntity] = []
     var isConnectButtonDisable = true
-    @Presents var connection: ConnectionReducer.State?
+    @Presents var destination: Destination.State?
   }
 
   // MARK: - Action
-  public enum Action: Sendable, Equatable {
+  public enum Action {
     case onAppear
     case preloadRewardedInterstitialAd
     case urlChanged(String)
@@ -31,7 +44,7 @@ public struct FormReducer: Sendable {
     case customHeaderValueChanged(Int, String)
     case openAds
     case connect(URL)
-    case connection(PresentationAction<ConnectionReducer.Action>)
+    case destination(PresentationAction<Destination.Action>)
   }
 
   @Dependency(\.adUnitID)
@@ -107,17 +120,21 @@ public struct FormReducer: Sendable {
           isConnectionSuccess: false,
           createdAt: date.callAsFunction()
         )
-        state.connection = .init(url: url, history: history)
+        state.destination = .connection(.init(url: url, history: history))
         return .none
-      case .connection(.presented(.close)):
-        state.connection = nil
+      case .destination(.presented(.connection(.close))):
+        state.destination = nil
         return .none
-      case .connection:
+      case .destination:
         return .none
       }
     }
-    .ifLet(\.$connection, action: \.connection) {
-      ConnectionReducer()
-    }
+    .ifLet(\.$destination, action: \.destination)
   }
 }
+
+// MARK: - FormReducer.Destination.State Equatable
+extension FormReducer.Destination.State: Equatable {}
+
+// MARK: - FormReducer.Destination.State Sendable
+extension FormReducer.Destination.State: Sendable {}
