@@ -1,11 +1,11 @@
-name: Lint
+name: SwiftLint
 
 on:
   pull_request:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref }}
-  cancel-in-progress: true
+    paths:
+      - ".github/workflows/swiftlint.yml"
+      - ".swiftlint.yml"
+      - "**/*.swift"
 
 jobs:
   swiftlint:
@@ -14,10 +14,15 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
+      issues: write
 
     steps:
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
 
-    - uses: norio-nomura/action-swiftlint@9f4dcd7fd46b4e75d7935cf2f4df406d5cae3684 # 3.2.1
-      env:
-        WORKING_DIRECTORY: WebSocketClientPackage
+      - uses: nnsnodnb/action-swiftlint@a353c9762a6c856eac886c6c4f0292e800d6dbb2 # v1.0.0
+        with:
+          github_token: ${{ secrets.github_token }}
+          workdir: WebSocketClientPackage
+          reporter: github-pr-review
+          level: warning
+          fail_level: error
