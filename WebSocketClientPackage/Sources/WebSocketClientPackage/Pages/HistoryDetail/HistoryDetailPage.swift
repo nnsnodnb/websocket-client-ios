@@ -27,7 +27,7 @@ struct HistoryDetailPage: View {
             .presentationDetents([.fraction(0.2), .large])
         }
       )
-      .alert($store.scope(\.alert, action: \.alert))
+      .alert($store.scope(\.$alert, action: \.alert))
       .analyticsScreen(name: "history-detail-page")
   }
 }

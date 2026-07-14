@@ -1,5 +1,5 @@
 //
-//  TestFormReducerOpenAds.swift
+//  TestFormReducerDestination.swift
 //  WebSocketClientPackage
 //
 //  Created by Yuya Oka on 2026/03/02.
@@ -12,9 +12,9 @@ import Testing
 @testable import WebSocketClientPackage
 
 @MainActor
-struct TestFormReducerOpenAds {
+struct TestFormReducerDestination {
   @Test
-  func testOpenAdsEarnedReward() async {
+  func testPresentedAlertWatchEarnedReward() async {
     let now = Date()
 
     await withDependencies {
@@ -23,18 +23,43 @@ struct TestFormReducerOpenAds {
       $0.rewardInterstitialAd.show = { 1 }
       $0.uuid = .incrementing
     } operation: {
+      let url = URL(string: "wss://echo.websocket.org")!
+
       let store = TestStore(
         initialState: FormReducer.State(
           adUnitID: "ca-app-pub-3940256099942544/2435281174",
-          url: URL(string: "wss://echo.websocket.org"),
+          url: url,
           isConnectButtonDisable: false,
+          destination: .alert(
+            .init(
+              title: {
+                TextState(.formAlertWatchTitle)
+              },
+              actions: {
+                ButtonState(
+                  role: .cancel,
+                  label: {
+                    TextState(.alertButtonTitleCancel)
+                  },
+                )
+                ButtonState(
+                  action: .watch(url),
+                  label: {
+                    TextState(.formAlertWatchTitleContinue)
+                  },
+                )
+              },
+            )
+          )
         ),
         reducer: {
           FormReducer()
         },
       )
 
-      await store.send(.openAds)
+      await store.send(.destination(.presented(.alert(.watch(url))))) {
+        $0.destination = nil
+      }
       await store.receive(\.connect, URL(string: "wss://echo.websocket.org")!) {
         let history = HistoryEntity(
           id: .init(0),
@@ -61,19 +86,44 @@ struct TestFormReducerOpenAds {
       $0.rewardInterstitialAd.show = { throw RewardInterstitialAdClient.Error.interruption }
     }
   )
-  func testOpenAdsNotEarnedReward() async {
+  func testPresentedAlertWatchNotEarnedReward() async {
+    let url = URL(string: "wss://echo.websocket.org")!
+
     let store = TestStore(
       initialState: FormReducer.State(
         adUnitID: "ca-app-pub-3940256099942544/2435281174",
-        url: URL(string: "wss://echo.websocket.org"),
+        url: url,
         isConnectButtonDisable: false,
+        destination: .alert(
+          .init(
+            title: {
+              TextState(.formAlertWatchTitle)
+            },
+            actions: {
+              ButtonState(
+                role: .cancel,
+                label: {
+                  TextState(.alertButtonTitleCancel)
+                },
+              )
+              ButtonState(
+                action: .watch(url),
+                label: {
+                  TextState(.formAlertWatchTitleContinue)
+                },
+              )
+            },
+          )
+        )
       ),
       reducer: {
         FormReducer()
       },
     )
 
-    await store.send(.openAds)
+    await store.send(.destination(.presented(.alert(.watch(url))))) {
+      $0.destination = nil
+    }
     await store.receive(\.preloadRewardedInterstitialAd)
   }
 }
