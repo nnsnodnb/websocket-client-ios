@@ -18,8 +18,8 @@ public struct FormReducer: Sendable {
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Sendable {
-      case watch
+    public enum Alert: Equatable, Sendable {
+      case watch(URL)
     }
   }
 
@@ -42,7 +42,7 @@ public struct FormReducer: Sendable {
     case removeCustomHeader(IndexSet)
     case customHeaderNameChanged(Int, String)
     case customHeaderValueChanged(Int, String)
-    case openAds
+    case showBeforeAdsAlert
     case connect(URL)
     case destination(PresentationAction<Destination.Action>)
   }
@@ -97,8 +97,29 @@ public struct FormReducer: Sendable {
         customHeader.setValue(value)
         state.customHeaders[index] = customHeader
         return .none
-      case .openAds:
+      case .showBeforeAdsAlert:
         guard let url = state.url, !state.isConnectButtonDisable else { return .none }
+        state.destination = .alert(
+          .init(
+            title: {
+              TextState(.formAlertWatchTitle)
+            },
+            actions: {
+              ButtonState(
+                role: .cancel,
+                label: {
+                  TextState(.alertButtonTitleCancel)
+                },
+              )
+              ButtonState(
+                action: .watch(url),
+                label: {
+                  TextState(.formAlertWatchTitleContinue)
+                },
+              )
+            },
+          )
+        )
         return .run(
           operation: { send in
             let result = try await rewardInterstitialAd.show()
@@ -123,6 +144,23 @@ public struct FormReducer: Sendable {
         state.destination = .connection(.init(url: url, history: history))
         return .none
       case .destination(.presented(.connection(.close))):
+        state.destination = nil
+        return .none
+      case let .destination(.presented(.alert(.watch(url)))):
+        state.destination = nil
+        return .run(
+          operation: { send in
+            let result = try await rewardInterstitialAd.show()
+            if result > 0 {
+              await send(.connect(url))
+            }
+            await send(.preloadRewardedInterstitialAd)
+          },
+          catch: { _, send in
+            await send(.preloadRewardedInterstitialAd)
+          },
+        )
+      case .destination(.presented(.alert)):
         state.destination = nil
         return .none
       case .destination:

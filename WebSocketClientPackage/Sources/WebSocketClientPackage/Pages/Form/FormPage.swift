@@ -25,9 +25,17 @@ struct FormPage: View {
         }
     }
     .fullScreenCover(
-      item: $store.scope(\.destination, action: \.destination).connection,
+      item: $store.scope(\.$destination, action: \.destination).connection,
       content: { store in
         ConnectionPage(store: store)
+      },
+    )
+    .alert(
+      $store.scope(\.$destination, action: \.destination).alert,
+      action: { action in
+        if let action {
+          store.send(.destination(.presented(.alert(action))))
+        }
       },
     )
     .analyticsScreen(name: "form-page")
@@ -177,7 +185,7 @@ struct FormPage: View {
   private var connectButton: some View {
     Button(
       action: {
-        store.send(.openAds)
+        store.send(.showBeforeAdsAlert)
       },
       label: {
         Text(.formSectionThirdTitleConnectButton)

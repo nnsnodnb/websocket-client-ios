@@ -20,7 +20,7 @@ struct InfoPage: View {
         .navigationTitle(.infoNavibarTitle)
         .safari(store: $store)
     }
-    .alert($store.scope(\.alert, action: \.alert))
+    .alert($store.scope(\.$alert, action: \.alert))
     .task {
       store.send(.start)
     }
