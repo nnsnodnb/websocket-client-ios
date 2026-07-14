@@ -68,7 +68,7 @@ struct HistoryListPage: View {
       destination: { destination in
         switch destination {
         case .historyDetail:
-          if let store = store.scope(state: \.selectionHistory?.value, action: \.historyDetail) {
+          if let store = store.scope(\.selectionHistory?.value, action: \.historyDetail) {
             HistoryDetailPage(store: store)
           }
         }

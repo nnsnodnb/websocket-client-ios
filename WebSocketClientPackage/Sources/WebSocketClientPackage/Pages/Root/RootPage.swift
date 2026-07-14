@@ -14,7 +14,7 @@ public struct RootPage: View {
 
   public var body: some View {
     if store.migratedToSwiftData {
-      if let store = store.scope(state: \.consent, action: \.consent) {
+      if let store = store.scope(\.consent, action: \.consent) {
         ConsentPage(store: store)
       } else {
         TabView {
@@ -34,24 +34,18 @@ public struct RootPage: View {
   }
 
   private func formPage() -> some View {
-    FormPage(
-      store: store.scope(state: \.form, action: \.form),
-    )
-    .tabItem(systemSymbol: .squareAndPencil, text: .tabBarTitleConnection)
+    FormPage(store: store.scope(\.form, action: \.form))
+      .tabItem(systemSymbol: .squareAndPencil, text: .tabBarTitleConnection)
   }
 
   private func historyPage() -> some View {
-    HistoryListPage(
-      store: store.scope(state: \.historyList, action: \.historyList),
-    )
-    .tabItem(systemSymbol: .trayFullFill, text: .tabBarTitleHistories)
+    HistoryListPage(store: store.scope(\.historyList, action: \.historyList))
+      .tabItem(systemSymbol: .trayFullFill, text: .tabBarTitleHistories)
   }
 
   private func infoPage() -> some View {
-    InfoPage(
-      store: store.scope(state: \.info, action: \.info),
-    )
-    .tabItem(systemSymbol: .infoCircleFill, text: .tabBarTitleInfo)
+    InfoPage(store: store.scope(\.info, action: \.info))
+      .tabItem(systemSymbol: .infoCircleFill, text: .tabBarTitleInfo)
   }
 
   // MARK: - Initialize

@@ -63,6 +63,12 @@ public struct InfoReducer: Sendable {
   var bundle
 
   public var body: some ReducerOf<Self> {
+    Scope(\.appIconList, action: \.appIconList) {
+      AppIconListReducer()
+    }
+    Scope(\.licenseList, action: \.licenseList) {
+      LicenseListReducer()
+    }
     Reduce { state, action in
       switch action {
       case .start:
@@ -161,12 +167,6 @@ public struct InfoReducer: Sendable {
       case .error:
         return .none
       }
-    }
-    Scope(state: \.appIconList, action: \.appIconList) {
-      AppIconListReducer()
-    }
-    Scope(state: \.licenseList, action: \.licenseList) {
-      LicenseListReducer()
     }
   }
 }
