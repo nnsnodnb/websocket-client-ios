@@ -6,8 +6,8 @@
 //
 
 import ComposableArchitecture
-@testable import WebSocketClientPackage
 import Testing
+@testable import WebSocketClientPackage
 
 @MainActor
 struct TestInfoReducerAlert {
