@@ -31,7 +31,7 @@ let package = Package(
       ],
     ),
     .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.14.1")),
-    .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .upToNextMajor(from: "13.6.0")),
+    .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .upToNextMajor(from: "13.7.0")),
     .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", .upToNextMajor(from: "3.1.0")),
   ],
   targets: [
