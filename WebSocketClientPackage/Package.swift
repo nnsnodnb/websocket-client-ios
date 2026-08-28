@@ -24,7 +24,7 @@ let package = Package(
     .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.65.1")),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture.git",
-      .upToNextMajor(from: "1.26.1"),
+      .upToNextMajor(from: "1.26.2"),
       traits: [
         "ComposableArchitecture2Deprecations",
         // "ComposableArchitecture2DeprecationOverloads",
