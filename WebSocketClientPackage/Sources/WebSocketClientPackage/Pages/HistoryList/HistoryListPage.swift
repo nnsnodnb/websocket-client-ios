@@ -20,6 +20,14 @@ struct HistoryListPage: View {
       content
         .navigationTitle(.historyListNavibarTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .modifier {
+          if #available(iOS 26.0, *) {
+            $0
+              .scrollEdgeEffectStyle(.soft, for: .top)
+          } else {
+            $0
+          }
+        }
     }
     .task {
       store.send(.fetch)

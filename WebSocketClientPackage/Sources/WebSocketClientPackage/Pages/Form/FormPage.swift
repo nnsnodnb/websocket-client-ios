@@ -20,6 +20,15 @@ struct FormPage: View {
     NavigationStack {
       form
         .navigationTitle("WebSocket Client")
+        .toolbarTitleDisplayMode(.inlineLarge)
+        .modifier {
+          if #available(iOS 26.0, *) {
+            $0
+              .scrollEdgeEffectStyle(.soft, for: .top)
+          } else {
+            $0
+          }
+        }
         .onAppear {
           store.send(.onAppear)
         }

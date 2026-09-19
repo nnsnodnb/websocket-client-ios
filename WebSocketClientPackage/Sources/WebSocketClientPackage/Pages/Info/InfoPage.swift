@@ -18,6 +18,15 @@ struct InfoPage: View {
     NavigationStack {
       form
         .navigationTitle(.infoNavibarTitle)
+        .toolbarTitleDisplayMode(.inlineLarge)
+        .modifier {
+          if #available(iOS 26.0, *) {
+            $0
+              .scrollEdgeEffectStyle(.soft, for: .top)
+          } else {
+            $0
+          }
+        }
         .safari(store: $store)
     }
     .alert($store.scope(\.alert, action: \.alert))
