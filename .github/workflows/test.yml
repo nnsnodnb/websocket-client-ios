@@ -41,13 +41,15 @@ jobs:
         run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 
       - name: Xcode test
+        env:
+          DESTINATION: "platform=iOS Simulator,OS=27.0,name=iPhone 18 Pro"
         run: |
           set -o pipefail && \
             xcodebuild test \
               -scheme WebSocketClientPackageTests \
               -workspace WebSocketClient.xcworkspace \
               -parallel-testing-enabled=YES \
-              -destination "platform=iOS Simulator,name=iPhone 17 Pro" \
+              -destination "${DESTINATION}" \
               -resultBundlePath "$(mktemp -d)/Test-WebSocketClientPackageTests.xcresult" \
               -clonedSourcePackagesDirPath .swiftpm \
               -disableAutomaticPackageResolution | xcbeautify
