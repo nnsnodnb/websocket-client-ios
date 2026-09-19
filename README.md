@@ -10,8 +10,8 @@ WebSocket Client for iOS
 
 ```command
 $ xcodebuild -version
-Xcode 26.6
-Build version 17F113
+Xcode 27.0
+Build version 27A266a
 ```
 
 ### Ruby
