@@ -16,7 +16,15 @@ struct HistoryDetailPage: View {
   var body: some View {
     MessageListView(messages: store.history.messages.map { $0.text })
       .navigationTitle(store.history.url.absoluteString)
-      .navigationBarTitleDisplayMode(.inline)
+      .toolbarTitleDisplayMode(.inline)
+      .modifier {
+        if #available(iOS 26.0, *) {
+          $0
+            .scrollEdgeEffectStyle(.soft, for: .top)
+        } else {
+          $0
+        }
+      }
       .toolbar(store: store)
       .sheet(
         isPresented: $store.isShowCustomHeaderList.sending(
@@ -27,7 +35,7 @@ struct HistoryDetailPage: View {
             .presentationDetents([.fraction(0.2), .large])
         }
       )
-      .alert($store.scope(\.$alert, action: \.alert))
+      .alert($store.scope(\.alert, action: \.alert))
       .analyticsScreen(name: "history-detail-page")
   }
 }

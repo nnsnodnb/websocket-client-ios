@@ -11,19 +11,19 @@ concurrency:
 
 jobs:
   adhoc:
-    runs-on: macos-26
+    runs-on: xcode-27
 
     env:
       FASTLANE_SKIP_UPDATE_CHECK: 1
-      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+      DEVELOPER_DIR: /Applications/Xcode_27.0.app/Contents/Developer
 
     steps:
-    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     - name: Setup Ruby
-      uses: ruby/setup-ruby@6e5d382445ae5590b7449d8b3bc8cb1c2c27f617 # v1.317.0
+      uses: ruby/setup-ruby@a0102e0972be65f351c307e2d64b9314a57c8073 # v1.324.0
       with:
-        ruby-version: "4.0.5"
+        ruby-version: "4.0.7"
         bundler-cache: true
 
     - name: Get SwiftPM originHash

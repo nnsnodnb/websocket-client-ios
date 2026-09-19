@@ -20,18 +20,27 @@ struct FormPage: View {
     NavigationStack {
       form
         .navigationTitle("WebSocket Client")
+        .toolbarTitleDisplayMode(.inlineLarge)
+        .modifier {
+          if #available(iOS 26.0, *) {
+            $0
+              .scrollEdgeEffectStyle(.soft, for: .top)
+          } else {
+            $0
+          }
+        }
         .onAppear {
           store.send(.onAppear)
         }
     }
     .fullScreenCover(
-      item: $store.scope(\.$destination, action: \.destination).connection,
+      item: $store.scope(\.destination, action: \.destination).connection,
       content: { store in
         ConnectionPage(store: store)
       },
     )
     .alert(
-      $store.scope(\.$destination, action: \.destination).alert,
+      $store.scope(\.destination, action: \.destination).alert,
       action: { action in
         if let action {
           store.send(.destination(.presented(.alert(action))))

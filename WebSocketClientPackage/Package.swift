@@ -18,20 +18,20 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/stleamist/BetterSafariView.git", .upToNextMajor(from: "2.4.2")),
-    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "12.16.0")),
+    .package(url: "https://github.com/firebase/firebase-ios-sdk.git", .upToNextMajor(from: "12.19.2")),
     .package(url: "https://github.com/maiyama18/LicensesPlugin.git", .upToNextMajor(from: "0.2.0")),
     .package(url: "https://github.com/SFSafeSymbols/SFSafeSymbols.git", .upToNextMajor(from: "7.0.0")),
-    .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.65.0")),
+    .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins.git", .upToNextMajor(from: "0.65.1")),
     .package(
       url: "https://github.com/pointfreeco/swift-composable-architecture.git",
-      .upToNextMajor(from: "1.26.0"),
+      .upToNextMajor(from: "1.26.2"),
       traits: [
         "ComposableArchitecture2Deprecations",
         // "ComposableArchitecture2DeprecationOverloads",
       ],
     ),
-    .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.14.1")),
-    .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .upToNextMajor(from: "13.6.0")),
+    .package(url: "https://github.com/pointfreeco/swift-dependencies.git", .upToNextMajor(from: "1.17.1")),
+    .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .upToNextMajor(from: "13.10.0")),
     .package(url: "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git", .upToNextMajor(from: "3.1.0")),
   ],
   targets: [
