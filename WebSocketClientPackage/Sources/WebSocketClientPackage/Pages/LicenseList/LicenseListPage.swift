@@ -16,6 +16,14 @@ public struct LicenseListPage: View {
   public var body: some View {
     list
       .navigationTitle(.infoSectionFourthTitleLicenses)
+      .modifier {
+        if #available(iOS 26.0, *) {
+          $0
+            .scrollEdgeEffectStyle(.soft, for: .top)
+        } else {
+          $0
+        }
+      }
   }
 }
 

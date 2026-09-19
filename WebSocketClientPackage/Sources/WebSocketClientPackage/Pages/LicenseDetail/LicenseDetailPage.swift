@@ -26,6 +26,14 @@ public struct LicenseDetailPage: View {
     }
     .formStyle(.columns)
     .navigationTitle(license.name)
+    .modifier {
+      if #available(iOS 26.0, *) {
+        $0
+          .scrollEdgeEffectStyle(.soft, for: .top)
+      } else {
+        $0
+      }
+    }
   }
 }
 

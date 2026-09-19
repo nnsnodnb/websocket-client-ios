@@ -16,7 +16,15 @@ struct HistoryDetailPage: View {
   var body: some View {
     MessageListView(messages: store.history.messages.map { $0.text })
       .navigationTitle(store.history.url.absoluteString)
-      .navigationBarTitleDisplayMode(.inline)
+      .toolbarTitleDisplayMode(.inline)
+      .modifier {
+        if #available(iOS 26.0, *) {
+          $0
+            .scrollEdgeEffectStyle(.soft, for: .top)
+        } else {
+          $0
+        }
+      }
       .toolbar(store: store)
       .sheet(
         isPresented: $store.isShowCustomHeaderList.sending(
