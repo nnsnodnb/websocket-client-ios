@@ -14,20 +14,21 @@ struct HistoryListPage: View {
 
   var body: some View {
     NavigationStack(
-      path: $store.paths.sending(\.navigationPathChanged)
-    ) {
-      content
-        .navigationTitle(.historyListNavibarTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .modifier {
-          if #available(iOS 26.0, *) {
-            $0
-              .scrollEdgeEffectStyle(.soft, for: .top)
-          } else {
-            $0
+      path: $store.paths.sending(\.navigationPathChanged),
+      root: {
+        content
+          .navigationTitle(.historyListNavibarTitle)
+          .navigationBarTitleDisplayMode(.inline)
+          .modifier {
+            if #available(iOS 26.0, *) {
+              $0
+                .scrollEdgeEffectStyle(.soft, for: .top)
+            } else {
+              $0
+            }
           }
-        }
-    }
+      },
+    )
     .task {
       store.send(.fetch)
     }
@@ -117,13 +118,17 @@ struct HistoryListPage_Previews: PreviewProvider {
 
   static var previews: some View {
     HistoryListPage(
-      store: Store(
+      store: .init(
         initialState: HistoryListReducer.State(
-          histories: [history]
-        )
-      ) {
-        HistoryListReducer()
-      }
+          histories: [history],
+        ),
+        reducer: {
+          HistoryListReducer()
+        },
+        withDependencies: {
+          $0.database.fetchHistories = { _ in await [history] }
+        }
+      ),
     )
   }
 }
