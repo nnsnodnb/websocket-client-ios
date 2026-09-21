@@ -56,6 +56,7 @@ public struct ConnectionReducer: Sendable {
     case error(Error)
 
     // MARK: - Alert
+    @CasePathable
     public enum Alert: Sendable, Equatable {
       case dismiss
     }
@@ -146,7 +147,6 @@ public struct ConnectionReducer: Sendable {
         return .none
       case .webSocket(.didOpen):
         state.connectivityState = .connected
-        state.receivedMessages.append("Connected \(state.url.absoluteString)")
         state.history.successfulConnection()
         return .run(
           operation: { [history = state.history] send in
@@ -196,7 +196,6 @@ public struct ConnectionReducer: Sendable {
 
   private func runConnection(state: inout State) -> Effect<Action> {
     guard state.connectivityState == .disconnected else { return .none }
-    state.receivedMessages = ["Connecting to \(state.url.absoluteString)"]
     state.connectivityState = .connecting
     return .run { [state] send in
       var urlRequest = URLRequest(url: state.url)
@@ -242,12 +241,14 @@ struct ConnectionPage: View {
   @Bindable var store: StoreOf<ConnectionReducer>
 
   var body: some View {
-    NavigationStack {
-      content
-        .navigationTitle(store.url.absoluteString)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar(store: store)
-    }
+    NavigationStack(
+      root: {
+        content
+          .navigationTitle(store.url.absoluteString)
+          .navigationBarTitleDisplayMode(.inline)
+          .toolbar(store: store)
+      },
+    )
     .alert($store.scope(\.alert, action: \.alert))
     .sheet(
       isPresented: $store.isShowCustomHeaderList.sending(\.showedCustomHeaderList),
@@ -295,7 +296,10 @@ struct ConnectionPage: View {
   }
 
   private var receivedMessageList: some View {
-    MessageListView(messages: store.receivedMessages)
+    MessageListView(
+      messages: store.receivedMessages,
+      connectivityState: store.connectivityState,
+    )
   }
 }
 
