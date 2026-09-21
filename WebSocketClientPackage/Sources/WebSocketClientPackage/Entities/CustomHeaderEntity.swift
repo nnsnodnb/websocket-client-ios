@@ -10,8 +10,8 @@ import Foundation
 public struct CustomHeaderEntity: Sendable, Hashable, Identifiable {
   // MARK: - Properties
   public let id: UUID
-  private(set) var name: String
-  private(set) var value: String
+  public private(set) var name: String
+  public private(set) var value: String
 
   // MARK: - Initialize
   public init(id: UUID) {

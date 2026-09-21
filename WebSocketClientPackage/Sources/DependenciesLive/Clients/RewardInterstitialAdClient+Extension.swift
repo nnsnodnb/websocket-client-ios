@@ -1,30 +1,24 @@
 //
-//  RewardInterstitialAdClient.swift
+//  RewardInterstitialAdClient+Extension.swift
 //  WebSocketClientPackage
 //
-//  Created by Yuya Oka on 2026/03/01.
+//  Created by Yuya Oka on 2026/09/21.
 //
 
+import ConcurrencyExtras
 import Dependencies
-import DependenciesMacros
+import DependenciesInterfaces
 import Foundation
 import GoogleMobileAds
 
-@DependencyClient
-public struct RewardInterstitialAdClient: Sendable {
-  public var load: @Sendable () async throws -> Void
-  public var show: @Sendable () async throws -> Int
-
+public extension RewardInterstitialAdClient {
   // MARK: - Error
-  public enum Error: Swift.Error {
+  enum Error: Swift::Error {
     case notReady
     case interruption
   }
-}
 
-// MARK: - DependencyKey
-extension RewardInterstitialAdClient: DependencyKey {
-  public static let liveValue: RewardInterstitialAdClient = .init(
+  static let google: Self = .init(
     load: {
       try await Implementation.shared.load()
     },
@@ -126,18 +120,6 @@ private extension RewardInterstitialAdClient {
       }
       try await load()
       return try await show()
-    }
-  }
-}
-
-// MARK: - DependencyValues
-public extension DependencyValues {
-  var rewardInterstitialAd: RewardInterstitialAdClient {
-    get {
-      self[RewardInterstitialAdClient.self]
-    }
-    set {
-      self[RewardInterstitialAdClient.self] = newValue
     }
   }
 }

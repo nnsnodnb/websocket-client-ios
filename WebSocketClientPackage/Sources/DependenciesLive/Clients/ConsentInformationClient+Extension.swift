@@ -1,26 +1,16 @@
 //
-//  ConsentInformationClient.swift
+//  ConsentInformationClient+Extension.swift
 //  WebSocketClientPackage
 //
-//  Created by Yuya Oka on 2026/03/01.
+//  Created by Yuya Oka on 2026/09/21.
 //
 
-import Dependencies
-import DependenciesMacros
+import DependenciesInterfaces
 import Foundation
 import UserMessagingPlatform
 
-@DependencyClient
-public struct ConsentInformationClient: Sendable {
-  public var requestConsent: @Sendable () async throws -> Bool
-  public var load: @Sendable (Bool) async throws -> Void
-  public var visiblePrivacyOptionsRequirements: @Sendable () -> Bool = { false }
-  public var presentPrivacyOptions: @Sendable () async throws -> Void
-}
-
-// MARK: - DependencyKey
-extension ConsentInformationClient: DependencyKey {
-  public static let liveValue: ConsentInformationClient = .init(
+public extension ConsentInformationClient {
+  static let google: ConsentInformationClient = .init(
     requestConsent: {
       let parameters = RequestParameters()
       try await ConsentInformation.shared.requestConsentInfoUpdate(with: parameters)
@@ -45,16 +35,4 @@ extension ConsentInformationClient: DependencyKey {
       try await ConsentForm.presentPrivacyOptionsForm(from: nil)
     },
   )
-}
-
-// MARK: - DependencyValues
-public extension DependencyValues {
-  var consentInformation: ConsentInformationClient {
-    get {
-      self[ConsentInformationClient.self]
-    }
-    set {
-      self[ConsentInformationClient.self] = newValue
-    }
-  }
 }

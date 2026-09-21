@@ -5,7 +5,8 @@
 //  Created by Yuya Oka on 2023/04/24.
 //
 
-import ComposableArchitecture
+import Dependencies
+import DependenciesMacros
 import Foundation
 
 @DependencyClient
@@ -19,15 +20,9 @@ public struct BundleClient: Sendable {
 // MARK: - DependencyKey
 extension BundleClient: DependencyKey {
   public static let liveValue: Self = .init(
-    shortVersionString: {
-      Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? ""
-    },
-    formAboveBannerADUnitID: {
-      Bundle.main.getEnvironmentValue(.formAboveBannerAdUnitID) ?? ""
-    },
-    webSocketConnectionRewardInterstitialAdUnitID: {
-      Bundle.main.getEnvironmentValue(.webSocketConnectionRewardInterstitialAdUnitID) ?? ""
-    },
+    shortVersionString: { "1.0.0-live" },
+    formAboveBannerADUnitID: { "form_above_banner_ad_unit_id" },
+    webSocketConnectionRewardInterstitialAdUnitID: { "web_socket_connection_reward_interstitial_ad_unit_id" },
   )
 }
 

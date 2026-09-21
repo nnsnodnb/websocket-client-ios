@@ -12,4 +12,11 @@ public struct MessageEntity: Sendable, Hashable, Identifiable {
   public let id: UUID
   public let text: String
   public let createdAt: Date
+
+  // MARK: - Initialize
+  public init(id: UUID, text: String, createdAt: Date) {
+    self.id = id
+    self.text = text
+    self.createdAt = createdAt
+  }
 }

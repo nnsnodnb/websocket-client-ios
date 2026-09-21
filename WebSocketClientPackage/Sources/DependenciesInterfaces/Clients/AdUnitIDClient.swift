@@ -2,7 +2,7 @@
 //  AdUnitIDClient.swift
 //  WebSocketClientPackage
 //
-//  Created by Yuya Oka on 2026/02/28.
+//  Created by Yuya Oka on 2026/09/21.
 //
 
 import Dependencies
@@ -19,17 +19,11 @@ public struct AdUnitIDClient: Sendable {
 
 // MARK: - DependencyKey
 extension AdUnitIDClient: DependencyKey {
-  public static let liveValue: Self = .init(
-    formAboveBannerAdUnitID: { throw Error.mustSetAdIDFromRootPage },
-    webSocketConnectionRewardInterstitialAdUnitID: { throw Error.mustSetAdIDFromRootPage },
+  public static let liveValue: Self = .init()
+  public static let previewValue: Self = .init(
+    formAboveBannerAdUnitID: { "ca-app-pub-3940256099942544/2435281174" },
+    webSocketConnectionRewardInterstitialAdUnitID: { "ca-app-pub-3940256099942544/6978759866" },
   )
-}
-
-// MARK: - Error
-public extension AdUnitIDClient {
-  enum Error: Swift.Error {
-    case mustSetAdIDFromRootPage
-  }
 }
 
 // MARK: - DependencyValues

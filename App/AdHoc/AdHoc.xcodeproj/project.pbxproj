@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF05F8123061008A00B5C437 /* DependenciesLive in Frameworks */ = {isa = PBXBuildFile; productRef = CF05F8113061008A00B5C437 /* DependenciesLive */; };
 		CFD2AACE2F55B3670020CB34 /* WebSocketClientPackage in Frameworks */ = {isa = PBXBuildFile; productRef = CFD2AACD2F55B3670020CB34 /* WebSocketClientPackage */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFD2AACE2F55B3670020CB34 /* WebSocketClientPackage in Frameworks */,
+				CF05F8123061008A00B5C437 /* DependenciesLive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +96,7 @@
 			name = AdHoc;
 			packageProductDependencies = (
 				CFD2AACD2F55B3670020CB34 /* WebSocketClientPackage */,
+				CF05F8113061008A00B5C437 /* DependenciesLive */,
 			);
 			productName = AdHoc;
 			productReference = CFD2AAAE2F55B13F0020CB34 /* AdHoc.app */;
@@ -392,6 +395,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CF05F8113061008A00B5C437 /* DependenciesLive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DependenciesLive;
+		};
 		CFD2AACD2F55B3670020CB34 /* WebSocketClientPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WebSocketClientPackage;

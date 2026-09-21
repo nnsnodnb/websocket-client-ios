@@ -7,6 +7,7 @@
 
 import CasePaths
 import ComposableArchitecture
+import DependenciesInterfaces
 import Foundation
 import UIKit
 
@@ -53,6 +54,8 @@ public struct InfoReducer: Sendable {
     }
   }
 
+  @Dependency(\.analytics)
+  var analytics
   @Dependency(\.application)
   var application
   @Dependency(\.consentInformation)
@@ -86,6 +89,7 @@ public struct InfoReducer: Sendable {
           guard await application.canOpenURL(url) else { return }
           _ = try await application.open(url)
           await send(.browserOpenResponse)
+          await analytics.logEvent(.urlTapped(url))
         }
       case .browserOpenResponse:
         return .none

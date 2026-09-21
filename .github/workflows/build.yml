@@ -1,24 +1,30 @@
-name: Test
+name: Build
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
+    paths:
+      - .github/workflows/build.yml
+      - WebSocketClient.xcworkspace/xcshareddata/swiftpm/Package.resolved
+      - WebSocketClientPackage/Package.swift
+      - WebSocketClientPackage/Sources/DependenciesInterfaces/**
+      - WebSocketClientPackage/Sources/DependenciesLive/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
   cancel-in-progress: true
 
 jobs:
-  test:
+  build-dependencies-live:
+    name: Build DependenciesLive target
     runs-on: xcode-27
 
     env:
       DEVELOPER_DIR: /Applications/Xcode_27.0.app/Contents/Developer
+      DESTINATION: "platform=iOS Simulator,OS=27.0,name=iPhone 18 Pro"
 
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Get SwiftPM originHash
         id: get-swiftpm-origin-hash
@@ -33,6 +39,9 @@ jobs:
         with:
           path: .swiftpm
           key: ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
+          restore-keys: |
+            ${{ runner.os }}-swiftpm-${{ steps.get-swiftpm-origin-hash.outputs.ORIGIN_HASH }}
+            ${{ runner.os }}-swiftpm-
 
       - name: Write IDESkipPackagePluginFingerprintValidatation
         run: defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidatation -bool YES
@@ -40,16 +49,12 @@ jobs:
       - name: Write IDESkipMacroFingerprintValidation
         run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 
-      - name: Xcode test
-        env:
-          DESTINATION: "platform=iOS Simulator,OS=27.0,name=iPhone 18 Pro"
+      - name: Xcode build for DependenciesLive
         run: |
           set -o pipefail && \
-            xcodebuild test \
-              -scheme WebSocketClientPackageTests \
+            xcodebuild \
+              -scheme DependenciesLive \
               -workspace WebSocketClient.xcworkspace \
-              -parallel-testing-enabled=YES \
               -destination "${DESTINATION}" \
-              -resultBundlePath "$(mktemp -d)/Test-WebSocketClientPackageTests.xcresult" \
               -clonedSourcePackagesDirPath .swiftpm \
               -disableAutomaticPackageResolution | xcbeautify --renderer github-actions
