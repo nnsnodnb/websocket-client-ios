@@ -8,6 +8,24 @@
 import ComposableArchitecture
 import SwiftUI
 
+@Reducer
+public struct LicenseListReducer: Sendable {
+  // MARK: - State
+  @ObservableState
+  public struct State: Equatable {
+    public let licenses: IdentifiedArrayOf<LicensesPlugin.License> = .init(uniqueElements: LicensesPlugin.licenses)
+  }
+
+  // MARK: - Action
+  public enum Action: Equatable, Sendable {
+  }
+
+  // MARK: - Body
+  public var body: some ReducerOf<Self> {
+    EmptyReducer()
+  }
+}
+
 public struct LicenseListPage: View {
   // MARK: - Properties
   let store: StoreOf<LicenseListReducer>
