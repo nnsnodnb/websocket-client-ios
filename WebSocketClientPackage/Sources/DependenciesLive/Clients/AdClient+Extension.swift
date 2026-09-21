@@ -1,5 +1,5 @@
 //
-//  AdUnitClient+Extension.swift
+//  AdClient+Extension.swift
 //  WebSocketClientPackage
 //
 //  Created by Yuya Oka on 2026/09/21.
