@@ -508,6 +508,40 @@
         }
       }
     },
+    "history-list.content.is-connection-failure" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection failure"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続失敗"
+          }
+        }
+      }
+    },
+    "history-list.content.is-connection-success" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection success"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続成功"
+          }
+        }
+      }
+    },
     "history-list.content.title.empty" : {
       "extractionState" : "manual",
       "localizations" : {

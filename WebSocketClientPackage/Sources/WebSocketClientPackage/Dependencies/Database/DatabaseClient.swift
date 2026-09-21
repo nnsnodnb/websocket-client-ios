@@ -128,7 +128,7 @@ public extension DatabaseClient {
     func fetchHistories(_ predicate: Predicate<HistoryModel>? = nil) throws -> [HistoryEntity] {
       let context = modelContext()
       let sortBy = [
-        SortDescriptor<HistoryModel>(\.createdAt, order: .forward)
+        SortDescriptor<HistoryModel>(\.createdAt, order: .reverse)
       ]
       let descriptor = FetchDescriptor<HistoryModel>(predicate: predicate, sortBy: sortBy)
       let models = try context.fetch(descriptor)
