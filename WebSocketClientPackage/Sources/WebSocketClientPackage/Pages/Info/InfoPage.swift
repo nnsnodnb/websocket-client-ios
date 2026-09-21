@@ -7,7 +7,6 @@
 
 import BetterSafariView
 import ComposableArchitecture
-import FirebaseAnalytics
 import SFSafeSymbols
 import SwiftUI
 
@@ -33,7 +32,7 @@ struct InfoPage: View {
     .task {
       store.send(.start)
     }
-    .analyticsScreen(name: "info-page")
+    .analyticsScreen(screenName: .info)
   }
 
   private var form: some View {
@@ -212,12 +211,6 @@ struct InfoPage: View {
     buttonRow(
       action: {
         action(url)
-        Analytics.logEvent(
-          "url_tapped",
-          parameters: [
-            "url": url.absoluteString
-          ]
-        )
       },
       image: icon,
       title: text

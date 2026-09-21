@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension Bundle {
+extension Bundle {
   var environemnts: [String: Any] {
     Bundle.main.object(forInfoDictionaryKey: "LSEnvironment") as? [String: Any] ?? [:]
   }
@@ -18,7 +18,7 @@ public extension Bundle {
 }
 
 // MARK: - EnvironmentKey
-public extension Bundle {
+extension Bundle {
   enum EnvironmentKey: String {
     // swiftlint:disable identifier_name
     case formAboveBannerAdUnitID = "FORM_ABOVE_BANNER_AD_UNIT_ID"

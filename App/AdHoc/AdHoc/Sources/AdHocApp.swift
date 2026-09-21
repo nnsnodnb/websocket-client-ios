@@ -7,6 +7,10 @@
 
 import ComposableArchitecture
 import Dependencies
+import DependenciesInterfaces
+import DependenciesLive
+import FirebaseAnalytics
+import FirebaseCrashlytics
 import FirebaseCore
 import GoogleMobileAds
 import SwiftData
@@ -24,27 +28,33 @@ struct AdHocApp: App {
   // MARK: - Body
   var body: some Scene {
     WindowGroup {
-      RootPage(
-        store: .init(
-          initialState: RootReducer.State(
-            migratedToSwiftData: UserDefaults.standard.bool(forKey: "key_migrated_to_swift_data"),
-          ),
-          reducer: {
-            RootReducer()
-          },
-          withDependencies: {
-            $0.adUnitID.formAboveBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
-            $0.adUnitID.webSocketConnectionRewardInterstitialAdUnitID = { "ca-app-pub-3940256099942544/6978759866" }
-          },
+      prepareDependencies {
+        $0.adClient = .google
+        $0.adUnitID = .debug
+        $0.analytics = .firebase
+        $0.bundle = .bundle
+        $0.consentInformation = .google
+        $0.rewardInterstitialAd = .google
+
+        return RootPage(
+          store: .init(
+            initialState: RootReducer.State(
+              migratedToSwiftData: UserDefaults.standard.bool(forKey: "key_migrated_to_swift_data"),
+            ),
+            reducer: {
+              RootReducer()
+            },
+          )
         )
-      )
-      .modelContext(modelContext())
+        .modelContext(modelContext())
+      }
     }
   }
 
   // MARK: - Initialize
   init() {
     FirebaseApp.configure()
+    Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
     Task {
       _ = await MobileAds.shared.start()
       MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [

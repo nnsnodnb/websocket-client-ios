@@ -6,8 +6,7 @@
 //
 
 import ComposableArchitecture
-import FirebaseAnalytics
-import GoogleMobileAds
+import DependenciesInterfaces
 import SFSafeSymbols
 import SwiftUI
 
@@ -15,6 +14,9 @@ struct FormPage: View {
   @Bindable var store: StoreOf<FormReducer>
 
   @FocusState private var isFocused: Bool
+
+  @Dependency(\.adClient)
+  private var adClient
 
   var body: some View {
     NavigationStack {
@@ -47,26 +49,33 @@ struct FormPage: View {
         }
       },
     )
-    .analyticsScreen(name: "form-page")
+    .analyticsScreen(screenName: .form)
   }
 
   private var form: some View {
-    Form {
-      adSection
-      firstSection
-      secondSection
-      thirdSection
-    }
-    .keyboardToolbar {
-      isFocused = false
+    GeometryReader { proxy in
+      Form {
+        adSection(proxy: proxy)
+        firstSection
+        secondSection
+        thirdSection
+      }
+      .keyboardToolbar {
+        isFocused = false
+      }
     }
   }
 
-  @ViewBuilder private var adSection: some View {
+  @ViewBuilder
+  private func adSection(proxy: GeometryProxy) -> some View {
     if let adUnitID = store.adUnitID {
+      let width = proxy.frame(in: .global).size.width - 20
       Section {
-        AdBanner(adSize: AdSizeLargeBanner, adUnitID: adUnitID)
-          .frame(width: AdSizeLargeBanner.size.width, height: AdSizeLargeBanner.size.height)
+        adClient.make(adUnitID: adUnitID, size: .largeBanner)
+          .frame(
+            width: proxy.frame(in: .global).size.width - 20,
+            height: width * 100 / 320,
+          )
       }
       .listRowBackground(Color.clear)
       .listRowSeparator(.hidden)

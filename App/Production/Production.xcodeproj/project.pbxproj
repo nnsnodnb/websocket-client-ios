@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CF05F814306100B600B5C437 /* DependenciesLive in Frameworks */ = {isa = PBXBuildFile; productRef = CF05F813306100B600B5C437 /* DependenciesLive */; };
 		CFD2AA9D2F55AE360020CB34 /* WebSocketClientPackage in Frameworks */ = {isa = PBXBuildFile; productRef = CFD2AA9C2F55AE360020CB34 /* WebSocketClientPackage */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFD2AA9D2F55AE360020CB34 /* WebSocketClientPackage in Frameworks */,
+				CF05F814306100B600B5C437 /* DependenciesLive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,6 +96,7 @@
 			name = Production;
 			packageProductDependencies = (
 				CFD2AA9C2F55AE360020CB34 /* WebSocketClientPackage */,
+				CF05F813306100B600B5C437 /* DependenciesLive */,
 			);
 			productName = Production;
 			productReference = CFD2AA872F55ADD60020CB34 /* Production.app */;
@@ -381,6 +384,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CF05F813306100B600B5C437 /* DependenciesLive */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DependenciesLive;
+		};
 		CFD2AA9C2F55AE360020CB34 /* WebSocketClientPackage */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = WebSocketClientPackage;

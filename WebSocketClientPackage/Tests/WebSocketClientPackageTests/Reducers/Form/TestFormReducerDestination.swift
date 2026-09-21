@@ -6,6 +6,7 @@
 //
 
 import ComposableArchitecture
+import DependenciesInterfaces
 import DependenciesTestSupport
 import Foundation
 import Testing
@@ -80,50 +81,52 @@ struct TestFormReducerDestination {
     }
   }
 
-  @Test(
-    .dependencies {
-      $0.rewardInterstitialAd.load = {}
-      $0.rewardInterstitialAd.show = { throw RewardInterstitialAdClient.Error.interruption }
-    }
-  )
+  @Test
   func testPresentedAlertWatchNotEarnedReward() async {
     let url = URL(string: "wss://echo.websocket.org")!
 
-    let store = TestStore(
-      initialState: FormReducer.State(
-        adUnitID: "ca-app-pub-3940256099942544/2435281174",
-        url: url,
-        isConnectButtonDisable: false,
-        destination: .alert(
-          .init(
-            title: {
-              TextState(.formAlertWatchTitle)
-            },
-            actions: {
-              ButtonState(
-                role: .cancel,
-                label: {
-                  TextState(.alertButtonTitleCancel)
-                },
-              )
-              ButtonState(
-                action: .watch(url),
-                label: {
-                  TextState(.formAlertWatchTitleContinue)
-                },
-              )
-            },
-          )
-        )
-      ),
-      reducer: {
-        FormReducer()
-      },
-    )
+    struct Error: Swift::Error {}
 
-    await store.send(.destination(.presented(.alert(.watch(url))))) {
-      $0.destination = nil
+    await withDependencies {
+      $0.rewardInterstitialAd.load = {}
+      $0.rewardInterstitialAd.show = { throw Error() }
+    } operation: {
+      let store = TestStore(
+        initialState: FormReducer.State(
+          adUnitID: "ca-app-pub-3940256099942544/2435281174",
+          url: url,
+          isConnectButtonDisable: false,
+          destination: .alert(
+            .init(
+              title: {
+                TextState(.formAlertWatchTitle)
+              },
+              actions: {
+                ButtonState(
+                  role: .cancel,
+                  label: {
+                    TextState(.alertButtonTitleCancel)
+                  },
+                )
+                ButtonState(
+                  action: .watch(url),
+                  label: {
+                    TextState(.formAlertWatchTitleContinue)
+                  },
+                )
+              },
+            )
+          )
+        ),
+        reducer: {
+          FormReducer()
+        },
+      )
+
+      await store.send(.destination(.presented(.alert(.watch(url))))) {
+        $0.destination = nil
+      }
+      await store.receive(\.preloadRewardedInterstitialAd)
     }
-    await store.receive(\.preloadRewardedInterstitialAd)
   }
 }

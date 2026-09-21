@@ -1,11 +1,12 @@
 //
 //  ApplicationClient.swift
-//  WebSocketClient
+//  WebSocketClientPackage
 //
-//  Created by Yuya Oka on 2023/04/23.
+//  Created by Yuya Oka on 2026/09/21.
 //
 
-import ComposableArchitecture
+import Dependencies
+import DependenciesMacros
 import UIKit
 
 @DependencyClient
