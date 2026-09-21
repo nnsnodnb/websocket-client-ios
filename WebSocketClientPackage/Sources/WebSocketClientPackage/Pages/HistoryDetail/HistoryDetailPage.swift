@@ -103,29 +103,32 @@ struct HistoryDetailPage: View {
   @Bindable var store: StoreOf<HistoryDetailReducer>
 
   var body: some View {
-    MessageListView(messages: store.history.messages.map { $0.text })
-      .navigationTitle(store.history.url.absoluteString)
-      .toolbarTitleDisplayMode(.inline)
-      .modifier {
-        if #available(iOS 26.0, *) {
-          $0
-            .scrollEdgeEffectStyle(.soft, for: .top)
-        } else {
-          $0
-        }
+    MessageListView(
+      messages: store.history.messages.map { $0.text },
+      connectivityState: .disconnected,
+    )
+    .navigationTitle(store.history.url.absoluteString)
+    .toolbarTitleDisplayMode(.inline)
+    .modifier {
+      if #available(iOS 26.0, *) {
+        $0
+          .scrollEdgeEffectStyle(.soft, for: .top)
+      } else {
+        $0
       }
-      .toolbar(store: store)
-      .sheet(
-        isPresented: $store.isShowCustomHeaderList.sending(
-          \.showedCustomHeaderList
-        ),
-        content: {
-          CustomHeaderListPage(customHeaders: store.history.customHeaders)
-            .presentationDetents([.fraction(0.2), .large])
-        }
-      )
-      .alert($store.scope(\.alert, action: \.alert))
-      .analyticsScreen(screenName: .historyDetail)
+    }
+    .toolbar(store: store)
+    .sheet(
+      isPresented: $store.isShowCustomHeaderList.sending(
+        \.showedCustomHeaderList
+      ),
+      content: {
+        CustomHeaderListPage(customHeaders: store.history.customHeaders)
+          .presentationDetents([.fraction(0.2), .large])
+      }
+    )
+    .alert($store.scope(\.alert, action: \.alert))
+    .analyticsScreen(screenName: .historyDetail)
   }
 }
 
