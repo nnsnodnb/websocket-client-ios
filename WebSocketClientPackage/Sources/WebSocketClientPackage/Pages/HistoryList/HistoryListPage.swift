@@ -93,10 +93,10 @@ public struct HistoryListReducer: Sendable {
       case .fetch:
         return .run(
           operation: { [reverse = state.selectionSortDirection.reverse, filter = state.selectionFilter] send in
-            let predicate: Predicate<HistoryModel>
+            let predicate: Predicate<HistoryModel>?
             switch filter {
             case .all:
-              predicate = #Predicate<HistoryModel> { _ in true }
+              predicate = nil
             case .onlySuccess:
               predicate = #Predicate<HistoryModel> { $0.isConnectionSuccess }
             case .onlyFailed:
