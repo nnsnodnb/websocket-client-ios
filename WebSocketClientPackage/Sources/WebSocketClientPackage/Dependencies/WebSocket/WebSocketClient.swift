@@ -61,6 +61,7 @@ public struct WebSocketClient: Sendable {
 
   // MARK: - Properties
   public var open: @Sendable (CancelID, URLRequest) async throws -> AsyncStream<Action>
+  public var close: @Sendable (CancelID) async throws -> Void
   public var receive: @Sendable (CancelID) async throws -> AsyncStream<Result<Message, Error>>
   public var send: @Sendable (CancelID, URLSessionWebSocketTask.Message) async throws -> Void
   public var sendPing: @Sendable (CancelID) async throws -> Void
@@ -96,6 +97,15 @@ public extension WebSocketClient {
           continuation?.finish()
         }
       }
+
+      public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: (any Error)?) {
+        // error == nilの場合は、urlSession(_:webSocketTask:didCloseWith:reason:)に流れてくる方を信用する
+        guard error != nil else { return }
+        continuation.withValue { continuation in
+          continuation?.yield(.didClose(code: .abnormalClosure, reason: nil))
+          continuation?.finish()
+        }
+      }
     }
 
     // MARK: - Dependencies
@@ -108,7 +118,10 @@ public extension WebSocketClient {
 
     func open(id: CancelID, urlRequest: URLRequest) -> AsyncStream<Action> {
       let delegate = Delegate()
-      let session = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
+      let configuration = URLSessionConfiguration.ephemeral
+      configuration.timeoutIntervalForRequest = 10
+      let session = URLSession(configuration: configuration, delegate: delegate, delegateQueue: nil)
+
       let socket = session.webSocketTask(with: urlRequest)
       defer { socket.resume() }
       let stream = AsyncStream<Action> { continuation in
@@ -192,6 +205,7 @@ public extension WebSocketClient {
 extension WebSocketClient: DependencyKey {
   public static let liveValue: Self = .init(
     open: { await WebSocketActor.shared.open(id: $0, urlRequest: $1) },
+    close: { try await WebSocketActor.shared.close(id: $0, with: .normalClosure, reason: nil) },
     receive: { try await WebSocketActor.shared.receive(id: $0) },
     send: { try await WebSocketActor.shared.send(id: $0, message: $1) },
     sendPing: { try await WebSocketActor.shared.sendPing(id: $0) }

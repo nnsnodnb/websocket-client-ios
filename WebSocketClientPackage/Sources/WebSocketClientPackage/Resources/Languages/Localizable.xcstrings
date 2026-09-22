@@ -176,6 +176,40 @@
         }
       }
     },
+    "connection.alert.connecting-failed.message" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please check your connection settings."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続設定を確認してください"
+          }
+        }
+      }
+    },
+    "connection.alert.connecting-failed.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connection failed"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "接続に失敗しました"
+          }
+        }
+      }
+    },
     "connection.alert.send.title" : {
       "extractionState" : "manual",
       "localizations" : {
