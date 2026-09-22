@@ -26,7 +26,7 @@ public struct InfoReducer: Sendable {
   }
 
   // MARK: - Action
-  public enum Action: Sendable, Equatable {
+  public enum Action: Sendable {
     case start
     case urlSelected(URL?)
     case browserOpen(URL)
@@ -42,7 +42,7 @@ public struct InfoReducer: Sendable {
     case error(Error)
 
     // MARK: - Alert
-    public enum Alert: Sendable, Equatable {
+    public enum Alert: Sendable {
       case deleteAllData
     }
 

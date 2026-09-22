@@ -32,38 +32,58 @@ public struct ConnectionReducer: Sendable {
     }
 
     // MARK: - Initialize
-    public init(url: URL, history: HistoryEntity, isShowCustomHeaderList: Bool = false) {
+    public init(
+      url: URL,
+      connectivityState: ConnectivityState = .disconnected,
+      message: String = "",
+      isSendButtonDisabled: Bool = true,
+      receivedMessages: [String] = [],
+      history: HistoryEntity,
+      alert: AlertState<Action.Alert>? = nil,
+      isShowCustomHeaderList: Bool = false,
+    ) {
       self.url = url
       self.customHeaders = history.customHeaders
+      self.connectivityState = connectivityState
+      self.message = message
+      self.isSendButtonDisabled = isSendButtonDisabled
+      self.receivedMessages = receivedMessages
       self.history = history
+      self.alert = alert
       self.isShowCustomHeaderList = isShowCustomHeaderList
     }
   }
 
   // MARK: - Action
-  public enum Action: Sendable, Equatable {
+  public enum Action: Sendable {
     case start
     case close
     case messageChanged(String)
     case sendMessage
-    case receivedSocketMessage(WebSocketClient.Message)
-    case sendResponse
-    case webSocket(WebSocketClient.Action)
-    case addHistoryResponse
-    case updateHistoryResponse
-    case alert(PresentationAction<Alert>)
     case showedCustomHeaderList(Bool)
-    case error(Error)
+    case internalAction(InternalAction)
+    case alert(PresentationAction<Alert>)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction: Sendable {
+      case receivedSocketMessage(WebSocketClient.Message)
+      case sendResponse
+      case webSocket(WebSocketClient.Action)
+      case addHistoryResponse
+      case updateHistoryResponse
+      case error(Error)
+    }
 
     // MARK: - Alert
     @CasePathable
-    public enum Alert: Sendable, Equatable {
+    public enum Alert: Sendable {
       case okay
     }
 
     // MARK: - Error
     @CasePathable
-    public enum Error: Swift.Error {
+    public enum Error: Swift::Error {
       case receivedSocketMessage
       case send
       case addHistory
@@ -71,6 +91,7 @@ public struct ConnectionReducer: Sendable {
     }
   }
 
+  // MARK: - Dependency
   @Dependency(\.continuousClock)
   var clock
   @Dependency(\.database)
@@ -84,6 +105,7 @@ public struct ConnectionReducer: Sendable {
   @Dependency(\.uuid)
   var uuid
 
+  // MARK: - Body
   public var body: some ReducerOf<Self> {
     Reduce { state, action in
       switch action {
@@ -93,10 +115,10 @@ public struct ConnectionReducer: Sendable {
             with: .run(
               operation: { [history = state.history] send in
                 try await databaseClient.addHistory(history)
-                await send(.addHistoryResponse)
+                await send(.internalAction(.addHistoryResponse))
               },
               catch: { error, send in
-                await send(.error(.addHistory))
+                await send(.internalAction(.error(.addHistory)))
                 Logger.error("Failed adding history: \(error)")
               }
             )
@@ -120,15 +142,18 @@ public struct ConnectionReducer: Sendable {
         return .run(
           operation: { [message = state.message] send in
             try await webSocketClient.send(WebSocketClient.CancelID(), .string(message))
-            await send(.sendResponse)
+            await send(.internalAction(.sendResponse))
           },
           catch: { error, send in
-            await send(.error(.send))
+            await send(.internalAction(.error(.send)))
             Logger.error("Failed sening: \(error)")
           }
         )
         .cancellable(id: WebSocketClient.CancelID())
-      case let .receivedSocketMessage(message):
+      case let .showedCustomHeaderList(isOpened):
+        state.isShowCustomHeaderList = isOpened
+        return .none
+      case let .internalAction(.receivedSocketMessage(message)):
         guard case let .string(string) = message else { return .none }
         state.receivedMessages.append(string)
         let message = MessageEntity(
@@ -140,30 +165,30 @@ public struct ConnectionReducer: Sendable {
         return .run(
           operation: { [history = state.history] send in
             try await databaseClient.updateHistory(history)
-            await send(.updateHistoryResponse)
+            await send(.internalAction(.updateHistoryResponse))
           },
           catch: { error, send in
-            await send(.error(.updateHistory))
+            await send(.internalAction(.error(.updateHistory)))
             Logger.error("Failed updaing history: \(error)")
-          }
+          },
         )
-      case .sendResponse:
+      case .internalAction(.sendResponse):
         state.message = ""
         return .none
-      case .webSocket(.didOpen):
+      case .internalAction(.webSocket(.didOpen)):
         state.connectivityState = .connected
         state.history.successfulConnection()
         return .run(
           operation: { [history = state.history] send in
             try await databaseClient.updateHistory(history)
-            await send(.updateHistoryResponse)
+            await send(.internalAction(.updateHistoryResponse))
           },
           catch: { error, send in
-            await send(.error(.updateHistory))
+            await send(.internalAction(.error(.updateHistory)))
             Logger.error("Failed updaing history: \(error)")
-          }
+          },
         )
-      case .webSocket(.didClose):
+      case .internalAction(.webSocket(.didClose)):
         switch state.connectivityState {
         case .connected:
           state.connectivityState = .disconnected
@@ -173,7 +198,7 @@ public struct ConnectionReducer: Sendable {
               operation: { _ in
                 await dismiss()
               },
-            )
+            ),
           )
         case .connecting:
           state.connectivityState = .disconnected
@@ -201,6 +226,33 @@ public struct ConnectionReducer: Sendable {
             },
           )
         }
+      case .internalAction(.addHistoryResponse):
+        return .none
+      case .internalAction(.updateHistoryResponse):
+        return .none
+      case .internalAction(.error(.receivedSocketMessage)):
+        state.alert = AlertState(
+          title: {
+            TextState(.connectionAlertSendTitle)
+          },
+        )
+        return .none
+      case .internalAction(.error(.send)):
+        return .none
+      case .internalAction(.error(.addHistory)):
+        state.alert = AlertState(
+          title: {
+            TextState(.connectionAlertUpdateTitle)
+          },
+        )
+        return .none
+      case .internalAction(.error(.updateHistory)):
+        state.alert = AlertState(
+          title: {
+            TextState(.connectionAlertUpdateTitle)
+          },
+        )
+        return .none
       case .alert(.presented(.okay)):
         return .run(
           operation: { _ in
@@ -208,36 +260,6 @@ public struct ConnectionReducer: Sendable {
           },
         )
       case .alert:
-        return .none
-      case .addHistoryResponse:
-        return .none
-      case .updateHistoryResponse:
-        return .none
-      case let .showedCustomHeaderList(isOpened):
-        state.isShowCustomHeaderList = isOpened
-        return .none
-      case .error(.receivedSocketMessage):
-        state.alert = AlertState(
-          title: {
-            TextState(.connectionAlertSendTitle)
-          },
-        )
-        return .none
-      case .error(.send):
-        return .none
-      case .error(.addHistory):
-        state.alert = AlertState(
-          title: {
-            TextState(.connectionAlertUpdateTitle)
-          },
-        )
-        return .none
-      case .error(.updateHistory):
-        state.alert = AlertState(
-          title: {
-            TextState(.connectionAlertUpdateTitle)
-          },
-        )
         return .none
       }
     }
@@ -256,7 +278,7 @@ public struct ConnectionReducer: Sendable {
       await withThrowingTaskGroup(of: Void.self) { group in
         for await action in actions {
           group.addTask {
-            await send(.webSocket(action))
+            await send(.internalAction(.webSocket(action)))
           }
           switch action {
           case .didOpen:
@@ -270,9 +292,9 @@ public struct ConnectionReducer: Sendable {
               for await result in try await webSocketClient.receive(WebSocketClient.CancelID()) {
                 switch result {
                 case let .success(message):
-                  await send(.receivedSocketMessage(message))
+                  await send(.internalAction(.receivedSocketMessage(message)))
                 case let .failure(error):
-                  await send(.error(.receivedSocketMessage))
+                  await send(.internalAction(.error(.receivedSocketMessage)))
                   Logger.error("WebSocket received error: \(error)")
                 }
               }
