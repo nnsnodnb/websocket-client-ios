@@ -5,6 +5,7 @@
 //  Created by Yuya Oka on 2023/05/01.
 //
 
+import SFSafeSymbols
 import SwiftUI
 
 struct MessageListView: View {
@@ -29,14 +30,6 @@ struct MessageListView: View {
   }
 
   @ViewBuilder private var connectionStateRow: some View {
-    let image = switch connectivityState {
-    case .connected:
-      Image(systemSymbol: .linkCircleFill)
-    case .connecting:
-      Image(systemSymbol: .dotRadiowavesUpForward)
-    case .disconnected:
-      Image(systemSymbol: .linkCircle)
-    }
     let color: Color = switch connectivityState {
     case .connected:
       .green
@@ -60,11 +53,28 @@ struct MessageListView: View {
           .font(.system(size: 18, weight: .medium))
       },
       icon: {
-        image
-          .resizable()
-          .frame(width: 18, height: 18)
-          .foregroundStyle(color)
-          .fontWeight(.bold)
+        Group {
+          switch connectivityState {
+          case .connected:
+            Image(systemSymbol: .linkCircleFill)
+              .resizable()
+              .symbolEffect(.breathe.pulse.byLayer, options: .repeat(.continuous))
+          case .connecting:
+            Image(systemSymbol: .dotRadiowavesUpForward)
+              .resizable()
+              .symbolEffect(
+                .variableColor.cumulative.dimInactiveLayers.nonReversing,
+                options: .repeat(.continuous),
+              )
+          case .disconnected:
+            Image(systemSymbol: .linkCircle)
+              .resizable()
+              .symbolEffect(.wiggle.clockwise.byLayer, options: .nonRepeating)
+          }
+        }
+        .frame(width: 18, height: 18)
+        .foregroundStyle(color)
+        .fontWeight(.bold)
       },
     )
     .frame(maxWidth: .infinity, alignment: .center)
