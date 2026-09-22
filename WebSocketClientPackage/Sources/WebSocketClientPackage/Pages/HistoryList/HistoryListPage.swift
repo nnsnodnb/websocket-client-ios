@@ -16,8 +16,46 @@ public struct HistoryListReducer: Sendable {
   @ObservableState
   public struct State: Equatable {
     var histories: IdentifiedArrayOf<HistoryEntity> = []
+    var selectionSortDirection: SortDirection = .descending
+    var selectionFilter: Filter = .onlySuccess
     var selectionHistory: Identified<HistoryEntity, HistoryDetailReducer.State?>?
     var paths: [Destination] = []
+
+    // MARK: - SortDirection
+    public enum SortDirection: CaseIterable, Sendable {
+      case ascending
+      case descending
+
+      // MARK: - Properties
+      var rawValue: String {
+        switch self {
+        case .ascending:
+          String(localized: .historyListNavibarSortDirectionAscending)
+        case .descending:
+          String(localized: .historyListNavibarSortDirectionDescending)
+        }
+      }
+      var reverse: Bool { self == .descending }
+    }
+
+    // MARK: - Filter
+    public enum Filter: CaseIterable, Sendable {
+      case all
+      case onlySuccess
+      case onlyFailed
+
+      // MARK: - Properties
+      var rawValue: String {
+        switch self {
+        case .all:
+          String(localized: .historyListNavibarFilterAll)
+        case .onlySuccess:
+          String(localized: .historyListNavibarFilterOnlySuccess)
+        case .onlyFailed:
+          String(localized: .historyListNavibarFilterOnlyFailed)
+        }
+      }
+    }
 
     // MARK: - Destination
     public enum Destination: Sendable {
@@ -29,6 +67,8 @@ public struct HistoryListReducer: Sendable {
   public enum Action: Sendable, Equatable {
     case fetch
     case fetchResponse([HistoryEntity])
+    case changedSortDirection(State.SortDirection)
+    case changedFilter(State.Filter)
     case setNavigation(HistoryEntity?)
     case navigationPathChanged([State.Destination])
     case deleteHistory(IndexSet)
@@ -52,10 +92,17 @@ public struct HistoryListReducer: Sendable {
       switch action {
       case .fetch:
         return .run(
-          operation: { send in
-            let histories = try await databaseClient.fetchHistories(
-              #Predicate<HistoryModel> { $0.isConnectionSuccess }
-            )
+          operation: { [reverse = state.selectionSortDirection.reverse, filter = state.selectionFilter] send in
+            let predicate: Predicate<HistoryModel>
+            switch filter {
+            case .all:
+              predicate = #Predicate<HistoryModel> { _ in true }
+            case .onlySuccess:
+              predicate = #Predicate<HistoryModel> { $0.isConnectionSuccess }
+            case .onlyFailed:
+              predicate = #Predicate<HistoryModel> { !$0.isConnectionSuccess }
+            }
+            let histories = try await databaseClient.fetchHistories(predicate, reverse)
             await send(.fetchResponse(histories))
           },
           catch: { error, send in
@@ -64,8 +111,17 @@ public struct HistoryListReducer: Sendable {
           }
         )
       case let .fetchResponse(histories):
-        state.histories = .init(uniqueElements: histories)
+        withAnimation {
+          state.histories = .init(uniqueElements: histories)
+        }
         return .none
+      case let .changedSortDirection(sortDirection):
+        state.selectionSortDirection = sortDirection
+        Logger.debug("Changed sort direction to \(sortDirection.rawValue)")
+        return .send(.fetch)
+      case let .changedFilter(filter):
+        state.selectionFilter = filter
+        return .send(.fetch)
       case let .setNavigation(.some(history)):
         state.paths.append(.historyDetail)
         state.selectionHistory = .init(.init(history: history), id: history)
@@ -136,6 +192,10 @@ struct HistoryListPage: View {
         content
           .navigationTitle(.historyListNavibarTitle)
           .navigationBarTitleDisplayMode(.inline)
+          .toolbar(
+            sortDirection: $store.selectionSortDirection.sending(\.changedSortDirection),
+            filter: $store.selectionFilter.sending(\.changedFilter),
+          )
           .modifier {
             if #available(iOS 26.0, *) {
               $0
@@ -237,6 +297,44 @@ struct HistoryListPage: View {
   }
 }
 
+private extension View {
+  func toolbar(
+    sortDirection: Binding<HistoryListReducer.State.SortDirection>,
+    filter: Binding<HistoryListReducer.State.Filter>,
+  ) -> some View {
+    toolbar {
+      ToolbarItemGroup(placement: .topBarTrailing) {
+        Menu(
+          content: {
+            Picker("", selection: sortDirection) {
+              ForEach(HistoryListReducer.State.SortDirection.allCases, id: \.self) { sortDirection in
+                Text(sortDirection.rawValue)
+                  .tag(sortDirection)
+              }
+            }
+          },
+          label: {
+            Image(systemSymbol: .arrowUpArrowDown)
+          },
+        )
+        Menu(
+          content: {
+            Picker("", selection: filter) {
+              ForEach(HistoryListReducer.State.Filter.allCases, id: \.self) { filter in
+                Text(filter.rawValue)
+                  .tag(filter)
+              }
+            }
+          },
+          label: {
+            Image(systemSymbol: .line3HorizontalDecrease)
+          },
+        )
+      }
+    }
+  }
+}
+
 struct HistoryListPage_Previews: PreviewProvider {
   static var history: HistoryEntity {
     return .init(
@@ -259,7 +357,7 @@ struct HistoryListPage_Previews: PreviewProvider {
           HistoryListReducer()
         },
         withDependencies: {
-          $0.database.fetchHistories = { _ in await [history] }
+          $0.database.fetchHistories = { _, _ in await [history] }
         }
       ),
     )
