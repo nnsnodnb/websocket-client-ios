@@ -6,7 +6,108 @@
 //
 
 import ComposableArchitecture
+import DependenciesInterfaces
 import SwiftUI
+
+@Reducer
+public struct AppIconListReducer: Sendable {
+  // MARK: - State
+  @ObservableState
+  public struct State: Equatable {
+    let appIcons: [AppIcon] = AppIcon.allCases
+
+    // MARK: - AppIcon
+    public struct AppIcon: Sendable, Equatable, CaseIterable {
+      // MARK: - Properties
+      static let `default`: Self = .init(
+        displayName: String(localized: .appIconListContentTitleDefault),
+        image: Image(.icDefaultIcon),
+        name: nil
+      )
+      static let yellow: Self = .init(
+        displayName: String(localized: .appIconListContentTitleYellow),
+        image: Image(.icYellowIcon),
+        name: "AppIcon-Yellow"
+      )
+      static let red: Self = .init(
+        displayName: String(localized: .appIconListContentTitleRed),
+        image: Image(.icRedIcon),
+        name: "AppIcon-Red"
+      )
+      static let blue: Self = .init(
+        displayName: String(localized: .appIconListContentTitleBlue),
+        image: Image(.icBlueIcon),
+        name: "AppIcon-Blue"
+      )
+      static let purple: Self = .init(
+        displayName: String(localized: .appIconListContentTitlePurple),
+        image: Image(.icPurpleIcon),
+        name: "AppIcon-Purple"
+      )
+      static let black: Self = .init(
+        displayName: String(localized: .appIconListContentTitleBlack),
+        image: Image(.icBlackIcon),
+        name: "AppIcon-Black"
+      )
+      static let white: Self = .init(
+        displayName: String(localized: .appIconListContentTitleWhite),
+        image: Image(.icWhiteIcon),
+        name: "AppIcon-White"
+      )
+
+      public static var allCases: [Self] {
+        return [
+          .default, .yellow, .red, .blue, .purple, .black, .white
+        ]
+      }
+
+      let displayName: String
+      let image: Image
+      let name: String?
+    }
+  }
+
+  // MARK: - Action
+  public enum Action: Sendable {
+    case appIconChanged(State.AppIcon)
+    case setAlternateIconNameResponse
+    case internalAction(InternalAction)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction: Sendable {
+      case error
+    }
+  }
+
+  // MARK: - Dependency
+  @Dependency(\.application)
+  var application
+
+  // MARK: - Body
+  public var body: some ReducerOf<Self> {
+    Reduce { _, action in
+      switch action {
+      case let .appIconChanged(appIcon):
+        return .run(
+          operation: { send in
+            try await application.setAlternateIconName(appIcon.name)
+            await send(.setAlternateIconNameResponse)
+            Logger.debug("Changed app icon")
+          },
+          catch: { error, send in
+            await send(.internalAction(.error))
+            Logger.error("Failed changing app icon: \(error)")
+          }
+        )
+      case .setAlternateIconNameResponse:
+        return .none
+      case .internalAction:
+        return .none
+      }
+    }
+  }
+}
 
 struct AppIconListPage: View {
   let store: StoreOf<AppIconListReducer>
@@ -38,12 +139,14 @@ struct AppIconListPage: View {
   }
 }
 
-struct AppIconListPage_Previews: PreviewProvider {
-  static var previews: some View {
-    AppIconListPage(
-      store: Store(initialState: AppIconListReducer.State()) {
-        AppIconListReducer()
-      }
-    )
-  }
+#Preview {
+  NavigationStack(
+    root: {
+      AppIconListPage(
+        store: Store(initialState: AppIconListReducer.State()) {
+          AppIconListReducer()
+        }
+      )
+    },
+  )
 }

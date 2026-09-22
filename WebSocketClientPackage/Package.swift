@@ -13,7 +13,11 @@ let package = Package(
   products: [
     .library(
       name: "WebSocketClientPackage",
-      targets: ["WebSocketClientPackage"]
+      targets: ["WebSocketClientPackage"],
+    ),
+    .library(
+      name: "DependenciesLive",
+      targets: ["DependenciesLive"],
     ),
   ],
   dependencies: [
@@ -40,10 +44,7 @@ let package = Package(
       dependencies: [
         .betterSafariView,
         .composableArchitecture,
-        .firebaseAnalytics,
-        .firebaseCrashlytics,
-        .googleMobileAds,
-        .googleUserMessagingPlatform,
+        .dependenciesInterfaces,
         .sfSafeSymbols,
       ],
       resources: [
@@ -51,6 +52,25 @@ let package = Package(
       ],
       plugins: [
         .licensesPlugin,
+      ],
+    ),
+    .target(
+      name: "DependenciesInterfaces",
+      dependencies: [
+        .composableArchitecture,
+        .dependencies,
+        .dependenciesMacros,
+      ],
+    ),
+    .target(
+      name: "DependenciesLive",
+      dependencies: [
+        .dependencies,
+        .dependenciesInterfaces,
+        .firebaseAnalytics,
+        .firebaseCrashlytics,
+        .googleMobileAds,
+        .googleUserMessagingPlatform,
       ],
     ),
     .testTarget(
@@ -79,6 +99,28 @@ extension Target.Dependency {
     .product(
       name: "ComposableArchitecture",
       package: "swift-composable-architecture"
+    )
+  }
+
+  static var dependencies: Self {
+    .product(
+      name: "Dependencies",
+      package: "swift-dependencies",
+    )
+  }
+
+  static var dependenciesInterfaces: Self {
+    .target(name: "DependenciesInterfaces")
+  }
+
+  static var dependenciesLive: Self {
+    .target(name: "DependenciesLive")
+  }
+
+  static var dependenciesMacros: Self {
+    .product(
+      name: "DependenciesMacros",
+      package: "swift-dependencies",
     )
   }
 

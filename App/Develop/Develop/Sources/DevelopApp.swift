@@ -7,12 +7,16 @@
 
 import ComposableArchitecture
 import Dependencies
+import DependenciesInterfaces
+import DependenciesLive
+import FirebaseAnalytics
+import FirebaseCrashlytics
 import FirebaseCore
 import GoogleMobileAds
 import SwiftData
 import SwiftUI
 import WebSocketClientPackage
-import XCTestDynamicOverlay
+import IssueReporting
 
 @main
 struct DevelopApp: App {
@@ -25,22 +29,28 @@ struct DevelopApp: App {
   // MARK: - Body
   var body: some Scene {
     WindowGroup {
-      if !_XCTIsTesting {
-        RootPage(
-          store: .init(
-            initialState: RootReducer.State(
-              migratedToSwiftData: UserDefaults.standard.bool(forKey: "key_migrated_to_swift_data"),
-            ),
-            reducer: {
-              RootReducer()
-            },
-            withDependencies: {
-              $0.adUnitID.formAboveBannerAdUnitID = { "ca-app-pub-3940256099942544/2435281174" }
-              $0.adUnitID.webSocketConnectionRewardInterstitialAdUnitID = { "ca-app-pub-3940256099942544/6978759866" }
-            },
+      if !isTesting {
+        prepareDependencies {
+          $0.adClient = .google
+          $0.adUnitID = .debug
+          $0.analytics = .firebase
+          $0.bundle = .bundle
+          $0.consentInformation = .google
+          $0.rewardInterstitialAd = .google
+          $0.webSocket = .urlSession
+
+          return RootPage(
+            store: .init(
+              initialState: RootReducer.State(
+                migratedToSwiftData: UserDefaults.standard.bool(forKey: "key_migrated_to_swift_data"),
+              ),
+              reducer: {
+                RootReducer()
+              },
+            )
           )
-        )
-        .modelContext(modelContext())
+          .modelContext(modelContext())
+        }
       }
     }
   }
@@ -48,6 +58,7 @@ struct DevelopApp: App {
   // MARK: - Initialize
   init() {
     FirebaseApp.configure()
+    Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
     Task {
       _ = await MobileAds.shared.start()
       MobileAds.shared.requestConfiguration.testDeviceIdentifiers = [

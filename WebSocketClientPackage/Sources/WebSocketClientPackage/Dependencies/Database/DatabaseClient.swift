@@ -7,6 +7,7 @@
 
 import ComposableArchitecture
 import CoreData
+import DependenciesInterfaces
 import Foundation
 import SwiftData
 
@@ -14,7 +15,7 @@ import SwiftData
 public struct DatabaseClient: Sendable {
   // MARK: - Properties
   public var migrateCoreDataToSwiftData: @Sendable () async throws -> Void
-  public var fetchHistories: @Sendable (Predicate<HistoryModel>?) async throws -> [HistoryEntity]
+  public var fetchHistories: @Sendable (Predicate<HistoryModel>?, Bool) async throws -> [HistoryEntity]
   public var addHistory: @Sendable (HistoryEntity) async throws -> Void
   public var updateHistory: @Sendable (HistoryEntity) async throws -> Void
   public var deleteHistory: @Sendable (HistoryEntity) async throws -> Void
@@ -125,10 +126,10 @@ public extension DatabaseClient {
       try container.viewContext.save()
     }
 
-    func fetchHistories(_ predicate: Predicate<HistoryModel>? = nil) throws -> [HistoryEntity] {
+    func fetchHistories(_ predicate: Predicate<HistoryModel>? = nil, reverse: Bool) throws -> [HistoryEntity] {
       let context = modelContext()
       let sortBy = [
-        SortDescriptor<HistoryModel>(\.createdAt, order: .forward)
+        SortDescriptor<HistoryModel>(\.createdAt, order: reverse ? .reverse : .forward)
       ]
       let descriptor = FetchDescriptor<HistoryModel>(predicate: predicate, sortBy: sortBy)
       let models = try context.fetch(descriptor)
@@ -261,7 +262,7 @@ public extension DatabaseClient {
 extension DatabaseClient: DependencyKey {
   public static let liveValue: Self = .init(
     migrateCoreDataToSwiftData: { try await DatabaseActor.shared.migrateCoreDataToSwiftData() },
-    fetchHistories: { try await DatabaseActor.shared.fetchHistories($0) },
+    fetchHistories: { try await DatabaseActor.shared.fetchHistories($0, reverse: $1) },
     addHistory: { try await DatabaseActor.shared.addHistory($0) },
     updateHistory: { try await DatabaseActor.shared.updateHistory($0) },
     deleteHistory: { try await DatabaseActor.shared.deleteHistory($0) },
