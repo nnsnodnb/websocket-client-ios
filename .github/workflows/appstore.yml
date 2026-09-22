@@ -78,7 +78,7 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: |
-          Products/WebSocketClient.ipa
-          Products/WebSocketClient.app.dSYM.zip
+          Products/Production.ipa
+          Products/Production.app.dSYM.zip
         generate_release_notes: true
         draft: true
