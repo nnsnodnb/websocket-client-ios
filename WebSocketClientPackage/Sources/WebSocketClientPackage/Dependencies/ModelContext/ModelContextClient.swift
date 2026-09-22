@@ -6,6 +6,7 @@
 //
 
 import Dependencies
+import DependenciesInterfaces
 import DependenciesMacros
 import Foundation
 import SwiftData

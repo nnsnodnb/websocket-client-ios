@@ -57,6 +57,7 @@ let package = Package(
     .target(
       name: "DependenciesInterfaces",
       dependencies: [
+        .composableArchitecture,
         .dependencies,
         .dependenciesMacros,
       ],

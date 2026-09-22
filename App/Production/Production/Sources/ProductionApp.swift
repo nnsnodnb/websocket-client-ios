@@ -35,6 +35,7 @@ struct ProductionApp: App {
         $0.bundle = .bundle
         $0.consentInformation = .google
         $0.rewardInterstitialAd = .google
+        $0.webSocket = .urlSession
 
         return RootPage(
           store: .init(
