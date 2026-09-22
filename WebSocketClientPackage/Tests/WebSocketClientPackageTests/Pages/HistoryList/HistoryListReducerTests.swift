@@ -25,7 +25,7 @@ struct HistoryListReducerTests {
     )
 
     await withDependencies {
-      $0.database.fetchHistories = { _ in [history] }
+      $0.database.fetchHistories = { _, _ in [history] }
     } operation: {
       let store = TestStore(
         initialState: HistoryListReducer.State(),
@@ -65,7 +65,7 @@ struct HistoryListReducerTests {
     )
 
     await withDependencies {
-      $0.database.fetchHistories = { _ in [history] }
+      $0.database.fetchHistories = { _, _ in [history] }
     } operation: {
       let store = TestStore(
         initialState: HistoryListReducer.State(),
@@ -103,7 +103,7 @@ struct HistoryListReducerTests {
     )
 
     await withDependencies {
-      $0.database.fetchHistories = { _ in [history] }
+      $0.database.fetchHistories = { _, _ in [history] }
       $0.database.deleteHistory = { _ in throw Error.delete }
     } operation: {
       let store = TestStore(
@@ -136,7 +136,7 @@ struct HistoryListReducerTests {
     )
 
     await withDependencies {
-      $0.database.fetchHistories = { _ in [history] }
+      $0.database.fetchHistories = { _, _ in [history] }
     } operation: {
       let store = TestStore(
         initialState: HistoryListReducer.State(),
