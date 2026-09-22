@@ -229,9 +229,13 @@ struct FormPage: View {
         secondSection
         thirdSection
       }
-      .keyboardToolbar {
-        isFocused = false
-      }
+      .keyboardToolbar(
+        isFocused: isFocused,
+        closeAction: {
+          isFocused = false
+        },
+      )
+      .scrollDismissesKeyboard(.immediately)
     }
   }
 
@@ -385,17 +389,37 @@ struct FormPage: View {
 
 @MainActor
 private extension View {
-  func keyboardToolbar(closeAction: @escaping () -> Void) -> some View {
-    toolbar {
-      ToolbarItemGroup(placement: .keyboard) {
-        Spacer()
-        Button(action: closeAction) {
-          Text(.formKeyboardTitleCloseButton)
-            .bold()
+  func keyboardToolbar(isFocused: Bool, closeAction: @escaping () -> Void) -> some View {
+    self
+      .safeAreaInset(edge: .bottom) {
+        if #available(iOS 26.0, *), isFocused {
+          HStack(alignment: .center, spacing: 0) {
+            Spacer()
+              .frame(maxWidth: .infinity)
+            Button(action: closeAction) {
+              Text(.formKeyboardTitleCloseButton)
+                .bold()
+                .foregroundStyle(Color(.label))
+                .padding()
+                .glassEffect()
+            }
+          }
+          .padding(8)
         }
-        .padding(.trailing, 8)
       }
-    }
+      .toolbar {
+        ToolbarItemGroup(placement: .keyboard) {
+          if #available(iOS 26.0, *) {
+            EmptyView()
+          } else {
+            Spacer()
+            Button(action: closeAction) {
+              Text(.formKeyboardTitleCloseButton)
+                .bold()
+            }
+          }
+        }
+      }
   }
 }
 
