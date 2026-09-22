@@ -58,7 +58,7 @@ public struct ConnectionReducer: Sendable {
     // MARK: - Alert
     @CasePathable
     public enum Alert: Sendable, Equatable {
-      case dismiss
+      case okay
     }
 
     // MARK: - Error
@@ -77,6 +77,8 @@ public struct ConnectionReducer: Sendable {
   var databaseClient
   @Dependency(\.date)
   var date
+  @Dependency(\.dismiss)
+  var dismiss
   @Dependency(\.webSocket)
   var webSocketClient
   @Dependency(\.uuid)
@@ -100,8 +102,11 @@ public struct ConnectionReducer: Sendable {
             )
           )
       case .close:
-        state.connectivityState = .disconnected
-        return .cancel(id: WebSocketClient.CancelID())
+        return .run(
+          operation: { _ in
+            try await webSocketClient.close(WebSocketClient.CancelID())
+          },
+        )
       case let .messageChanged(string):
         state.message = string
         switch state.connectivityState {
@@ -159,11 +164,49 @@ public struct ConnectionReducer: Sendable {
           }
         )
       case .webSocket(.didClose):
-        state.connectivityState = .disconnected
-        return .cancel(id: WebSocketClient.CancelID())
-      case .alert(.dismiss):
-        state.alert = nil
-        return .none
+        switch state.connectivityState {
+        case .connected:
+          state.connectivityState = .disconnected
+          return .merge(
+            .cancel(id: WebSocketClient.CancelID()),
+            .run(
+              operation: { _ in
+                await dismiss()
+              },
+            )
+          )
+        case .connecting:
+          state.connectivityState = .disconnected
+          state.alert = AlertState(
+            title: {
+              TextState(.connectionAlertConnectingFailedTitle)
+            },
+            actions: {
+              ButtonState(
+                action: .okay,
+                label: {
+                  TextState("OK")
+                },
+              )
+            },
+            message: {
+              TextState(.connectionAlertConnectingFailedMessage)
+            },
+          )
+          return .none
+        case .disconnected:
+          return .run(
+            operation: { _ in
+              await dismiss()
+            },
+          )
+        }
+      case .alert(.presented(.okay)):
+        return .run(
+          operation: { _ in
+            await dismiss()
+          },
+        )
       case .alert:
         return .none
       case .addHistoryResponse:
@@ -174,24 +217,31 @@ public struct ConnectionReducer: Sendable {
         state.isShowCustomHeaderList = isOpened
         return .none
       case .error(.receivedSocketMessage):
-        state.alert = AlertState {
-          TextState(.connectionAlertSendTitle)
-        }
+        state.alert = AlertState(
+          title: {
+            TextState(.connectionAlertSendTitle)
+          },
+        )
         return .none
       case .error(.send):
         return .none
       case .error(.addHistory):
-        state.alert = AlertState {
-          TextState(.connectionAlertUpdateTitle)
-        }
+        state.alert = AlertState(
+          title: {
+            TextState(.connectionAlertUpdateTitle)
+          },
+        )
         return .none
       case .error(.updateHistory):
-        state.alert = AlertState {
-          TextState(.connectionAlertUpdateTitle)
-        }
+        state.alert = AlertState(
+          title: {
+            TextState(.connectionAlertUpdateTitle)
+          },
+        )
         return .none
       }
     }
+    .ifLet(\.alert, action: \.alert)
   }
 
   private func runConnection(state: inout State) -> Effect<Action> {

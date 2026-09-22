@@ -145,9 +145,6 @@ public struct FormReducer: Sendable {
         )
         state.destination = .connection(.init(url: url, history: history))
         return .none
-      case .destination(.presented(.connection(.close))):
-        state.destination = nil
-        return .none
       case let .destination(.presented(.alert(.watch(url)))):
         state.destination = nil
         return .run(
