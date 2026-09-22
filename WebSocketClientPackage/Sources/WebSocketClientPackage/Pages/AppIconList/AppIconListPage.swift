@@ -68,15 +68,23 @@ public struct AppIconListReducer: Sendable {
   }
 
   // MARK: - Action
-  public enum Action: Sendable, Equatable {
+  public enum Action: Sendable {
     case appIconChanged(State.AppIcon)
     case setAlternateIconNameResponse
-    case error
+    case internalAction(InternalAction)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction: Sendable {
+      case error
+    }
   }
 
+  // MARK: - Dependency
   @Dependency(\.application)
   var application
 
+  // MARK: - Body
   public var body: some ReducerOf<Self> {
     Reduce { _, action in
       switch action {
@@ -88,13 +96,13 @@ public struct AppIconListReducer: Sendable {
             Logger.debug("Changed app icon")
           },
           catch: { error, send in
-            await send(.error)
+            await send(.internalAction(.error))
             Logger.error("Failed changing app icon: \(error)")
           }
         )
       case .setAlternateIconNameResponse:
         return .none
-      case .error:
+      case .internalAction:
         return .none
       }
     }
@@ -131,12 +139,14 @@ struct AppIconListPage: View {
   }
 }
 
-struct AppIconListPage_Previews: PreviewProvider {
-  static var previews: some View {
-    AppIconListPage(
-      store: Store(initialState: AppIconListReducer.State()) {
-        AppIconListReducer()
-      }
-    )
-  }
+#Preview {
+  NavigationStack(
+    root: {
+      AppIconListPage(
+        store: Store(initialState: AppIconListReducer.State()) {
+          AppIconListReducer()
+        }
+      )
+    },
+  )
 }
