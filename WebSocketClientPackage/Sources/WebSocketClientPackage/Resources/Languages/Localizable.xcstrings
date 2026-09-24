@@ -593,6 +593,23 @@
         }
       }
     },
+    "history-list.detail.history-detail.nil.text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select an item from histories."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履歴一覧から項目を選択してください"
+          }
+        }
+      }
+    },
     "history-list.navibar.filter.all" : {
       "extractionState" : "manual",
       "localizations" : {

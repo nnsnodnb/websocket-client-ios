@@ -257,11 +257,7 @@ struct InfoPage: View {
                 LicenseListPage(store: store.scope(\.licenseList, action: \.licenseList))
               }
             } else {
-              Text(.infoDetailDestinationNilText)
-                .font(.system(size: 20))
-                .foregroundStyle(Color.gray)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .backgroundStyle(Color(UIColor.systemGroupedBackground))
+              DetailNilView(text: .infoDetailDestinationNilText)
             }
           },
           destination: { store in

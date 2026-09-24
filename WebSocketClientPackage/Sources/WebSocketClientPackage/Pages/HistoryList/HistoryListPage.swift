@@ -12,14 +12,20 @@ import SwiftUI
 
 @Reducer
 public struct HistoryListReducer: Sendable {
+  // MARK: - Destination
+  public enum Destination: Hashable {
+    case historyDetail(HistoryEntity)
+  }
+
   // MARK: - State
   @ObservableState
   public struct State: Equatable {
     var histories: IdentifiedArrayOf<HistoryEntity> = []
     var selectionSortDirection: SortDirection = .descending
     var selectionFilter: Filter = .onlySuccess
-    var selectionHistory: Identified<HistoryEntity, HistoryDetailReducer.State?>?
-    var paths: [Destination] = []
+    var historyDetail: HistoryDetailReducer.State?
+    var isPortrait = false
+    var columnVisibility: NavigationSplitViewVisibility = .all
 
     // MARK: - SortDirection
     public enum SortDirection: CaseIterable, Sendable {
@@ -56,29 +62,31 @@ public struct HistoryListReducer: Sendable {
         }
       }
     }
-
-    // MARK: - Destination
-    public enum Destination: Sendable {
-      case historyDetail
-    }
   }
 
   // MARK: - Action
-  public enum Action: Sendable, Equatable {
+  public enum Action {
     case fetch
-    case fetchResponse([HistoryEntity])
     case changedSortDirection(State.SortDirection)
     case changedFilter(State.Filter)
-    case setNavigation(HistoryEntity?)
-    case navigationPathChanged([State.Destination])
+    case changedIsPortrait(Bool)
+    case changedColumnVisibility(NavigationSplitViewVisibility)
+    case showDestination(Destination?)
     case deleteHistory(IndexSet)
-    case deleteHistoryResponse(HistoryEntity)
     case historyDetail(HistoryDetailReducer.Action)
-    case error(Error)
+    case internalAction(InternalAction)
+
+    // MARK: - InternalAction
+    @CasePathable
+    public enum InternalAction {
+      case fetchResponse([HistoryEntity])
+      case deleteHistoryResponse(HistoryEntity)
+      case error(Error)
+    }
 
     // MARK: - Error
     @CasePathable
-    public enum Error: Swift.Error {
+    public enum Error: Swift::Error {
       case fetch
       case deleteHistory
     }
@@ -103,18 +111,13 @@ public struct HistoryListReducer: Sendable {
               predicate = #Predicate<HistoryModel> { !$0.isConnectionSuccess }
             }
             let histories = try await databaseClient.fetchHistories(predicate, reverse)
-            await send(.fetchResponse(histories))
+            await send(.internalAction(.fetchResponse(histories)))
           },
           catch: { error, send in
-            await send(.error(.fetch))
+            await send(.internalAction(.error(.fetch)))
             Logger.error("Failed fetching: \(error)")
           }
         )
-      case let .fetchResponse(histories):
-        withAnimation {
-          state.histories = .init(uniqueElements: histories)
-        }
-        return .none
       case let .changedSortDirection(sortDirection):
         state.selectionSortDirection = sortDirection
         Logger.debug("Changed sort direction to \(sortDirection.rawValue)")
@@ -122,20 +125,19 @@ public struct HistoryListReducer: Sendable {
       case let .changedFilter(filter):
         state.selectionFilter = filter
         return .send(.fetch)
-      case let .setNavigation(.some(history)):
-        state.paths.append(.historyDetail)
-        state.selectionHistory = .init(.init(history: history), id: history)
+      case let .changedIsPortrait(isPortrait):
+        state.isPortrait = isPortrait
         return .none
-      case .setNavigation(.none):
-        state.paths = []
-        state.selectionHistory = nil
+      case let .changedColumnVisibility(columnVisibility):
+        state.columnVisibility = columnVisibility
         return .none
-      case .historyDetail(.deleted):
-        guard let history = state.selectionHistory?.id else { return .none }
-        state.histories.removeAll(where: { $0.id == history.id })
-        return .send(.setNavigation(nil))
-      case let .navigationPathChanged(paths):
-        state.paths = paths
+      case let .showDestination(destination):
+        switch destination {
+        case let .historyDetail(history):
+          state.historyDetail = .init(history: history)
+        case .none:
+          state.historyDetail = nil
+        }
         return .none
       case let .deleteHistory(indexSet):
         guard let index = indexSet.first,
@@ -143,27 +145,37 @@ public struct HistoryListReducer: Sendable {
         return .run(
           operation: { send in
             try await databaseClient.deleteHistory(history)
-            await send(.deleteHistoryResponse(history))
+            await send(.internalAction(.deleteHistoryResponse(history)))
           },
           catch: { error, send in
-            await send(.error(.deleteHistory))
+            await send(.internalAction(.error(.deleteHistory)))
             Logger.error("Failed deleting history: \(error)")
           }
         )
-      case let .deleteHistoryResponse(history):
-        state.histories.removeAll(where: { $0.id == history.id })
+      case let .historyDetail(.delegate(.deleted(history))):
+        withAnimation {
+          state.histories.removeAll(where: { $0.id == history.id })
+        }
+        state.historyDetail = nil
         return .none
       case .historyDetail:
         return .none
-      case .error:
+      case let .internalAction(.fetchResponse(histories)):
+        withAnimation {
+          state.histories = .init(uniqueElements: histories)
+        }
+        return .none
+      case let .internalAction(.deleteHistoryResponse(history)):
+        withAnimation {
+          state.histories.removeAll(where: { $0.id == history.id })
+        }
+        return .none
+      case .internalAction(.error):
         return .none
       }
     }
-    .ifLet(\.selectionHistory, action: \.historyDetail) {
-      EmptyReducer()
-        .ifLet(\.value, action: \.self) {
-          HistoryDetailReducer()
-        }
+    .ifLet(\.historyDetail, action: \.historyDetail) {
+      HistoryDetailReducer()
     }
   }
 }
@@ -185,10 +197,17 @@ struct HistoryListPage: View {
     return dateFormatter
   }()
 
+  @Dependency(\.mainQueue)
+  private var mainQueue
+  @Environment(\.horizontalSizeClass)
+  private var horizontalSizeClass
+  @Environment(\.verticalSizeClass)
+  private var verticalSizeClass
+
   var body: some View {
-    NavigationStack(
-      path: $store.paths.sending(\.navigationPathChanged),
-      root: {
+    NavigationSplitView(
+      columnVisibility: $store.columnVisibility.sending(\.changedColumnVisibility),
+      sidebar: {
         content
           .navigationTitle(.historyListNavibarTitle)
           .navigationBarTitleDisplayMode(.inline)
@@ -198,17 +217,51 @@ struct HistoryListPage: View {
           )
           .modifier {
             if #available(iOS 26.0, *) {
-              $0
-                .scrollEdgeEffectStyle(.soft, for: .top)
+              $0.scrollEdgeEffectStyle(.soft, for: .top)
             } else {
               $0
             }
           }
       },
+      detail: {
+        if let store = store.scope(\.historyDetail, action: \.historyDetail) {
+          HistoryDetailPage(store: store)
+        } else {
+          DetailNilView(text: .historyListDetailHistoryDetailNilText)
+        }
+      }
     )
+    .navigationSplitViewStyle(.balanced)
     .task {
       store.send(.fetch)
     }
+    .onChange(of: store.historyDetail, { oldValue, newValue in
+      guard oldValue != newValue, newValue != nil, store.isPortrait else { return }
+      store.send(.changedColumnVisibility(.detailOnly))
+    })
+    .onGeometryChange(
+      for: Bool.self,
+      of: { proxy in
+        proxy.size.width < proxy.size.height
+      },
+      action: { isPortrait in
+        store.send(.changedIsPortrait(isPortrait))
+        // 開いた状態
+        guard horizontalSizeClass == .regular && verticalSizeClass == .regular else {
+          return
+        }
+        if isPortrait && store.historyDetail == nil {
+          // 縦持ちで遷移先がない場合は全カラム
+          Task {
+            try? await mainQueue.sleep(for: .milliseconds(1))
+            store.send(.changedColumnVisibility(.all))
+          }
+        } else if !isPortrait {
+          // 横持ちであれば強制的に全カラム
+          store.send(.changedColumnVisibility(.all))
+        }
+      },
+    )
     .analyticsScreen(screenName: .historyList)
   }
 
@@ -236,58 +289,55 @@ struct HistoryListPage: View {
     )
     .background {
       Color(UIColor.systemGroupedBackground)
+        .ignoresSafeArea()
     }
   }
 
   private var list: some View {
-    List {
-      ForEach(store.histories) { history in
+    List(selection: listSelection) {
+      ForEach(store.histories, id: \.self) { history in
         row(history: history)
       }
       .onDelete {
         store.send(.deleteHistory($0))
       }
     }
-    .navigationDestination(
-      for: HistoryListReducer.State.Destination.self,
-      destination: { destination in
-        switch destination {
-        case .historyDetail:
-          if let store = store.scope(\.selectionHistory?.value, action: \.historyDetail) {
-            HistoryDetailPage(store: store)
-          }
+    .listStyle(.insetGrouped)
+  }
+
+  private var listSelection: Binding<HistoryEntity?> {
+    .init(
+      get: { store.historyDetail?.history },
+      set: { history in
+        if let history {
+          store.send(.showDestination(.historyDetail(history)))
+        } else {
+          store.send(.showDestination(nil))
         }
-      }
+      },
     )
   }
 
   private func row(history: HistoryEntity) -> some View {
     HStack {
-      Button(
-        action: {
-          store.send(.setNavigation(history))
-        },
-        label: {
-          VStack(alignment: .leading, spacing: 12) {
-            Text(history.url.absoluteString)
-              .font(.system(size: 18))
-              .foregroundStyle(history.isConnectionSuccess ? .primary : Color.secondary)
-            HStack(alignment: .center, spacing: 4) {
-              Image(systemSymbol: history.isConnectionSuccess ? .checkmarkCircleFill : .xmarkCircleFill)
-                .resizable()
-                .frame(width: 16, height: 16)
-                .foregroundStyle(history.isConnectionSuccess ? Color.green : Color.red)
-              Text(history.isConnectionSuccess ? .historyListContentIsConnectionSuccess : .historyListContentIsConnectionFailure)
-                .font(.system(size: 14))
-                .foregroundColor(.primary)
-              Spacer()
-              Text(Self.dateFormatter.string(from: history.createdAt))
-                .font(.system(size: 12))
-                .foregroundStyle(Color.gray.opacity(0.8))
-            }
-          }
+      VStack(alignment: .leading, spacing: 12) {
+        Text(history.url.absoluteString)
+          .font(.system(size: 18))
+          .foregroundStyle(history.isConnectionSuccess ? .primary : Color.secondary)
+        HStack(alignment: .center, spacing: 4) {
+          Image(systemSymbol: history.isConnectionSuccess ? .checkmarkCircleFill : .xmarkCircleFill)
+            .resizable()
+            .frame(width: 16, height: 16)
+            .foregroundStyle(history.isConnectionSuccess ? Color.green : Color.red)
+          Text(history.isConnectionSuccess ? .historyListContentIsConnectionSuccess : .historyListContentIsConnectionFailure)
+            .font(.system(size: 14))
+            .foregroundColor(.primary)
+          Spacer()
+          Text(Self.dateFormatter.string(from: history.createdAt))
+            .font(.system(size: 12))
+            .foregroundStyle(Color.gray.opacity(0.8))
         }
-      )
+      }
       Spacer()
       Image(systemSymbol: .chevronRight)
         .font(.system(size: 14, weight: .semibold))
