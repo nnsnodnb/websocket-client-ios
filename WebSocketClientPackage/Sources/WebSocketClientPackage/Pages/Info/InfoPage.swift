@@ -32,6 +32,8 @@ public struct InfoReducer: Sendable {
     var version: String = ""
     var visiblePrivacyOptionsRequirements = false
     var isLoadingConsentForm = false
+    var isPortrait = false
+    var columnVisibility: NavigationSplitViewVisibility = .all
     var appIconList: AppIconListReducer.State = .init()
     var licenseList: LicenseListReducer.State = .init()
     var destination: Destination?
@@ -45,6 +47,8 @@ public struct InfoReducer: Sendable {
     case urlSelected(URL?)
     case browserOpen(URL)
     case browserOpenResponse
+    case changedIsPortrait(Bool)
+    case changedColumnVisibility(NavigationSplitViewVisibility)
     case appIconList(AppIconListReducer.Action)
     case checkDeleteAllData
     case deleteAllDataResponse
@@ -109,6 +113,12 @@ public struct InfoReducer: Sendable {
           await analytics.logEvent(.urlTapped(url))
         }
       case .browserOpenResponse:
+        return .none
+      case let .changedIsPortrait(isPortrait):
+        state.isPortrait = isPortrait
+        return .none
+      case let .changedColumnVisibility(columnVisibility):
+        state.columnVisibility = columnVisibility
         return .none
       case .appIconList:
         return .none
@@ -211,16 +221,16 @@ extension InfoReducer.Path.State: Equatable {}
 struct InfoPage: View {
   @Bindable var store: StoreOf<InfoReducer>
 
+  @Dependency(\.mainQueue)
+  private var mainQueue
   @Environment(\.horizontalSizeClass)
   private var horizontalSizeClass
   @Environment(\.verticalSizeClass)
   private var verticalSizeClass
-  @State private var columnVisibility: NavigationSplitViewVisibility = .all
-  @State private var isPortrait = false
 
   var body: some View {
     NavigationSplitView(
-      columnVisibility: $columnVisibility,
+      columnVisibility: $store.columnVisibility.sending(\.changedColumnVisibility),
       sidebar: {
         list
           .navigationTitle(.infoNavibarTitle)
@@ -269,8 +279,8 @@ struct InfoPage: View {
       store.send(.start)
     }
     .onChange(of: store.destination, { oldValue, newValue in
-      guard oldValue != newValue, newValue != nil, isPortrait else { return }
-      columnVisibility = .detailOnly
+      guard oldValue != newValue, newValue != nil, store.isPortrait else { return }
+      store.send(.changedColumnVisibility(.detailOnly))
     })
     .onGeometryChange(
       for: Bool.self,
@@ -278,17 +288,20 @@ struct InfoPage: View {
         proxy.size.width < proxy.size.height
       },
       action: { isPortrait in
-        self.isPortrait = isPortrait
+        store.send(.changedIsPortrait(isPortrait))
         // 開いた状態
         guard horizontalSizeClass == .regular && verticalSizeClass == .regular else {
           return
         }
         if isPortrait && store.destination == nil {
           // 縦持ちで遷移先がない場合は全カラム
-          columnVisibility = .all
+          Task {
+            try? await mainQueue.sleep(for: .milliseconds(1))
+            store.send(.changedColumnVisibility(.all))
+          }
         } else if !isPortrait {
           // 横持ちであれば強制的に全カラム
-          columnVisibility = .all
+          store.send(.changedColumnVisibility(.all))
         }
       },
     )
