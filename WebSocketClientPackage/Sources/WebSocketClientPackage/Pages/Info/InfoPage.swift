@@ -19,6 +19,12 @@ public struct InfoReducer: Sendable {
     case licenseList
   }
 
+  // MARK: - Path
+  @Reducer
+  public enum Path {
+    case licenseDetail(LicenseDetailReducer)
+  }
+
   // MARK: - State
   @ObservableState
   public struct State: Equatable {
@@ -29,6 +35,7 @@ public struct InfoReducer: Sendable {
     var appIconList: AppIconListReducer.State = .init()
     var licenseList: LicenseListReducer.State = .init()
     var destination: Destination?
+    var path: StackState<Path.State> = .init()
     @Presents var alert: AlertState<Action.Alert>?
   }
 
@@ -46,10 +53,12 @@ public struct InfoReducer: Sendable {
     case showPresentPrivacyOptions
     case showDestination(Destination?)
     case licenseList(LicenseListReducer.Action)
+    case path(StackActionOf<Path>)
     case alert(PresentationAction<Alert>)
     case error(Error)
 
     // MARK: - Alert
+    @CasePathable
     public enum Alert: Sendable {
       case deleteAllData
     }
@@ -153,9 +162,18 @@ public struct InfoReducer: Sendable {
           },
         )
       case let .showDestination(destination):
+        if destination == .licenseList && state.destination == .licenseList && !state.path.isEmpty {
+          // ライセンス詳細が開かれていればスタックをリセットする
+          state.path = .init()
+        }
         state.destination = destination
         return .none
+      case let .licenseList(.delegate(.pushLicenseDetail(license))):
+        state.path.append(.licenseDetail(.init(license: license)))
+        return .none
       case .licenseList:
+        return .none
+      case .path:
         return .none
       case .alert(.dismiss):
         state.alert = nil
@@ -183,8 +201,12 @@ public struct InfoReducer: Sendable {
         return .none
       }
     }
+    .forEach(\.path, action: \.path)
   }
 }
+
+// MARK: - InfoReducer.Path.State Equatable
+extension InfoReducer.Path.State: Equatable {}
 
 struct InfoPage: View {
   @Bindable var store: StoreOf<InfoReducer>
@@ -215,6 +237,7 @@ struct InfoPage: View {
       },
       detail: {
         NavigationStack(
+          path: $store.scope(\.path, action: \.path),
           root: {
             if let destination = store.destination {
               switch destination {
@@ -229,6 +252,12 @@ struct InfoPage: View {
                 .foregroundStyle(Color.gray)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .backgroundStyle(Color(UIColor.systemGroupedBackground))
+            }
+          },
+          destination: { store in
+            switch store.case {
+            case let .licenseDetail(store):
+              LicenseDetailPage(store: store)
             }
           },
         )
