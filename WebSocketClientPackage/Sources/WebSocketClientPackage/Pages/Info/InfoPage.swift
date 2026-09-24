@@ -13,6 +13,12 @@ import SwiftUI
 
 @Reducer
 public struct InfoReducer: Sendable {
+  // MARK: - Destination
+  public enum Destination {
+    case appIconList
+    case licenseList
+  }
+
   // MARK: - State
   @ObservableState
   public struct State: Equatable {
@@ -22,11 +28,12 @@ public struct InfoReducer: Sendable {
     var isLoadingConsentForm = false
     var appIconList: AppIconListReducer.State = .init()
     var licenseList: LicenseListReducer.State = .init()
+    var destination: Destination?
     @Presents var alert: AlertState<Action.Alert>?
   }
 
   // MARK: - Action
-  public enum Action: Sendable {
+  public enum Action {
     case start
     case urlSelected(URL?)
     case browserOpen(URL)
@@ -37,6 +44,7 @@ public struct InfoReducer: Sendable {
     case loadConsentForm
     case loadedConsentForm
     case showPresentPrivacyOptions
+    case showDestination(Destination?)
     case licenseList(LicenseListReducer.Action)
     case alert(PresentationAction<Alert>)
     case error(Error)
@@ -144,6 +152,9 @@ public struct InfoReducer: Sendable {
             await send(.loadConsentForm)
           },
         )
+      case let .showDestination(destination):
+        state.destination = destination
+        return .none
       case .licenseList:
         return .none
       case .alert(.dismiss):
@@ -178,35 +189,91 @@ public struct InfoReducer: Sendable {
 struct InfoPage: View {
   @Bindable var store: StoreOf<InfoReducer>
 
+  @Environment(\.horizontalSizeClass)
+  private var horizontalSizeClass
+  @Environment(\.verticalSizeClass)
+  private var verticalSizeClass
+  @State private var columnVisibility: NavigationSplitViewVisibility = .all
+  @State private var isPortrait = false
+
   var body: some View {
-    NavigationStack {
-      form
-        .navigationTitle(.infoNavibarTitle)
-        .toolbarTitleDisplayMode(.inlineLarge)
-        .modifier {
-          if #available(iOS 26.0, *) {
-            $0
-              .scrollEdgeEffectStyle(.soft, for: .top)
-          } else {
-            $0
+    NavigationSplitView(
+      columnVisibility: $columnVisibility,
+      sidebar: {
+        list
+          .navigationTitle(.infoNavibarTitle)
+          .toolbarTitleDisplayMode(.inlineLarge)
+          .modifier {
+            if #available(iOS 26.0, *) {
+              $0
+                .scrollEdgeEffectStyle(.soft, for: .top)
+            } else {
+              $0
+            }
           }
-        }
-        .safari(store: $store)
-    }
+          .safari(store: $store)
+      },
+      detail: {
+        NavigationStack(
+          root: {
+            if let destination = store.destination {
+              switch destination {
+              case .appIconList:
+                AppIconListPage(store: store.scope(\.appIconList, action: \.appIconList))
+              case .licenseList:
+                LicenseListPage(store: store.scope(\.licenseList, action: \.licenseList))
+              }
+            } else {
+              Text(.infoDetailDestinationNilText)
+                .font(.system(size: 20))
+                .foregroundStyle(Color.gray)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .backgroundStyle(Color(UIColor.systemGroupedBackground))
+            }
+          },
+        )
+      },
+    )
+    .navigationSplitViewStyle(.balanced)
     .alert($store.scope(\.alert, action: \.alert))
     .task {
       store.send(.start)
     }
+    .onChange(of: store.destination, { oldValue, newValue in
+      guard oldValue != newValue, newValue != nil, isPortrait else { return }
+      columnVisibility = .detailOnly
+    })
+    .onGeometryChange(
+      for: Bool.self,
+      of: { proxy in
+        proxy.size.width < proxy.size.height
+      },
+      action: { isPortrait in
+        self.isPortrait = isPortrait
+        // 開いた状態
+        guard horizontalSizeClass == .regular && verticalSizeClass == .regular else {
+          return
+        }
+        if isPortrait && store.destination == nil {
+          // 縦持ちで遷移先がない場合は全カラム
+          columnVisibility = .all
+        } else if !isPortrait {
+          // 横持ちであれば強制的に全カラム
+          columnVisibility = .all
+        }
+      },
+    )
     .analyticsScreen(screenName: .info)
   }
 
-  private var form: some View {
-    Form {
+  private var list: some View {
+    List(selection: $store.destination.sending(\.showDestination)) {
       firstSection
       secondSection
       thirdSection
       fourthSection
     }
+    .listStyle(.insetGrouped)
   }
 
   private var firstSection: some View {
@@ -250,19 +317,17 @@ struct InfoPage: View {
           store.send(.browserOpen($0))
         }
       )
-      NavigationLink(
-        destination: {
-          AppIconListPage(store: store.scope(\.appIconList, action: \.appIconList))
+      buttonRow(
+        action: {
+          store.send(.showDestination(.appIconList))
         },
-        label: {
-          HStack(spacing: 12) {
-            Image(.icDefaultIcon)
-              .resizable()
-              .frame(width: 18, height: 18)
-              .cornerRadius(4)
-            Text(.infoSectionSecondTitleChangeAppIcon)
-          }
-        }
+        image: {
+          Image(.icDefaultIcon)
+            .resizable()
+            .frame(width: 18, height: 18)
+            .cornerRadius(4)
+        },
+        title: .infoSectionSecondTitleChangeAppIcon,
       )
       buttonRow(
         action: {
@@ -330,19 +395,17 @@ struct InfoPage: View {
 
   private var fourthSection: some View {
     Section {
-      NavigationLink(
-        destination: {
-          LicenseListPage(store: store.scope(\.licenseList, action: \.licenseList))
+      buttonRow(
+        action: {
+          store.send(.showDestination(.licenseList))
         },
-        label: {
-          HStack(spacing: 12) {
-            Image(systemSymbol: .listBulletRectangleFill)
-              .resizable()
-              .foregroundStyle(.green)
-              .frame(width: 18, height: 18)
-            Text(.infoSectionFourthTitleLicenses)
-          }
-        }
+        image: {
+          Image(systemSymbol: .listBulletRectangleFill)
+            .resizable()
+            .foregroundStyle(.green)
+            .frame(width: 18, height: 18)
+        },
+        title: .infoSectionFourthTitleLicenses,
       )
       HStack {
         HStack(spacing: 12) {

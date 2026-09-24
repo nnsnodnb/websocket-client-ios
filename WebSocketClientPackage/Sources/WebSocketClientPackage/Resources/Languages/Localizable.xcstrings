@@ -730,6 +730,23 @@
         }
       }
     },
+    "info.detail.destination.nil.text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select an item from the sidebar."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サイドバーから項目を選択してください"
+          }
+        }
+      }
+    },
     "info.navibar.title" : {
       "comment" : "Info",
       "extractionState" : "manual",
@@ -985,6 +1002,9 @@
           }
         }
       }
+    },
+    "OK" : {
+      "shouldTranslate" : false
     },
     "root.message.migration" : {
       "comment" : "Root",
