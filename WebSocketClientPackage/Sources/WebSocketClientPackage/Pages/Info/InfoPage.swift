@@ -13,6 +13,18 @@ import SwiftUI
 
 @Reducer
 public struct InfoReducer: Sendable {
+  // MARK: - Destination
+  public enum Destination {
+    case appIconList
+    case licenseList
+  }
+
+  // MARK: - Path
+  @Reducer
+  public enum Path {
+    case licenseDetail(LicenseDetailReducer)
+  }
+
   // MARK: - State
   @ObservableState
   public struct State: Equatable {
@@ -20,28 +32,37 @@ public struct InfoReducer: Sendable {
     var version: String = ""
     var visiblePrivacyOptionsRequirements = false
     var isLoadingConsentForm = false
+    var isPortrait = false
+    var columnVisibility: NavigationSplitViewVisibility = .all
     var appIconList: AppIconListReducer.State = .init()
     var licenseList: LicenseListReducer.State = .init()
+    var destination: Destination?
+    var path: StackState<Path.State> = .init()
     @Presents var alert: AlertState<Action.Alert>?
   }
 
   // MARK: - Action
-  public enum Action: Sendable {
+  public enum Action {
     case start
     case urlSelected(URL?)
     case browserOpen(URL)
     case browserOpenResponse
+    case changedIsPortrait(Bool)
+    case changedColumnVisibility(NavigationSplitViewVisibility)
     case appIconList(AppIconListReducer.Action)
     case checkDeleteAllData
     case deleteAllDataResponse
     case loadConsentForm
     case loadedConsentForm
     case showPresentPrivacyOptions
+    case showDestination(Destination?)
     case licenseList(LicenseListReducer.Action)
+    case path(StackActionOf<Path>)
     case alert(PresentationAction<Alert>)
     case error(Error)
 
     // MARK: - Alert
+    @CasePathable
     public enum Alert: Sendable {
       case deleteAllData
     }
@@ -92,6 +113,12 @@ public struct InfoReducer: Sendable {
           await analytics.logEvent(.urlTapped(url))
         }
       case .browserOpenResponse:
+        return .none
+      case let .changedIsPortrait(isPortrait):
+        state.isPortrait = isPortrait
+        return .none
+      case let .changedColumnVisibility(columnVisibility):
+        state.columnVisibility = columnVisibility
         return .none
       case .appIconList:
         return .none
@@ -144,7 +171,19 @@ public struct InfoReducer: Sendable {
             await send(.loadConsentForm)
           },
         )
+      case let .showDestination(destination):
+        if destination == .licenseList && state.destination == .licenseList && !state.path.isEmpty {
+          // ライセンス詳細が開かれていればスタックをリセットする
+          state.path = .init()
+        }
+        state.destination = destination
+        return .none
+      case let .licenseList(.delegate(.pushLicenseDetail(license))):
+        state.path.append(.licenseDetail(.init(license: license)))
+        return .none
       case .licenseList:
+        return .none
+      case .path:
         return .none
       case .alert(.dismiss):
         state.alert = nil
@@ -172,41 +211,107 @@ public struct InfoReducer: Sendable {
         return .none
       }
     }
+    .forEach(\.path, action: \.path)
   }
 }
+
+// MARK: - InfoReducer.Path.State Equatable
+extension InfoReducer.Path.State: Equatable {}
 
 struct InfoPage: View {
   @Bindable var store: StoreOf<InfoReducer>
 
+  @Dependency(\.mainQueue)
+  private var mainQueue
+  @Environment(\.horizontalSizeClass)
+  private var horizontalSizeClass
+  @Environment(\.verticalSizeClass)
+  private var verticalSizeClass
+
   var body: some View {
-    NavigationStack {
-      form
-        .navigationTitle(.infoNavibarTitle)
-        .toolbarTitleDisplayMode(.inlineLarge)
-        .modifier {
-          if #available(iOS 26.0, *) {
-            $0
-              .scrollEdgeEffectStyle(.soft, for: .top)
-          } else {
-            $0
+    NavigationSplitView(
+      columnVisibility: $store.columnVisibility.sending(\.changedColumnVisibility),
+      sidebar: {
+        list
+          .navigationTitle(.infoNavibarTitle)
+          .toolbarTitleDisplayMode(.inlineLarge)
+          .modifier {
+            if #available(iOS 26.0, *) {
+              $0
+                .scrollEdgeEffectStyle(.soft, for: .top)
+            } else {
+              $0
+            }
           }
-        }
-        .safari(store: $store)
-    }
+          .safari(store: $store)
+      },
+      detail: {
+        NavigationStack(
+          path: $store.scope(\.path, action: \.path),
+          root: {
+            if let destination = store.destination {
+              switch destination {
+              case .appIconList:
+                AppIconListPage(store: store.scope(\.appIconList, action: \.appIconList))
+              case .licenseList:
+                LicenseListPage(store: store.scope(\.licenseList, action: \.licenseList))
+              }
+            } else {
+              DetailNilView(text: .infoDetailDestinationNilText)
+            }
+          },
+          destination: { store in
+            switch store.case {
+            case let .licenseDetail(store):
+              LicenseDetailPage(store: store)
+            }
+          },
+        )
+      },
+    )
+    .navigationSplitViewStyle(.balanced)
     .alert($store.scope(\.alert, action: \.alert))
     .task {
       store.send(.start)
     }
+    .onChange(of: store.destination, { oldValue, newValue in
+      guard oldValue != newValue, newValue != nil, store.isPortrait else { return }
+      store.send(.changedColumnVisibility(.detailOnly))
+    })
+    .onGeometryChange(
+      for: Bool.self,
+      of: { proxy in
+        proxy.size.width < proxy.size.height
+      },
+      action: { isPortrait in
+        store.send(.changedIsPortrait(isPortrait))
+        // 開いた状態
+        guard horizontalSizeClass == .regular && verticalSizeClass == .regular else {
+          return
+        }
+        if isPortrait && store.destination == nil {
+          // 縦持ちで遷移先がない場合は全カラム
+          Task {
+            try? await mainQueue.sleep(for: .milliseconds(1))
+            store.send(.changedColumnVisibility(.all))
+          }
+        } else if !isPortrait {
+          // 横持ちであれば強制的に全カラム
+          store.send(.changedColumnVisibility(.all))
+        }
+      },
+    )
     .analyticsScreen(screenName: .info)
   }
 
-  private var form: some View {
-    Form {
+  private var list: some View {
+    List(selection: $store.destination.sending(\.showDestination)) {
       firstSection
       secondSection
       thirdSection
       fourthSection
     }
+    .listStyle(.insetGrouped)
   }
 
   private var firstSection: some View {
@@ -250,19 +355,17 @@ struct InfoPage: View {
           store.send(.browserOpen($0))
         }
       )
-      NavigationLink(
-        destination: {
-          AppIconListPage(store: store.scope(\.appIconList, action: \.appIconList))
+      buttonRow(
+        action: {
+          store.send(.showDestination(.appIconList))
         },
-        label: {
-          HStack(spacing: 12) {
-            Image(.icDefaultIcon)
-              .resizable()
-              .frame(width: 18, height: 18)
-              .cornerRadius(4)
-            Text(.infoSectionSecondTitleChangeAppIcon)
-          }
-        }
+        image: {
+          Image(.icDefaultIcon)
+            .resizable()
+            .frame(width: 18, height: 18)
+            .cornerRadius(4)
+        },
+        title: .infoSectionSecondTitleChangeAppIcon,
       )
       buttonRow(
         action: {
@@ -330,19 +433,17 @@ struct InfoPage: View {
 
   private var fourthSection: some View {
     Section {
-      NavigationLink(
-        destination: {
-          LicenseListPage(store: store.scope(\.licenseList, action: \.licenseList))
+      buttonRow(
+        action: {
+          store.send(.showDestination(.licenseList))
         },
-        label: {
-          HStack(spacing: 12) {
-            Image(systemSymbol: .listBulletRectangleFill)
-              .resizable()
-              .foregroundStyle(.green)
-              .frame(width: 18, height: 18)
-            Text(.infoSectionFourthTitleLicenses)
-          }
-        }
+        image: {
+          Image(systemSymbol: .listBulletRectangleFill)
+            .resizable()
+            .foregroundStyle(.green)
+            .frame(width: 18, height: 18)
+        },
+        title: .infoSectionFourthTitleLicenses,
       )
       HStack {
         HStack(spacing: 12) {
