@@ -10,49 +10,26 @@ import DependenciesInterfaces
 import GoogleMobileAds
 import SwiftUI
 
-public struct GoogleBannerView: UIViewRepresentable {
+public struct GoogleBannerView: UIViewControllerRepresentable {
+  // MARK: - Properties
   public let adUnitID: String
-  public let size: BannerSize
 
-  public func makeUIView(context: Context) -> some UIView {
-    let banner = BannerView()
-    banner.adUnitID = adUnitID
-    banner.adSize = switch size {
-    case .banner:
-      AdSizeBanner
-    case .largeBanner:
-      AdSizeLargeBanner
-    case .mediumRectangle:
-      AdSizeMediumRectangle
+  @Binding public var adHeight: CGFloat
+
+  public func makeUIViewController(context: Context) -> BannerViewController {
+    let viewController = BannerViewController(adUnitID: adUnitID)
+    viewController.onAdSizeChange = { @MainActor size in
+      adHeight = size.height
     }
-
-    banner.load(Request())
-    banner.delegate = context.coordinator
-
-    return banner
+    return viewController
   }
 
-  public func updateUIView(_ uiView: UIViewType, context: Context) {
+  public func updateUIViewController(_ uiViewController: BannerViewController, context: Context) {
   }
 
-  public func makeCoordinator() -> Coordinator {
-    .init(parent: self)
-  }
-}
-
-// MARK: - Coordinator
-public extension GoogleBannerView {
-  final class Coordinator: NSObject, BannerViewDelegate {
-    // MARK: - Properties
-    private let parent: GoogleBannerView
-
-    // MARK: - Initialize
-    init(parent: GoogleBannerView) {
-      self.parent = parent
-    }
-
-    // MARK: - BannerViewDelegate
-    public func bannerView(_ bannerView: BannerView, didFailToReceiveAdWithError error: any Error) {
-    }
+  public func sizeThatFits(_ proposal: ProposedViewSize, uiViewController: BannerViewController, context: Context) -> CGSize? {
+    guard let width = proposal.width else { return nil }
+    uiViewController.view.layoutIfNeeded()
+    return .init(width: width, height: uiViewController.preferredSize.height)
   }
 }
