@@ -31,10 +31,12 @@ platform :ios do
   lane :adhoc do
     setup_adhoc_certificates
 
+    auth_flag = generate_gym_flags
+
     gym(
       export_method: "ad-hoc",
       scheme: "AdHoc",
-      xcargs: "MARKETING_VERSION='#{generate_adhoc_marketing_version}'",
+      xcargs: "MARKETING_VERSION='#{generate_adhoc_marketing_version}' #{auth_flag}",
     )
 
     upload_symbols_to_crashlytics(
@@ -55,9 +57,12 @@ platform :ios do
   lane :release do
     setup_appstore_certificates
 
+    auth_flag = generate_gym_flags
+
     gym(
       export_method: "app-store",
       scheme: "Production",
+      xcargs: "#{auth_flag}",
     )
 
     upload_symbols_to_crashlytics(
@@ -113,6 +118,20 @@ platform :ios do
         password: ENV["MATCH_KEYCHAIN_PASSWORD"],
         add_to_search_list: true,
       )
+    end
+  end
+
+  desc "Generate Cloud-managed certificates authentication flags"
+  private_lane :generate_gym_flags do
+    if is_ci
+      [
+        "-allowProvisioningUpdates",
+        "-authenticationKeyPath /tmp/AuthKey.p8",
+        "-authenticationKeyID #{ENV.fetch("APP_STORE_CONNECT_KEY_ID")}",
+        "-authenticationKeyIssuerID #{ENV.fetch("APP_STORE_CONNECT_ISSUER_ID")}",
+      ].join(" ")
+    else
+      "-allowProvisioningUpdates"
     end
   end
 end
