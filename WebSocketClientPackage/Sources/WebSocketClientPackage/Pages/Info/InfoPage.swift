@@ -301,6 +301,7 @@ struct InfoPage: View {
         }
       },
     )
+    .ignoresSafeArea(edges: .top)
     .analyticsScreen(screenName: .info)
   }
 
