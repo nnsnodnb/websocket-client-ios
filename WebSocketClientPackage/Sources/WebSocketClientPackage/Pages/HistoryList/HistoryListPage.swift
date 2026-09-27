@@ -262,6 +262,7 @@ struct HistoryListPage: View {
         }
       },
     )
+    .ignoresSafeArea(edges: .top)
     .analyticsScreen(screenName: .historyList)
   }
 
