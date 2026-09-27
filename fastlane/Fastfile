@@ -10,14 +10,6 @@ platform :ios do
     )
   end
 
-  desc "Setup adhoc certificates"
-  lane :setup_adhoc_certificates do
-    keychain
-    match(
-      type: "adhoc",
-    )
-  end
-
   desc "Setup AppStore certificates"
   lane :setup_appstore_certificates do
     keychain
@@ -29,8 +21,6 @@ platform :ios do
   # Gym
   desc "Gym for adhoc"
   lane :adhoc do
-    setup_adhoc_certificates
-
     auth_flag = generate_gym_flags
 
     gym(
