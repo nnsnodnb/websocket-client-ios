@@ -23,14 +23,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Setup development certificates
 
-### ios setup_appstore_certificates
-
-```sh
-[bundle exec] fastlane ios setup_appstore_certificates
-```
-
-Setup AppStore certificates
-
 ### ios adhoc
 
 ```sh
