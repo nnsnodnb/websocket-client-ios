@@ -100,7 +100,7 @@ jobs:
           "${KEY_ID}" \
           "${ISSUER_ID}" \
           "${APP_ID}" \
-          ./Products/Products.ipa \
+          ./Products/Production.ipa \
           "${VERSION}" \
           "${OPT_ARG}"
 
