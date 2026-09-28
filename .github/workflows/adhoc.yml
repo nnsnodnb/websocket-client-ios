@@ -48,17 +48,14 @@ jobs:
     - name: Write IDESkipMacroFingerprintValidation
       run: defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
 
-    - name: Setup AuthKey.p8
+    - name: Setup AuthKey
       env:
         APP_STORE_CONNECT_API_KEY_P8_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8_BASE64 }}
+        KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
       run: |
-        echo "${APP_STORE_CONNECT_API_KEY_P8_BASE64}" | base64 -d > /tmp/AuthKey.p8
-        chmod 600 /tmp/AuthKey.p8
-
-    - name: Setup app-distribution-key.json
-      env:
-        APP_DISTRIBUTION_KEY_BASE64: ${{ secrets.APP_DISTRIBUTION_KEY_BASE64 }}
-      run: echo "${APP_DISTRIBUTION_KEY_BASE64}" | base64 -d > /tmp/app-distribution-key.json
+        mkdir -p ~/.appstoreconnect/private_keys
+        echo "${APP_STORE_CONNECT_API_KEY_P8_BASE64}" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_"${KEY_ID}".p8
+        chmod 600 ~/.appstoreconnect/private_keys/AuthKey_"${KEY_ID}".p8
 
     - name: Xcodebuild showBuildSettings
       id: show-build-settings
@@ -74,6 +71,7 @@ jobs:
         ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
       run: |
         ./ci_scripts/create_keychain.sh
+        fastlane ios setup_development_certificates
         ./ci_scripts/archive_export.sh \
           "${APP_NAME}" \
           "${SCHEME}" \
@@ -85,8 +83,10 @@ jobs:
     - name: Upload ipa to Firebase AppDistribution
       env:
         APP_ID: 1:89035443908:ios:2b6115971af3118435c391
+        APP_DISTRIBUTION_KEY_BASE64: ${{ secrets.APP_DISTRIBUTION_KEY_BASE64 }}
         GOOGLE_APPLICATION_CREDENTIALS: /tmp/app-distribution-key.json
       run: |
+        echo "${APP_DISTRIBUTION_KEY_BASE64}" | base64 -d > /tmp/app-distribution-key.json
         ./ci_scripts/firebase_distribution.sh \
           "${SCHEME}" \
           "${APP_ID}"

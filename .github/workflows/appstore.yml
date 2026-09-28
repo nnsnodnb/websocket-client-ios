@@ -57,9 +57,11 @@ jobs:
     - name: Setup AuthKey.p8
       env:
         APP_STORE_CONNECT_API_KEY_P8_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_P8_BASE64 }}
+        KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
       run: |
-        echo "${APP_STORE_CONNECT_API_KEY_P8_BASE64}" | base64 -d > /tmp/AuthKey.p8
-        chmod 600 /tmp/AuthKey.p8
+        mkdir -p ~/.appstoreconnect/private_keys
+        echo "${APP_STORE_CONNECT_API_KEY_P8_BASE64}" | base64 -d > ~/.appstoreconnect/private_keys/AuthKey_"${KEY_ID}".p8
+        chmod 600 ~/.appstoreconnect/private_keys/AuthKey_"${KEY_ID}".p8
 
     - name: Xcodebuild showBuildSettings
       id: show-build-settings
@@ -75,6 +77,7 @@ jobs:
         ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
       run: |
         ./ci_scripts/create_keychain.sh
+        fastlane ios setup_development_certificates
         ./ci_scripts/archive_export.sh \
           "${APP_NAME}" \
           "${SCHEME}" \
