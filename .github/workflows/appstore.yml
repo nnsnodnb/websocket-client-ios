@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - "v*.*.*"
+  pull_request:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
@@ -80,18 +83,24 @@ jobs:
 
     - name: Upload ipa to App Store Connect
       env:
+        EVENT_NAME: ${{ github.event_name }}
         KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
         ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         APP_ID: "6448638174"
         VERSION: ${{ steps.show-build-settings.outputs.marketing_version }}
       run: |
+        OPT_ARG=""
+        if [[ "${EVENT_NAME}" = "pull_request" ]]; then
+          OPT_ARG="--dry-run"
+        fi
         ./ci_scripts/upload_app_store_connect.sh \
           "${APP_NAME}" \
           "${KEY_ID}" \
           "${ISSUER_ID}" \
           "${APP_ID}" \
           ./Products/Products.ipa \
-          "${VERSION}"
+          "${VERSION}" \
+          "${OPT_ARG}"
 
     - name: Upload Products
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
