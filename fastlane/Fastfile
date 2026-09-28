@@ -10,55 +10,6 @@ platform :ios do
     )
   end
 
-  # Gym
-  desc "Gym for adhoc"
-  lane :adhoc do
-    auth_flag = generate_gym_flags
-
-    gym(
-      export_method: "ad-hoc",
-      scheme: "AdHoc",
-      xcargs: "MARKETING_VERSION='#{generate_adhoc_marketing_version}' #{auth_flag}",
-    )
-
-    upload_symbols_to_crashlytics(
-      gsp_path: "App/AdHoc/AdHoc/Resources/GoogleService-Info.plist",
-      binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
-    )
-
-    if is_ci
-      firebase_app_distribution(
-        app: "1:89035443908:ios:2b6115971af3118435c391",
-        ipa_path: "Products/AdHoc.ipa",
-        groups: "owner",
-      )
-    end
-  end
-
-  desc "Gym for appstore"
-  lane :release do
-    auth_flag = generate_gym_flags
-
-    gym(
-      export_method: "app-store",
-      scheme: "Production",
-      xcargs: "#{auth_flag}",
-    )
-
-    upload_symbols_to_crashlytics(
-      gsp_path: "App/Production/Production/Resources/GoogleService-Info.plist",
-      binary_path: ".swiftpm/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols"
-    )
-
-    if is_ci
-      deliver(
-        ipa: "Products/Production.ipa",
-        precheck_default_rule_level: :error,
-        screenshots_path: "fastlane/screenshots",
-      )
-    end
-  end
-
   # Utility
   desc "Update MARKETING_VERSION & CURRENT_PROJECT_VERSION"
   lane :update_app_version do
@@ -73,45 +24,6 @@ platform :ios do
           "MARKETING_VERSION": "1.3.0",
         }
       )
-    end
-  end
-
-  desc "Generate MARKETING_VERSION for AdHoc"
-  private_lane :generate_adhoc_marketing_version do
-    version = get_version_number(
-      xcodeproj: "App/AdHoc/AdHoc.xcodeproj",
-      target: "AdHoc",
-    )
-    short_hash = last_git_commit[:abbreviated_commit_hash]
-    "#{version}-#{short_hash}"
-  end
-
-  desc "Create temporary keychain for CI"
-  private_lane :keychain do
-    if is_ci
-      create_keychain(
-        name: ENV["MATCH_KEYCHAIN_NAME"],
-        default_keychain: true,
-        unlock: true,
-        timeout: 0,
-        lock_when_sleeps: true,
-        password: ENV["MATCH_KEYCHAIN_PASSWORD"],
-        add_to_search_list: true,
-      )
-    end
-  end
-
-  desc "Generate Cloud-managed certificates authentication flags"
-  private_lane :generate_gym_flags do
-    if is_ci
-      [
-        "-allowProvisioningUpdates",
-        "-authenticationKeyPath /tmp/AuthKey.p8",
-        "-authenticationKeyID #{ENV.fetch("APP_STORE_CONNECT_KEY_ID")}",
-        "-authenticationKeyIssuerID #{ENV.fetch("APP_STORE_CONNECT_ISSUER_ID")}",
-      ].join(" ")
-    else
-      "-allowProvisioningUpdates"
     end
   end
 end
