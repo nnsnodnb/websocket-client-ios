@@ -14,17 +14,19 @@ jobs:
     runs-on: xcode-27
 
     env:
-      FASTLANE_SKIP_UPDATE_CHECK: 1
       DEVELOPER_DIR: /Applications/Xcode_27.1_beta.app/Contents/Developer
+      APP_NAME: WebSocketClient
+      SCHEME: AdHoc
 
     steps:
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+    - name: Checkout
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@14594264cd68ce8a2345dd349bc3d138a4ef85c8 # v1.327.0
+    - name: Checkout ci_scripts
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
-        ruby-version: "4.0.7"
-        bundler-cache: true
+        repository: nnsnodnb/xcodebuild-ci-scripts
+        path: ci_scripts
 
     - name: Get SwiftPM originHash
       id: get-swiftpm-origin-hash
@@ -56,16 +58,36 @@ jobs:
         APP_DISTRIBUTION_KEY_BASE64: ${{ secrets.APP_DISTRIBUTION_KEY_BASE64 }}
       run: echo "${APP_DISTRIBUTION_KEY_BASE64}" | base64 -d > /tmp/app-distribution-key.json
 
-    - name: Fastlane adhoc
+    - name: Xcodebuild showBuildSettings
+      id: show-build-settings
+      run: |
+        ./ci_scripts/get_marketing_version.sh \
+          "${APP_NAME}" \
+          "${SCHEME}"
+
+    - name: Build AdHoc.ipa
       env:
-        FASTLANE_XCODEBUILD_SETTINGS_RETRIES: 20
-        MATCH_KEYCHAIN_NAME: "fastlane_keychain"
-        MATCH_KEYCHAIN_PASSWORD: ""
-        APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
-        APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+        VERSION: ${{ steps.show-build-settings.outputs.marketing_version }}
+        KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+        ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+      run: |
+        ./ci_scripts/create_keychain.sh
+        ./ci_scripts/archive_export.sh \
+          "${APP_NAME}" \
+          "${SCHEME}" \
+          "${VERSION}" \
+          "${KEY_ID}" \
+          "${ISSUER_ID}" \
+          "./App/${SCHEME}/${SCHEME}/Resources/GoogleService-Info.plist"
+
+    - name: Upload ipa to Firebase AppDistribution
+      env:
+        APP_ID: 1:89035443908:ios:2b6115971af3118435c391
         GOOGLE_APPLICATION_CREDENTIALS: /tmp/app-distribution-key.json
       run: |
-        bundle exec fastlane adhoc
+        ./ci_scripts/firebase_distribution.sh \
+          "${SCHEME}" \
+          "${APP_ID}"
 
     - name: Upload Products
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
