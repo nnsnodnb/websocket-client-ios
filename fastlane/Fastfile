@@ -4,7 +4,6 @@ platform :ios do
   # Match
   desc "Setup development certificates"
   lane :setup_development_certificates do
-    keychain
     match(
       type: "development",
     )
