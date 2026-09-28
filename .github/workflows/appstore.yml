@@ -78,8 +78,9 @@ jobs:
         KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
         ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         FASTLANE_SKIP_UPDATE_CHECK: 1
+        MATCH_KEYCHAIN_NAME: "fastlane_keychain"
+        MATCH_KEYCHAIN_PASSWORD: ""
       run: |
-        ./ci_scripts/create_keychain.sh
         MATCH_GIT_PRIVATE_KEY=$(echo -n "${GIT_PRIVATE_KEY_BASE64}" | base64 -d)
         export MATCH_GIT_PRIVATE_KEY
         fastlane ios setup_development_certificates

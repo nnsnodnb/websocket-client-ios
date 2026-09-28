@@ -4,6 +4,7 @@ platform :ios do
   # Match
   desc "Setup development certificates"
   lane :setup_development_certificates do
+    keychain
     match(
       type: "development",
     )
@@ -22,6 +23,21 @@ platform :ios do
           "CURRENT_PROJECT_VERSION": version.to_i + 1,
           "MARKETING_VERSION": "1.3.1",
         }
+      )
+    end
+  end
+
+  desc "Create temporary keychain for CI"
+  private_lane :keychain do
+    if is_ci
+      create_keychain(
+        name: ENV["MATCH_KEYCHAIN_NAME"],
+        default_keychain: true,
+        unlock: true,
+        timeout: 0,
+        lock_when_sleeps: true,
+        password: ENV["MATCH_KEYCHAIN_PASSWORD"],
+        add_to_search_list: true,
       )
     end
   end
