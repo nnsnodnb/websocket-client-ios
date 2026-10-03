@@ -593,6 +593,23 @@
         }
       }
     },
+    "history-list.detail.history-detail.nil.text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select an item from histories."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履歴一覧から項目を選択してください"
+          }
+        }
+      }
+    },
     "history-list.navibar.filter.all" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -726,6 +743,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "削除に失敗しました"
+          }
+        }
+      }
+    },
+    "info.detail.destination.nil.text" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select an item from the sidebar."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サイドバーから項目を選択してください"
           }
         }
       }
@@ -985,6 +1019,9 @@
           }
         }
       }
+    },
+    "OK" : {
+      "shouldTranslate" : false
     },
     "root.message.migration" : {
       "comment" : "Root",

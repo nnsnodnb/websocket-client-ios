@@ -21,13 +21,19 @@ public struct HistoryDetailReducer: Sendable {
   }
 
   // MARK: - Action
-  public enum Action: Sendable, Equatable {
+  public enum Action {
     case checkDelete
     case alert(PresentationAction<Alert>)
     case deleteResponse
-    case deleted
     case showedCustomHeaderList(Bool)
     case error(Error)
+    case delegate(Delegate)
+
+    // MARK: - Delegate
+    @CasePathable
+    public enum Delegate {
+      case deleted(HistoryEntity)
+    }
 
     // MARK: - Alert
     public enum Alert: Sendable, Equatable {
@@ -36,7 +42,7 @@ public struct HistoryDetailReducer: Sendable {
 
     // MARK: - Error
     @CasePathable
-    public enum Error: Swift.Error {
+    public enum Error: Swift::Error {
       case delete
     }
   }
@@ -69,9 +75,6 @@ public struct HistoryDetailReducer: Sendable {
           }
         )
         return .none
-      case .alert(.dismiss):
-        state.alert = nil
-        return .none
       case .alert(.presented(.confirm)):
         return .run(
           operation: { [history = state.history] send in
@@ -83,10 +86,10 @@ public struct HistoryDetailReducer: Sendable {
             Logger.error("Failed deleting: \(error)")
           }
         )
-      case .deleteResponse:
-        return .send(.deleted)
-      case .deleted:
+      case .alert:
         return .none
+      case .deleteResponse:
+        return .send(.delegate(.deleted(state.history)))
       case let .showedCustomHeaderList(isOpened):
         state.isShowCustomHeaderList = isOpened
         return .none
@@ -95,13 +98,21 @@ public struct HistoryDetailReducer: Sendable {
           TextState(.historyDetailAlertDeletionFailedTitleMessage)
         }
         return .none
+      case .delegate:
+        return .none
       }
     }
+    .ifLet(\.$alert, action: \.alert)
   }
 }
 
 struct HistoryDetailPage: View {
   @Bindable var store: StoreOf<HistoryDetailReducer>
+
+  @Environment(\.horizontalSizeClass)
+  private var horizontalSizeClass
+  @Environment(\.verticalSizeClass)
+  private var verticalSizeClass
 
   var body: some View {
     MessageListView(
@@ -118,7 +129,11 @@ struct HistoryDetailPage: View {
         $0
       }
     }
-    .toolbar(store: store)
+    .toolbar(
+      store: store,
+      horizontalSizeClass: horizontalSizeClass,
+      verticalSizeClass: verticalSizeClass,
+    )
     .sheet(
       isPresented: $store.isShowCustomHeaderList.sending(
         \.showedCustomHeaderList
@@ -135,7 +150,14 @@ struct HistoryDetailPage: View {
 
 @MainActor
 private extension View {
-  func toolbar(store: StoreOf<HistoryDetailReducer>) -> some View {
+  @ViewBuilder
+  func toolbar(
+    store: StoreOf<HistoryDetailReducer>,
+    horizontalSizeClass: UserInterfaceSizeClass?,
+    verticalSizeClass: UserInterfaceSizeClass?,
+  ) -> some View {
+    let useInnerDisplay = horizontalSizeClass == .regular && verticalSizeClass == .regular
+
     toolbar {
       ToolbarItem(placement: .navigationBarTrailing) {
         Menu(
@@ -173,7 +195,7 @@ private extension View {
       }
     }
     .toolbarRole(.editor)
-    .toolbar(.hidden, for: .tabBar)
+    .toolbar(useInnerDisplay ? .visible : .hidden, for: .tabBar)
   }
 }
 
