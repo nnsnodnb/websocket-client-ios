@@ -23,38 +23,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Setup development certificates
 
-### ios setup_adhoc_certificates
-
-```sh
-[bundle exec] fastlane ios setup_adhoc_certificates
-```
-
-Setup adhoc certificates
-
-### ios setup_appstore_certificates
-
-```sh
-[bundle exec] fastlane ios setup_appstore_certificates
-```
-
-Setup AppStore certificates
-
-### ios adhoc
-
-```sh
-[bundle exec] fastlane ios adhoc
-```
-
-Gym for adhoc
-
-### ios release
-
-```sh
-[bundle exec] fastlane ios release
-```
-
-Gym for appstore
-
 ### ios update_app_version
 
 ```sh
