@@ -199,6 +199,8 @@ struct HistoryListPage: View {
 
   @Dependency(\.mainQueue)
   private var mainQueue
+  @Environment(\.colorScheme)
+  private var colorScheme
   @Environment(\.horizontalSizeClass)
   private var horizontalSizeClass
   @Environment(\.verticalSizeClass)
@@ -214,6 +216,7 @@ struct HistoryListPage: View {
           .toolbar(
             sortDirection: $store.selectionSortDirection.sending(\.changedSortDirection),
             filter: $store.selectionFilter.sending(\.changedFilter),
+            colorScheme: colorScheme,
           )
           .modifier {
             if #available(iOS 26.0, *) {
@@ -352,6 +355,7 @@ private extension View {
   func toolbar(
     sortDirection: Binding<HistoryListReducer.State.SortDirection>,
     filter: Binding<HistoryListReducer.State.Filter>,
+    colorScheme: ColorScheme,
   ) -> some View {
     toolbar {
       ToolbarItemGroup(placement: .topBarTrailing) {
@@ -368,6 +372,17 @@ private extension View {
             Image(systemSymbol: .arrowUpArrowDown)
           },
         )
+        .modifier {
+          if sortDirection.wrappedValue == .descending {
+            $0
+          } else if colorScheme == .light {
+            $0
+              .foregroundStyle(Color.white)
+              .background(Color.accentColor, in: .circle)
+          } else {
+            $0.background(Color.accentColor, in: .circle)
+          }
+        }
         Menu(
           content: {
             Picker("", selection: filter) {
@@ -381,6 +396,17 @@ private extension View {
             Image(systemSymbol: .line3HorizontalDecrease)
           },
         )
+        .modifier {
+          if filter.wrappedValue == .onlySuccess {
+            $0
+          } else if colorScheme == .light {
+            $0
+              .foregroundStyle(Color.white)
+              .background(Color.accentColor, in: .circle)
+          } else {
+            $0.background(Color.accentColor, in: .circle)
+          }
+        }
       }
     }
   }
