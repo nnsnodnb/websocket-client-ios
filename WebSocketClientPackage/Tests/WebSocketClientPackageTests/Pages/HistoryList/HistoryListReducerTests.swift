@@ -14,46 +14,6 @@ import Testing
 @MainActor
 struct HistoryListReducerTests {
   @Test
-  func testSetNavigation() async throws {
-    let history = HistoryEntity(
-      id: .init(0),
-      url: URL(string: "wss://echo.websocket.org")!,
-      customHeaders: [],
-      messages: [],
-      isConnectionSuccess: true,
-      createdAt: .init()
-    )
-
-    await withDependencies {
-      $0.database.fetchHistories = { _, _ in [history] }
-    } operation: {
-      let store = TestStore(
-        initialState: HistoryListReducer.State(),
-        reducer: {
-          HistoryListReducer()
-        },
-      )
-
-      await store.send(.fetch)
-      await store.receive(\.fetchResponse, [history]) {
-        $0.histories = .init(uniqueElements: [history])
-      }
-
-      // some
-      await store.send(.setNavigation(history)) {
-        $0.paths = [.historyDetail]
-        $0.selectionHistory = .init(.init(history: history), id: history)
-      }
-
-      // none
-      await store.send(.setNavigation(nil)) {
-        $0.paths = []
-        $0.selectionHistory = nil
-      }
-    }
-  }
-
-  @Test
   func testDeleteHistorySuccess() async throws {
     let history = HistoryEntity(
       id: .init(0),
@@ -75,13 +35,13 @@ struct HistoryListReducerTests {
       )
 
       await store.send(.fetch)
-      await store.receive(\.fetchResponse, [history]) {
+      await store.receive(\.internalAction.fetchResponse, [history]) {
         $0.histories = .init(uniqueElements: [history])
       }
 
       // delete success
       await store.send(.deleteHistory(.init(integer: 0)))
-      await store.receive(\.deleteHistoryResponse, history) {
+      await store.receive(\.internalAction.deleteHistoryResponse, history) {
         $0.histories = .init(uniqueElements: [])
       }
     }
@@ -114,18 +74,18 @@ struct HistoryListReducerTests {
       )
 
       await store.send(.fetch)
-      await store.receive(\.fetchResponse, [history]) {
+      await store.receive(\.internalAction.fetchResponse, [history]) {
         $0.histories = .init(uniqueElements: [history])
       }
 
       // delete failure
       await store.send(.deleteHistory(.init(integer: 0)))
-      await store.receive(\.error.deleteHistory)
+      await store.receive(\.internalAction.error.deleteHistory)
     }
   }
 
   @Test
-  func testHistoryDetailDeleted() async throws {
+  func testHistoryDetailDelegateDeleted() async throws {
     let history = HistoryEntity(
       id: .init(0),
       url: URL(string: "wss://echo.websocket.org")!,
@@ -139,29 +99,18 @@ struct HistoryListReducerTests {
       $0.database.fetchHistories = { _, _ in [history] }
     } operation: {
       let store = TestStore(
-        initialState: HistoryListReducer.State(),
+        initialState: HistoryListReducer.State(
+          histories: .init(uniqueElements: [history]),
+          historyDetail: .init(history: history),
+        ),
         reducer: {
           HistoryListReducer()
         },
       )
 
-      await store.send(.fetch)
-      await store.receive(\.fetchResponse, [history]) {
-        $0.histories = .init(uniqueElements: [history])
-      }
-
-      await store.send(.setNavigation(history)) {
-        $0.paths = [.historyDetail]
-        $0.selectionHistory = .init(.init(history: history), id: history)
-      }
-
-      // deleted
-      await store.send(.historyDetail(.deleted)) {
+      await store.send(.historyDetail(.delegate(.deleted(history)))) {
         $0.histories = .init(uniqueElements: [])
-      }
-      await store.receive(\.setNavigation, nil) {
-        $0.paths = []
-        $0.selectionHistory = nil
+        $0.historyDetail = nil
       }
     }
   }

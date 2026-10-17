@@ -17,12 +17,27 @@ public struct LicenseListReducer: Sendable {
   }
 
   // MARK: - Action
-  public enum Action: Equatable, Sendable {
+  public enum Action {
+    case pushLicenseDetail(LicensesPlugin.License)
+    case delegate(Delegate)
+
+    // MARK: - Delegate
+    @CasePathable
+    public enum Delegate {
+      case pushLicenseDetail(LicensesPlugin.License)
+    }
   }
 
   // MARK: - Body
   public var body: some ReducerOf<Self> {
-    EmptyReducer()
+    Reduce { _, action in
+      switch action {
+      case let .pushLicenseDetail(license):
+        return .send(.delegate(.pushLicenseDetail(license)))
+      case .delegate:
+        return .none
+      }
+    }
   }
 }
 
@@ -51,14 +66,22 @@ private extension LicenseListPage {
   var list: some View {
     List {
       ForEach(store.licenses) { license in
-        NavigationLink(
-          destination: {
-            LicenseDetailPage(license: license)
+        Button(
+          action: {
+            store.send(.pushLicenseDetail(license))
           },
           label: {
-            Text(license.name)
-              .foregroundStyle(Color(.label))
-              .frame(maxWidth: .infinity, alignment: .leading)
+            HStack {
+              HStack(spacing: 12) {
+                Text(license.name)
+                  .foregroundColor(Color(.label))
+              }
+              Spacer()
+              Image(systemSymbol: .chevronRight)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(.secondary)
+                .opacity(0.5)
+            }
           }
         )
       }
@@ -67,12 +90,16 @@ private extension LicenseListPage {
 }
 
 #Preview {
-  LicenseListPage(
-    store: .init(
-      initialState: LicenseListReducer.State(),
-      reducer: {
-        LicenseListReducer()
-      },
-    )
+  NavigationStack(
+    root: {
+      LicenseListPage(
+        store: .init(
+          initialState: LicenseListReducer.State(),
+          reducer: {
+            LicenseListReducer()
+          },
+        )
+      )
+    },
   )
 }

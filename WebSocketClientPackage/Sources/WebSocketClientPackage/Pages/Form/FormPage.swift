@@ -29,6 +29,7 @@ public struct FormReducer: Sendable {
   @ObservableState
   public struct State: Sendable, Equatable {
     var adUnitID: String?
+    var adBannerHeight: CGFloat = 0
     var url: URL?
     var customHeaders: [CustomHeaderEntity] = []
     var isConnectButtonDisable = true
@@ -38,6 +39,7 @@ public struct FormReducer: Sendable {
   // MARK: - Action
   public enum Action {
     case onAppear
+    case changedAdBannerHeight(CGFloat)
     case preloadRewardedInterstitialAd
     case urlChanged(String)
     case addCustomHeader
@@ -64,6 +66,9 @@ public struct FormReducer: Sendable {
       case .onAppear:
         state.adUnitID = try? adUnitID.formAboveBannerAdUnitID()
         return .send(.preloadRewardedInterstitialAd)
+      case let .changedAdBannerHeight(height):
+        state.adBannerHeight = height
+        return .none
       case .preloadRewardedInterstitialAd:
         return .run(
           priority: .background,
@@ -219,33 +224,30 @@ struct FormPage: View {
   }
 
   private var form: some View {
-    GeometryReader { proxy in
-      Form {
-        adSection(proxy: proxy)
-        firstSection
-        secondSection
-        thirdSection
-      }
-      .keyboardToolbar(
-        isFocused: isFocused,
-        closeAction: {
-          isFocused = false
-        },
-      )
-      .scrollDismissesKeyboard(.immediately)
+    Form {
+      adSection
+      firstSection
+      secondSection
+      thirdSection
     }
+    .keyboardToolbar(
+      isFocused: isFocused,
+      closeAction: {
+        isFocused = false
+      },
+    )
+    .scrollDismissesKeyboard(.immediately)
   }
 
-  @ViewBuilder
-  private func adSection(proxy: GeometryProxy) -> some View {
+  @State private var adHeight: CGFloat = 0
+
+  @ViewBuilder private var adSection: some View {
     if let adUnitID = store.adUnitID {
-      let width = proxy.frame(in: .global).size.width - 20
       Section {
-        adClient.make(adUnitID: adUnitID, size: .largeBanner)
-          .frame(
-            width: proxy.frame(in: .global).size.width - 20,
-            height: width * 100 / 320,
-          )
+        adClient.make(
+          adUnitID: adUnitID,
+          height: $store.adBannerHeight.sending(\.changedAdBannerHeight),
+        )
       }
       .listRowBackground(Color.clear)
       .listRowSeparator(.hidden)
@@ -397,7 +399,7 @@ private extension View {
               Text(.formKeyboardTitleCloseButton)
                 .bold()
                 .foregroundStyle(Color(.label))
-                .padding()
+                .padding(12)
                 .glassEffect()
             }
           }
@@ -406,9 +408,7 @@ private extension View {
       }
       .toolbar {
         ToolbarItemGroup(placement: .keyboard) {
-          if #available(iOS 26.0, *) {
-            EmptyView()
-          } else {
+          if #unavailable(iOS 26.0) {
             Spacer()
             Button(action: closeAction) {
               Text(.formKeyboardTitleCloseButton)

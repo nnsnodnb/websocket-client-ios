@@ -1,6 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
+  ],
+  "git-submodules": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "matchFileNames": [".github/workflows/*.yml"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": false
+    }
   ]
 }
