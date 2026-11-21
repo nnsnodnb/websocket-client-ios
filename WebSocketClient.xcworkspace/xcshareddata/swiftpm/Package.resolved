@@ -1,5 +1,5 @@
 {
-  "originHash" : "719a955e31a93600895ebbf5b498088a0b5edc0d255a02d2a5ec51b1e408ebb1",
+  "originHash" : "8904879a820cff89b1bfd9e23aabf8beca773e698d16d33fdb9a847e189c7f0c",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -249,8 +249,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
       "state" : {
-        "revision" : "f6308a186913b186bdc8baf87d098206ecd75ace",
-        "version" : "13.12.0"
+        "revision" : "1e305d74a0edcc8d74f7f2cae7a267e36d722ca2",
+        "version" : "13.13.0"
       }
     },
     {
